@@ -1,4 +1,4 @@
-package java;
+
 
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
