@@ -43,4 +43,35 @@ public class Livraison {
         return null;
     }
 
+    public int getHeureLivraison() {
+        return heureLivraison;
+    }
+
+    public void setHeureLivraison(int heureLivraison) {
+        this.heureLivraison = heureLivraison;
+    }
+
+    public Intersection getIntersection() {
+        return intersection;
+    }
+
+    public void setIntersection(Intersection intersection) {
+        this.intersection = intersection;
+    }
+
+    public Chemin getCheminVersSuivante() {
+        return cheminVersSuivante;
+    }
+
+    public void setCheminVersSuivante(Chemin cheminVersSuivante) {
+        this.cheminVersSuivante = cheminVersSuivante;
+    }
+
+    public optimod.modele.Livraison getPrecedente() {
+        return precedente;
+    }
+
+    public void setPrecedente(optimod.modele.Livraison precedente) {
+        this.precedente = precedente;
+    }
 }

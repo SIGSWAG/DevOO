@@ -23,4 +23,19 @@ public class Troncon {
      */
     public Intersection arrivee;
 
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public Intersection getArrivee() {
+        return arrivee;
+    }
+
+    public void setArrivee(Intersection arrivee) {
+        this.arrivee = arrivee;
+    }
 }
