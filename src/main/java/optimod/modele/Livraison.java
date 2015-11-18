@@ -13,6 +13,7 @@ public class Livraison {
      * Default constructor
      */
     public Livraison(Intersection intersection) {
+        this.intersection = intersection;
     }
 
     /**

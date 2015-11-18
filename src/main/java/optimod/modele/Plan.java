@@ -17,6 +17,8 @@ public class Plan {
     public Plan() {
     }
 
+    private static Plan monInstance = new Plan();
+
     /**
      * 
      */
@@ -44,6 +46,11 @@ public class Plan {
             }
         }
         return intersectionTrouvee;
+    }
+
+
+    public static Plan getInstance() {
+        return monInstance;
     }
 
     /**
