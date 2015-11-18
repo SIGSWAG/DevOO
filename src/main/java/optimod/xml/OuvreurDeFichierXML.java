@@ -2,6 +2,8 @@ package optimod.xml;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import optimod.vue.Fenetre;
+import optimod.vue.OptimodApplication;
 
 import java.io.File;
 
@@ -22,8 +24,9 @@ public enum OuvreurDeFichierXML {
      * @param fenetreCourante La fenêtre à laquelle l'explorateur de fichiers sera rattaché
      * @return Le fichier en tant que File, ou null si aucun fichier n'a été sélectionné
      */
-    public File ouvre(Stage fenetreCourante) {
+    public File ouvre(Fenetre fenetreCourante) {
         explorateurFichier.setTitle(TITRE_OUVREUR_DE_FICHIER);
+        // Filtre sur les extensions : filtre XML par défaut, et choix d'afficher tous les fichiers
         explorateurFichier.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("eXtensible Markup Language (*.xml)", "*.xml"),
                 new FileChooser.ExtensionFilter("Toute extension (*.*)", "*.*"));

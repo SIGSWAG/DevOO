@@ -3,6 +3,8 @@ package optimod.controleur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import optimod.vue.Fenetre;
+import optimod.vue.OptimodApplication;
 import optimod.xml.OuvreurDeFichierXML;
 
 import java.io.File;
@@ -13,9 +15,9 @@ import java.io.File;
  */
 public class Controleur {
 
-    private Stage fenetre;
+    private Fenetre fenetre;
 
-    public Controleur(Stage fenetre) {
+    public Controleur(Fenetre fenetre) {
         this.fenetre = fenetre;
     }
 

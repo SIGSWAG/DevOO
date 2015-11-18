@@ -1,5 +1,9 @@
 package optimod.modele;
 
+import optimod.vue.Fenetre;
+import optimod.xml.OuvreurDeFichierXML;
+
+import java.io.File;
 import java.util.*;
 
 public class Ordonnanceur {
@@ -19,8 +23,8 @@ public class Ordonnanceur {
     /**
      *
      */
-    public void chargerPlan() {
-        // TODO implement here
+    public void chargerPlan(Fenetre fenetre) {
+        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
     }
 
     /**
@@ -45,8 +49,8 @@ public class Ordonnanceur {
     /**
      * 
      */
-    public void chargerDemandeLivraison() {
-        // TODO implement here
+    public void chargerDemandeLivraison(Fenetre fenetre) {
+        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
     }
 
     /**
