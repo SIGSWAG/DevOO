@@ -33,7 +33,7 @@ public class Intersection {
     /**
      * 
      */
-    public List<Troncon> sortants;
+    private List<Troncon> sortants;
 
     /**
      * 

@@ -11,6 +11,8 @@ public class Troncon {
      * Default constructor
      */
     public Troncon(Intersection intersection, int duree) {
+        this.duree = duree;
+        this.arrivee = intersection
     }
 
     /**
@@ -21,6 +23,6 @@ public class Troncon {
     /**
      * 
      */
-    public Intersection arrivee;
+    private Intersection arrivee;
 
 }
