@@ -10,7 +10,7 @@ public class Troncon {
     /**
      * Default constructor
      */
-    public Troncon() {
+    public Troncon(Intersection intersection, int duree) {
     }
 
     /**
@@ -21,6 +21,6 @@ public class Troncon {
     /**
      * 
      */
-    public Intersection arrivée;
+    public Intersection arrivee;
 
 }

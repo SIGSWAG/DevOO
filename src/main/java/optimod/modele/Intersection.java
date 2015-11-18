@@ -45,8 +45,9 @@ public class Intersection {
      * @param y 
      * @param radius
      */
-    public void EstLocalisee(int x, int y, int radius) {
+    public boolean estLocalisee(int x, int y, int radius) {
         // TODO implement here
+        return false;
     }
 
 }

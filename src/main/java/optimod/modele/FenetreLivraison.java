@@ -10,7 +10,7 @@ public class FenetreLivraison {
     /**
      * Default constructor
      */
-    public FenetreLivraison() {
+    public FenetreLivraison(Collection<Livraison> livraisons, int heureDebut, int heureFin) {
     }
 
     /**
@@ -26,20 +26,22 @@ public class FenetreLivraison {
     /**
      * 
      */
-    private Set<Livraison> livraisons;
+    private List<Livraison> livraisons;
 
     /**
      * 
      */
-    public void CalculPCCInterne() {
+    public Collection<Chemin> calculPCCInterne() {
         // TODO implement here
+        return null;
     }
 
     /**
      * @param fdl
      */
-    public void CalculerPCCSuivant(FenetreLivraison fdl) {
+    public Collection<Chemin> calculerPCCSuivant(FenetreLivraison fdl) {
         // TODO implement here
+        return null;
     }
 
 }

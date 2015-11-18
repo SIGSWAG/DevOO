@@ -18,7 +18,7 @@ public class Plan {
     /**
      * 
      */
-    private Set<Intersection> intersections;
+    private List<Intersection> intersections;
 
     /**
      * 
@@ -30,8 +30,9 @@ public class Plan {
     /**
      * @param adresse
      */
-    public void trouverIntersection(int adresse) {
+    public Intersection trouverIntersection(int adresse) {
         // TODO implement here
+        return null;
     }
 
     /**
@@ -39,22 +40,18 @@ public class Plan {
      * @param y 
      * @param radius
      */
-    public void trouverIntersection(int x, int y, int radius) {
+    public Intersection trouverIntersection(int x, int y, int radius) {
         // TODO implement here
+        return null;
     }
 
     /**
      * 
      */
-    public void getIntersections() {
+    public Collection<Intersection> getIntersections() {
         // TODO implement here
+        return null;
     }
 
-    /**
-     * 
-     */
-    public void notifyObservers() {
-        // TODO implement here
-    }
 
 }

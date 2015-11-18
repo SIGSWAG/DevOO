@@ -23,26 +23,26 @@ public class GraphePCC implements Graphe {
     /**
      * 
      */
-    public void CalculerItineraire() {
+    public void calculerItineraire() {
         // TODO implement here
     }
 
     /**
      * 
      */
-    private void ConvertirLivraisonsEnSommets() {
+    private void convertirLivraisonsEnSommets() {
         // TODO implement here
     }
 
     /**
      * @param  n
      */
-    private void RetrouverItinéraire(Collection<Integer>  n) {
+    private void retrouverItinéraire(Collection<Integer>  n) {
         // TODO implement here
     }
 
-    public void getCout(int i, int j) {
-
+    public int getCout(int i, int j) {
+        return 0;
     }
 
     public boolean estArc(int i, int j) {

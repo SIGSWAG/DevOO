@@ -12,7 +12,7 @@ public class Livraison {
     /**
      * Default constructor
      */
-    public Livraison() {
+    public Livraison(Intersection intersection) {
     }
 
     /**
@@ -38,8 +38,9 @@ public class Livraison {
     /**
      * @param l1
      */
-    public void CalculPCC(Livraison l1) {
+    public Chemin calculPCC(Livraison l1) {
         // TODO implement here
+        return null;
     }
 
 }

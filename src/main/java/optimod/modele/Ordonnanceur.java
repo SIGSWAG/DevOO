@@ -26,15 +26,16 @@ public class Ordonnanceur {
     /**
      * 
      */
-    public void ChargerPlan() {
+    public void chargerPlan() {
         // TODO implement here
     }
 
     /**
      * @param adresse
      */
-    public void TrouverIntersection(int adresse) {
+    public Intersection trouverIntersection(int adresse) {
         // TODO implement here
+        return null;
     }
 
     /**
@@ -42,21 +43,22 @@ public class Ordonnanceur {
      * @param y 
      * @param radius
      */
-    public void TrouverIntersection(int x, int y, int radius) {
+    public Intersection trouverIntersection(int x, int y, int radius) {
+        // TODO implement here
+        return null;
+    }
+
+    /**
+     * 
+     */
+    public void chargerDemandeLivraison() {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void ChargerDemandeLivraison() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void CalculerItineraire() {
+    public void calculerItineraire() {
         // TODO implement here
     }
 
@@ -64,14 +66,14 @@ public class Ordonnanceur {
      * @param intersection
      * @param livr
      */
-    public void AjouterLivraison(Intersection intersection, Livraison livr) {
+    public void ajouterLivraison(Intersection intersection, Livraison livr) {
         // TODO implement here
     }
 
     /**
      * @param livr
      */
-    public void SupprimerLivraison(Livraison livr) {
+    public void supprimerLivraison(Livraison livr) {
         // TODO implement here
     }
 
@@ -79,7 +81,7 @@ public class Ordonnanceur {
      * @param livr1 
      * @param livr2
      */
-    public void EchangerLivraison(Livraison livr1, Livraison livr2) {
+    public void echangerLivraison(Livraison livr1, Livraison livr2) {
         // TODO implement here
     }
 

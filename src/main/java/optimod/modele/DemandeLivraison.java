@@ -10,13 +10,19 @@ public class DemandeLivraison {
     /**
      * Default constructor
      */
-    public DemandeLivraison() {
+    public DemandeLivraison(Plan pl) {
     }
 
     /**
      * 
      */
     private List<Chemin> itineraire;
+
+    /**
+     *
+     *
+     */
+    private Plan plan;
 
     /**
      * 
@@ -26,14 +32,14 @@ public class DemandeLivraison {
     /**
      * 
      */
-    public void ChargerDemandeLivraison() {
+    public void chargerDemandeLivraison() {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void CalculerItineraire() {
+    public void calculerItineraire() {
         // TODO implement here
     }
 
@@ -41,14 +47,14 @@ public class DemandeLivraison {
      * @param intersection
      * @param livr
      */
-    public void AjouterLivraison(Intersection intersection, Livraison livr) {
+    public void ajouterLivraison(Intersection intersection, Livraison livr) {
         // TODO implement here
     }
 
     /**
      * @param livr
      */
-    public void SupprimerLivraison(Livraison livr) {
+    public void supprimerLivraison(Livraison livr) {
         // TODO implement here
     }
 
@@ -56,7 +62,7 @@ public class DemandeLivraison {
      * @param livr1 
      * @param livr2
      */
-    public void EchangerLivraison(Livraison livr1, Livraison livr2) {
+    public void echangerLivraison(Livraison livr1, Livraison livr2) {
         // TODO implement here
     }
 
