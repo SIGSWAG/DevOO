@@ -13,7 +13,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Loïc Touzard on 18/11/2015.
@@ -51,20 +53,31 @@ public class DeserialiseurXML { // Singleton
     }
 
     private static void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{
+        // Parcours de tous les Noeud (Intersections)
+        NodeList listeNoeuds = noeudDOMRacine.getElementsByTagName("Noeud");
+        Map<Integer, Intersection> intersections = new HashMap();
+        for (int i = 0; i < listeNoeuds.getLength(); i++) {
+            // Validation des attributs
+            int adresse = Integer.parseInt(listeNoeuds.item(i).getAttributes().getNamedItem("id").getNodeValue());
+            if (adresse <= 0)
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être positif");
+            int x = Integer.parseInt(listeNoeuds.item(i).getAttributes().getNamedItem("x").getNodeValue());
+            if (x <= 0)
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée x doit être positive");
+            int y = Integer.parseInt(listeNoeuds.item(i).getAttributes().getNamedItem("y").getNodeValue());
+            if (y <= 0)
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y doit être positive");
 
-        NodeList listeNoeud = noeudDOMRacine.getElementsByTagName("Noeud");
-        List<Intersection> intersections = new ArrayList<Intersection>();
-        for (int i = 0; i < listeNoeud.getLength(); i++) {
-            intersections.add(new Intersection());
-            plan.ajoute(creeCercle((Element) listeCercles.item(i)));
+            intersections.put(adresse,new Intersection(x,y,adresse));
         }
 
+        NodeList listeNoeud = noeudDOMRacine.getElementsByTagName("Noeud");
+        Map<Integer, Intersection> intersections = new HashMap();
 
 
 
-        int hauteur = Integer.parseInt(noeudDOMRacine.getAttribute("hauteur"));
-        if (hauteur <= 0)
-            throw new ExceptionXML("Erreur lors de la lecture du fichier : La hauteur du plan doit etre positive");
+
+
         int largeur = Integer.parseInt(noeudDOMRacine.getAttribute("largeur"));
         if (largeur <= 0)
             throw new ExceptionXML("Erreur lors de la lecture du fichier : La largeur du plan doit etre positive");
