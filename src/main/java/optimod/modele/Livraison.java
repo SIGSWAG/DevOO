@@ -13,6 +13,7 @@ public class Livraison {
      * Default constructor
      */
     public Livraison(Intersection intersection) {
+        this.intersection = intersection;
     }
 
     /**
@@ -36,10 +37,12 @@ public class Livraison {
     private Livraison precedente;
 
     /**
-     * @param l1
+     * @param l1 la livraison vers laquelle on souhaite se diriger
+     * @return le plus court chemin entre this et la livraison l1
      */
     public Chemin calculPCC(Livraison l1) {
         // TODO implement here
+        // ne pas oublier la durée, le départ et l'arrivée !
         return null;
     }
 
@@ -67,11 +70,15 @@ public class Livraison {
         this.cheminVersSuivante = cheminVersSuivante;
     }
 
-    public optimod.modele.Livraison getPrecedente() {
+    public Livraison getPrecedente() {
         return precedente;
     }
 
-    public void setPrecedente(optimod.modele.Livraison precedente) {
+    public void setPrecedente(Livraison precedente) {
         this.precedente = precedente;
+    }
+
+    public Livraison getSuivante(){
+        return this.cheminVersSuivante.getArrivee();
     }
 }

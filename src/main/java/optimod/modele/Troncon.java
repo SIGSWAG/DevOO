@@ -10,24 +10,28 @@ public class Troncon {
     /**
      * Default constructor
      */
-    public Troncon(Intersection intersection, int duree) {
+    public Troncon(Intersection intersection, double vitesse, double longueur) {
+        this.duree = longueur / vitesse;
+        this.arrivee = intersection;
     }
 
     /**
      * 
      */
-    private int duree;
+    private double duree;
 
     /**
      * 
      */
-    public Intersection arrivee;
+    private Intersection arrivee;
 
-    public int getDuree() {
+    private String nom;
+
+    public double getDuree() {
         return duree;
     }
 
-    public void setDuree(int duree) {
+    public void setDuree(double duree) {
         this.duree = duree;
     }
 

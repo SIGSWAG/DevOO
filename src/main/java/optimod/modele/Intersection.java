@@ -7,10 +7,17 @@ import java.util.*;
  */
 public class Intersection {
 
-    /**
-     * Default constructor
-     */
-    public Intersection() {
+    public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
+        this.x = x;
+        this.y = y;
+        this.adresse = adresse;
+        this.sortants = sortants;
+    }
+
+    public Intersection(int x, int y, int adresse) {
+        this.x = x;
+        this.y = y;
+        this.adresse = adresse;
     }
 
     /**
@@ -40,13 +47,13 @@ public class Intersection {
     private Livraison livraison;
 
     /**
-     * @param x 
-     * @param y 
-     * @param radius
+     * @param x la coordonnée x du cercle dans lequel trouver l'intersection
+     * @param y la coordonnée y du cercle dans lequel trouver l'intersection
+     * @param rayon le rayon du cercle dans lequel trouver l'intersection
+     * @return vrai si l'intersection se trouve dans le cercle, faux sinon
      */
-    public boolean estLocalisee(int x, int y, int radius) {
-        // TODO implement here
-        return false;
+    public boolean estLocalisee(int x, int y, int rayon) {
+        return Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2) <= rayon * rayon;
     }
 
     public int getAdresse() {

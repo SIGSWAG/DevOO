@@ -20,17 +20,19 @@ public class GraphePCC implements Graphe {
     }
 
     /**
-     * @param chemins
+     * @param chemins les chemins à définissants le graphe
      */
-    public void GraphePCC(Collection<Chemin> chemins) {
-        // TODO implement here
+    public GraphePCC(List<Chemin> chemins) {
+        this.chemins = chemins;
     }
 
     /**
-     * 
+     * TODO !! Vide de sens pour l'instant
      */
-    public void calculerItineraire() {
-        // TODO implement here
+    public List<Chemin> calculerItineraire() {
+        List<Chemin> plusCourtParcours = new ArrayList<Chemin>();
+        convertirLivraisonsEnSommets();
+        return plusCourtParcours;
     }
 
     /**
@@ -43,7 +45,7 @@ public class GraphePCC implements Graphe {
     /**
      * @param  n
      */
-    private void retrouverItinéraire(Collection<Integer>  n) {
+    private void retrouverItinéraire(List<Integer>  n) {
         // TODO implement here
     }
 
@@ -63,6 +65,7 @@ public class GraphePCC implements Graphe {
         return chemins;
     }
 
+    // à virer ???
     public void setChemins(List<Chemin> chemins) {
         this.chemins = chemins;
     }
