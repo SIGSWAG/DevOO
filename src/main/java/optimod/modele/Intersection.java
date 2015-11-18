@@ -10,7 +10,10 @@ public class Intersection {
     /**
      * Default constructor
      */
-    public Intersection() {
+    public Intersection(int x, int y, int adresse) {
+        this.x = x;
+        this.y = y;
+        this.adresse = adresse;
     }
 
     /**
