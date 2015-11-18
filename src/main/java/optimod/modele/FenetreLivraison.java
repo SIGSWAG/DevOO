@@ -44,4 +44,27 @@ public class FenetreLivraison {
         return null;
     }
 
+    public int getHeureDebut() {
+        return heureDebut;
+    }
+
+    public void setHeureDebut(int heureDebut) {
+        this.heureDebut = heureDebut;
+    }
+
+    public int getHeureFin() {
+        return heureFin;
+    }
+
+    public void setHeureFin(int heureFin) {
+        this.heureFin = heureFin;
+    }
+
+    public List<Livraison> getLivraisons() {
+        return livraisons;
+    }
+
+    public void setLivraisons(List<Livraison> livraisons) {
+        this.livraisons = livraisons;
+    }
 }

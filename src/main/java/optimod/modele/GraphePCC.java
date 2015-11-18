@@ -7,6 +7,12 @@ import java.util.*;
  */
 public class GraphePCC implements Graphe {
 
+
+    /**
+     *
+     */
+    private List<Chemin> chemins;
+
     /**
      * Default constructor
      */
@@ -16,7 +22,7 @@ public class GraphePCC implements Graphe {
     /**
      * @param chemins
      */
-    public void GraphePCC(Set<Chemin> chemins) {
+    public void GraphePCC(Collection<Chemin> chemins) {
         // TODO implement here
     }
 
@@ -51,5 +57,13 @@ public class GraphePCC implements Graphe {
 
     public int getNbSommets() {
         return 0;
+    }
+
+    public List<Chemin> getChemins() {
+        return chemins;
+    }
+
+    public void setChemins(List<Chemin> chemins) {
+        this.chemins = chemins;
     }
 }
