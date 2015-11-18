@@ -18,6 +18,8 @@ public class DemandeLivraison {
 
     private List<FenetreLivraison> fenetres;
 
+    private Livraison entrepot;
+
 
     public void chargerDemandeLivraison() {
         // TODO implement here
@@ -46,9 +48,10 @@ public class DemandeLivraison {
      * @param livr la livraison à partir de laquelle on recalcule les heures
      */
     private void mettreAJourLesHeuresAPartirDe(Livraison livr) {
-        /**
-         * TODO
-         */
+        while(!livr.equals(entrepot)){
+            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree());
+            livr = livr.getSuivante();
+        }
     }
 
     /**
@@ -106,7 +109,6 @@ public class DemandeLivraison {
      */
     public void reset(){
         itineraire = new ArrayList<Chemin>();
-        plan = new Plan();
         fenetres = new ArrayList<FenetreLivraison>();
     }
 
@@ -132,5 +134,13 @@ public class DemandeLivraison {
 
     public void setFenetres(List<FenetreLivraison> fenetres) {
         this.fenetres = fenetres;
+    }
+
+    public Livraison getEntrepot() {
+        return entrepot;
+    }
+
+    public void setEntrepot(Livraison entrepot) {
+        this.entrepot = entrepot;
     }
 }
