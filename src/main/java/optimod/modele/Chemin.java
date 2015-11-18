@@ -22,7 +22,7 @@ public class Chemin {
     /**
      * 
      */
-    private List<Intersection> intersections;
+    private List<Intersection> intersections = new ArrayList<Intersection>();
 
     /**
      * 

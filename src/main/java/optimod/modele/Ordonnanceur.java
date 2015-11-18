@@ -13,18 +13,12 @@ public class Ordonnanceur {
     public Ordonnanceur() {
     }
 
-    /**
-     * 
-     */
     private DemandeLivraison demandeLivraison;
 
-    /**
-     * 
-     */
     private Plan plan;
 
     /**
-     * 
+     *
      */
     public void chargerPlan() {
         // TODO implement here

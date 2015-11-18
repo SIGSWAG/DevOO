@@ -20,30 +20,15 @@ public class Intersection {
         this.adresse = adresse;
     }
 
-    /**
-     * 
-     */
+
     private int adresse;
 
-    /**
-     * 
-     */
     private int x;
 
-    /**
-     *
-     */
     private int y;
 
+    private List<Troncon> sortants = new ArrayList<Troncon>();
 
-    /**
-     * 
-     */
-    private List<Troncon> sortants;
-
-    /**
-     * 
-     */
     private Livraison livraison;
 
     /**

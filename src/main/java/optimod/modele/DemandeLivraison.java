@@ -14,25 +14,12 @@ public class DemandeLivraison {
         this.plan = plan;
     }
 
-    /**
-     * 
-     */
-    private List<Chemin> itineraire;
+    private List<Chemin> itineraire = new ArrayList<Chemin>();
 
-    /**
-     *
-     *
-     */
     private Plan plan;
 
-    /**
-     * 
-     */
     private List<FenetreLivraison> fenetres;
 
-    /**
-     * 
-     */
     public void chargerDemandeLivraison() {
         // TODO implement here
     }
@@ -93,12 +80,16 @@ public class DemandeLivraison {
     }
 
     /**
-     * echange temporellement deux livraisons livr1 et livr2
-     * @param livr1 
-     * @param livr2
+     * echange temporellement deux livraisons livr1 et livr2 et recalcule les PCC et les horaires
+     * @param livr1 la 1ere livraison à échanger
+     * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
-        // TODO implement here
+
+        if(livr1.getHeureLivraison() < livr2.getHeureLivraison())
+            mettreAJourLesHeuresAPartirDe(livr1);
+        else
+            mettreAJourLesHeuresAPartirDe(livr2);
     }
 
     public List<Chemin> getItineraire() {

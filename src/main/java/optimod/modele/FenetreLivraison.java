@@ -29,7 +29,7 @@ public class FenetreLivraison {
     /**
      *
      */
-    private List<Livraison> livraisons;
+    private List<Livraison> livraisons = new ArrayList<Livraison>();
 
     /**
      * Contrat : Calcule les plus courts chemins entre toutes les livraisons présentes au sein de la fenêtere

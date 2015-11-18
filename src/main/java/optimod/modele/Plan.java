@@ -19,14 +19,8 @@ public class Plan {
 
     private static Plan monInstance = new Plan();
 
-    /**
-     * 
-     */
-    private List<Intersection> intersections;
+    private List<Intersection> intersections = new ArrayList<Intersection>();
 
-    /**
-     * 
-     */
     public void chargerPlan() {
         /**
          * TODO

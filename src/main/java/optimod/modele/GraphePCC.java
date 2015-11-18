@@ -7,11 +7,7 @@ import java.util.*;
  */
 public class GraphePCC implements Graphe {
 
-
-    /**
-     *
-     */
-    private List<Chemin> chemins;
+    private List<Chemin> chemins = new ArrayList<Chemin>();
 
     /**
      * Default constructor
