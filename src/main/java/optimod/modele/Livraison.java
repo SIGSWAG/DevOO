@@ -36,7 +36,8 @@ public class Livraison {
     private Livraison precedente;
 
     /**
-     * @param l1
+     * @param l1 la livraison vers laquelle on souhaite se diriger
+     * @return le plus court chemin entre this et la livraison l1
      */
     public Chemin calculPCC(Livraison l1) {
         // TODO implement here
@@ -67,11 +68,11 @@ public class Livraison {
         this.cheminVersSuivante = cheminVersSuivante;
     }
 
-    public optimod.modele.Livraison getPrecedente() {
+    public Livraison getPrecedente() {
         return precedente;
     }
 
-    public void setPrecedente(optimod.modele.Livraison precedente) {
+    public void setPrecedente(Livraison precedente) {
         this.precedente = precedente;
     }
 }

@@ -1,4 +1,4 @@
-package java;
+
 
 import optimod.modele.Intersection;
 import org.junit.Test;
@@ -14,8 +14,12 @@ public class IntersectionTest {
     public void testEstLocalisee() throws Exception {
 
 
-        Intersection intersection = new Intersection(0,0,15);
+        Intersection intersection = new Intersection(0,0,15,null);
 
-        
+        assertTrue(intersection.estLocalisee(0,0,1));
+        assertFalse(intersection.estLocalisee(2,2,1));
+        assertTrue(intersection.estLocalisee(5,5,10));
+        assertTrue(intersection.estLocalisee(0,1,1));
+
     }
 }
