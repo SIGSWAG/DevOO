@@ -4,12 +4,7 @@ import optimod.modele.Intersection;
 
 import java.util.*;
 
-
-/**
- * 
- */
 public class Plan {
-
 
     /**
      * Default constructor
@@ -17,9 +12,9 @@ public class Plan {
     public Plan() {
     }
 
-    private static Plan monInstance = new Plan();
 
     private List<Intersection> intersections = new ArrayList<Intersection>();
+
 
     public void chargerPlan() {
         /**
@@ -42,9 +37,11 @@ public class Plan {
         return intersectionTrouvee;
     }
 
-
-    public static Plan getInstance() {
-        return monInstance;
+    /**
+     * réalloue tous les attributs à des attributs vides
+     */
+    public void reset(){
+        intersections = new ArrayList<Intersection>();
     }
 
     /**
@@ -65,9 +62,6 @@ public class Plan {
         return intersectionTrouvee;
     }
 
-    /**
-     * 
-     */
     public List<Intersection> getIntersections() {
         return intersections;
     }

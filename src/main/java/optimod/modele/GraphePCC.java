@@ -2,18 +2,17 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class GraphePCC implements Graphe {
-
-    private List<Chemin> chemins = new ArrayList<Chemin>();
 
     /**
      * Default constructor
      */
     public GraphePCC() {
     }
+
+
+    private List<Chemin> chemins = new ArrayList<Chemin>();
+
 
     /**
      * @param chemins les chemins à définissants le graphe
@@ -39,9 +38,9 @@ public class GraphePCC implements Graphe {
     }
 
     /**
-     * @param  n
+     * @param  n ???
      */
-    private void retrouverItinéraire(List<Integer>  n) {
+    private void retrouverItinéraire(List<Integer> n) {
         // TODO implement here
     }
 

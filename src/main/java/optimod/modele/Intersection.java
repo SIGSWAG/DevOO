@@ -2,9 +2,6 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class Intersection {
 
     public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
@@ -30,6 +27,7 @@ public class Intersection {
     private List<Troncon> sortants = new ArrayList<Troncon>();
 
     private Livraison livraison;
+
 
     /**
      * @param x la coordonnée x du cercle dans lequel trouver l'intersection
@@ -64,8 +62,6 @@ public class Intersection {
     public void setY(int y) {
         this.y = y;
     }
-
-
 
     public List<Troncon> getSortants() {
         return sortants;

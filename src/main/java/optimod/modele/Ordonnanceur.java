@@ -2,9 +2,6 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class Ordonnanceur {
 
     /**
@@ -13,9 +10,11 @@ public class Ordonnanceur {
     public Ordonnanceur() {
     }
 
+
     private DemandeLivraison demandeLivraison;
 
     private Plan plan;
+
 
     /**
      *
@@ -25,21 +24,22 @@ public class Ordonnanceur {
     }
 
     /**
-     * @param adresse
+     * @param adresse l'identifiant de l'adresse à trouver
+     * @return l'intersection correspondant à l'adresse
      */
     public Intersection trouverIntersection(int adresse) {
-        // TODO implement here
-        return null;
+        return plan.trouverIntersection(adresse);
     }
 
     /**
-     * @param x 
-     * @param y 
-     * @param radius
+     * contrat : trouve la 1ere intersection dans le cercle, même si il y en a plusieurs (attention au radius trop grand)
+     * @param x la coordonnée x du cercle dans lequel trouver l'intersection
+     * @param y la coordonnée y du cercle dans lequel trouver l'intersection
+     * @param rayon le rayon du cercle dans lequel trouver l'intersection
+     * @return la 1ere intersection dans le cercle, même si il y en a plusieurs
      */
-    public Intersection trouverIntersection(int x, int y, int radius) {
-        // TODO implement here
-        return null;
+    public Intersection trouverIntersection(int x, int y, int rayon) {
+        return plan.trouverIntersection(x,y,rayon);
     }
 
     /**
@@ -57,26 +57,29 @@ public class Ordonnanceur {
     }
 
     /**
-     * @param intersection
-     * @param livr
+     * Contrat : ajoute la livraison sur l'intersection donnée en paramètre et AVANT la livraison donnée en paramètre
+     * @param intersection l'intersection sur laquelle on ajoute la livraison
+     * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        // TODO implement here
+        demandeLivraison.ajouterLivraison(intersection, livr);
     }
 
     /**
-     * @param livr
+     * supprime la livraison en parametre et recalcule l'itinéraire, nottament les horaires prévues d'arrivées
+     * @param livr la livraison à supprimer
      */
     public void supprimerLivraison(Livraison livr) {
-        // TODO implement here
+        demandeLivraison.supprimerLivraison(livr);
     }
 
     /**
-     * @param livr1 
-     * @param livr2
+     * echange temporellement deux livraisons livr1 et livr2 et recalcule les PCC et les horaires
+     * @param livr1 la 1ere livraison à échanger
+     * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
-        // TODO implement here
+        demandeLivraison.echangerLivraison(livr1, livr2);
     }
 
     public DemandeLivraison getDemandeLivraison() {

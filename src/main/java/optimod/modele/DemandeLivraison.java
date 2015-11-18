@@ -2,23 +2,22 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class DemandeLivraison {
 
     /**
      * Default constructor
      */
     public DemandeLivraison(Plan pl) {
-        this.plan = plan;
+        this.plan = pl;
     }
+
 
     private List<Chemin> itineraire = new ArrayList<Chemin>();
 
     private Plan plan;
 
     private List<FenetreLivraison> fenetres;
+
 
     public void chargerDemandeLivraison() {
         // TODO implement here
@@ -85,11 +84,30 @@ public class DemandeLivraison {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
+        Livraison livr1PrecTemp = livr1.getPrecedente();
+        Livraison livr1SuivTemp = livr1.getSuivante();
+
+        livr1.setPrecedente(livr2.getPrecedente());
+        livr1.calculPCC(livr2.getSuivante());
+        livr1.getPrecedente().calculPCC(livr1);
+
+        livr2.setPrecedente(livr1PrecTemp);
+        livr2.calculPCC(livr1SuivTemp);
+        livr2.getPrecedente().calculPCC(livr2);
 
         if(livr1.getHeureLivraison() < livr2.getHeureLivraison())
             mettreAJourLesHeuresAPartirDe(livr1);
         else
             mettreAJourLesHeuresAPartirDe(livr2);
+    }
+
+    /**
+     * réalloue tous les attributs à des attributs vides
+     */
+    public void reset(){
+        itineraire = new ArrayList<Chemin>();
+        plan = new Plan();
+        fenetres = new ArrayList<FenetreLivraison>();
     }
 
     public List<Chemin> getItineraire() {
