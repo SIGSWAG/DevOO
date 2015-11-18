@@ -8,9 +8,24 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Button layoutX="74.0" layoutY="75.0" mnemonicParsing="false" text="CLICK ME" />
-    </children>
+<AnchorPane maxHeight="600.0" maxWidth="1151.0" minHeight="600.0" minWidth="980.0" prefHeight="600.0" prefWidth="1151.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane id="menuAnchorPane" fx:id="menuAnchorPane" prefHeight="70.0" prefWidth="1083.0">
+         <children>
+            <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Charger plan" />
+            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" text="Charger livraisons" />
+            <Button layoutX="282.0" layoutY="18.0" mnemonicParsing="false" text="Calculer l'itinéraire" />
+            <Button disable="true" layoutX="854.0" layoutY="18.0" mnemonicParsing="false" text="Tout désélec" />
+            <Button disable="true" layoutX="967.0" layoutY="18.0" mnemonicParsing="false" text="Générer feuille de route" />
+            <Separator layoutY="68.0" prefHeight="3.0" prefWidth="1151.0" />
+            <Button layoutX="440.0" layoutY="18.0" mnemonicParsing="false" text="Annuler" />
+            <Button layoutX="521.0" layoutY="18.0" mnemonicParsing="false" text="Rejouer" />
+            <Button layoutX="602.0" layoutY="18.0" mnemonicParsing="false" text="+" />
+            <Button layoutX="749.0" layoutY="18.0" mnemonicParsing="false" text="Supprimer" />
+            <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" text="Echanger" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="67.0" prefHeight="533.0" prefWidth="306.0" />
+      <AnchorPane layoutX="320.0" layoutY="77.0" prefHeight="523.0" prefWidth="661.0" />
+   </children>
 </AnchorPane>

@@ -13,6 +13,7 @@ import java.io.IOException;
 public class Fenetre extends Application {
 
     protected static final String FENETRE_XML = "/fxml/Fenetre.fxml";
+    protected static final String TITRE_FENETRE = "Optimod - Editeur de livraisons";
 
     public static void main(String[] args) {
         launch(args);
@@ -21,8 +22,8 @@ public class Fenetre extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle(TITRE_FENETRE);
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 }
