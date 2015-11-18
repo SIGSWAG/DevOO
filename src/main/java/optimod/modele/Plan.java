@@ -53,5 +53,7 @@ public class Plan {
         return null;
     }
 
-
+    public void setIntersections(List<Intersection> intersections) {
+        this.intersections = intersections;
+    }
 }
