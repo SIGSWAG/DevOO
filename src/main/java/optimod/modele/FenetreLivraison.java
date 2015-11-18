@@ -2,34 +2,21 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class FenetreLivraison {
 
-    /**
-     * Default constructor
-     */
     public FenetreLivraison(List<Livraison> livraisons, int heureDebut, int heureFin) {
         this.livraisons = livraisons;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
     }
 
-    /**
-     * 
-     */
+
     private int heureDebut;
 
-    /**
-     * 
-     */
     private int heureFin;
 
-    /**
-     *
-     */
-    private List<Livraison> livraisons;
+    private List<Livraison> livraisons = new ArrayList<Livraison>();
+
 
     /**
      * Contrat : Calcule les plus courts chemins entre toutes les livraisons présentes au sein de la fenêtere
@@ -50,7 +37,7 @@ public class FenetreLivraison {
      * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fdl
      * @param fdl : fenêtre de livraison suivante
      */
-    public List<Chemin> calculerPCCSuivant(FenetreLivraison fdl) {
+    public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
         List<Chemin> chemins = new ArrayList<Chemin>();
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
         for(Livraison depart : livraisons) {
