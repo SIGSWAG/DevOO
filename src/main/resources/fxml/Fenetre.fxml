@@ -15,17 +15,17 @@
    <children>
       <AnchorPane id="menuAnchorPane" fx:id="menuAnchorPane" prefHeight="70.0" prefWidth="1083.0">
          <children>
-            <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Charger plan" />
-            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" text="Charger livraisons" />
-            <Button layoutX="282.0" layoutY="18.0" mnemonicParsing="false" text="Calculer l'itinéraire" />
-            <Button disable="true" layoutX="854.0" layoutY="18.0" mnemonicParsing="false" text="Tout désélec" />
-            <Button disable="true" layoutX="967.0" layoutY="18.0" mnemonicParsing="false" text="Générer feuille de route" />
+            <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
+            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" onAction="#chargerLivraisons" text="Charger livraisons" />
+            <Button layoutX="282.0" layoutY="18.0" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
+            <Button disable="true" layoutX="854.0" layoutY="18.0" mnemonicParsing="false" onAction="#toutDeselectionner" text="Tout désélec" />
+            <Button disable="true" layoutX="967.0" layoutY="18.0" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
             <Separator layoutY="68.0" prefHeight="3.0" prefWidth="1151.0" />
-            <Button layoutX="440.0" layoutY="18.0" mnemonicParsing="false" text="Annuler" />
-            <Button layoutX="521.0" layoutY="18.0" mnemonicParsing="false" text="Rejouer" />
-            <Button layoutX="602.0" layoutY="18.0" mnemonicParsing="false" text="+" />
-            <Button layoutX="749.0" layoutY="18.0" mnemonicParsing="false" text="Supprimer" />
-            <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" text="Echanger" />
+            <Button layoutX="440.0" layoutY="18.0" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
+            <Button layoutX="521.0" layoutY="18.0" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
+            <Button layoutX="602.0" layoutY="18.0" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
+            <Button layoutX="749.0" layoutY="18.0" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
+            <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0" />
