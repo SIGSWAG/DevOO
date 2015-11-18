@@ -50,7 +50,7 @@ public class FenetreLivraison {
      * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fdl
      * @param fdl : fenêtre de livraison suivante
      */
-    public List<Chemin> calculerPCCSuivant(FenetreLivraison fdl) {
+    public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
         List<Chemin> chemins = new ArrayList<Chemin>();
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
         for(Livraison depart : livraisons) {

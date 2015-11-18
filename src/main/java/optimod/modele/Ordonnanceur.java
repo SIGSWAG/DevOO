@@ -59,7 +59,7 @@ public class Ordonnanceur {
      * 
      */
     public void calculerItineraire() {
-        // TODO implement here
+        demandeLivraison.calculerItineraire();
     }
 
     /**

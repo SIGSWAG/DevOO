@@ -42,6 +42,7 @@ public class Livraison {
      */
     public Chemin calculPCC(Livraison l1) {
         // TODO implement here
+        // ne pas oublier la durée, le départ et l'arrivée !
         return null;
     }
 
@@ -75,5 +76,9 @@ public class Livraison {
 
     public void setPrecedente(Livraison precedente) {
         this.precedente = precedente;
+    }
+
+    public Livraison getSuivante(){
+        return this.cheminVersSuivante.getArrivee();
     }
 }

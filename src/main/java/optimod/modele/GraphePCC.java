@@ -27,10 +27,12 @@ public class GraphePCC implements Graphe {
     }
 
     /**
-     * 
+     * TODO !! Vide de sens pour l'instant
      */
-    public void calculerItineraire() {
-        // TODO implement here
+    public List<Chemin> calculerItineraire() {
+        List<Chemin> plusCourtParcours = new ArrayList<Chemin>();
+        convertirLivraisonsEnSommets();
+        return plusCourtParcours;
     }
 
     /**

@@ -7,14 +7,17 @@ import java.util.*;
  */
 public class Intersection {
 
-    /**
-     * Default constructor
-     */
     public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
         this.x = x;
         this.y = y;
         this.adresse = adresse;
         this.sortants = sortants;
+    }
+
+    public Intersection(int x, int y, int adresse) {
+        this.x = x;
+        this.y = y;
+        this.adresse = adresse;
     }
 
     /**
