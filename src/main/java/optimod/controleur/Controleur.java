@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import optimod.xml.OuvreurDeFichierXML;
 
+import java.io.File;
+
 /**
  *
  * Created by Jonathan on 18/11/2015.
@@ -23,7 +25,7 @@ public class Controleur {
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
         // TODO Rôle de l'ordonnanceur
-        OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
     }
 
     /**
