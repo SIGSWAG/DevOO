@@ -66,4 +66,27 @@ public class DemandeLivraison {
         // TODO implement here
     }
 
+    public List<Chemin> getItineraire() {
+        return itineraire;
+    }
+
+    public void setItineraire(List<Chemin> itineraire) {
+        this.itineraire = itineraire;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    public List<FenetreLivraison> getFenetres() {
+        return fenetres;
+    }
+
+    public void setFenetres(List<FenetreLivraison> fenetres) {
+        this.fenetres = fenetres;
+    }
 }
