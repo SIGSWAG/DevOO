@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -25,7 +28,16 @@
             <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" text="Echanger" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="14.0" layoutY="67.0" prefHeight="533.0" prefWidth="306.0" />
-      <AnchorPane layoutX="320.0" layoutY="77.0" prefHeight="523.0" prefWidth="661.0" />
+      <AnchorPane layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0" />
+      <ScrollPane hbarPolicy="NEVER" layoutY="69.0" prefHeight="532.0" prefWidth="312.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="294.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="4.0" text="Fenêtres de livraison" underline="true" />
+                  <ListView fx:id="fenetresLivraisonListView" layoutX="14.0" layoutY="32.0" prefHeight="481.0" prefWidth="280.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
