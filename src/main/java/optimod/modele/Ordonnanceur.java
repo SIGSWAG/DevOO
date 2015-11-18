@@ -1,3 +1,4 @@
+package optimod.modele;
 
 import java.util.*;
 
@@ -60,10 +61,10 @@ public class Ordonnanceur {
     }
 
     /**
-     * @param int 
+     * @param intersection
      * @param livr
      */
-    public void AjouterLivraison(Intersection int, Livraison livr) {
+    public void AjouterLivraison(Intersection intersection, Livraison livr) {
         // TODO implement here
     }
 

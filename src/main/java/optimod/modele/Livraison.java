@@ -1,3 +1,6 @@
+package optimod.modele;
+
+import optimod.modele.Intersection;
 
 import java.util.*;
 

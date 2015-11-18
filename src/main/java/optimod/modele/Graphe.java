@@ -1,3 +1,4 @@
+package optimod.modele;
 
 import java.util.*;
 
@@ -9,6 +10,8 @@ public interface Graphe {
     /**
      * 
      */
-    public void Operation1();
+    void getCout(int i, int j);
+    boolean estArc(int i, int j);
+    int getNbSommets();
 
 }

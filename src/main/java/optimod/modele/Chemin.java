@@ -1,3 +1,4 @@
+package optimod.modele;
 
 import java.util.*;
 

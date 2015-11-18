@@ -1,3 +1,4 @@
+package optimod.modele;
 
 import java.util.*;
 
@@ -20,7 +21,9 @@ public class Intersection {
     /**
      * 
      */
-    private paire<int int> coordonnees;
+    private int x;
+
+    private int y;
 
     /**
      * 
@@ -30,7 +33,7 @@ public class Intersection {
     /**
      * 
      */
-    public Set<Troncon> sortants;
+    public List<Troncon> sortants;
 
     /**
      * 

@@ -1,10 +1,11 @@
+package optimod.modele;
 
 import java.util.*;
 
 /**
  * 
  */
-public class GraphePCC extends Graphe {
+public class GraphePCC implements Graphe {
 
     /**
      * Default constructor
@@ -36,8 +37,19 @@ public class GraphePCC extends Graphe {
     /**
      * @param  n
      */
-    private void RetrouverItinéraire(Set<int>  n) {
+    private void RetrouverItinéraire(Collection<Integer>  n) {
         // TODO implement here
     }
 
+    public void getCout(int i, int j) {
+
+    }
+
+    public boolean estArc(int i, int j) {
+        return false;
+    }
+
+    public int getNbSommets() {
+        return 0;
+    }
 }
