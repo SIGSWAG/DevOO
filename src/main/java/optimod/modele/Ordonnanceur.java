@@ -85,4 +85,19 @@ public class Ordonnanceur {
         // TODO implement here
     }
 
+    public DemandeLivraison getDemandeLivraison() {
+        return demandeLivraison;
+    }
+
+    public void setDemandeLivraison(DemandeLivraison demandeLivraison) {
+        this.demandeLivraison = demandeLivraison;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
 }

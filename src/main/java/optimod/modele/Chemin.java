@@ -10,6 +10,7 @@ public class Chemin {
     /**
      * Default constructor
      */
+
     public Chemin() {
     }
 
@@ -21,7 +22,7 @@ public class Chemin {
     /**
      * 
      */
-    public List<Intersection> intersections;
+    private List<Intersection> intersections;
 
     /**
      * 
@@ -33,4 +34,37 @@ public class Chemin {
      */
     private Livraison arrivee;
 
+
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public List<Intersection> getIntersections() {
+        return intersections;
+    }
+
+    public void setIntersections(List<Intersection> intersections) {
+        this.intersections = intersections;
+    }
+
+    public Livraison getDepart() {
+        return depart;
+    }
+
+    public void setDepart(Livraison depart) {
+        this.depart = depart;
+    }
+
+    public Livraison getArrivee() {
+        return arrivee;
+    }
+
+    public void setArrivee(Livraison arrivee) {
+        this.arrivee = arrivee;
+    }
 }
