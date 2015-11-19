@@ -4,37 +4,21 @@ import optimod.modele.Intersection;
 
 import java.util.*;
 
-/**
- * 
- */
 public class Livraison {
 
-    /**
-     * Default constructor
-     */
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
 
-    /**
-     * 
-     */
+
     private int heureLivraison;
 
-    /**
-     * 
-     */
     private Intersection intersection;
 
-    /**
-     * 
-     */
     private Chemin cheminVersSuivante;
 
-    /**
-     * 
-     */
     private Livraison precedente;
+
 
     /**
      * @param l1 la livraison vers laquelle on souhaite se diriger

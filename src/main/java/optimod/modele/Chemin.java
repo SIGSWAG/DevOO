@@ -10,30 +10,17 @@ public class Chemin {
     /**
      * Default constructor
      */
-
     public Chemin() {
     }
 
-    /**
-     * 
-     */
+
     private int duree;
 
-    /**
-     * 
-     */
-    private List<Intersection> intersections;
+    private List<Intersection> intersections = new ArrayList<Intersection>();
 
-    /**
-     * 
-     */
     private Livraison depart;
 
-    /**
-     * 
-     */
     private Livraison arrivee;
-
 
 
     public int getDuree() {
