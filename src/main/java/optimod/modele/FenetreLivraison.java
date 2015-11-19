@@ -2,46 +2,50 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class FenetreLivraison {
 
-    /**
-     * Default constructor
-     */
-    public FenetreLivraison(Collection<Livraison> livraisons, int heureDebut, int heureFin) {
+    public FenetreLivraison(List<Livraison> livraisons, int heureDebut, int heureFin) {
+        this.livraisons = livraisons;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
     }
 
-    /**
-     * 
-     */
+
     private int heureDebut;
 
-    /**
-     * 
-     */
     private int heureFin;
 
-    /**
-     * 
-     */
-    private List<Livraison> livraisons;
+    private List<Livraison> livraisons = new ArrayList<Livraison>();
+
 
     /**
-     * 
+     * Contrat : Calcule les plus courts chemins entre toutes les livraisons présentes au sein de la fenêtere
      */
-    public Collection<Chemin> calculPCCInterne() {
-        // TODO implement here
-        return null;
+    public List<Chemin> calculPCCInterne() {
+        List<Chemin> chemins = new ArrayList<Chemin>();
+        for(Livraison depart : livraisons) {
+            for (Livraison arrivee : livraisons) {
+                if (!depart.equals(arrivee)) {
+                    chemins.add(depart.calculPCC(arrivee)); // on ajoute le plus court chemin entre depart et arrivee
+                }
+            }
+        }
+        return chemins;
     }
 
     /**
-     * @param fdl
+     * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fdl
+     * @param fdl : fenêtre de livraison suivante
      */
-    public Collection<Chemin> calculerPCCSuivant(FenetreLivraison fdl) {
-        // TODO implement here
-        return null;
+    public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
+        List<Chemin> chemins = new ArrayList<Chemin>();
+        List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
+        for(Livraison depart : livraisons) {
+            for (Livraison arrivee : livraisonsSuivantes) {
+                chemins.add(depart.calculPCC(arrivee)); // on ajoute le plus court chemin entre depart et arrivee
+            }
+        }
+        return chemins;
     }
 
     public int getHeureDebut() {

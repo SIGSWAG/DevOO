@@ -18,9 +18,6 @@ public class LivraisonTest {
 
     @Test
     public void testCalculPCC1() throws Exception {
-
-
-
         /**
          * Test Case 1
          */
@@ -70,7 +67,8 @@ public class LivraisonTest {
 
         assertEquals(chemin.getArrivee(),livraison4);
         assertEquals(chemin.getDepart(), livraison);
-        assertEquals(chemin.getIntersections().size(), 2);
+        assertEquals(chemin.getIntersections().size(), 1);
+        System.out.println("hello");
         assertEquals(chemin.getIntersections().get(0),intersection2);
 
 

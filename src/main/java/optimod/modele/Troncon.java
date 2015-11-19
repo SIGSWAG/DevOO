@@ -2,36 +2,25 @@ package optimod.modele;
 
 import java.util.*;
 
-/**
- * 
- */
 public class Troncon {
 
-    /**
-     * Default constructor
-     */
     public Troncon(Intersection intersection, double vitesse, double longueur) {
-        this.duree = longueur / vitesse;
+        this.duree = (int) (longueur / vitesse);
         this.arrivee = intersection;
     }
 
-    /**
-     * 
-     */
-    private double duree;
 
-    /**
-     * 
-     */
+    private int duree;
+
     private Intersection arrivee;
 
     private String nom;
 
-    public double getDuree() {
+    public int getDuree() {
         return duree;
     }
 
-    public void setDuree(double duree) {
+    public void setDuree(int duree) {
         this.duree = duree;
     }
 

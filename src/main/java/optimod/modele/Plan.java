@@ -4,12 +4,7 @@ import optimod.modele.Intersection;
 
 import java.util.*;
 
-
-/**
- * 
- */
 public class Plan {
-
 
     /**
      * Default constructor
@@ -17,14 +12,10 @@ public class Plan {
     public Plan() {
     }
 
-    /**
-     * 
-     */
-    private List<Intersection> intersections;
 
-    /**
-     * 
-     */
+    private List<Intersection> intersections = new ArrayList<Intersection>();
+
+
     public void chargerPlan() {
         /**
          * TODO
@@ -47,6 +38,13 @@ public class Plan {
     }
 
     /**
+     * réalloue tous les attributs à des attributs vides
+     */
+    public void reset(){
+        intersections = new ArrayList<Intersection>();
+    }
+
+    /**
      * contrat : trouve la 1ere intersection dans le cercle, même si il y en a plusieurs (attention au radius trop grand)
      * @param x la coordonnée x du cercle dans lequel trouver l'intersection
      * @param y la coordonnée y du cercle dans lequel trouver l'intersection
@@ -64,9 +62,6 @@ public class Plan {
         return intersectionTrouvee;
     }
 
-    /**
-     * 
-     */
     public List<Intersection> getIntersections() {
         return intersections;
     }
