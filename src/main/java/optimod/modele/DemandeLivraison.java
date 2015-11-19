@@ -79,6 +79,7 @@ public class DemandeLivraison {
         Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
         livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
         mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
+        livr.getIntersection().setLivraison(null);
     }
 
     /**
