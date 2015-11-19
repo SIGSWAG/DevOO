@@ -12,7 +12,7 @@ public class GraphePCC implements Graphe {
     /**
      *
      */
-    private Hashtable<Integer,Integer> mappingInverse;//calculatedIndex-->realIndex
+    //private Hashtable<Integer,Integer> mappingInverse;//calculatedIndex-->realIndex
 
     private Hashtable<Integer,List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 
@@ -55,9 +55,7 @@ public class GraphePCC implements Graphe {
 
         tsp.chercheSolution(3, this);
 
-        List<Integer> solution = new ArrayList<Integer>();
 
-        int dureeDepuisDepart=0;
         for(int i=0;i<graphe.length-1;i++){
 
             int livraison = tsp.getSolution(i);
@@ -67,7 +65,7 @@ public class GraphePCC implements Graphe {
             plusCourtParcours.add(graphe[livraison][livraisonSuivante]);
 
         }
-        plusCourtParcours.add(graphe[tsp.getSolution(graphe.length-1)][0]); //TODO test this
+        plusCourtParcours.add(graphe[tsp.getSolution(graphe.length-1)][0]);//retour a l'entrepot
 
         return plusCourtParcours;
     }
@@ -78,6 +76,8 @@ public class GraphePCC implements Graphe {
     private void convertirLivraisonsEnSommets() {
         if(chemins!=null) {
 
+
+            cheminsParLivraison = new Hashtable<Integer, List<Chemin>>();
             Iterator<Chemin> it = chemins.iterator();
             int i = 1;
             while (it.hasNext()) {

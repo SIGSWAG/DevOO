@@ -97,19 +97,29 @@ public class MainTest {
         Livraison livraison  = new Livraison(intersection1);
         intersection1.setLivraison(livraison);
 
-        Livraison livraison4  = new Livraison(intersection6);
-        intersection6.setLivraison(livraison4);
+        Livraison livraison3  = new Livraison(intersection3);
+        intersection3.setLivraison(livraison3);
 
-        Chemin chemin = livraison.calculPCC(livraison4);
+        Livraison livraison5  = new Livraison(intersection5);
+        intersection5.setLivraison(livraison5);
 
-        System.out.println("chemin trouvé "+chemin.getDuree()+" taille "+chemin.getIntersections().size());
 
-        for(Intersection inter : chemin.getIntersections()){
 
-            System.out.print(inter.getAdresse()+" ");
+        List<Chemin> chemins = new ArrayList<Chemin>();
+        chemins.add(livraison.calculPCC(livraison3));
+        chemins.add(livraison.calculPCC(livraison5));
+       // chemins.add(livraison3.calculPCC(livraison));
+        chemins.add(livraison3.calculPCC(livraison5));
+        //chemins.add(livraison5.calculPCC(livraison));
+        chemins.add(livraison5.calculPCC(livraison3));
+
+        GraphePCC graphePCC = new GraphePCC(livraison, chemins);
+        List<Chemin> cheminsPCC = graphePCC.calculerItineraire();
+
+        for(Chemin chemin : cheminsPCC){
+
+            System.out.println(" dep "+chemin.getDepart().getIntersection().getAdresse()+" arrivee "+chemin.getArrivee().getIntersection().getAdresse());
         }
-        System.out.println("");
-        System.out.println("Depart "+chemin.getDepart().getIntersection().getAdresse()+" arrivee "+chemin.getArrivee().getIntersection().getAdresse());
 
 
 
