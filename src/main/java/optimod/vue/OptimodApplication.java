@@ -5,6 +5,7 @@ package optimod.vue;/**
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ import java.nio.charset.Charset;
 
 public class OptimodApplication extends Application {
 
-    protected static final String FENETRE_XML = "/fxml/Fenetre.fxml";
+    protected static final String FENETRE_XML = "/vue/Fenetre.fxml";
     protected static final String TITRE_FENETRE = "Optimod - Editeur de livraisons";
 
     public static void main(String[] args) {
@@ -39,8 +40,11 @@ public class OptimodApplication extends Application {
 
         //Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
 
+        Group group = new Group();
+        group.getChildren().addAll(root);
+
         fenetre.setTitle(TITRE_FENETRE);
-        fenetre.setScene(new Scene(root));
+        fenetre.setScene(new Scene(group));
         fenetre.show();
     }
 

@@ -2,7 +2,6 @@ package optimod.xml;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import optimod.vue.Fenetre;
 import optimod.vue.OptimodApplication;
 
 import java.io.File;
@@ -36,7 +35,9 @@ public enum OuvreurDeFichierXML {
         // Récupérer le dernier fichier ouvert (s'il existe)
         File dernierFichierOuvert = getDernierFichierOuvert();
         if(dernierFichierOuvert != null) {
-            explorateurFichier.setInitialDirectory(dernierFichierOuvert.getParentFile());
+            if(dernierFichierOuvert.exists()) {
+                explorateurFichier.setInitialDirectory(dernierFichierOuvert.getParentFile());
+            }
         }
 
         File fichierChoisi = explorateurFichier.showOpenDialog(fenetreCourante);

@@ -28,7 +28,7 @@
             <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0" />
+      <AnchorPane id="planAnchorPane" fx:id="planAnchorPane" layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0" />
       <ScrollPane hbarPolicy="NEVER" layoutY="69.0" prefHeight="532.0" prefWidth="312.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="294.0">
