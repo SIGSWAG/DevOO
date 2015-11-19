@@ -75,6 +75,10 @@ public class DemandeLivraison {
      * @param livr la livraison à supprimer
      */
     public void supprimerLivraison(Livraison livr) {
+        if(livr == entrepot){
+            System.out.println("erreur, action impossible sur l'entrepot");
+            return;
+        }
         livr.getSuivante().setPrecedente(livr.getPrecedente());
         Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
         livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
@@ -88,6 +92,10 @@ public class DemandeLivraison {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
+        if(livr1 == entrepot || livr2 == entrepot){
+            System.out.println("erreur, action impossible sur l'entrepot");
+            return;
+        }
         Livraison livr1PrecTemp = livr1.getPrecedente();
         Livraison livr1SuivTemp = livr1.getSuivante();
 
