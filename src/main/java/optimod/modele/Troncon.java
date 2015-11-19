@@ -1,7 +1,5 @@
 package optimod.modele;
 
-import java.util.*;
-
 public class Troncon {
 
     public Troncon(Intersection intersection, double vitesse, double longueur) {

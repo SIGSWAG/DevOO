@@ -100,7 +100,7 @@ public class Livraison {
         boolean depart = false;
 
         List<Intersection> intersections=new ArrayList<Intersection>();
-        
+
         Intersection currIntersection=destination.intersection;
 
         while(!depart){

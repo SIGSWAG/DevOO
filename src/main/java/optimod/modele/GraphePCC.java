@@ -1,5 +1,6 @@
 package optimod.modele;
 
+import javafx.util.Pair;
 import optimod.tsp.Graphe;
 import optimod.tsp.TSP;
 import optimod.tsp.TSP1;
@@ -19,6 +20,8 @@ public class GraphePCC implements Graphe {
 
     private Chemin[][] graphe;
 
+    private Livraison entrepot;
+
     /**
      * Default constructor
      */
@@ -35,8 +38,10 @@ public class GraphePCC implements Graphe {
     public GraphePCC(Livraison entrepot, List<Chemin> chemins) {
 
         this.chemins = chemins;
+        this.entrepot=entrepot;
         convertirLivraisonsEnSommets();
         construireGraphe();
+
 
     }
 
@@ -74,20 +79,29 @@ public class GraphePCC implements Graphe {
         if(chemins!=null) {
 
             Iterator<Chemin> it = chemins.iterator();
-            int i = 0;
+            int i = 1;
             while (it.hasNext()) {
 
                 Chemin chemin = it.next();
-                List<Chemin> cheminsCourants;
+                List<Chemin> cheminsCourants; //chemins pour la livraison courante
                 int adresse = chemin.getDepart().getIntersection().getAdresse();//adresse du depart
 
                 if (vus.get(adresse) == null) { //on passe pour la première fois sur la livraison
 
+
+                    int index = i;
+                    if(adresse==entrepot.getIntersection().getAdresse()){ //cas de l'entrepot, toujours à zero
+                        index = 0;
+                    }
+
+
                     cheminsCourants = new ArrayList<Chemin>();
 
-                    vus.put(adresse, i);
-                    cheminsParLivraison.put(i, cheminsCourants);
-                    i++;
+                    vus.put(adresse, index);
+                    cheminsParLivraison.put(index, cheminsCourants);
+                    if(index!=0) {
+                        i++;
+                    }
 
                 } else {
                     int index = vus.get(adresse);
