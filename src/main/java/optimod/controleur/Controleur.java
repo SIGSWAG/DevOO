@@ -1,10 +1,7 @@
 package optimod.controleur;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import optimod.vue.Fenetre;
-import optimod.vue.OptimodApplication;
 import optimod.xml.OuvreurDeFichierXML;
 
 import java.io.File;
@@ -15,90 +12,45 @@ import java.io.File;
  */
 public class Controleur {
 
-    private Fenetre fenetre;
+    public Controleur() {
 
-    public Controleur(Fenetre fenetre) {
-        this.fenetre = fenetre;
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "Charger plan" dans l'interface
-     */
-    @FXML
-    protected void chargerPlan(ActionEvent evenement) {
+    public void chargerPlan(Stage fenetre) {
         // TODO Rôle de l'ordonnanceur
         File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "Charger livraisons" dans l'interface
-     */
-    @FXML
-    protected void chargerLivraisons(ActionEvent evenement) {
-        // Proposer le FileChooser
+    public void chargerDemandeLivraisons(Stage fenetre) {
+        // TODO Rôle de l'ordonnanceur
+        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "Calculer l'itinéraire" dans l'interface
-     */
-    @FXML
-    protected void calculerItineraire(ActionEvent evenement) {
+    public void calculerItineraire() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton annuler dans l'interface
-     */
-    @FXML
-    protected void annulerDerniereAction(ActionEvent evenement) {
+    public void annulerDerniereAction() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton rejouer dans l'interface
-     */
-    @FXML
-    protected void rejouerDerniereAction(ActionEvent evenement) {
+    public void rejouerDerniereAction() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "+" pour ajouter une livraison dans l'interface
-     */
-    @FXML
-    protected void ajouterLivraison(ActionEvent evenement) {
+    public void ajouterLivraison() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton pour échanger des livraisons dans l'interface
-     */
-    @FXML
-    protected void echangerLivraisons(ActionEvent evenement) {
+    public void echangerLivraisons() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton pour supprimer une livraison dans l'interface
-     */
-    @FXML
-    protected void supprimerLivraison(ActionEvent evenement) {
+    public void supprimerLivraison() {
 
     }
 
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "Tout déselectionner" dans l'interface
-     */
-    @FXML
-    protected void toutDeselectionner(ActionEvent evenement) {
-
-    }
-
-    /**
-     * Appelée lorsque l'utilisateur clique sur le bouton "Générer feuille de route" dans l'interface
-     */
-    @FXML
-    protected void genererFeuilleDeRoute(ActionEvent evenement) {
+    public void genererFeuilleDeRoute() {
 
     }
 }

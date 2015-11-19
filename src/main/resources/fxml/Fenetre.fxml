@@ -16,7 +16,7 @@
       <AnchorPane id="menuAnchorPane" fx:id="menuAnchorPane" prefHeight="70.0" prefWidth="1083.0">
          <children>
             <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
-            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" onAction="#chargerLivraisons" text="Charger livraisons" />
+            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
             <Button layoutX="282.0" layoutY="18.0" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
             <Button disable="true" layoutX="854.0" layoutY="18.0" mnemonicParsing="false" onAction="#toutDeselectionner" text="Tout désélec" />
             <Button disable="true" layoutX="967.0" layoutY="18.0" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />

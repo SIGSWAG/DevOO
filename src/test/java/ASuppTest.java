@@ -9,7 +9,6 @@ public class ASuppTest {
 
     @Test
     public void testHelloWorld() throws Exception {
-        ASupp aSupp = new ASupp();
-        assertEquals(aSupp.helloWorld(),0);
+
     }
 }

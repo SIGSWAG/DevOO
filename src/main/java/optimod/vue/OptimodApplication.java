@@ -24,15 +24,15 @@ public class OptimodApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage fenetre) throws IOException {
         URL location = getClass().getResource(FENETRE_XML);
         FXMLLoader loader = creerFXMLLoader(location);
 
-        // Transtypage du stage en Fenetre afin de se découpler de de JavaFX
-        Fenetre fenetre = (Fenetre) primaryStage;
+        // Création du contrôleur
+        Controleur controleur = new Controleur();
 
         // Mise en place du controleur qui réagit aux évenements utilisateurs côté vue
-        loader.setController(new Controleur(fenetre));
+        loader.setController(new FenetreControleur(fenetre, controleur));
 
         // Récupération de l'objet root
         Parent root = loader.load(location.openStream());
