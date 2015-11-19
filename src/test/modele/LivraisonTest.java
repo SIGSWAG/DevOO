@@ -68,16 +68,8 @@ public class LivraisonTest {
 
         assertEquals(chemin.getArrivee(), livraison4);
         assertEquals(chemin.getDepart(), livraison);
-<<<<<<< HEAD:src/test/java/LivraisonTest.java
-        assertEquals(chemin.getIntersections().size(), 1);
-        System.out.println("hello");
-        assertEquals(chemin.getIntersections().get(0),intersection2);
-
-=======
         assertEquals(chemin.getIntersections().size(), 2);
         assertEquals(chemin.getIntersections().get(0), intersection2);
->>>>>>> 46759f03199d0fab10a9d11b46c23d0cec2dd2f9:src/test/modele/LivraisonTest.java
-
 
     }
 
