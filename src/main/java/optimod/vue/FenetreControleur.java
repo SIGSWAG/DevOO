@@ -10,10 +10,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
+import optimod.modele.Intersection;
 import optimod.vue.graph.*;
 import optimod.xml.OuvreurDeFichierXML;
 
 import java.io.File;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Contrôleur interne utilisé par la vue (JavaFX) afin d'appeler le Contrôleur général avec les bons paramètres
@@ -41,17 +44,11 @@ public class FenetreControleur {
     protected void chargerPlan(ActionEvent evenement) {
         controleur.chargerPlan(fenetre);
 
-        dessinerPlan();
         // FORTESTING : Dessiner le graphe
         dessinerPlan();
     }
 
     private void dessinerPlan() {
-        Rectangle rectangle = new Rectangle(50, 50, 100,100);
-        rectangle.setFill(Color.BLUE);
-
-        planAnchorPane.getChildren().add(rectangle);
-
         BorderPane root = new BorderPane();
 
         graph = new Graph();
@@ -62,7 +59,7 @@ public class FenetreControleur {
 
         addGraphComponents();
 
-        Layout layout = new RandomLayout(graph);
+        Layout layout = new Layout(graph);
         layout.execute();
     }
 
@@ -71,13 +68,13 @@ public class FenetreControleur {
 
         graph.beginUpdate();
 
-        model.addCell("Cell A", CellType.RECTANGLE);
-        model.addCell("Cell B", CellType.RECTANGLE);
-        model.addCell("Cell C", CellType.RECTANGLE);
-        model.addCell("Cell D", CellType.TRIANGLE);
-        model.addCell("Cell E", CellType.TRIANGLE);
-        model.addCell("Cell F", CellType.RECTANGLE);
-        model.addCell("Cell G", CellType.RECTANGLE);
+        model.addCell(new IntersectionCercle("Cell A", new Intersection(15, 15, 0, null)));
+        model.addCell(new IntersectionCercle("Cell B", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+        model.addCell(new IntersectionCercle("Cell C", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+        model.addCell(new IntersectionCercle("Cell D", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+        model.addCell(new IntersectionCercle("Cell E", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+        model.addCell(new IntersectionCercle("Cell F", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+        model.addCell(new IntersectionCercle("Cell G", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
 
         model.addEdge("Cell A", "Cell B");
         model.addEdge("Cell A", "Cell C");

@@ -2,6 +2,8 @@ package optimod.vue.graph;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import optimod.modele.Intersection;
 
 import java.util.ArrayList;
@@ -10,38 +12,41 @@ import java.util.List;
 /**
  * Created by Jonathan on 19/11/2015.
  */
-public class Cell extends Pane {
+public class IntersectionCercle extends Pane {
     String cellId;
 
-    List<Cell> children = new ArrayList<Cell>();
-    List<Cell> parents = new ArrayList<Cell>();
+    List<IntersectionCercle> children = new ArrayList<IntersectionCercle>();
+    List<IntersectionCercle> parents = new ArrayList<IntersectionCercle>();
 
     Node view;
 
     protected Intersection intersection;
 
-    public Cell(String cellId, Intersection intersection) {
+    public IntersectionCercle(String cellId, Intersection intersection) {
         this.cellId = cellId;
         this.intersection = intersection;
+
+        Circle noeudIntersection = new Circle(intersection.getX(), intersection.getY(), 10, Color.BLACK);
+        setView(noeudIntersection);
     }
 
-    public void addCellChild(Cell cell) {
+    public void addCellChild(IntersectionCercle cell) {
         children.add(cell);
     }
 
-    public List<Cell> getCellChildren() {
+    public List<IntersectionCercle> getCellChildren() {
         return children;
     }
 
-    public void addCellParent(Cell cell) {
+    public void addCellParent(IntersectionCercle cell) {
         parents.add(cell);
     }
 
-    public List<Cell> getCellParents() {
+    public List<IntersectionCercle> getCellParents() {
         return parents;
     }
 
-    public void removeCellChild(Cell cell) {
+    public void removeCellChild(IntersectionCercle cell) {
         children.remove(cell);
     }
 

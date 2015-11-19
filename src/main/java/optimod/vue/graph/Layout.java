@@ -1,10 +1,24 @@
 package optimod.vue.graph;
 
+import java.util.List;
+
 /**
  * Created by Jonathan on 19/11/2015.
  */
-public abstract class Layout {
+public class Layout {
 
-    public abstract void execute();
+    Graph graph;
+
+    public Layout(Graph graph) {
+        this.graph = graph;
+    }
+
+    public void execute() {
+        List<IntersectionCercle> cells = graph.getModel().getAllCells();
+
+        for (IntersectionCercle cell : cells) {
+            cell.relocate(cell.getX(), cell.getY());
+        }
+    }
 
 }

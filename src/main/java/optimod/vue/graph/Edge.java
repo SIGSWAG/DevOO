@@ -8,12 +8,12 @@ import javafx.scene.shape.Line;
  */
 public class Edge extends Group {
 
-    protected Cell source;
-    protected Cell target;
+    protected IntersectionCercle source;
+    protected IntersectionCercle target;
 
     Line line;
 
-    public Edge(Cell source, Cell target) {
+    public Edge(IntersectionCercle source, IntersectionCercle target) {
 
         this.source = source;
         this.target = target;
@@ -23,21 +23,20 @@ public class Edge extends Group {
 
         line = new Line();
 
-        line.startXProperty().bind( source.layoutXProperty().add(source.getBoundsInParent().getWidth() / 2.0));
-        line.startYProperty().bind( source.layoutYProperty().add(source.getBoundsInParent().getHeight() / 2.0));
+        line.startXProperty().bind(source.layoutXProperty().add(source.getX()));
+        line.startYProperty().bind(source.layoutYProperty().add(source.getY()));
 
-        line.endXProperty().bind( target.layoutXProperty().add( target.getBoundsInParent().getWidth() / 2.0));
-        line.endYProperty().bind( target.layoutYProperty().add( target.getBoundsInParent().getHeight() / 2.0));
+        line.endXProperty().bind(target.layoutXProperty().add( target.getX()));
+        line.endYProperty().bind(target.layoutYProperty().add( target.getY()));
 
-        getChildren().add( line);
-
+        getChildren().add(line);
     }
 
-    public Cell getSource() {
+    public IntersectionCercle getSource() {
         return source;
     }
 
-    public Cell getTarget() {
+    public IntersectionCercle getTarget() {
         return target;
     }
 
