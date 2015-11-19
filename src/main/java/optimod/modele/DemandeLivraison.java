@@ -39,7 +39,7 @@ public class DemandeLivraison {
             graphe.addAll(fenetre.calculPCCSuivant(fenetres.get(i+1)));
         }
         graphe.addAll(fenetres.get(fenetres.size()-1).calculPCCInterne());
-        GraphePCC leGrapheAResoudre = new GraphePCC(graphe);
+        GraphePCC leGrapheAResoudre = new GraphePCC(entrepot,graphe);
         this.itineraire = leGrapheAResoudre.calculerItineraire();
     }
 
