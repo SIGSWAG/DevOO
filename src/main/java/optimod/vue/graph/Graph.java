@@ -2,6 +2,7 @@ package optimod.vue.graph;
 
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 /**
@@ -13,9 +14,7 @@ public class Graph {
 
     private Group canvas;
 
-    private ZoomableScrollPane scrollPane;
-
-    MouseGestures mouseGestures;
+    private AnchorPane anchorPane;
 
     /**
      * the pane wrapper is necessary or else the scrollpane would always align
@@ -33,17 +32,12 @@ public class Graph {
 
         canvas.getChildren().add(cellLayer);
 
-        mouseGestures = new MouseGestures(this);
-
-        scrollPane = new ZoomableScrollPane(canvas);
-
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        anchorPane = new AnchorPane(canvas);
 
     }
 
-    public ScrollPane getScrollPane() {
-        return this.scrollPane;
+    public AnchorPane getAnchorPane() {
+        return this.anchorPane;
     }
 
     public Pane getCellLayer() {
@@ -67,11 +61,6 @@ public class Graph {
         getCellLayer().getChildren().removeAll(model.getRemovedCells());
         getCellLayer().getChildren().removeAll(model.getRemovedEdges());
 
-        // enable dragging of cells
-        for (Cell cell : model.getAddedCells()) {
-            mouseGestures.makeDraggable(cell);
-        }
-
         // every cell must have a parent, if it doesn't, then the graphParent is
         // the parent
         getModel().attachOrphansToGraphParent(model.getAddedCells());
@@ -81,10 +70,6 @@ public class Graph {
 
         // merge added & removed cells with all cells
         getModel().merge();
-
     }
 
-    public double getScale() {
-        return this.scrollPane.getScaleValue();
-    }
 }

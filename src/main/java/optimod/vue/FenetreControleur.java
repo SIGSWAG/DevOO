@@ -56,7 +56,7 @@ public class FenetreControleur {
 
         graph = new Graph();
 
-        root.setCenter(graph.getScrollPane());
+        root.setCenter(graph.getAnchorPane());
 
         planAnchorPane.getChildren().add(root);
 
