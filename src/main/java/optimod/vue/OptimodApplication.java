@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
+import optimod.es.xml.DeserialiseurXML;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +40,8 @@ public class OptimodApplication extends Application {
         Parent root = loader.load(location.openStream());
 
         //Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
+
+        DeserialiseurXML.INSTANCE.setFenetre(fenetre);
 
         Group group = new Group();
         group.getChildren().addAll(root);

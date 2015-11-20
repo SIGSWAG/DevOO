@@ -1,7 +1,8 @@
-package optimod.es.xml;
+package optimod.vue.xml;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import optimod.es.xml.ExceptionXML;
 import optimod.vue.OptimodApplication;
 
 import java.io.File;
@@ -66,7 +67,7 @@ public enum OuvreurDeFichierXML { // Singleton
     }
 
     /**
-     * Enregistrer dans les clés de registres l'emplacement du dernier fichier ouvert
+     * Enregistre dans les clés de registres l'emplacement du dernier fichier ouvert
      * @param fichierChoisi
      */
     protected void setDernierFichierOuvert(File fichierChoisi) {

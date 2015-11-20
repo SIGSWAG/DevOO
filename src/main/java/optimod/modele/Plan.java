@@ -1,12 +1,9 @@
 package optimod.modele;
 
-import javafx.stage.Stage;
 import optimod.es.xml.DeserialiseurXML;
-import optimod.modele.Intersection;
-import optimod.vue.Fenetre;
-import sun.security.krb5.internal.crypto.Des;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Plan {
 
@@ -20,12 +17,12 @@ public class Plan {
     private List<Intersection> intersections = new ArrayList<Intersection>();
 
 
-    public void chargerPlan(Stage fenetre) {
-        DeserialiseurXML deserialiseurXML = DeserialiseurXML.getInstance();
+    public void chargerPlan() {
         try {
-            deserialiseurXML.chargerPlan(this, fenetre);
+            DeserialiseurXML.INSTANCE.chargerPlan(this);
         }
         catch( Exception e){
+            // TODO Gérer les exceptions
             System.out.println(e.getMessage());
         }
     }

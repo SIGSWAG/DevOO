@@ -7,29 +7,29 @@ import java.util.*;
 
 public class DemandeLivraison {
 
+    private List<Chemin> itineraire;
+
+    private Plan plan;
+
+    private List<FenetreLivraison> fenetres;
+
+    private Livraison entrepot;
+
     /**
      * Default constructor
      */
     public DemandeLivraison(Plan pl) {
         this.plan = pl;
+        this.itineraire = new ArrayList<Chemin>();
+        this.fenetres = new ArrayList<FenetreLivraison>();
     }
 
 
-    private List<Chemin> itineraire = new ArrayList<Chemin>();
-
-    private Plan plan;
-
-    private List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
-
-    private Livraison entrepot;
-
-
-    public void chargerDemandeLivraison(Stage fenetre) {
+    public void chargerDemandeLivraison() {
         // TODO implement here
 
-        DeserialiseurXML deserialiseurXML = DeserialiseurXML.getInstance();
         try {
-            deserialiseurXML.chargerDemandeLivraison(this, fenetre);
+            DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         }
         catch( Exception e){
             System.out.println(e.getMessage());

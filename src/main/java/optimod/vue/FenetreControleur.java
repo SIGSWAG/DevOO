@@ -2,20 +2,16 @@ package optimod.vue;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.modele.Intersection;
-import optimod.vue.graph.*;
-import optimod.xml.OuvreurDeFichierXML;
+import optimod.vue.graph.Graph;
+import optimod.vue.graph.IntersectionCercle;
+import optimod.vue.graph.Layout;
+import optimod.vue.graph.Model;
 
-import java.io.File;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -42,7 +38,7 @@ public class FenetreControleur {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        controleur.chargerPlan(fenetre);
+        controleur.chargerPlan();
 
         // FORTESTING : Dessiner le graphe
         dessinerPlan();
@@ -93,7 +89,7 @@ public class FenetreControleur {
      */
     @FXML
     protected void chargerDemandeLivraisons(ActionEvent evenement) {
-        controleur.chargerDemandeLivraisons(fenetre);
+        controleur.chargerDemandeLivraisons();
     }
 
     /**

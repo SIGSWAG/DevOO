@@ -1,12 +1,12 @@
 package optimod.modele;
 
 import javafx.stage.Stage;
-import optimod.vue.Fenetre;
-
-import java.io.File;
-import java.util.*;
 
 public class Ordonnanceur {
+
+    private DemandeLivraison demandeLivraison;
+
+    private Plan plan;
 
     /**
      * Default constructor
@@ -16,18 +16,11 @@ public class Ordonnanceur {
         demandeLivraison = new DemandeLivraison(plan);
     }
 
-
-    private DemandeLivraison demandeLivraison;
-
-    private Plan plan;
-
-
     /**
      *
-     * @param fenetre
      */
-    public void chargerPlan(Stage fenetre) {
-        plan.chargerPlan(fenetre);
+    public void chargerPlan() {
+        plan.chargerPlan();
     }
 
     /**
@@ -53,8 +46,8 @@ public class Ordonnanceur {
      *
      * @param fenetre
      */
-    public void chargerDemandeLivraison(Stage fenetre) {
-        demandeLivraison.chargerDemandeLivraison(fenetre);
+    public void chargerDemandeLivraison() {
+        demandeLivraison.chargerDemandeLivraison();
     }
 
     /**

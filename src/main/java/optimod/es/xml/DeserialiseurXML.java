@@ -2,7 +2,7 @@ package optimod.es.xml;
 
 import javafx.stage.Stage;
 import optimod.modele.*;
-import optimod.vue.Fenetre;
+import optimod.vue.xml.OuvreurDeFichierXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -13,31 +13,28 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Loïc Touzard on 18/11/2015.
  */
-public class DeserialiseurXML { // Singleton
-    private static DeserialiseurXML instance = new DeserialiseurXML();
+public enum DeserialiseurXML { // Singleton
+    INSTANCE;
 
-    public static DeserialiseurXML getInstance() {
-        return instance;
-    }
-
-    private DeserialiseurXML() {
-    }
+    private Stage fenetre;
 
     /**
      * Ouvre un fichier xml et cree plan a partir du contenu du fichier
      * @param plan Plan
-     * @param fenetre
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void chargerPlan(Plan plan, Stage fenetre) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+    public void chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
@@ -52,7 +49,7 @@ public class DeserialiseurXML { // Singleton
 
     }
 
-    private static void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{
+    private void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{
         // Parcours de tous les Noeud (Intersections)
         NodeList listeNoeuds = noeudDOMRacine.getElementsByTagName("Noeud");
         Map<Integer, Intersection> intersections = new HashMap<Integer, Intersection>();
@@ -125,13 +122,12 @@ public class DeserialiseurXML { // Singleton
     /**
      * Ouvre un fichier xml et cree une Demande de Livraison a partir du contenu du fichier
      * @param demandeLivraison DemandeLivraison
-     * @param fenetre
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void chargerDemandeLivraison(DemandeLivraison demandeLivraison, Stage fenetre) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+    public void chargerDemandeLivraison(DemandeLivraison demandeLivraison) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
@@ -145,7 +141,7 @@ public class DeserialiseurXML { // Singleton
             throw new ExceptionXML("Document non conforme");
     }
 
-    private static void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraison demandeLivraison) throws ExceptionXML, NumberFormatException{
+    private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraison demandeLivraison) throws ExceptionXML, NumberFormatException{
         // intersectionsUtilisees permet de vérifier que l'on ne va pas ajouter une Livraison dans une intersection utilisée par ce fichier
         List<Intersection> intersectionsUtilisees = new ArrayList<Intersection>();
         // fenetres représentes les fenêtre de livraison de la nouvelle demande de livraison
@@ -250,5 +246,9 @@ public class DeserialiseurXML { // Singleton
                 l.getIntersection().setLivraison(l);
             }
         }
+    }
+
+    public void setFenetre(Stage fenetre) {
+        this.fenetre = fenetre;
     }
 }
