@@ -19,13 +19,10 @@ public class Controleur {
     }
 
     public void chargerPlan(Stage fenetre) {
-        // TODO Rôle de l'ordonnanceur
         ordonnanceur.chargerPlan(fenetre);
-
     }
 
     public void chargerDemandeLivraisons(Stage fenetre) {
-        // TODO Rôle de l'ordonnanceur
         ordonnanceur.chargerDemandeLivraison(fenetre);
     }
 
