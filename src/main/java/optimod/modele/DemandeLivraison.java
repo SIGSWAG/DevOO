@@ -16,7 +16,7 @@ public class DemandeLivraison {
 
     private Plan plan;
 
-    private List<FenetreLivraison> fenetres;
+    private List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
     private Livraison entrepot;
 
@@ -115,10 +115,22 @@ public class DemandeLivraison {
 
     /**
      * réalloue tous les attributs à des attributs vides
+     * Supprime tous les liens qu'ont les intersections vers les livraisons existantes
      */
     public void reset(){
         itineraire = new ArrayList<Chemin>();
+
+        // suppression de tous les liens Intersection -> Livraison
+        for (FenetreLivraison f : fenetres){
+            for (Livraison l : f.getLivraisons()){
+                l.getIntersection().setLivraison(null);
+            }
+        }
+
         fenetres = new ArrayList<FenetreLivraison>();
+
+        entrepot.getIntersection().setLivraison(null);
+        entrepot = null;
     }
 
     public List<Chemin> getItineraire() {
