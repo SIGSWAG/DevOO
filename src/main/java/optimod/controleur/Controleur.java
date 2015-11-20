@@ -1,6 +1,5 @@
 package optimod.controleur;
 
-import javafx.stage.Stage;
 import optimod.modele.Ordonnanceur;
 
 /**

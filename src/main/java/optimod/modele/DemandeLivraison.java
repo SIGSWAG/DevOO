@@ -140,8 +140,10 @@ public class DemandeLivraison {
 
         fenetres = new ArrayList<FenetreLivraison>();
 
-        entrepot.getIntersection().setLivraison(null);
-        entrepot = null;
+        if(entrepot != null){
+            entrepot.getIntersection().setLivraison(null);
+            entrepot = null;
+        }
     }
 
     public List<Chemin> getItineraire() {

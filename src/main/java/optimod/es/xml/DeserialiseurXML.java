@@ -180,26 +180,34 @@ public enum DeserialiseurXML { // Singleton
             String heureDebut = elementPlage.getAttribute("heureDebut");
             String[] horaireDebut = heureDebut.split(":");
             if (horaireDebut.length != 3)
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'heureDebut d'une Plage doit s'écrire H:M:S");
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit s'écrire H:M:S");
             String heureFin = elementPlage.getAttribute("heureFin");
             String[] horaireFin = heureFin.split(":");
             if (horaireFin.length != 3)
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'heureDebut d'une Plage doit s'écrire H:M:S");
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureFin d'une Plage doit s'écrire H:M:S");
             int heureDeb = Integer.parseInt(horaireDebut[0]);
             int heureFi = Integer.parseInt(horaireFin[0]);
             if (heureDeb < 0 || heureDeb >= 24 || heureFi < 0 || heureFi >= 24)
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'heure est comprise entre 0 et 23");
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heure est comprise entre 0 et 23");
             int minuteDeb = Integer.parseInt(horaireDebut[1]);
             int minuteFi = Integer.parseInt(horaireFin[1]);
             if (minuteDeb < 0 || minuteDeb >= 60 || minuteDeb < 0 || minuteDeb >= 60)
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : la minute est comprise entre 0 et 59");
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : La minute est comprise entre 0 et 59");
             int secondeDeb = Integer.parseInt(horaireDebut[2]);
             int secondeFi = Integer.parseInt(horaireFin[2]);
             if (secondeDeb < 0 || secondeDeb >= 60 || secondeFi < 0 || secondeFi >= 60)
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : la seconde est comprise entre 0 et 59");
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : La seconde est comprise entre 0 et 59");
+            // Vérification d'antériorité et d'ordre
+            int tempsDeb = heureDeb*3600+minuteDeb*60+secondeDeb, tempsFi = heureFi*3600+minuteFi*60+secondeFi;
+            if(tempsDeb > tempsFi){
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
+            }
+            if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() != tempsDeb){
+                throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut identique à l'heureFin de la Plage précédente");
+            }
 
             // Parcours de toutes les Livraisons (Livraison)
-            NodeList listeLivraisonss = noeudDOMRacine.getElementsByTagName("Livraisons");
+            NodeList listeLivraisonss = elementPlage.getElementsByTagName("Livraisons");
             if (listeLivraisonss.getLength() != 1){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage doit avoir une (seule) Livraisons");
             }
@@ -227,7 +235,7 @@ public enum DeserialiseurXML { // Singleton
             }
 
             // Création de la FenetreLivraison
-            fenetres.add(new FenetreLivraison(livraisons, heureDeb*3600+minuteDeb*60+secondeDeb, heureFi*3600+minuteFi*60+secondeFi));
+            fenetres.add(new FenetreLivraison(livraisons, tempsDeb, tempsFi));
         }
 
         // On supprime toute trace des ancienne Livraisons
