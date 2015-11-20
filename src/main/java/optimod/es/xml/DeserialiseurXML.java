@@ -1,6 +1,8 @@
 package optimod.es.xml;
 
+import javafx.stage.Stage;
 import optimod.modele.*;
+import optimod.vue.Fenetre;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,13 +31,14 @@ public class DeserialiseurXML { // Singleton
     /**
      * Ouvre un fichier xml et cree plan a partir du contenu du fichier
      * @param plan Plan
+     * @param fenetre
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
-        File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
+    public static void chargerPlan(Plan plan, Stage fenetre) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+        File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
@@ -46,6 +49,7 @@ public class DeserialiseurXML { // Singleton
         }
         else
             throw new ExceptionXML("Document non conforme");
+
     }
 
     private static void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{
@@ -60,7 +64,7 @@ public class DeserialiseurXML { // Singleton
 
             // Validation des attributs
             int adresse = Integer.parseInt(noeud.getAttribute("id"));
-            if (adresse <= 0)
+            if (adresse < 0)
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être positif");
             if(intersections.containsKey(adresse))
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'ID d'un Noeud doit être unique");
@@ -91,11 +95,11 @@ public class DeserialiseurXML { // Singleton
                 String nomRue = leTronconSortant.getAttribute("nomRue");
                 if (nomRue.isEmpty())
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné");
-                double vitesse = Double.parseDouble(leTronconSortant.getAttribute("vitesse"));
-                if (vitesse < 0)
+                double vitesse = Double.parseDouble(leTronconSortant.getAttribute("vitesse").replaceAll(",","."));
+                if (vitesse <= 0)
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être positive");
-                double longueur = Double.parseDouble(leTronconSortant.getAttribute("longueur"));
-                if (longueur < 0)
+                double longueur = Double.parseDouble(leTronconSortant.getAttribute("longueur").replaceAll(",","."));
+                if (longueur <= 0)
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être positive");
                 int idNoeudDestination = Integer.parseInt(leTronconSortant.getAttribute("idNoeudDestination"));
                 Intersection intersectionDestination = intersections.get(idNoeudDestination);
@@ -121,13 +125,14 @@ public class DeserialiseurXML { // Singleton
     /**
      * Ouvre un fichier xml et cree une Demande de Livraison a partir du contenu du fichier
      * @param demandeLivraison DemandeLivraison
+     * @param fenetre
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void chargerDemandeLivraison(DemandeLivraison demandeLivraison) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
-        File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
+    public static void chargerDemandeLivraison(DemandeLivraison demandeLivraison, Stage fenetre) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+        File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();

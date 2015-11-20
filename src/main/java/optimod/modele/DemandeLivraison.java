@@ -1,5 +1,8 @@
 package optimod.modele;
 
+import javafx.stage.Stage;
+import optimod.es.xml.DeserialiseurXML;
+
 import java.util.*;
 
 public class DemandeLivraison {
@@ -21,8 +24,16 @@ public class DemandeLivraison {
     private Livraison entrepot;
 
 
-    public void chargerDemandeLivraison() {
+    public void chargerDemandeLivraison(Stage fenetre) {
         // TODO implement here
+
+        DeserialiseurXML deserialiseurXML = DeserialiseurXML.getInstance();
+        try {
+            deserialiseurXML.chargerDemandeLivraison(this, fenetre);
+        }
+        catch( Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**

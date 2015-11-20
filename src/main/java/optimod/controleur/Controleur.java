@@ -1,8 +1,8 @@
 package optimod.controleur;
 
 import javafx.stage.Stage;
+import optimod.modele.Ordonnanceur;
 import optimod.vue.Fenetre;
-import optimod.xml.OuvreurDeFichierXML;
 
 import java.io.File;
 
@@ -12,18 +12,21 @@ import java.io.File;
  */
 public class Controleur {
 
-    public Controleur() {
+    private Ordonnanceur ordonnanceur;
 
+    public Controleur() {
+        ordonnanceur = new Ordonnanceur();
     }
 
     public void chargerPlan(Stage fenetre) {
         // TODO Rôle de l'ordonnanceur
-        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        ordonnanceur.chargerPlan(fenetre);
+
     }
 
     public void chargerDemandeLivraisons(Stage fenetre) {
         // TODO Rôle de l'ordonnanceur
-        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        ordonnanceur.chargerDemandeLivraison(fenetre);
     }
 
     public void calculerItineraire() {

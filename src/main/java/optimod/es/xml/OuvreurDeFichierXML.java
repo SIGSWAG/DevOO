@@ -1,43 +1,78 @@
 package optimod.es.xml;
 
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import optimod.vue.OptimodApplication;
 
 import java.io.File;
+import java.util.prefs.Preferences;
 
 /**
- * Created by (PRO) Loïc Touzard on 18/11/2015.
+ * Created by Jonathan on 18/11/2015.
+ * Voir http://stackoverflow.com/questions/70689/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java pour
+ * la raison de l'implémentation en enum
  */
-public class OuvreurDeFichierXML {
+public enum OuvreurDeFichierXML { // Singleton
+    INSTANCE;
 
-    private static OuvreurDeFichierXML instance = new OuvreurDeFichierXML();
+    private static final String TITRE_OUVREUR_DE_FICHIER = "Sélectionner le fichier à charger";
+    private static final String CLE_REGISTRE_FICHIER_CHOISI = "cheminFichier";
 
-    public static OuvreurDeFichierXML getInstance() {
-        return instance;
-    }
-
-    private FileChooser selecteurDeFichier = new FileChooser();
+    private FileChooser explorateurFichier = new FileChooser();
 
     /**
-     *  Constructeur par défaut
+     * Propose à l'utilisateur de sélectionner un fichier à charger
+     * @param fenetreCourante La fenêtre à laquelle l'explorateur de fichiers sera rattaché
+     * @return Le fichier en tant que File, ou null si aucun fichier n'a été sélectionné
      */
-    private OuvreurDeFichierXML() {
-        this.selecteurDeFichier.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Fichiers XML","*.xml"));
+    public File ouvre(Stage fenetreCourante) throws ExceptionXML {
+        explorateurFichier.setTitle(TITRE_OUVREUR_DE_FICHIER);
+        // Filtre sur les extensions : filtre XML par défaut, et choix d'afficher tous les fichiers
+        explorateurFichier.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("eXtensible Markup Language (*.xml)", "*.xml"),
+                new FileChooser.ExtensionFilter("Toute extension (*.*)", "*.*"));
+
+        // Récupérer le dernier fichier ouvert (s'il existe)
+        File dernierFichierOuvert = getDernierFichierOuvert();
+        if(dernierFichierOuvert != null) {
+            if(dernierFichierOuvert.exists()) {
+                explorateurFichier.setInitialDirectory(dernierFichierOuvert.getParentFile());
+            }
+        }
+
+        File fichierChoisi = explorateurFichier.showOpenDialog(fenetreCourante);
+        if(fichierChoisi != null) {
+            setDernierFichierOuvert(fichierChoisi);
+        }
+        else{
+            throw new ExceptionXML("Problème à l'ouverture du fichier");
+        }
+
+        return fichierChoisi;
     }
 
     /**
-     *
-     * @param lecture boolean, true pour ouvrir un fichier (lecture), false pour sauver un fichier (ecriture)
-     * @return xml File
-     * @throws ExceptionXML
+     * Retourne le dernier fichier chargé par l'utilisateur, ou null s'il n'existe pas
+     * @return
      */
-    public File ouvre(boolean lecture) throws ExceptionXML{
-        File xml = null;
-        if (lecture)
-            xml = selecteurDeFichier.showOpenDialog(null);
-        else
-            xml = selecteurDeFichier.showSaveDialog(null);
-        if (xml == null)
-            throw new ExceptionXML("Probleme a l'ouverture du fichier");
-        return xml;
+    protected File getDernierFichierOuvert() {
+        Preferences prefs = Preferences.userNodeForPackage(OptimodApplication.class);
+        String cheminFichier = prefs.get(CLE_REGISTRE_FICHIER_CHOISI, null);
+        if (cheminFichier != null) {
+            return new File(cheminFichier);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Enregistrer dans les clés de registres l'emplacement du dernier fichier ouvert
+     * @param fichierChoisi
+     */
+    protected void setDernierFichierOuvert(File fichierChoisi) {
+        Preferences prefs = Preferences.userNodeForPackage(OptimodApplication.class);
+        if (fichierChoisi != null) {
+            prefs.put(CLE_REGISTRE_FICHIER_CHOISI, fichierChoisi.getPath());
+        }
     }
 }

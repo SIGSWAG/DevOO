@@ -1,7 +1,7 @@
 package optimod.modele;
 
+import javafx.stage.Stage;
 import optimod.vue.Fenetre;
-import optimod.xml.OuvreurDeFichierXML;
 
 import java.io.File;
 import java.util.*;
@@ -12,6 +12,8 @@ public class Ordonnanceur {
      * Default constructor
      */
     public Ordonnanceur() {
+        plan = new Plan();
+        demandeLivraison = new DemandeLivraison(plan);
     }
 
 
@@ -22,9 +24,10 @@ public class Ordonnanceur {
 
     /**
      *
+     * @param fenetre
      */
-    public void chargerPlan(Fenetre fenetre) {
-        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+    public void chargerPlan(Stage fenetre) {
+        plan.chargerPlan(fenetre);
     }
 
     /**
@@ -47,10 +50,11 @@ public class Ordonnanceur {
     }
 
     /**
-     * 
+     *
+     * @param fenetre
      */
-    public void chargerDemandeLivraison(Fenetre fenetre) {
-        File fichier = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+    public void chargerDemandeLivraison(Stage fenetre) {
+        demandeLivraison.chargerDemandeLivraison(fenetre);
     }
 
     /**
