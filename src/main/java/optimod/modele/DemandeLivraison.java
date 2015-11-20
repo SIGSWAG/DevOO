@@ -16,7 +16,7 @@ public class DemandeLivraison {
 
     private Plan plan;
 
-    private List<FenetreLivraison> fenetres;
+    private List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
     private Livraison entrepot;
 
@@ -75,10 +75,15 @@ public class DemandeLivraison {
      * @param livr la livraison à supprimer
      */
     public void supprimerLivraison(Livraison livr) {
+        if(livr == entrepot){
+            System.out.println("erreur, action impossible sur l'entrepot");
+            return;
+        }
         livr.getSuivante().setPrecedente(livr.getPrecedente());
         Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
         livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
         mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
+        livr.getIntersection().setLivraison(null);
     }
 
     /**
@@ -87,6 +92,10 @@ public class DemandeLivraison {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
+        if(livr1 == entrepot || livr2 == entrepot){
+            System.out.println("erreur, action impossible sur l'entrepot");
+            return;
+        }
         Livraison livr1PrecTemp = livr1.getPrecedente();
         Livraison livr1SuivTemp = livr1.getSuivante();
 
@@ -106,10 +115,22 @@ public class DemandeLivraison {
 
     /**
      * réalloue tous les attributs à des attributs vides
+     * Supprime tous les liens qu'ont les intersections vers les livraisons existantes
      */
     public void reset(){
         itineraire = new ArrayList<Chemin>();
+
+        // suppression de tous les liens Intersection -> Livraison
+        for (FenetreLivraison f : fenetres){
+            for (Livraison l : f.getLivraisons()){
+                l.getIntersection().setLivraison(null);
+            }
+        }
+
         fenetres = new ArrayList<FenetreLivraison>();
+
+        entrepot.getIntersection().setLivraison(null);
+        entrepot = null;
     }
 
     public List<Chemin> getItineraire() {
