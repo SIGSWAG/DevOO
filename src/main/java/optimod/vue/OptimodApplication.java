@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.es.xml.DeserialiseurXML;
+import optimod.modele.Ordonnanceur;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,11 +31,17 @@ public class OptimodApplication extends Application {
         URL location = getClass().getResource(FENETRE_XML);
         FXMLLoader loader = creerFXMLLoader(location);
 
+        Ordonnanceur ordonnanceur = new Ordonnanceur();
+
         // Création du contrôleur
-        Controleur controleur = new Controleur();
+        Controleur controleur = new Controleur(ordonnanceur);
+
 
         // Mise en place du controleur qui réagit aux évenements utilisateurs côté vue
-        loader.setController(new FenetreControleur(fenetre, controleur));
+        FenetreControleur fenetreControleur = new FenetreControleur(fenetre, controleur);
+        loader.setController(fenetreControleur);
+
+        ordonnanceur.addObserver(fenetreControleur);
 
         // Récupération de l'objet root
         Parent root = loader.load(location.openStream());
@@ -42,6 +49,8 @@ public class OptimodApplication extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
 
         DeserialiseurXML.INSTANCE.setFenetre(fenetre);
+
+
 
         Group group = new Group();
         group.getChildren().addAll(root);

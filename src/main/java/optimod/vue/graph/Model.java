@@ -18,15 +18,15 @@ public class Model {
     List<IntersectionCercle> addedCells;
     List<IntersectionCercle> removedCells;
 
-    List<Edge> allEdges;
-    List<Edge> addedEdges;
-    List<Edge> removedEdges;
+    List<Arc> allArcs;
+    List<Arc> addedArcs;
+    List<Arc> removedArcs;
 
-    Map<String,IntersectionCercle> cellMap; // <id,cell>
+    Map<Integer,IntersectionCercle> cellMap; // <id,cell>
 
     public Model() {
 
-        graphParent = new IntersectionCercle("_ROOT_", new Intersection(10, 10, 25, null));
+        graphParent = new IntersectionCercle(0, new Intersection(10, 10, 25, null));
 
         // clear model, create lists
         clear();
@@ -38,17 +38,17 @@ public class Model {
         addedCells = new ArrayList<IntersectionCercle>();
         removedCells = new ArrayList<IntersectionCercle>();
 
-        allEdges = new ArrayList<Edge>();
-        addedEdges = new ArrayList<Edge>();
-        removedEdges = new ArrayList<Edge>();
+        allArcs = new ArrayList<Arc>();
+        addedArcs = new ArrayList<Arc>();
+        removedArcs = new ArrayList<Arc>();
 
-        cellMap = new HashMap<String, IntersectionCercle>(); // <id,cell>
+        cellMap = new HashMap<Integer, IntersectionCercle>(); // <id,cell>
 
     }
 
     public void clearAddedLists() {
         addedCells.clear();
-        addedEdges.clear();
+        addedArcs.clear();
     }
 
     public List<IntersectionCercle> getAddedCells() {
@@ -63,16 +63,16 @@ public class Model {
         return allCells;
     }
 
-    public List<Edge> getAddedEdges() {
-        return addedEdges;
+    public List<Arc> getAddedArcs() {
+        return addedArcs;
     }
 
-    public List<Edge> getRemovedEdges() {
-        return removedEdges;
+    public List<Arc> getRemovedArcs() {
+        return removedArcs;
     }
 
-    public List<Edge> getAllEdges() {
-        return allEdges;
+    public List<Arc> getAllArcs() {
+        return allArcs;
     }
 
     public void addCell(IntersectionCercle cell) {
@@ -88,9 +88,9 @@ public class Model {
         IntersectionCercle sourceCell = cellMap.get(sourceId);
         IntersectionCercle targetCell = cellMap.get(targetId);
 
-        Edge edge = new Edge(sourceCell, targetCell);
+        Arc arc = new Arc(sourceCell, targetCell);
 
-        addedEdges.add(edge);
+        addedArcs.add(arc);
 
     }
 
@@ -129,11 +129,11 @@ public class Model {
         removedCells.clear();
 
         // edges
-        allEdges.addAll(addedEdges);
-        allEdges.removeAll(removedEdges);
+        allArcs.addAll(addedArcs);
+        allArcs.removeAll(removedArcs);
 
-        addedEdges.clear();
-        removedEdges.clear();
+        addedArcs.clear();
+        removedArcs.clear();
 
     }
 }

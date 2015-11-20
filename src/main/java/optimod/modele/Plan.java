@@ -1,5 +1,7 @@
 package optimod.modele;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import optimod.es.xml.DeserialiseurXML;
 
 import java.util.ArrayList;
@@ -7,15 +9,16 @@ import java.util.List;
 
 public class Plan {
 
+    private List<Intersection> intersections;
+    private ObservableList<Intersection> intersectionsObservables;
+
     /**
      * Default constructor
      */
     public Plan() {
+        this.intersections = new ArrayList<Intersection>();
+        this.intersectionsObservables = FXCollections.observableList(intersections);
     }
-
-
-    private List<Intersection> intersections = new ArrayList<Intersection>();
-
 
     public void chargerPlan() {
         try {
@@ -71,7 +74,10 @@ public class Plan {
         return intersections;
     }
 
+    public ObservableList<Intersection> getIntersectionsObservables() { return this.intersectionsObservables; }
+
     public void setIntersections(List<Intersection> intersections) {
         this.intersections = intersections;
+        this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 }

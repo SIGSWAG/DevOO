@@ -13,16 +13,16 @@ import java.util.List;
  * Created by Jonathan on 19/11/2015.
  */
 public class IntersectionCercle extends Pane {
-    String cellId;
+    protected int cellId;
 
-    List<IntersectionCercle> children = new ArrayList<IntersectionCercle>();
-    List<IntersectionCercle> parents = new ArrayList<IntersectionCercle>();
+    protected List<IntersectionCercle> children = new ArrayList<IntersectionCercle>();
+    protected List<IntersectionCercle> parents = new ArrayList<IntersectionCercle>();
 
-    Node view;
+    protected Node view;
 
     protected Intersection intersection;
 
-    public IntersectionCercle(String cellId, Intersection intersection) {
+    public IntersectionCercle(int cellId, Intersection intersection) {
         this.cellId = cellId;
         this.intersection = intersection;
 
@@ -59,7 +59,7 @@ public class IntersectionCercle extends Pane {
         return this.view;
     }
 
-    public String getCellId() {
+    public int getCellId() {
         return cellId;
     }
 

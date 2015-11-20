@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="600.0" maxWidth="1151.0" minHeight="600.0" minWidth="980.0" prefHeight="600.0" prefWidth="1151.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane id="menuAnchorPane" fx:id="menuAnchorPane" prefHeight="70.0" prefWidth="1083.0">
@@ -19,7 +20,15 @@
             <Button layoutX="652.0" layoutY="18.0" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
          </children>
       </AnchorPane>
-      <AnchorPane id="planAnchorPane" fx:id="planAnchorPane" layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0" />
+      <AnchorPane id="planAnchorPane" fx:id="planAnchorPane" layoutX="312.0" layoutY="68.0" prefHeight="532.0" prefWidth="839.0">
+        <children>
+           <Group id="planCanvasGroup" fx:id="planCanvasGroup">
+               <children>
+                   <AnchorPane id="planCanvasAnchorPane" fx:id="planCanvasAnchorPane" />
+               </children>
+           </Group>
+        </children>
+       </AnchorPane>
       <ScrollPane hbarPolicy="NEVER" layoutY="69.0" prefHeight="532.0" prefWidth="312.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="294.0">

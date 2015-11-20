@@ -2,35 +2,44 @@ package optimod.vue;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.modele.Intersection;
-import optimod.vue.graph.Graph;
+import optimod.modele.Ordonnanceur;
+import optimod.vue.graph.Graphe;
 import optimod.vue.graph.IntersectionCercle;
-import optimod.vue.graph.Layout;
-import optimod.vue.graph.Model;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Contrôleur interne utilisé par la vue (JavaFX) afin d'appeler le Contrôleur général avec les bons paramètres
  * Permet que le Contrôleur soit indépendant de l'implémentation choisie pour la vue, et de passer les paramètres nécessaires
  * Created by Jonathan on 19/11/2015.
  */
-public class FenetreControleur {
+public class FenetreControleur implements Observer {
     private Stage fenetre;
     private Controleur controleur;
 
-    Graph graph = new Graph();
+    private Graphe graphe;
 
     @FXML
     private AnchorPane planAnchorPane;
 
+    @FXML
+    private AnchorPane planCanvasAnchorPane;
+
+    @FXML
+    private Group planCanvasGroup;
+
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
+        this.graphe = new Graphe();
     }
 
     /**
@@ -38,49 +47,55 @@ public class FenetreControleur {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
+        planCanvasAnchorPane.getChildren().clear();
         controleur.chargerPlan();
 
         // FORTESTING : Dessiner le graphe
-        dessinerPlan();
+        //dessinerPlan();
     }
 
     private void dessinerPlan() {
         BorderPane root = new BorderPane();
 
-        graph = new Graph();
+        graphe = new Graphe();
 
-        root.setCenter(graph.getAnchorPane());
+        root.setCenter(graphe.getAnchorPane());
 
         planAnchorPane.getChildren().add(root);
 
         addGraphComponents();
 
-        Layout layout = new Layout(graph);
-        layout.execute();
+        afficherIntersections();
     }
 
     private void addGraphComponents() {
-        Model model = graph.getModel();
+//        Model model = graphe.getModel();
+//
+//        model.addCell(new IntersectionCercle("Cell A", new Intersection(15, 15, 0, null)));
+//        model.addCell(new IntersectionCercle("Cell B", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//        model.addCell(new IntersectionCercle("Cell C", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//        model.addCell(new IntersectionCercle("Cell D", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//        model.addCell(new IntersectionCercle("Cell E", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//        model.addCell(new IntersectionCercle("Cell F", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//        model.addCell(new IntersectionCercle("Cell G", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
+//
+//        model.addEdge("Cell A", "Cell B");
+//        model.addEdge("Cell A", "Cell C");
+//        model.addEdge("Cell B", "Cell C");
+//        model.addEdge("Cell C", "Cell D");
+//        model.addEdge("Cell B", "Cell E");
+//        model.addEdge("Cell D", "Cell F");
+//        model.addEdge("Cell D", "Cell G");
+//
+//        graphe.mettreAJour();
+    }
 
-        graph.beginUpdate();
+    private void afficherIntersections() {
+        List<IntersectionCercle> intersections = graphe.getModel().getAllCells();
 
-        model.addCell(new IntersectionCercle("Cell A", new Intersection(15, 15, 0, null)));
-        model.addCell(new IntersectionCercle("Cell B", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-        model.addCell(new IntersectionCercle("Cell C", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-        model.addCell(new IntersectionCercle("Cell D", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-        model.addCell(new IntersectionCercle("Cell E", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-        model.addCell(new IntersectionCercle("Cell F", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-        model.addCell(new IntersectionCercle("Cell G", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-
-        model.addEdge("Cell A", "Cell B");
-        model.addEdge("Cell A", "Cell C");
-        model.addEdge("Cell B", "Cell C");
-        model.addEdge("Cell C", "Cell D");
-        model.addEdge("Cell B", "Cell E");
-        model.addEdge("Cell D", "Cell F");
-        model.addEdge("Cell D", "Cell G");
-
-        graph.endUpdate();
+        for (IntersectionCercle intersection : intersections) {
+            intersection.relocate(intersection.getX(), intersection.getY());
+        }
     }
 
 
@@ -154,5 +169,14 @@ public class FenetreControleur {
     @FXML
     protected void genererFeuilleDeRoute(ActionEvent evenement) {
         controleur.genererFeuilleDeRoute();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Ordonnanceur ordonnanceur = (Ordonnanceur)o;
+
+        for(Intersection intersection : ordonnanceur.getPlan().getIntersections()) {
+            planCanvasAnchorPane.getChildren().add(new IntersectionCercle(intersection.getAdresse(), intersection));
+        }
     }
 }

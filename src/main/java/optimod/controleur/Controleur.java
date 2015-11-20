@@ -10,8 +10,8 @@ public class Controleur {
 
     private Ordonnanceur ordonnanceur;
 
-    public Controleur() {
-        ordonnanceur = new Ordonnanceur();
+    public Controleur(Ordonnanceur ordonnanceur) {
+        this.ordonnanceur = ordonnanceur;
     }
 
     public void chargerPlan() {

@@ -1,8 +1,8 @@
 package optimod.modele;
 
-import javafx.stage.Stage;
+import java.util.Observable;
 
-public class Ordonnanceur {
+public class Ordonnanceur extends Observable {
 
     private DemandeLivraison demandeLivraison;
 
@@ -21,6 +21,8 @@ public class Ordonnanceur {
      */
     public void chargerPlan() {
         plan.chargerPlan();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -44,10 +46,11 @@ public class Ordonnanceur {
 
     /**
      *
-     * @param fenetre
      */
     public void chargerDemandeLivraison() {
         demandeLivraison.chargerDemandeLivraison();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -64,6 +67,8 @@ public class Ordonnanceur {
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
         demandeLivraison.ajouterLivraison(intersection, livr);
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -72,6 +77,8 @@ public class Ordonnanceur {
      */
     public void supprimerLivraison(Livraison livr) {
         demandeLivraison.supprimerLivraison(livr);
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -81,6 +88,8 @@ public class Ordonnanceur {
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
         demandeLivraison.echangerLivraison(livr1, livr2);
+        setChanged();
+        notifyObservers();
     }
 
     public DemandeLivraison getDemandeLivraison() {
