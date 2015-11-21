@@ -90,27 +90,27 @@ public class FenetreControleur implements Observer {
 
     }
 
-    private Point2D eval(CubicCurve c, float t){
-        Point2D p=new Point2D(Math.pow(1-t,3)*c.getStartX()+
-                3*t*Math.pow(1-t,2)*c.getControlX1()+
-                3*(1-t)*t*t*c.getControlX2()+
-                Math.pow(t, 3)*c.getEndX(),
-                Math.pow(1-t,3)*c.getStartY()+
-                        3*t*Math.pow(1-t, 2)*c.getControlY1()+
-                        3*(1-t)*t*t*c.getControlY2()+
-                        Math.pow(t, 3)*c.getEndY());
+    private Point2D eval(QuadCurveTo debut, QuadCurveTo fin, float t){
+        Point2D p=new Point2D(Math.pow(1-t,3)*debut.getX()+
+                3*t*Math.pow(1-t,2)*debut.getControlX()+
+                3*(1-t)*t*t*fin.getControlX()+
+                Math.pow(t, 3)*fin.getX(),
+                Math.pow(1-t,3)*debut.getY()+
+                        3*t*Math.pow(1-t, 2)*debut.getControlY()+
+                        3*(1-t)*t*t*fin.getControlY()+
+                        Math.pow(t, 3)*fin.getControlY());
         return p;
     }
 
-    private Point2D evalDt(CubicCurve c, float t){
-        Point2D p=new Point2D(-3*Math.pow(1-t,2)*c.getStartX()+
-                3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlX1()+
-                3*((1-t)*2*t-t*t)*c.getControlX2()+
-                3*Math.pow(t, 2)*c.getEndX(),
-                -3*Math.pow(1-t,2)*c.getStartY()+
-                        3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlY1()+
-                        3*((1-t)*2*t-t*t)*c.getControlY2()+
-                        3*Math.pow(t, 2)*c.getEndY());
+    private Point2D evalDt(QuadCurveTo debut, QuadCurveTo fin, float t){
+        Point2D p=new Point2D(-3*Math.pow(1-t,2)*debut.getX()+
+                3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlX()+
+                3*((1-t)*2*t-t*t)*fin.getControlX()+
+                3*Math.pow(t, 2)*fin.getX(),
+                -3*Math.pow(1-t,2)*debut.getY()+
+                        3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlY()+
+                        3*((1-t)*2*t-t*t)*fin.getControlY()+
+                        3*Math.pow(t, 2)*fin.getY());
         return p;
     }
 
@@ -268,7 +268,7 @@ public class FenetreControleur implements Observer {
 
     protected void relierIntersections(IntersectionCercle source, IntersectionCercle cible) {
 
-        Path path = new Path(); // Create the oath object which arrow will rotate on
+        Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
 
@@ -279,8 +279,29 @@ public class FenetreControleur implements Observer {
 
         quadCurveTo.setX(cible.getX()+(cible.getWidth()/2));
         quadCurveTo.setY(cible.getY()+(cible.getHeight()/2));
-        quadCurveTo.setControlX((source.getX() + cible.getX()) / 2);
-        quadCurveTo.setControlY(source.getY() - 50);
+
+        // Déterminer le point de contrôle (point de courbure) de la courbe en fonction de la position des intersections
+        double controlX = (source.getX() + cible.getX()) / 2;
+        double controlY = 0;
+        if(source.getX() < cible.getX()) {
+            if(source.getY() < cible.getY()) {
+                controlY = source.getY();
+            }
+            else {
+                controlY = cible.getY();
+            }
+        }
+        else {
+            if(source.getY() < cible.getY()) {
+                controlY = cible.getY();
+            }
+            else {
+                controlY = source.getY();
+            }
+        }
+
+        quadCurveTo.setControlX(controlX);
+        quadCurveTo.setControlY(controlY);
 
         path.getElements().add(moveTo);
         path.getElements().add(quadCurveTo);
@@ -288,21 +309,41 @@ public class FenetreControleur implements Observer {
         path.setStroke(Color.BLACK);
         path.setMouseTransparent(true);
 
-        final Polygon arrow = new Polygon(); // Create arrow
+        double size=Math.max(10,
+                10);
+        double scale=size/4d;
 
-        arrow.getPoints().addAll(new Double[] {50.0,50.0,70.0,50.0,70.0,42.0,82.0,54.0,70.0,66.0,70.0,58.0,50.0,58.0});
-        arrow.setFill(Color.GREEN);
+        Point2D ori=eval(quadCurveTo, quadCurveTo, 1);
+        Point2D tan=evalDt(quadCurveTo, quadCurveTo, 1).normalize().multiply(scale);
 
-        planCanvasAnchorPane.getChildren().addAll(path, arrow);
+        Path arrowEnd=new Path();
+        arrowEnd.getElements().add(new MoveTo(source.getX()-0.2*tan.getX()-0.2*tan.getY(),
+                source.getY()-0.2*tan.getY()+0.2*tan.getX()));
+        arrowEnd.getElements().add(new LineTo(source.getX(), source.getY()));
+        arrowEnd.getElements().add(new LineTo(source.getX()-0.2*tan.getX()+0.2*tan.getY(),
+                source.getY()-0.2*tan.getY()-0.2*tan.getX()));
 
-        PathTransition pathTransition = new PathTransition(); //
+        planCanvasAnchorPane.getChildren().add(path);
+        planCanvasAnchorPane.getChildren().add(arrowEnd);
 
-        pathTransition.setDuration(Duration.millis(750));
-        pathTransition.setPath(path);
-        pathTransition.setNode(arrow);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        pathTransition.setAutoReverse(true);
-        pathTransition.play();
+        boolean animate = false;
+        if(animate) {
+            final Polygon arrow = new Polygon(); // Create arrow
+
+            arrow.getPoints().addAll(new Double[]{50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0});
+            arrow.setFill(Color.GREEN);
+
+            planCanvasAnchorPane.getChildren().add(arrow);
+
+            PathTransition pathTransition = new PathTransition(); //
+
+            pathTransition.setDuration(Duration.millis(750));
+            pathTransition.setPath(path);
+            pathTransition.setNode(arrow);
+            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            pathTransition.setCycleCount(Timeline.INDEFINITE);
+            pathTransition.setAutoReverse(true);
+            pathTransition.play();
+        }
     }
 }
