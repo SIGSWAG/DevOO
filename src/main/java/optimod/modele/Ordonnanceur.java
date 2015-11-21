@@ -1,8 +1,6 @@
 package optimod.modele;
 
-import java.util.Observable;
-
-public class Ordonnanceur extends Observable {
+public class Ordonnanceur {
 
     private DemandeLivraison demandeLivraison;
 
@@ -21,8 +19,6 @@ public class Ordonnanceur extends Observable {
      */
     public void chargerPlan() {
         plan.chargerPlan();
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -49,8 +45,6 @@ public class Ordonnanceur extends Observable {
      */
     public void chargerDemandeLivraison() {
         demandeLivraison.chargerDemandeLivraison();
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -67,8 +61,6 @@ public class Ordonnanceur extends Observable {
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
         demandeLivraison.ajouterLivraison(intersection, livr);
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -77,8 +69,6 @@ public class Ordonnanceur extends Observable {
      */
     public void supprimerLivraison(Livraison livr) {
         demandeLivraison.supprimerLivraison(livr);
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -88,8 +78,6 @@ public class Ordonnanceur extends Observable {
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
         demandeLivraison.echangerLivraison(livr1, livr2);
-        setChanged();
-        notifyObservers();
     }
 
     public DemandeLivraison getDemandeLivraison() {

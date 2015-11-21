@@ -41,7 +41,8 @@ public class OptimodApplication extends Application {
         FenetreControleur fenetreControleur = new FenetreControleur(fenetre, controleur);
         loader.setController(fenetreControleur);
 
-        ordonnanceur.addObserver(fenetreControleur);
+        ordonnanceur.getPlan().addObserver(fenetreControleur);
+        ordonnanceur.getDemandeLivraison().addObserver(fenetreControleur);
 
         // Récupération de l'objet root
         Parent root = loader.load(location.openStream());

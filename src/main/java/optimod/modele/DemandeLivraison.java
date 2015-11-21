@@ -1,11 +1,12 @@
 package optimod.modele;
 
-import javafx.stage.Stage;
 import optimod.es.xml.DeserialiseurXML;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
-public class DemandeLivraison {
+public class DemandeLivraison extends Observable {
 
     private List<Chemin> itineraire;
 
@@ -30,6 +31,8 @@ public class DemandeLivraison {
 
         try {
             DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+            setChanged();
+            notifyObservers();
         }
         catch( Exception e){
             System.out.println(e.getMessage());
@@ -118,10 +121,12 @@ public class DemandeLivraison {
         livr2.calculPCC(livr1SuivTemp);
         livr2.getPrecedente().calculPCC(livr2);
 
-        if(livr1.getHeureLivraison() < livr2.getHeureLivraison())
+        if(livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
             mettreAJourLesHeuresAPartirDe(livr1);
-        else
+        }
+        else {
             mettreAJourLesHeuresAPartirDe(livr2);
+        }
     }
 
     /**
@@ -140,7 +145,7 @@ public class DemandeLivraison {
 
         fenetres = new ArrayList<FenetreLivraison>();
 
-        if(entrepot != null){
+        if(entrepot != null) {
             entrepot.getIntersection().setLivraison(null);
             entrepot = null;
         }

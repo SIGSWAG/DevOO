@@ -1,17 +1,23 @@
 package optimod.vue;
 
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import optimod.controleur.Controleur;
-import optimod.modele.Intersection;
-import optimod.modele.Ordonnanceur;
+import optimod.modele.*;
 import optimod.vue.graph.Graphe;
 import optimod.vue.graph.IntersectionCercle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,7 +45,7 @@ public class FenetreControleur implements Observer {
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
-        this.graphe = new Graphe();
+        //this.graphe = new Graphe();
     }
 
     /**
@@ -50,8 +56,62 @@ public class FenetreControleur implements Observer {
         planCanvasAnchorPane.getChildren().clear();
         controleur.chargerPlan();
 
-        // FORTESTING : Dessiner le graphe
-        //dessinerPlan();
+//        // bending curve
+//        Rectangle srcRect1 = new Rectangle(100,100,50,50);
+//        Rectangle dstRect1 = new Rectangle(100,200,50,50);
+//
+//        CubicCurve curve1 = new CubicCurve( 125, 150, 125, 225, 325, 225, 125, 200);
+//        curve1.setStroke(Color.BLACK);
+//        curve1.setStrokeWidth(1);
+//        curve1.setFill(null);
+//
+//        double size=Math.max(curve1.getBoundsInLocal().getWidth(),
+//                curve1.getBoundsInLocal().getHeight());
+//        double scale=size/4d;
+//
+//        Point2D ori=eval(curve1,0);
+//        Point2D tan=evalDt(curve1,0).normalize().multiply(scale);
+//        Path arrowIni=new Path();
+//        arrowIni.getElements().add(new MoveTo(ori.getX()+0.2*tan.getX()-0.2*tan.getY(),
+//                ori.getY()+0.2*tan.getY()+0.2*tan.getX()));
+//        arrowIni.getElements().add(new LineTo(ori.getX(), ori.getY()));
+//        arrowIni.getElements().add(new LineTo(ori.getX()+0.2*tan.getX()+0.2*tan.getY(),
+//                ori.getY()+0.2*tan.getY()-0.2*tan.getX()));
+//
+//        ori=eval(curve1,1);
+//        tan=evalDt(curve1,1).normalize().multiply(scale);
+//        Path arrowEnd=new Path();
+//        arrowEnd.getElements().add(new MoveTo(ori.getX()-0.2*tan.getX()-0.2*tan.getY(),
+//                ori.getY()-0.2*tan.getY()+0.2*tan.getX()));
+//        arrowEnd.getElements().add(new LineTo(ori.getX(), ori.getY()));
+//        arrowEnd.getElements().add(new LineTo(ori.getX()-0.2*tan.getX()+0.2*tan.getY(),
+//                ori.getY()-0.2*tan.getY()-0.2*tan.getX()));
+//        planCanvasAnchorPane.getChildren().addAll(srcRect1, dstRect1, curve1, arrowIni);
+
+    }
+
+    private Point2D eval(CubicCurve c, float t){
+        Point2D p=new Point2D(Math.pow(1-t,3)*c.getStartX()+
+                3*t*Math.pow(1-t,2)*c.getControlX1()+
+                3*(1-t)*t*t*c.getControlX2()+
+                Math.pow(t, 3)*c.getEndX(),
+                Math.pow(1-t,3)*c.getStartY()+
+                        3*t*Math.pow(1-t, 2)*c.getControlY1()+
+                        3*(1-t)*t*t*c.getControlY2()+
+                        Math.pow(t, 3)*c.getEndY());
+        return p;
+    }
+
+    private Point2D evalDt(CubicCurve c, float t){
+        Point2D p=new Point2D(-3*Math.pow(1-t,2)*c.getStartX()+
+                3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlX1()+
+                3*((1-t)*2*t-t*t)*c.getControlX2()+
+                3*Math.pow(t, 2)*c.getEndX(),
+                -3*Math.pow(1-t,2)*c.getStartY()+
+                        3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlY1()+
+                        3*((1-t)*2*t-t*t)*c.getControlY2()+
+                        3*Math.pow(t, 2)*c.getEndY());
+        return p;
     }
 
     private void dessinerPlan() {
@@ -173,10 +233,76 @@ public class FenetreControleur implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Ordonnanceur ordonnanceur = (Ordonnanceur)o;
+        if(o instanceof Plan) {
+            Plan plan = (Plan) o;
+            List<IntersectionCercle> intersectionCercles = new ArrayList<IntersectionCercle>();
 
-        for(Intersection intersection : ordonnanceur.getPlan().getIntersections()) {
-            planCanvasAnchorPane.getChildren().add(new IntersectionCercle(intersection.getAdresse(), intersection));
+            for (Intersection intersection : plan.getIntersections()) {
+                IntersectionCercle intersectionCercle = new IntersectionCercle(intersection.getAdresse(), intersection);
+                intersectionCercles.add(intersectionCercle);
+                planCanvasAnchorPane.getChildren().add(intersectionCercle);
+            }
+
+            for(IntersectionCercle intersectionCercle : intersectionCercles) {
+                for(Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
+                    for(IntersectionCercle intersectionCercleSortante : intersectionCercles) {
+                        if(intersectionCercleSortante.getIntersection().equals(intersection)) {
+                            relierIntersections(intersectionCercle, intersectionCercleSortante);
+                            break;
+                        }
+                    }
+                }
+            }
         }
+        else if(o instanceof DemandeLivraison) {
+            DemandeLivraison demandeLivraison = (DemandeLivraison) o;
+
+            for(Chemin chemin : demandeLivraison.getItineraire()) {
+                // TODO
+            }
+        }
+        else {
+            System.err.println("PROBLEM !");
+        }
+    }
+
+    protected void relierIntersections(IntersectionCercle source, IntersectionCercle cible) {
+
+        Path path = new Path(); // Create the oath object which arrow will rotate on
+
+        MoveTo moveTo = new MoveTo();
+
+        moveTo.setX(source.getX()+ (source.getWidth()/2) );
+        moveTo.setY(source.getY()+ (source.getHeight()/2) );
+
+        QuadCurveTo quadCurveTo = new QuadCurveTo();
+
+        quadCurveTo.setX(cible.getX()+(cible.getWidth()/2));
+        quadCurveTo.setY(cible.getY()+(cible.getHeight()/2));
+        quadCurveTo.setControlX((source.getX() + cible.getX()) / 2);
+        quadCurveTo.setControlY(source.getY() - 50);
+
+        path.getElements().add(moveTo);
+        path.getElements().add(quadCurveTo);
+        path.setStrokeWidth(3);
+        path.setStroke(Color.BLACK);
+        path.setMouseTransparent(true);
+
+        final Polygon arrow = new Polygon(); // Create arrow
+
+        arrow.getPoints().addAll(new Double[] {50.0,50.0,70.0,50.0,70.0,42.0,82.0,54.0,70.0,66.0,70.0,58.0,50.0,58.0});
+        arrow.setFill(Color.GREEN);
+
+        planCanvasAnchorPane.getChildren().addAll(path, arrow);
+
+        PathTransition pathTransition = new PathTransition(); //
+
+        pathTransition.setDuration(Duration.millis(750));
+        pathTransition.setPath(path);
+        pathTransition.setNode(arrow);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(Timeline.INDEFINITE);
+        pathTransition.setAutoReverse(true);
+        pathTransition.play();
     }
 }
