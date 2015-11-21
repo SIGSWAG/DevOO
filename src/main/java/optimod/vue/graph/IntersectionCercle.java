@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import optimod.modele.Intersection;
+import optimod.modele.Troncon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class IntersectionCercle extends Pane {
     protected int cellId;
 
+    protected List<Intersection> intersectionsSortantes = new ArrayList<Intersection>();
     protected List<IntersectionCercle> children = new ArrayList<IntersectionCercle>();
     protected List<IntersectionCercle> parents = new ArrayList<IntersectionCercle>();
 
@@ -25,6 +27,12 @@ public class IntersectionCercle extends Pane {
     public IntersectionCercle(int cellId, Intersection intersection) {
         this.cellId = cellId;
         this.intersection = intersection;
+
+        this.intersectionsSortantes = new ArrayList<Intersection>();
+
+        for(Troncon troncon : intersection.getSortants()) {
+            intersectionsSortantes.add(troncon.getArrivee());
+        }
 
         Circle noeudIntersection = new Circle(intersection.getX(), intersection.getY(), 10, Color.BLACK);
         setView(noeudIntersection);
@@ -73,5 +81,9 @@ public class IntersectionCercle extends Pane {
 
     public int getY() {
         return intersection.getY();
+    }
+
+    public List<Intersection> getIntersectionsSortantes() {
+        return intersectionsSortantes;
     }
 }

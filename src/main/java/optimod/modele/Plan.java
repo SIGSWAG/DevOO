@@ -6,8 +6,9 @@ import optimod.es.xml.DeserialiseurXML;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Plan {
+public class Plan extends Observable {
 
     private List<Intersection> intersections;
     private ObservableList<Intersection> intersectionsObservables;
@@ -23,6 +24,8 @@ public class Plan {
     public void chargerPlan() {
         try {
             DeserialiseurXML.INSTANCE.chargerPlan(this);
+            setChanged();
+            notifyObservers();
         }
         catch( Exception e){
             // TODO Gérer les exceptions
@@ -50,6 +53,8 @@ public class Plan {
      */
     public void reset(){
         intersections = new ArrayList<Intersection>();
+        setChanged();
+        notifyObservers();
     }
 
     /**
