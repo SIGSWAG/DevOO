@@ -7,15 +7,15 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import optimod.controleur.Controleur;
-import optimod.modele.*;
-import optimod.vue.graph.Graphe;
-import optimod.vue.graph.IntersectionCercle;
+import optimod.modele.Chemin;
+import optimod.modele.DemandeLivraison;
+import optimod.modele.Intersection;
+import optimod.modele.Plan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,12 @@ import java.util.Observer;
  * Created by Jonathan on 19/11/2015.
  */
 public class FenetreControleur implements Observer {
+
+    private static final double FACTEUR_FLECHE = 0.2;
+    private static final int TAILLE_ARC = 1;
+
     private Stage fenetre;
     private Controleur controleur;
-
-    private Graphe graphe;
 
     @FXML
     private AnchorPane planAnchorPane;
@@ -45,7 +47,6 @@ public class FenetreControleur implements Observer {
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
-        //this.graphe = new Graphe();
     }
 
     /**
@@ -55,109 +56,7 @@ public class FenetreControleur implements Observer {
     protected void chargerPlan(ActionEvent evenement) {
         planCanvasAnchorPane.getChildren().clear();
         controleur.chargerPlan();
-
-//        // bending curve
-//        Rectangle srcRect1 = new Rectangle(100,100,50,50);
-//        Rectangle dstRect1 = new Rectangle(100,200,50,50);
-//
-//        CubicCurve curve1 = new CubicCurve( 125, 150, 125, 225, 325, 225, 125, 200);
-//        curve1.setStroke(Color.BLACK);
-//        curve1.setStrokeWidth(1);
-//        curve1.setFill(null);
-//
-//        double size=Math.max(curve1.getBoundsInLocal().getWidth(),
-//                curve1.getBoundsInLocal().getHeight());
-//        double scale=size/4d;
-//
-//        Point2D ori=eval(curve1,0);
-//        Point2D tan=evalDt(curve1,0).normalize().multiply(scale);
-//        Path arrowIni=new Path();
-//        arrowIni.getElements().add(new MoveTo(ori.getX()+0.2*tan.getX()-0.2*tan.getY(),
-//                ori.getY()+0.2*tan.getY()+0.2*tan.getX()));
-//        arrowIni.getElements().add(new LineTo(ori.getX(), ori.getY()));
-//        arrowIni.getElements().add(new LineTo(ori.getX()+0.2*tan.getX()+0.2*tan.getY(),
-//                ori.getY()+0.2*tan.getY()-0.2*tan.getX()));
-//
-//        ori=eval(curve1,1);
-//        tan=evalDt(curve1,1).normalize().multiply(scale);
-//        Path arrowEnd=new Path();
-//        arrowEnd.getElements().add(new MoveTo(ori.getX()-0.2*tan.getX()-0.2*tan.getY(),
-//                ori.getY()-0.2*tan.getY()+0.2*tan.getX()));
-//        arrowEnd.getElements().add(new LineTo(ori.getX(), ori.getY()));
-//        arrowEnd.getElements().add(new LineTo(ori.getX()-0.2*tan.getX()+0.2*tan.getY(),
-//                ori.getY()-0.2*tan.getY()-0.2*tan.getX()));
-//        planCanvasAnchorPane.getChildren().addAll(srcRect1, dstRect1, curve1, arrowIni);
-
     }
-
-    private Point2D eval(QuadCurveTo debut, QuadCurveTo fin, float t){
-        Point2D p=new Point2D(Math.pow(1-t,3)*debut.getX()+
-                3*t*Math.pow(1-t,2)*debut.getControlX()+
-                3*(1-t)*t*t*fin.getControlX()+
-                Math.pow(t, 3)*fin.getX(),
-                Math.pow(1-t,3)*debut.getY()+
-                        3*t*Math.pow(1-t, 2)*debut.getControlY()+
-                        3*(1-t)*t*t*fin.getControlY()+
-                        Math.pow(t, 3)*fin.getControlY());
-        return p;
-    }
-
-    private Point2D evalDt(QuadCurveTo debut, QuadCurveTo fin, float t){
-        Point2D p=new Point2D(-3*Math.pow(1-t,2)*debut.getX()+
-                3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlX()+
-                3*((1-t)*2*t-t*t)*fin.getControlX()+
-                3*Math.pow(t, 2)*fin.getX(),
-                -3*Math.pow(1-t,2)*debut.getY()+
-                        3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlY()+
-                        3*((1-t)*2*t-t*t)*fin.getControlY()+
-                        3*Math.pow(t, 2)*fin.getY());
-        return p;
-    }
-
-    private void dessinerPlan() {
-        BorderPane root = new BorderPane();
-
-        graphe = new Graphe();
-
-        root.setCenter(graphe.getAnchorPane());
-
-        planAnchorPane.getChildren().add(root);
-
-        addGraphComponents();
-
-        afficherIntersections();
-    }
-
-    private void addGraphComponents() {
-//        Model model = graphe.getModel();
-//
-//        model.addCell(new IntersectionCercle("Cell A", new Intersection(15, 15, 0, null)));
-//        model.addCell(new IntersectionCercle("Cell B", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell C", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell D", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell E", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell F", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell G", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//
-//        model.addEdge("Cell A", "Cell B");
-//        model.addEdge("Cell A", "Cell C");
-//        model.addEdge("Cell B", "Cell C");
-//        model.addEdge("Cell C", "Cell D");
-//        model.addEdge("Cell B", "Cell E");
-//        model.addEdge("Cell D", "Cell F");
-//        model.addEdge("Cell D", "Cell G");
-//
-//        graphe.mettreAJour();
-    }
-
-    private void afficherIntersections() {
-        List<IntersectionCercle> intersections = graphe.getModel().getAllCells();
-
-        for (IntersectionCercle intersection : intersections) {
-            intersection.relocate(intersection.getX(), intersection.getY());
-        }
-    }
-
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Charger livraisons" dans l'interface
@@ -233,16 +132,19 @@ public class FenetreControleur implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        // Si la mise à jour vient du plan, on redessine le plan
         if(o instanceof Plan) {
             Plan plan = (Plan) o;
             List<IntersectionCercle> intersectionCercles = new ArrayList<IntersectionCercle>();
 
+            // Pour chaque intersection, on crée une IntersectionCercle que l'on ajoute dans la vue
             for (Intersection intersection : plan.getIntersections()) {
                 IntersectionCercle intersectionCercle = new IntersectionCercle(intersection.getAdresse(), intersection);
                 intersectionCercles.add(intersectionCercle);
                 planCanvasAnchorPane.getChildren().add(intersectionCercle);
             }
 
+            // Pour chaque IntersectionCercle créée, on relie les intersections entre elles en fonction de leurs tronçons sortants
             for(IntersectionCercle intersectionCercle : intersectionCercles) {
                 for(Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
                     for(IntersectionCercle intersectionCercleSortante : intersectionCercles) {
@@ -262,28 +164,53 @@ public class FenetreControleur implements Observer {
             }
         }
         else {
+            // TODO
             System.err.println("PROBLEM !");
         }
     }
 
+    /**
+     * Relie deux intersections entre elle en traçant une courbe de Bézier paramétrique (cubique) entre ces deux intersections,
+     * avec une flèche pour l'orientation au niveau de la cible
+     * @param source
+     * @param cible
+     */
     protected void relierIntersections(IntersectionCercle source, IntersectionCercle cible) {
-
         Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
 
-        moveTo.setX(source.getX()+ (source.getWidth()/2) );
-        moveTo.setY(source.getY()+ (source.getHeight()/2) );
+        moveTo.setX(source.getX() + (source.getWidth() / 2));
+        moveTo.setY(source.getY() + (source.getHeight() / 2));
 
+        /** Pas utilisé, mais à garder au cas où **/
+        /** ==================================== **/
+        CubicCurveTo cubicCurveTo = new CubicCurveTo();
+        cubicCurveTo.setX(cible.getX() + (cible.getWidth() / 2));
+        cubicCurveTo.setY(cible.getY() + (cible.getHeight() / 2));
+        /** ==================================== **/
+
+        CubicCurve cubicCurve = new CubicCurve();
+        cubicCurve.setStartX(source.getX());
+        cubicCurve.setStartY(source.getY());
+        cubicCurve.setEndY(cible.getY());
+        // Pour ne pas afficher la partie entre la courbe et la ligne droite
+        cubicCurve.setFill(null);
+        cubicCurve.setStroke(Color.BLACK);
+        cubicCurve.setStrokeWidth(TAILLE_ARC);
+
+        /** ==================================== **/
         QuadCurveTo quadCurveTo = new QuadCurveTo();
 
-        quadCurveTo.setX(cible.getX()+(cible.getWidth()/2));
-        quadCurveTo.setY(cible.getY()+(cible.getHeight()/2));
+        quadCurveTo.setX(cible.getX() + (cible.getWidth() / 2));
+        quadCurveTo.setY(cible.getY() + (cible.getHeight() / 2));
+        /** ==================================== **/
 
         // Déterminer le point de contrôle (point de courbure) de la courbe en fonction de la position des intersections
         double controlX = (source.getX() + cible.getX()) / 2;
         double controlY = 0;
         if(source.getX() < cible.getX()) {
+            cubicCurve.setEndX(cible.getX() - IntersectionCercle.TAILLE);
             if(source.getY() < cible.getY()) {
                 controlY = source.getY();
             }
@@ -292,6 +219,7 @@ public class FenetreControleur implements Observer {
             }
         }
         else {
+            cubicCurve.setEndX(cible.getX() + IntersectionCercle.TAILLE);
             if(source.getY() < cible.getY()) {
                 controlY = cible.getY();
             }
@@ -300,50 +228,104 @@ public class FenetreControleur implements Observer {
             }
         }
 
+        /** ==================================== **/
         quadCurveTo.setControlX(controlX);
         quadCurveTo.setControlY(controlY);
+        /** ==================================== **/
+
+        /** ==================================== **/
+        cubicCurveTo.setControlX1(controlX);
+        cubicCurveTo.setControlY1(controlY);
+        cubicCurveTo.setControlX2(cible.getX());
+        cubicCurveTo.setControlY2(cible.getY());
+        /** ==================================== **/
+
+        cubicCurve.setControlX1(controlX);
+        cubicCurve.setControlY1(controlY);
+        cubicCurve.setControlX2(controlX);
+        cubicCurve.setControlY2(controlY);
+
+        planCanvasAnchorPane.getChildren().add(cubicCurve);
+
+        // TODO Voir si on avec le path.setNodeOrientation on pourrait mettre des flèches naturellement bien orientées
 
         path.getElements().add(moveTo);
-        path.getElements().add(quadCurveTo);
+//        path.getElements().add(quadCurveTo);
         path.setStrokeWidth(3);
         path.setStroke(Color.BLACK);
         path.setMouseTransparent(true);
 
-        double size=Math.max(10,
-                10);
-        double scale=size/4d;
-
-        Point2D ori=eval(quadCurveTo, quadCurveTo, 1);
-        Point2D tan=evalDt(quadCurveTo, quadCurveTo, 1).normalize().multiply(scale);
-
-        Path arrowEnd=new Path();
-        arrowEnd.getElements().add(new MoveTo(source.getX()-0.2*tan.getX()-0.2*tan.getY(),
-                source.getY()-0.2*tan.getY()+0.2*tan.getX()));
-        arrowEnd.getElements().add(new LineTo(source.getX(), source.getY()));
-        arrowEnd.getElements().add(new LineTo(source.getX()-0.2*tan.getX()+0.2*tan.getY(),
-                source.getY()-0.2*tan.getY()-0.2*tan.getX()));
-
         planCanvasAnchorPane.getChildren().add(path);
-        planCanvasAnchorPane.getChildren().add(arrowEnd);
+
+        ajouterFlecheOrientation(cubicCurve);
 
         boolean animate = false;
         if(animate) {
-            final Polygon arrow = new Polygon(); // Create arrow
-
-            arrow.getPoints().addAll(new Double[]{50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0});
-            arrow.setFill(Color.GREEN);
-
-            planCanvasAnchorPane.getChildren().add(arrow);
-
-            PathTransition pathTransition = new PathTransition(); //
-
-            pathTransition.setDuration(Duration.millis(750));
-            pathTransition.setPath(path);
-            pathTransition.setNode(arrow);
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            pathTransition.setCycleCount(Timeline.INDEFINITE);
-            pathTransition.setAutoReverse(true);
-            pathTransition.play();
+            animerArc(path);
         }
+    }
+
+    private void ajouterFlecheOrientation(CubicCurve cubicCurve) {
+        double taille = Math.max(cubicCurve.getBoundsInLocal().getWidth(), cubicCurve.getBoundsInLocal().getHeight());
+        double echelle = taille/ 4d;
+
+        Point2D orientation = calculerPointCourbure(cubicCurve, 1);
+        Point2D tangente = caclulerPointTangenteCourbe(cubicCurve, 1).normalize().multiply(echelle);
+
+        Path fleche = new Path();
+
+        MoveTo moveTo = new MoveTo(orientation.getX()- FACTEUR_FLECHE *tangente.getX() - FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE *tangente.getY() + FACTEUR_FLECHE * tangente.getX());
+        LineTo lineTo = new LineTo(orientation.getX(), orientation.getY());
+        LineTo lineTo2 = new LineTo(orientation.getX() - FACTEUR_FLECHE * tangente.getX() + FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE * tangente.getY() - FACTEUR_FLECHE * tangente.getX());
+        fleche.getElements().addAll(moveTo, lineTo, lineTo2);
+
+        planCanvasAnchorPane.getChildren().add(fleche);
+    }
+
+    private void animerArc(Path path) {
+        final Polygon arrow = new Polygon(); // Create arrow
+
+        arrow.getPoints().addAll(new Double[]{50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0});
+        arrow.setFill(Color.GREEN);
+
+        planCanvasAnchorPane.getChildren().add(arrow);
+
+        PathTransition pathTransition = new PathTransition(); //
+
+        pathTransition.setDuration(Duration.millis(750));
+        pathTransition.setPath(path);
+        pathTransition.setNode(arrow);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(Timeline.INDEFINITE);
+        pathTransition.setAutoReverse(true);
+        pathTransition.play();
+    }
+
+    /**
+     * Calculer la courbe cubique à un paramètre t
+     * @param c La courbe cubique
+     * @param t paramètre entre 0 et 1
+     * @return Point2D
+     */
+    private Point2D calculerPointCourbure(CubicCurve c, float t){
+        Point2D p = new Point2D(Math.pow(1 - t, 3) * c.getStartX() + 3 * t * Math.pow(1 - t, 2) * c.getControlX1() +
+                        3 * (1 - t) * t * t * c.getControlX2() + Math.pow(t, 3) * c.getEndX(),
+                                Math.pow(1 - t, 3) * c.getStartY() + 3 * t * Math.pow(1 - t, 2) * c.getControlY1() +
+                        3 * (1 - t) * t * t * c.getControlY2() + Math.pow(t, 3) * c.getEndY());
+        return p;
+    }
+
+    /**
+     * Calculer la tangente à la courbe cubique à un paramètre t
+     * @param c La courbe cubique
+     * @param t paramètre entre 0 et 1
+     * @return Point2D
+     */
+    private Point2D caclulerPointTangenteCourbe(CubicCurve c, float t){
+        Point2D p = new Point2D(-3 * Math.pow(1 - t, 2) * c.getStartX() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlX1() +
+                3 * ((1 - t) * 2 * t - t * t) * c.getControlX2() + 3 * Math.pow(t, 2) * c.getEndX(),
+                -3 * Math.pow(1 - t, 2) * c.getStartY() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlY1() +
+                        3 * ((1 - t) * 2 * t - t * t) * c.getControlY2() + 3 * Math.pow(t, 2) * c.getEndY());
+        return p;
     }
 }
