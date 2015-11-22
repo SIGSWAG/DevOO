@@ -3,10 +3,12 @@ package optimod.vue;/**
  */
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.es.xml.DeserialiseurXML;
@@ -49,6 +51,8 @@ public class OptimodApplication extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
 
         DeserialiseurXML.INSTANCE.setFenetre(fenetre);
+
+
 
         fenetre.setTitle(TITRE_FENETRE);
         fenetre.setScene(new Scene(root));
