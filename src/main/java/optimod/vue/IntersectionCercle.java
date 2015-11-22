@@ -39,13 +39,21 @@ public class IntersectionCercle extends Pane {
         setVue(noeudIntersection);
     }
 
-    public void setVue(Node vue) {
-        this.vue = vue;
-        getChildren().add(vue);
+    public int getCentreX() {
+        return intersection.getX() + (TAILLE / 2);
+    }
+
+    public int getCentreY() {
+        return intersection.getY() + (TAILLE / 2);
     }
 
     public Node getVue() {
         return this.vue;
+    }
+
+    public void setVue(Node vue) {
+        this.vue = vue;
+        getChildren().add(vue);
     }
 
     public int getCellId() {

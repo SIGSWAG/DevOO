@@ -130,10 +130,9 @@ public class FenetreControleur implements Observer {
         controleur.genererFeuilleDeRoute();
     }
 
-    @Override
     public void update(Observable o, Object arg) {
         // Si la mise à jour vient du plan, on redessine le plan
-        if(o instanceof Plan) {
+        if (o instanceof Plan) {
             Plan plan = (Plan) o;
             List<IntersectionCercle> intersectionCercles = new ArrayList<IntersectionCercle>();
 
@@ -145,25 +144,23 @@ public class FenetreControleur implements Observer {
             }
 
             // Pour chaque IntersectionCercle créée, on relie les intersections entre elles en fonction de leurs tronçons sortants
-            for(IntersectionCercle intersectionCercle : intersectionCercles) {
-                for(Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
-                    for(IntersectionCercle intersectionCercleSortante : intersectionCercles) {
-                        if(intersectionCercleSortante.getIntersection().equals(intersection)) {
+            for (IntersectionCercle intersectionCercle : intersectionCercles) {
+                for (Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
+                    for (IntersectionCercle intersectionCercleSortante : intersectionCercles) {
+                        if (intersectionCercleSortante.getIntersection().equals(intersection)) {
                             relierIntersections(intersectionCercle, intersectionCercleSortante);
                             break;
                         }
                     }
                 }
             }
-        }
-        else if(o instanceof DemandeLivraison) {
+        } else if (o instanceof DemandeLivraison) {
             DemandeLivraison demandeLivraison = (DemandeLivraison) o;
 
-            for(Chemin chemin : demandeLivraison.getItineraire()) {
+            for (Chemin chemin : demandeLivraison.getItineraire()) {
                 // TODO
             }
-        }
-        else {
+        } else {
             // TODO
             System.err.println("PROBLEM !");
         }
@@ -172,109 +169,44 @@ public class FenetreControleur implements Observer {
     /**
      * Relie deux intersections entre elle en traçant une courbe de Bézier paramétrique (cubique) entre ces deux intersections,
      * avec une flèche pour l'orientation au niveau de la cible
+     *
      * @param source
      * @param cible
      */
     protected void relierIntersections(IntersectionCercle source, IntersectionCercle cible) {
-        Path path = new Path();
 
-        MoveTo moveTo = new MoveTo();
+        Line arc = new Line(source.getCentreX(), source.getCentreY(), cible.getCentreX(), cible.getCentreY());
 
-        moveTo.setX(source.getX() + (source.getWidth() / 2));
-        moveTo.setY(source.getY() + (source.getHeight() / 2));
-
-        /** Pas utilisé, mais à garder au cas où **/
-        /** ==================================== **/
-        CubicCurveTo cubicCurveTo = new CubicCurveTo();
-        cubicCurveTo.setX(cible.getX() + (cible.getWidth() / 2));
-        cubicCurveTo.setY(cible.getY() + (cible.getHeight() / 2));
-        /** ==================================== **/
-
-        CubicCurve cubicCurve = new CubicCurve();
-        cubicCurve.setStartX(source.getX());
-        cubicCurve.setStartY(source.getY());
-        cubicCurve.setEndY(cible.getY());
-        // Pour ne pas afficher la partie entre la courbe et la ligne droite
-        cubicCurve.setFill(null);
-        cubicCurve.setStroke(Color.BLACK);
-        cubicCurve.setStrokeWidth(TAILLE_ARC);
-
-        /** ==================================== **/
-        QuadCurveTo quadCurveTo = new QuadCurveTo();
-
-        quadCurveTo.setX(cible.getX() + (cible.getWidth() / 2));
-        quadCurveTo.setY(cible.getY() + (cible.getHeight() / 2));
-        /** ==================================== **/
-
-        // Déterminer le point de contrôle (point de courbure) de la courbe en fonction de la position des intersections
-        double controlX = (source.getX() + cible.getX()) / 2;
-        double controlY = 0;
-        if(source.getX() < cible.getX()) {
-            cubicCurve.setEndX(cible.getX() - IntersectionCercle.TAILLE);
-            if(source.getY() < cible.getY()) {
-                controlY = source.getY();
-            }
-            else {
-                controlY = cible.getY();
-            }
-        }
-        else {
-            cubicCurve.setEndX(cible.getX() + IntersectionCercle.TAILLE);
-            if(source.getY() < cible.getY()) {
-                controlY = cible.getY();
-            }
-            else {
-                controlY = source.getY();
-            }
-        }
-
-        /** ==================================== **/
-        quadCurveTo.setControlX(controlX);
-        quadCurveTo.setControlY(controlY);
-        /** ==================================== **/
-
-        /** ==================================== **/
-        cubicCurveTo.setControlX1(controlX);
-        cubicCurveTo.setControlY1(controlY);
-        cubicCurveTo.setControlX2(cible.getX());
-        cubicCurveTo.setControlY2(cible.getY());
-        /** ==================================== **/
-
-        cubicCurve.setControlX1(controlX);
-        cubicCurve.setControlY1(controlY);
-        cubicCurve.setControlX2(controlX);
-        cubicCurve.setControlY2(controlY);
-
-        planCanvasAnchorPane.getChildren().add(cubicCurve);
+        planCanvasAnchorPane.getChildren().add(arc);
 
         // TODO Voir si on avec le path.setNodeOrientation on pourrait mettre des flèches naturellement bien orientées
 
-        path.getElements().add(moveTo);
-//        path.getElements().add(quadCurveTo);
+        /*path.getElements().add(moveTo);
+        path.getElements().add(arc);
         path.setStrokeWidth(3);
         path.setStroke(Color.BLACK);
         path.setMouseTransparent(true);
 
-        planCanvasAnchorPane.getChildren().add(path);
+        planCanvasAnchorPane.getChildren().add(path);*/
 
-        ajouterFlecheOrientation(cubicCurve);
+        //ajouterFlecheOrientation(cubicCurve);
 
         boolean animate = false;
-        if(animate) {
-            animerArc(path);
+        if (animate) {
+            //animerArc(path);
         }
     }
 
     private void ajouterFlecheOrientation(CubicCurve cubicCurve) {
         double taille = Math.max(cubicCurve.getBoundsInLocal().getWidth(), cubicCurve.getBoundsInLocal().getHeight());
-        double echelle = taille/ 4d;
+        double echelle = taille / 4d;
 
         Point2D orientation = calculerPointCourbure(cubicCurve, 1);
         Point2D tangente = caclulerPointTangenteCourbe(cubicCurve, 1).normalize().multiply(echelle);
 
         Path fleche = new Path();
 
-        MoveTo moveTo = new MoveTo(orientation.getX()- FACTEUR_FLECHE *tangente.getX() - FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE *tangente.getY() + FACTEUR_FLECHE * tangente.getX());
+        MoveTo moveTo = new MoveTo(orientation.getX() - FACTEUR_FLECHE * tangente.getX() - FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE * tangente.getY() + FACTEUR_FLECHE * tangente.getX());
         LineTo lineTo = new LineTo(orientation.getX(), orientation.getY());
         LineTo lineTo2 = new LineTo(orientation.getX() - FACTEUR_FLECHE * tangente.getX() + FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE * tangente.getY() - FACTEUR_FLECHE * tangente.getX());
         fleche.getElements().addAll(moveTo, lineTo, lineTo2);
@@ -285,7 +217,7 @@ public class FenetreControleur implements Observer {
     private void animerArc(Path path) {
         final Polygon arrow = new Polygon(); // Create arrow
 
-        arrow.getPoints().addAll(new Double[]{50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0});
+        arrow.getPoints().addAll(50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0);
         arrow.setFill(Color.GREEN);
 
         planCanvasAnchorPane.getChildren().add(arrow);
@@ -303,25 +235,27 @@ public class FenetreControleur implements Observer {
 
     /**
      * Calculer la courbe cubique à un paramètre t
+     *
      * @param c La courbe cubique
      * @param t paramètre entre 0 et 1
      * @return Point2D
      */
-    private Point2D calculerPointCourbure(CubicCurve c, float t){
+    private Point2D calculerPointCourbure(CubicCurve c, float t) {
         Point2D p = new Point2D(Math.pow(1 - t, 3) * c.getStartX() + 3 * t * Math.pow(1 - t, 2) * c.getControlX1() +
-                        3 * (1 - t) * t * t * c.getControlX2() + Math.pow(t, 3) * c.getEndX(),
-                                Math.pow(1 - t, 3) * c.getStartY() + 3 * t * Math.pow(1 - t, 2) * c.getControlY1() +
+                3 * (1 - t) * t * t * c.getControlX2() + Math.pow(t, 3) * c.getEndX(),
+                Math.pow(1 - t, 3) * c.getStartY() + 3 * t * Math.pow(1 - t, 2) * c.getControlY1() +
                         3 * (1 - t) * t * t * c.getControlY2() + Math.pow(t, 3) * c.getEndY());
         return p;
     }
 
     /**
      * Calculer la tangente à la courbe cubique à un paramètre t
+     *
      * @param c La courbe cubique
      * @param t paramètre entre 0 et 1
      * @return Point2D
      */
-    private Point2D caclulerPointTangenteCourbe(CubicCurve c, float t){
+    private Point2D caclulerPointTangenteCourbe(CubicCurve c, float t) {
         Point2D p = new Point2D(-3 * Math.pow(1 - t, 2) * c.getStartX() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlX1() +
                 3 * ((1 - t) * 2 * t - t * t) * c.getControlX2() + 3 * Math.pow(t, 2) * c.getEndX(),
                 -3 * Math.pow(1 - t, 2) * c.getStartY() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlY1() +
