@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="425.0" minWidth="980.0"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/null">
     <left>
         <AnchorPane>
             <children>
                 <Label text="Fenêtres de livraison (TODO)" underline="true"/>
-                <ListView fx:id="fenetresLivraisonListView" layoutX="14.0" layoutY="16.0" prefHeight="481.0"
-                          prefWidth="280.0"/>
+                <ListView fx:id="fenetresLivraisonListView" layoutX="14.0" layoutY="16.0"/>
             </children>
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane id="planCanvasAnchorPane" fx:id="planCanvasAnchorPane"/>
+        <AnchorPane id="planCanvasAnchorPane">
+            <children>
+                <Group fx:id="planGroup"/>
+            </children>
+        </AnchorPane>
     </center>
     <top>
-        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <ToolBar>
             <items>
                 <Button mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan"/>
                 <Button mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons"/>

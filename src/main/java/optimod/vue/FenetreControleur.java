@@ -1,16 +1,10 @@
 package optimod.vue;
 
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import optimod.controleur.Controleur;
 import optimod.modele.Chemin;
 import optimod.modele.DemandeLivraison;
@@ -36,13 +30,7 @@ public class FenetreControleur implements Observer {
     private Controleur controleur;
 
     @FXML
-    private AnchorPane planAnchorPane;
-
-    @FXML
-    private AnchorPane planCanvasAnchorPane;
-
-    @FXML
-    private Group planCanvasGroup;
+    private Group planGroup;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -54,7 +42,7 @@ public class FenetreControleur implements Observer {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        planCanvasAnchorPane.getChildren().clear();
+        planGroup.getChildren().clear();
         controleur.chargerPlan();
     }
 
@@ -131,6 +119,7 @@ public class FenetreControleur implements Observer {
     }
 
     public void update(Observable o, Object arg) {
+        System.out.println("update");
         // Si la mise à jour vient du plan, on redessine le plan
         if (o instanceof Plan) {
             Plan plan = (Plan) o;
@@ -140,7 +129,7 @@ public class FenetreControleur implements Observer {
             for (Intersection intersection : plan.getIntersections()) {
                 IntersectionCercle intersectionCercle = new IntersectionCercle(intersection.getAdresse(), intersection);
                 intersectionCercles.add(intersectionCercle);
-                planCanvasAnchorPane.getChildren().add(intersectionCercle);
+                planGroup.getChildren().add(intersectionCercle);
             }
 
             // Pour chaque IntersectionCercle créée, on relie les intersections entre elles en fonction de leurs tronçons sortants
@@ -177,7 +166,7 @@ public class FenetreControleur implements Observer {
 
         Line arc = new Line(source.getCentreX(), source.getCentreY(), cible.getCentreX(), cible.getCentreY());
 
-        planCanvasAnchorPane.getChildren().add(arc);
+        planGroup.getChildren().add(arc);
 
         // TODO Voir si on avec le path.setNodeOrientation on pourrait mettre des flèches naturellement bien orientées
 
@@ -190,76 +179,6 @@ public class FenetreControleur implements Observer {
         planCanvasAnchorPane.getChildren().add(path);*/
 
         //ajouterFlecheOrientation(cubicCurve);
-
-        boolean animate = false;
-        if (animate) {
-            //animerArc(path);
-        }
     }
 
-    private void ajouterFlecheOrientation(CubicCurve cubicCurve) {
-        double taille = Math.max(cubicCurve.getBoundsInLocal().getWidth(), cubicCurve.getBoundsInLocal().getHeight());
-        double echelle = taille / 4d;
-
-        Point2D orientation = calculerPointCourbure(cubicCurve, 1);
-        Point2D tangente = caclulerPointTangenteCourbe(cubicCurve, 1).normalize().multiply(echelle);
-
-        Path fleche = new Path();
-
-        MoveTo moveTo = new MoveTo(orientation.getX() - FACTEUR_FLECHE * tangente.getX() - FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE * tangente.getY() + FACTEUR_FLECHE * tangente.getX());
-        LineTo lineTo = new LineTo(orientation.getX(), orientation.getY());
-        LineTo lineTo2 = new LineTo(orientation.getX() - FACTEUR_FLECHE * tangente.getX() + FACTEUR_FLECHE * tangente.getY(), orientation.getY() - FACTEUR_FLECHE * tangente.getY() - FACTEUR_FLECHE * tangente.getX());
-        fleche.getElements().addAll(moveTo, lineTo, lineTo2);
-
-        planCanvasAnchorPane.getChildren().add(fleche);
-    }
-
-    private void animerArc(Path path) {
-        final Polygon arrow = new Polygon(); // Create arrow
-
-        arrow.getPoints().addAll(50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0);
-        arrow.setFill(Color.GREEN);
-
-        planCanvasAnchorPane.getChildren().add(arrow);
-
-        PathTransition pathTransition = new PathTransition(); //
-
-        pathTransition.setDuration(Duration.millis(750));
-        pathTransition.setPath(path);
-        pathTransition.setNode(arrow);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        pathTransition.setAutoReverse(true);
-        pathTransition.play();
-    }
-
-    /**
-     * Calculer la courbe cubique à un paramètre t
-     *
-     * @param c La courbe cubique
-     * @param t paramètre entre 0 et 1
-     * @return Point2D
-     */
-    private Point2D calculerPointCourbure(CubicCurve c, float t) {
-        Point2D p = new Point2D(Math.pow(1 - t, 3) * c.getStartX() + 3 * t * Math.pow(1 - t, 2) * c.getControlX1() +
-                3 * (1 - t) * t * t * c.getControlX2() + Math.pow(t, 3) * c.getEndX(),
-                Math.pow(1 - t, 3) * c.getStartY() + 3 * t * Math.pow(1 - t, 2) * c.getControlY1() +
-                        3 * (1 - t) * t * t * c.getControlY2() + Math.pow(t, 3) * c.getEndY());
-        return p;
-    }
-
-    /**
-     * Calculer la tangente à la courbe cubique à un paramètre t
-     *
-     * @param c La courbe cubique
-     * @param t paramètre entre 0 et 1
-     * @return Point2D
-     */
-    private Point2D caclulerPointTangenteCourbe(CubicCurve c, float t) {
-        Point2D p = new Point2D(-3 * Math.pow(1 - t, 2) * c.getStartX() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlX1() +
-                3 * ((1 - t) * 2 * t - t * t) * c.getControlX2() + 3 * Math.pow(t, 2) * c.getEndX(),
-                -3 * Math.pow(1 - t, 2) * c.getStartY() + 3 * (Math.pow(1 - t, 2) - 2 * t * (1 - t)) * c.getControlY1() +
-                        3 * ((1 - t) * 2 * t - t * t) * c.getControlY2() + 3 * Math.pow(t, 2) * c.getEndY());
-        return p;
-    }
 }
