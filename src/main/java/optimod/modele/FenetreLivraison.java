@@ -4,19 +4,17 @@ import java.util.*;
 
 public class FenetreLivraison {
 
-    public FenetreLivraison(List<Livraison> livraisons, int heureDebut, int heureFin) {
-        this.livraisons = livraisons;
-        this.heureDebut = heureDebut;
-        this.heureFin = heureFin;
-    }
-
-
     private int heureDebut;
 
     private int heureFin;
 
     private List<Livraison> livraisons = new ArrayList<Livraison>();
 
+    public FenetreLivraison(List<Livraison> livraisons, int heureDebut, int heureFin) {
+        this.livraisons = livraisons;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+    }
 
     /**
      * Contrat : Calcule les plus courts chemins entre toutes les livraisons présentes au sein de la fenêtere
@@ -71,4 +69,26 @@ public class FenetreLivraison {
     public void setLivraisons(List<Livraison> livraisons) {
         this.livraisons = livraisons;
     }
+
+    public int getHeureDebutHeure() {
+        return heureDebut / 3600;
+    }
+
+    public int getHeureDebutMinute() {
+        return (heureDebut % 3600) / 60;
+    }
+
+    public int getHeureDebutSeconde() { return (heureDebut % 3600) % 60; }
+
+    public int getHeureFinHeure() {
+        return heureFin / 3600;
+    }
+
+    public int getHeureFinMinute() {
+        return (heureFin % 3600) / 60;
+    }
+
+    public int getHeureFinSeconde() { return (heureFin % 3600) % 60; }
+
+
 }

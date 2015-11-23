@@ -7,11 +7,6 @@ import java.util.*;
 
 public class Livraison {
 
-    public Livraison(Intersection intersection) {
-        this.intersection = intersection;
-    }
-
-
     private int heureLivraison;
 
     private Intersection intersection;
@@ -20,6 +15,9 @@ public class Livraison {
 
     private Livraison precedente;
 
+    public Livraison(Intersection intersection) {
+        this.intersection = intersection;
+    }
 
     /**
      *
@@ -159,6 +157,15 @@ public class Livraison {
         return this.cheminVersSuivante.getArrivee();
     }
 
+    public int getHeure() {
+        return heureLivraison / 3600;
+    }
+
+    public int getMinute() {
+        return (heureLivraison % 3600) / 60;
+    }
+
+    public int getSeconde() { return (heureLivraison % 3600) % 60; }
 
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {
         private int distance;
