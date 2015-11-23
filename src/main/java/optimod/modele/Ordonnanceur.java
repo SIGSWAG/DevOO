@@ -1,26 +1,24 @@
 package optimod.modele;
 
-import java.util.*;
-
 public class Ordonnanceur {
-
-    /**
-     * Default constructor
-     */
-    public Ordonnanceur() {
-    }
-
 
     private DemandeLivraison demandeLivraison;
 
     private Plan plan;
 
+    /**
+     * Default constructor
+     */
+    public Ordonnanceur() {
+        plan = new Plan();
+        demandeLivraison = new DemandeLivraison(plan);
+    }
 
     /**
      *
      */
     public void chargerPlan() {
-        // TODO implement here
+        plan.chargerPlan();
     }
 
     /**
@@ -43,10 +41,10 @@ public class Ordonnanceur {
     }
 
     /**
-     * 
+     *
      */
     public void chargerDemandeLivraison() {
-        // TODO implement here
+        demandeLivraison.chargerDemandeLivraison();
     }
 
     /**

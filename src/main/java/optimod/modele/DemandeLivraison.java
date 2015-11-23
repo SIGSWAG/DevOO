@@ -1,28 +1,42 @@
 package optimod.modele;
 
-import java.util.*;
+import optimod.es.xml.DeserialiseurXML;
 
-public class DemandeLivraison {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+public class DemandeLivraison extends Observable {
+
+    private List<Chemin> itineraire;
+
+    private Plan plan;
+
+    private List<FenetreLivraison> fenetres;
+
+    private Livraison entrepot;
 
     /**
      * Default constructor
      */
     public DemandeLivraison(Plan pl) {
         this.plan = pl;
+        this.itineraire = new ArrayList<Chemin>();
+        this.fenetres = new ArrayList<FenetreLivraison>();
     }
-
-
-    private List<Chemin> itineraire = new ArrayList<Chemin>();
-
-    private Plan plan;
-
-    private List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
-
-    private Livraison entrepot;
 
 
     public void chargerDemandeLivraison() {
         // TODO implement here
+
+        try {
+            DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+            setChanged();
+            notifyObservers();
+        }
+        catch( Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -107,10 +121,12 @@ public class DemandeLivraison {
         livr2.calculPCC(livr1SuivTemp);
         livr2.getPrecedente().calculPCC(livr2);
 
-        if(livr1.getHeureLivraison() < livr2.getHeureLivraison())
+        if(livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
             mettreAJourLesHeuresAPartirDe(livr1);
-        else
+        }
+        else {
             mettreAJourLesHeuresAPartirDe(livr2);
+        }
     }
 
     /**
@@ -129,8 +145,10 @@ public class DemandeLivraison {
 
         fenetres = new ArrayList<FenetreLivraison>();
 
-        entrepot.getIntersection().setLivraison(null);
-        entrepot = null;
+        if(entrepot != null) {
+            entrepot.getIntersection().setLivraison(null);
+            entrepot = null;
+        }
     }
 
     public List<Chemin> getItineraire() {

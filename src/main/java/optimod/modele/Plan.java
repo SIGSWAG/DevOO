@@ -1,25 +1,36 @@
 package optimod.modele;
 
-import optimod.modele.Intersection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import optimod.es.xml.DeserialiseurXML;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
-public class Plan {
+public class Plan extends Observable {
+
+    private List<Intersection> intersections;
+    private ObservableList<Intersection> intersectionsObservables;
 
     /**
      * Default constructor
      */
     public Plan() {
+        this.intersections = new ArrayList<Intersection>();
+        this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 
-
-    private List<Intersection> intersections = new ArrayList<Intersection>();
-
-
     public void chargerPlan() {
-        /**
-         * TODO
-         */
+        try {
+            DeserialiseurXML.INSTANCE.chargerPlan(this);
+            setChanged();
+            notifyObservers();
+        }
+        catch( Exception e){
+            // TODO Gérer les exceptions
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -42,6 +53,8 @@ public class Plan {
      */
     public void reset(){
         intersections = new ArrayList<Intersection>();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -66,7 +79,10 @@ public class Plan {
         return intersections;
     }
 
+    public ObservableList<Intersection> getIntersectionsObservables() { return this.intersectionsObservables; }
+
     public void setIntersections(List<Intersection> intersections) {
         this.intersections = intersections;
+        this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 }

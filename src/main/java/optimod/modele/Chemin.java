@@ -7,13 +7,6 @@ import java.util.*;
  */
 public class Chemin {
 
-    /**
-     * Default constructor
-     */
-    public Chemin() {
-    }
-
-
     private int duree;
 
     private List<Intersection> intersections = new ArrayList<Intersection>();
@@ -22,6 +15,11 @@ public class Chemin {
 
     private Livraison arrivee;
 
+    /**
+     * Default constructor
+     */
+    public Chemin() {
+    }
 
     public int getDuree() {
         return duree;
