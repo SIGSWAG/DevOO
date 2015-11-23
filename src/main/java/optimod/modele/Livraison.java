@@ -7,11 +7,6 @@ import java.util.*;
 
 public class Livraison {
 
-    public Livraison(Intersection intersection) {
-        this.intersection = intersection;
-    }
-
-
     private int heureLivraison;
 
     private Intersection intersection;
@@ -20,6 +15,9 @@ public class Livraison {
 
     private Livraison precedente;
 
+    public Livraison(Intersection intersection) {
+        this.intersection = intersection;
+    }
 
     /**
      *
