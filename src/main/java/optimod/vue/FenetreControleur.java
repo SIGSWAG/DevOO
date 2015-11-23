@@ -315,40 +315,52 @@ public class FenetreControleur implements Observer {
     }
 
     public void activerChargerLivraisons(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        chargerLivraisons.setDisable(estActif);
     }
 
     public void activerToutDeselectionner(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        toutDeselectionner.setDisable(estActif);
     }
 
     public void activerGenererFeuilleRoute(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        genererFeuilleDeRoute().setDisable(estActif);
     }
 
     public void activerAnnuler(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        annuler.setDisable(estActif);
     }
 
     public void activerRejouer(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        rejouer.setDisable(estActif);
     }
 
     public void activerAjouter(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        ajouter.setDisable(estActif);
     }
 
     public void activerSupprimer(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        supprimer.setDisable(estActif);
     }
 
     public void activerEchanger(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        echanger.setDisable(estActif);
+    }
+
+    public void activerCalculerItineraire(boolean estActif){
+        calculerItineraire.setDisable(estActif);
+    }
+
+    public void activerSelections(boolean estActif){
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("selctions activees (ou pas)");
     }
 
     public void autoriseBoutons(boolean estActif){
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
+        activerCalculerItineraire(estActif);
         activerToutDeselectionner(estActif);
         activerAnnuler(estActif);
         activerGenererFeuilleRoute(estActif);
@@ -356,11 +368,12 @@ public class FenetreControleur implements Observer {
         activerRejouer(estActif);
         activerSupprimer(estActif);
         activerEchanger(estActif);
+        activerSelections(estActif);
     }
 
-    public void afficheMessage(String message){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
+    public void afficheMessage(String message, String titre, Alert.AlertType alertType){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(titre);
         alert.setHeaderText(null);
         alert.setContentText(message);
 

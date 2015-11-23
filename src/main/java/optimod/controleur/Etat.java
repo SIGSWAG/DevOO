@@ -60,10 +60,11 @@ public interface Etat {
 
     /**
      * Methode appelee par controleur apres la saisie d'un caractere au clavier
+     * @param fenetreControleur
      * @param listeDeCdes
      * @param codeCar le code ASCII du caractere saisi
      */
-    public void carSaisi(Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes, int codeCar);
+    public void carSaisi(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes, int codeCar);
 
     /**
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique

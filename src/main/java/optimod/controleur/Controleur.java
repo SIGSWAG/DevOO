@@ -17,8 +17,8 @@ public class Controleur {
     // Instances associees a chaque etat possible du controleur
     protected static final EtatInit etatInit = new EtatInit();
     protected static final EtatAttenteDemandeLivr etatAttenteDemandeLivr = new EtatAttenteDemandeLivr();
-//    protected static final EtatVisualisationDemandesLivr etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivr();
-//    protected static final EtatPrincipal etatPrincipal = new EtatPrincipal();
+    protected static final EtatVisualisationDemandesLivr etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivr();
+    protected static final EtatPrincipal etatPrincipal = new EtatPrincipal();
 //    protected static final EtatLivrSelectionnee etatLivrSelectionnee = new EtatLivrSelectionnee();
 //    protected static final EtatDeuxLivrSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivrSelectionnees();
 //    protected static final EtatPlusDeDeuxLivrSelectionnees etatPlusDeDeuxLivrSelectionnees = new EtatPlusDeDeuxLivrSelectionnees();
@@ -40,15 +40,17 @@ public class Controleur {
 
     public void chargerPlan() {
         etatCourant.chargerPlan(fenetreControleur, ordonnanceur);
-        etatCourant.updateVue();
+        etatCourant.updateVue(fenetreControleur);
     }
 
     public void chargerDemandeLivraisons() {
-        ordonnanceur.chargerDemandeLivraison();
+        etatCourant.chargerDemandeLivraisons(fenetreControleur, ordonnanceur);
+        etatCourant.updateVue(fenetreControleur);
     }
 
     public void calculerItineraire() {
-
+        etatCourant.calculerItineraire(fenetreControleur, ordonnanceur);
+        etatCourant.updateVue(fenetreControleur);
     }
 
     public void undo() {
