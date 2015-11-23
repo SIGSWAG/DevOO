@@ -1,4 +1,4 @@
-package optimod.vue.graph;
+package optimod.vue;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -14,13 +14,14 @@ import java.util.List;
  * Created by Jonathan on 19/11/2015.
  */
 public class IntersectionCercle extends Pane {
+
+    public static final int TAILLE = 10;
+
     protected int cellId;
 
     protected List<Intersection> intersectionsSortantes = new ArrayList<Intersection>();
-    protected List<IntersectionCercle> children = new ArrayList<IntersectionCercle>();
-    protected List<IntersectionCercle> parents = new ArrayList<IntersectionCercle>();
 
-    protected Node view;
+    protected Node vue;
 
     protected Intersection intersection;
 
@@ -34,37 +35,25 @@ public class IntersectionCercle extends Pane {
             intersectionsSortantes.add(troncon.getArrivee());
         }
 
-        Circle noeudIntersection = new Circle(intersection.getX(), intersection.getY(), 10, Color.BLACK);
-        setView(noeudIntersection);
+        Circle noeudIntersection = new Circle(intersection.getX(), intersection.getY(), TAILLE, Color.BLACK);
+        setVue(noeudIntersection);
     }
 
-    public void addCellChild(IntersectionCercle cell) {
-        children.add(cell);
+    public int getCentreX() {
+        return intersection.getX() + (TAILLE / 2);
     }
 
-    public List<IntersectionCercle> getCellChildren() {
-        return children;
+    public int getCentreY() {
+        return intersection.getY() + (TAILLE / 2);
     }
 
-    public void addCellParent(IntersectionCercle cell) {
-        parents.add(cell);
+    public Node getVue() {
+        return this.vue;
     }
 
-    public List<IntersectionCercle> getCellParents() {
-        return parents;
-    }
-
-    public void removeCellChild(IntersectionCercle cell) {
-        children.remove(cell);
-    }
-
-    public void setView(Node view) {
-        this.view = view;
-        getChildren().add(view);
-    }
-
-    public Node getView() {
-        return this.view;
+    public void setVue(Node vue) {
+        this.vue = vue;
+        getChildren().add(vue);
     }
 
     public int getCellId() {

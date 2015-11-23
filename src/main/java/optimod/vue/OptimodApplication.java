@@ -3,11 +3,12 @@ package optimod.vue;/**
  */
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.es.xml.DeserialiseurXML;
@@ -53,11 +54,8 @@ public class OptimodApplication extends Application {
 
 
 
-        Group group = new Group();
-        group.getChildren().addAll(root);
-
         fenetre.setTitle(TITRE_FENETRE);
-        fenetre.setScene(new Scene(group));
+        fenetre.setScene(new Scene(root));
         fenetre.show();
     }
 
@@ -69,10 +67,5 @@ public class OptimodApplication extends Application {
     private FXMLLoader creerFXMLLoader(URL localisation) {
         return new FXMLLoader(localisation, null, new JavaFXBuilderFactory(), null, Charset.forName(FXMLLoader.DEFAULT_CHARSET_NAME));
     }
-
-
-
-
-
 
 }

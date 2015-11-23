@@ -1,26 +1,23 @@
 package optimod.vue;
 
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import optimod.controleur.Controleur;
-import optimod.modele.*;
-import optimod.vue.graph.Graphe;
-import optimod.vue.graph.IntersectionCercle;
+import optimod.modele.Chemin;
+import optimod.modele.DemandeLivraison;
+import optimod.modele.Intersection;
+import optimod.modele.Plan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * Contrôleur interne utilisé par la vue (JavaFX) afin d'appeler le Contrôleur général avec les bons paramètres
@@ -28,24 +25,19 @@ import java.util.Observer;
  * Created by Jonathan on 19/11/2015.
  */
 public class FenetreControleur implements Observer {
+
+    private static final double FACTEUR_FLECHE = 0.2;
+    private static final int TAILLE_ARC = 1;
+
     private Stage fenetre;
     private Controleur controleur;
 
-    private Graphe graphe;
-
     @FXML
-    private AnchorPane planAnchorPane;
-
-    @FXML
-    private AnchorPane planCanvasAnchorPane;
-
-    @FXML
-    private Group planCanvasGroup;
+    private Group planGroup;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
-        //this.graphe = new Graphe();
     }
 
     /**
@@ -53,111 +45,9 @@ public class FenetreControleur implements Observer {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        planCanvasAnchorPane.getChildren().clear();
+        planGroup.getChildren().clear();
         controleur.chargerPlan();
-
-//        // bending curve
-//        Rectangle srcRect1 = new Rectangle(100,100,50,50);
-//        Rectangle dstRect1 = new Rectangle(100,200,50,50);
-//
-//        CubicCurve curve1 = new CubicCurve( 125, 150, 125, 225, 325, 225, 125, 200);
-//        curve1.setStroke(Color.BLACK);
-//        curve1.setStrokeWidth(1);
-//        curve1.setFill(null);
-//
-//        double size=Math.max(curve1.getBoundsInLocal().getWidth(),
-//                curve1.getBoundsInLocal().getHeight());
-//        double scale=size/4d;
-//
-//        Point2D ori=eval(curve1,0);
-//        Point2D tan=evalDt(curve1,0).normalize().multiply(scale);
-//        Path arrowIni=new Path();
-//        arrowIni.getElements().add(new MoveTo(ori.getX()+0.2*tan.getX()-0.2*tan.getY(),
-//                ori.getY()+0.2*tan.getY()+0.2*tan.getX()));
-//        arrowIni.getElements().add(new LineTo(ori.getX(), ori.getY()));
-//        arrowIni.getElements().add(new LineTo(ori.getX()+0.2*tan.getX()+0.2*tan.getY(),
-//                ori.getY()+0.2*tan.getY()-0.2*tan.getX()));
-//
-//        ori=eval(curve1,1);
-//        tan=evalDt(curve1,1).normalize().multiply(scale);
-//        Path arrowEnd=new Path();
-//        arrowEnd.getElements().add(new MoveTo(ori.getX()-0.2*tan.getX()-0.2*tan.getY(),
-//                ori.getY()-0.2*tan.getY()+0.2*tan.getX()));
-//        arrowEnd.getElements().add(new LineTo(ori.getX(), ori.getY()));
-//        arrowEnd.getElements().add(new LineTo(ori.getX()-0.2*tan.getX()+0.2*tan.getY(),
-//                ori.getY()-0.2*tan.getY()-0.2*tan.getX()));
-//        planCanvasAnchorPane.getChildren().addAll(srcRect1, dstRect1, curve1, arrowIni);
-
     }
-
-    private Point2D eval(QuadCurveTo debut, QuadCurveTo fin, float t){
-        Point2D p=new Point2D(Math.pow(1-t,3)*debut.getX()+
-                3*t*Math.pow(1-t,2)*debut.getControlX()+
-                3*(1-t)*t*t*fin.getControlX()+
-                Math.pow(t, 3)*fin.getX(),
-                Math.pow(1-t,3)*debut.getY()+
-                        3*t*Math.pow(1-t, 2)*debut.getControlY()+
-                        3*(1-t)*t*t*fin.getControlY()+
-                        Math.pow(t, 3)*fin.getControlY());
-        return p;
-    }
-
-    private Point2D evalDt(QuadCurveTo debut, QuadCurveTo fin, float t){
-        Point2D p=new Point2D(-3*Math.pow(1-t,2)*debut.getX()+
-                3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlX()+
-                3*((1-t)*2*t-t*t)*fin.getControlX()+
-                3*Math.pow(t, 2)*fin.getX(),
-                -3*Math.pow(1-t,2)*debut.getY()+
-                        3*(Math.pow(1-t, 2)-2*t*(1-t))*debut.getControlY()+
-                        3*((1-t)*2*t-t*t)*fin.getControlY()+
-                        3*Math.pow(t, 2)*fin.getY());
-        return p;
-    }
-
-    private void dessinerPlan() {
-        BorderPane root = new BorderPane();
-
-        graphe = new Graphe();
-
-        root.setCenter(graphe.getAnchorPane());
-
-        planAnchorPane.getChildren().add(root);
-
-        addGraphComponents();
-
-        afficherIntersections();
-    }
-
-    private void addGraphComponents() {
-//        Model model = graphe.getModel();
-//
-//        model.addCell(new IntersectionCercle("Cell A", new Intersection(15, 15, 0, null)));
-//        model.addCell(new IntersectionCercle("Cell B", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell C", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell D", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell E", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell F", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//        model.addCell(new IntersectionCercle("Cell G", new Intersection(ThreadLocalRandom.current().nextInt(0, 100 + 1), ThreadLocalRandom.current().nextInt(0, 100 + 1), 0, null)));
-//
-//        model.addEdge("Cell A", "Cell B");
-//        model.addEdge("Cell A", "Cell C");
-//        model.addEdge("Cell B", "Cell C");
-//        model.addEdge("Cell C", "Cell D");
-//        model.addEdge("Cell B", "Cell E");
-//        model.addEdge("Cell D", "Cell F");
-//        model.addEdge("Cell D", "Cell G");
-//
-//        graphe.mettreAJour();
-    }
-
-    private void afficherIntersections() {
-        List<IntersectionCercle> intersections = graphe.getModel().getAllCells();
-
-        for (IntersectionCercle intersection : intersections) {
-            intersection.relocate(intersection.getX(), intersection.getY());
-        }
-    }
-
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Charger livraisons" dans l'interface
@@ -231,119 +121,170 @@ public class FenetreControleur implements Observer {
         controleur.genererFeuilleDeRoute();
     }
 
-    @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof Plan) {
+        System.out.println("update");
+        // Si la mise à jour vient du plan, on redessine le plan
+        if (o instanceof Plan) {
             Plan plan = (Plan) o;
             List<IntersectionCercle> intersectionCercles = new ArrayList<IntersectionCercle>();
 
+            // Pour chaque intersection, on crée une IntersectionCercle que l'on ajoute dans la vue
             for (Intersection intersection : plan.getIntersections()) {
                 IntersectionCercle intersectionCercle = new IntersectionCercle(intersection.getAdresse(), intersection);
                 intersectionCercles.add(intersectionCercle);
-                planCanvasAnchorPane.getChildren().add(intersectionCercle);
+                planGroup.getChildren().add(intersectionCercle);
             }
 
-            for(IntersectionCercle intersectionCercle : intersectionCercles) {
-                for(Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
-                    for(IntersectionCercle intersectionCercleSortante : intersectionCercles) {
-                        if(intersectionCercleSortante.getIntersection().equals(intersection)) {
+            // Pour chaque IntersectionCercle créée, on relie les intersections entre elles en fonction de leurs tronçons sortants
+            for (IntersectionCercle intersectionCercle : intersectionCercles) {
+                for (Intersection intersection : intersectionCercle.getIntersectionsSortantes()) {
+                    for (IntersectionCercle intersectionCercleSortante : intersectionCercles) {
+                        if (intersectionCercleSortante.getIntersection().equals(intersection)) {
                             relierIntersections(intersectionCercle, intersectionCercleSortante);
                             break;
                         }
                     }
                 }
             }
-        }
-        else if(o instanceof DemandeLivraison) {
+        } else if (o instanceof DemandeLivraison) {
             DemandeLivraison demandeLivraison = (DemandeLivraison) o;
 
-            for(Chemin chemin : demandeLivraison.getItineraire()) {
+            for (Chemin chemin : demandeLivraison.getItineraire()) {
                 // TODO
             }
-        }
-        else {
+        } else {
+            // TODO
             System.err.println("PROBLEM !");
         }
     }
 
+    /**
+     * Relie deux intersections entre elle en traçant une courbe de Bézier paramétrique (cubique) entre ces deux intersections,
+     * avec une flèche pour l'orientation au niveau de la cible
+     *
+     * @param source
+     * @param cible
+     */
     protected void relierIntersections(IntersectionCercle source, IntersectionCercle cible) {
 
-        Path path = new Path();
+        Line arc = new Line(source.getCentreX(), source.getCentreY(), cible.getCentreX(), cible.getCentreY());
 
-        MoveTo moveTo = new MoveTo();
+        planGroup.getChildren().add(arc);
 
-        moveTo.setX(source.getX()+ (source.getWidth()/2) );
-        moveTo.setY(source.getY()+ (source.getHeight()/2) );
+        // TODO Voir si on avec le path.setNodeOrientation on pourrait mettre des flèches naturellement bien orientées
 
-        QuadCurveTo quadCurveTo = new QuadCurveTo();
-
-        quadCurveTo.setX(cible.getX()+(cible.getWidth()/2));
-        quadCurveTo.setY(cible.getY()+(cible.getHeight()/2));
-
-        // Déterminer le point de contrôle (point de courbure) de la courbe en fonction de la position des intersections
-        double controlX = (source.getX() + cible.getX()) / 2;
-        double controlY = 0;
-        if(source.getX() < cible.getX()) {
-            if(source.getY() < cible.getY()) {
-                controlY = source.getY();
-            }
-            else {
-                controlY = cible.getY();
-            }
-        }
-        else {
-            if(source.getY() < cible.getY()) {
-                controlY = cible.getY();
-            }
-            else {
-                controlY = source.getY();
-            }
-        }
-
-        quadCurveTo.setControlX(controlX);
-        quadCurveTo.setControlY(controlY);
-
-        path.getElements().add(moveTo);
-        path.getElements().add(quadCurveTo);
+        /*path.getElements().add(moveTo);
+        path.getElements().add(arc);
         path.setStrokeWidth(3);
         path.setStroke(Color.BLACK);
         path.setMouseTransparent(true);
 
-        double size=Math.max(10,
-                10);
+        planCanvasAnchorPane.getChildren().add(path);*/
+
+        //ajouterFlecheOrientation(cubicCurve);
+
+//        double phi = Math.toRadians( 40 );
+//        double barb = 10;
+//
+//        double dx = cible.getX() - source.getX();
+//        double dy = cible.getY() - source.getY();
+//        double theta = Math.atan2( dy, dx );
+//        double x, y, rho = theta + phi;
+//
+//        x = cible.getX() - barb * Math.cos( rho );
+//        y = cible.getY() - barb * Math.sin( rho );
+//
+//        Point2D p1 = getCircleLineIntersectionPoint(source, cible).get(1);
+//
+//        Line head1 = new Line();
+//        head1.setStartX( p1.getX() );
+//        head1.setStartY( p1.getY() );
+//        head1.setEndX( x );
+//        head1.setEndY( y );
+//        rho = theta - phi;
+//        x = cible.getX() - barb * Math.cos( rho );
+//        y = cible.getY() - barb * Math.sin( rho );
+//        Line head2 = new Line();
+//        head2.setStartX( p1.getX() );
+//        head2.setStartY( p1.getY() );
+//        head2.setEndX( x );
+//        head2.setEndY( y );
+//
+//        planGroup.getChildren().addAll(head1, head2);
+
+        Point2D p1 = getCircleLineIntersectionPoint(source, cible).get(0);
+        Line arc2 = new Line(source.getCentreX(), source.getCentreY(), p1.getX(), p1.getY());
+
+        double size=Math.max(arc2.getBoundsInLocal().getWidth(),
+                arc2.getBoundsInLocal().getHeight());
         double scale=size/4d;
 
-        Point2D ori=eval(quadCurveTo, quadCurveTo, 1);
-        Point2D tan=evalDt(quadCurveTo, quadCurveTo, 1).normalize().multiply(scale);
-
+        Point2D ori=eval(arc2,1);
+        Point2D tan=evalDt(arc2,1).normalize().multiply(scale);
         Path arrowEnd=new Path();
-        arrowEnd.getElements().add(new MoveTo(source.getX()-0.2*tan.getX()-0.2*tan.getY(),
-                source.getY()-0.2*tan.getY()+0.2*tan.getX()));
-        arrowEnd.getElements().add(new LineTo(source.getX(), source.getY()));
-        arrowEnd.getElements().add(new LineTo(source.getX()-0.2*tan.getX()+0.2*tan.getY(),
-                source.getY()-0.2*tan.getY()-0.2*tan.getX()));
+        arrowEnd.setFill(Color.AQUAMARINE);
+        arrowEnd.getElements().add(new MoveTo(ori.getX()-0.2*tan.getX()-0.2*tan.getY(),
+                ori.getY()-0.2*tan.getY()+0.2*tan.getX()));
+        arrowEnd.getElements().add(new LineTo(ori.getX(), ori.getY()));
+        arrowEnd.getElements().add(new LineTo(ori.getX()-0.2*tan.getX()+0.2*tan.getY(),
+                ori.getY()-0.2*tan.getY()-0.2*tan.getX()));
 
-        planCanvasAnchorPane.getChildren().add(path);
-        planCanvasAnchorPane.getChildren().add(arrowEnd);
+        planGroup.getChildren().add(arrowEnd);
 
-        boolean animate = false;
-        if(animate) {
-            final Polygon arrow = new Polygon(); // Create arrow
-
-            arrow.getPoints().addAll(new Double[]{50.0, 50.0, 70.0, 50.0, 70.0, 42.0, 82.0, 54.0, 70.0, 66.0, 70.0, 58.0, 50.0, 58.0});
-            arrow.setFill(Color.GREEN);
-
-            planCanvasAnchorPane.getChildren().add(arrow);
-
-            PathTransition pathTransition = new PathTransition(); //
-
-            pathTransition.setDuration(Duration.millis(750));
-            pathTransition.setPath(path);
-            pathTransition.setNode(arrow);
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            pathTransition.setCycleCount(Timeline.INDEFINITE);
-            pathTransition.setAutoReverse(true);
-            pathTransition.play();
-        }
     }
+
+    private Point2D eval(Line c, float t){
+        Point2D p=new Point2D(Math.pow(1-t,3)*c.getStartX()+
+
+                Math.pow(t, 3)*c.getEndX(),
+                Math.pow(1-t,3)*c.getStartY()+
+
+                        Math.pow(t, 3)*c.getEndY());
+        return p;
+    }
+
+    private Point2D evalDt(Line c, float t){
+        Point2D p=new Point2D(-3*Math.pow(1-t,2)*c.getStartX()+
+
+                3*Math.pow(t, 2)*c.getEndX(),
+                -3*Math.pow(1-t,2)*c.getStartY()+
+
+                        3*Math.pow(t, 2)*c.getEndY());
+        return p;
+    }
+
+
+    public static List<Point2D> getCircleLineIntersectionPoint(IntersectionCercle pointA,
+                                                               IntersectionCercle pointB) {
+        double baX = pointB.getX() - pointA.getX();
+        double baY = pointB.getY() - pointA.getY();
+        double caX = pointB.getCentreX() - pointA.getX();
+        double caY = pointB.getCentreY() - pointA.getY();
+
+        double a = baX * baX + baY * baY;
+        double bBy2 = baX * caX + baY * caY;
+        double c = caX * caX + caY * caY - IntersectionCercle.TAILLE * IntersectionCercle.TAILLE;
+
+        double pBy2 = bBy2 / a;
+        double q = c / a;
+
+        double disc = pBy2 * pBy2 - q;
+        if (disc < 0) {
+            return Collections.emptyList();
+        }
+        // if disc == 0 ... dealt with later
+        double tmpSqrt = Math.sqrt(disc);
+        double abScalingFactor1 = -pBy2 + tmpSqrt;
+        double abScalingFactor2 = -pBy2 - tmpSqrt;
+
+        Point2D p1 = new Point2D(pointA.getX() - baX * abScalingFactor1, pointA.getY()
+                - baY * abScalingFactor1);
+        if (disc == 0) { // abScalingFactor1 == abScalingFactor2
+            return Collections.singletonList(p1);
+        }
+        Point2D p2 = new Point2D(pointA.getX() - baX * abScalingFactor2, pointA.getY()
+                - baY * abScalingFactor2);
+        return Arrays.asList(p1, p2);
+    }
+
 }
