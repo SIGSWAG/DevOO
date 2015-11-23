@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -34,6 +36,27 @@ public class FenetreControleur implements Observer {
 
     @FXML
     private Group planGroup;
+
+    @FXML
+    private Button chargerPlan;
+    @FXML
+    private Button chargerLivraisons;
+    @FXML
+    private Button calculerItineraire;
+    @FXML
+    private Button toutDeselectionner;
+    @FXML
+    private Button genererFeuilleRoute;
+    @FXML
+    private Button annuler;
+    @FXML
+    private Button rejouer;
+    @FXML
+    private Button ajouter;
+    @FXML
+    private Button supprimer;
+    @FXML
+    private Button echanger;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -70,7 +93,7 @@ public class FenetreControleur implements Observer {
      */
     @FXML
     protected void annulerDerniereAction(ActionEvent evenement) {
-        controleur.annulerDerniereAction();
+        controleur.undo();
     }
 
     /**
@@ -78,7 +101,7 @@ public class FenetreControleur implements Observer {
      */
     @FXML
     protected void rejouerDerniereAction(ActionEvent evenement) {
-        controleur.rejouerDerniereAction();
+        controleur.redo();
     }
 
     /**
@@ -287,4 +310,60 @@ public class FenetreControleur implements Observer {
         return Arrays.asList(p1, p2);
     }
 
+    public void activerChargerPlan(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerChargerLivraisons(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerToutDeselectionner(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerGenererFeuilleRoute(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerAnnuler(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerRejouer(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerAjouter(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerSupprimer(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerEchanger(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void autoriseBoutons(boolean estActif){
+        activerChargerPlan(estActif);
+        activerChargerLivraisons(estActif);
+        activerToutDeselectionner(estActif);
+        activerAnnuler(estActif);
+        activerGenererFeuilleRoute(estActif);
+        activerAjouter(estActif);
+        activerRejouer(estActif);
+        activerSupprimer(estActif);
+        activerEchanger(estActif);
+    }
+
+    public void afficheMessage(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
 }
