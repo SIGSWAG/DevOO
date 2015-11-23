@@ -69,4 +69,26 @@ public class FenetreLivraison {
     public void setLivraisons(List<Livraison> livraisons) {
         this.livraisons = livraisons;
     }
+
+    public int getHeureDebutHeure() {
+        return heureDebut / 3600;
+    }
+
+    public int getHeureDebutMinute() {
+        return (heureDebut % 3600) / 60;
+    }
+
+    public int getHeureDebutSeconde() { return (heureDebut % 3600) % 60; }
+
+    public int getHeureFinHeure() {
+        return heureFin / 3600;
+    }
+
+    public int getHeureFinMinute() {
+        return (heureFin % 3600) / 60;
+    }
+
+    public int getHeureFinSeconde() { return (heureFin % 3600) % 60; }
+
+
 }
