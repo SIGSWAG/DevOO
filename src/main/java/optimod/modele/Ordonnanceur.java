@@ -1,5 +1,11 @@
 package optimod.modele;
 
+import optimod.es.xml.ExceptionXML;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+
 public class Ordonnanceur {
 
     private DemandeLivraison demandeLivraison;
@@ -43,8 +49,8 @@ public class Ordonnanceur {
     /**
      *
      */
-    public void chargerDemandeLivraison() {
-        demandeLivraison.chargerDemandeLivraison();
+    public boolean chargerDemandeLivraison() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
+        return demandeLivraison.chargerDemandeLivraison();
     }
 
     /**

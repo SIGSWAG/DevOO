@@ -127,8 +127,11 @@ public enum DeserialiseurXML { // Singleton
      * @throws IOException
      * @throws ExceptionXML
      */
-    public void chargerDemandeLivraison(DemandeLivraison demandeLivraison) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+    public boolean chargerDemandeLivraison(DemandeLivraison demandeLivraison) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        if(xml == null){
+            return false;
+        }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
@@ -139,6 +142,7 @@ public enum DeserialiseurXML { // Singleton
         }
         else
             throw new ExceptionXML("Document non conforme");
+        return true;
     }
 
     private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraison demandeLivraison) throws ExceptionXML, NumberFormatException{
