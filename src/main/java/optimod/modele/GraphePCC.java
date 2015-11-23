@@ -22,15 +22,13 @@ public class GraphePCC implements Graphe {
 
     private Livraison entrepot;
 
+    private List<Chemin> chemins = new ArrayList<Chemin>();
+
     /**
      * Default constructor
      */
     public GraphePCC() {
     }
-
-
-    private List<Chemin> chemins = new ArrayList<Chemin>();
-
 
     /**
      * @param chemins les chemins à définissants le graphe

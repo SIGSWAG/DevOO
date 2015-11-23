@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -12,10 +14,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import optimod.modele.Chemin;
-import optimod.modele.DemandeLivraison;
-import optimod.modele.Intersection;
-import optimod.modele.Plan;
+import optimod.modele.*;
 
 import java.util.*;
 
@@ -34,6 +33,9 @@ public class FenetreControleur implements Observer {
 
     @FXML
     private Group planGroup;
+
+    @FXML
+    private TreeView<String> fenetresLivraisonTreeView;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -149,9 +151,20 @@ public class FenetreControleur implements Observer {
         } else if (o instanceof DemandeLivraison) {
             DemandeLivraison demandeLivraison = (DemandeLivraison) o;
 
-            for (Chemin chemin : demandeLivraison.getItineraire()) {
-                // TODO
+            TreeItem<String> root = new TreeItem<String>("Fenêtres de livraison", null);
+
+            for (FenetreLivraison fenetreLivraison : demandeLivraison.getFenetres()) {
+                TreeItem<String> treeItem = new TreeItem<String>(fenetreLivraison.getHeureDebut() + " - " + fenetreLivraison.getHeureFin());
+                for(int i = 0; i < fenetreLivraison.getLivraisons().size(); i++) {
+                    Livraison livraison = fenetreLivraison.getLivraisons().get(i);
+                    TreeItem<String> treeItem1 = new TreeItem<String>(i + 1 + ". " + livraison.getIntersection().getAdresse());
+                    treeItem.getChildren().add(treeItem1);
+                }
+                root.getChildren().add(treeItem);
             }
+
+            fenetresLivraisonTreeView.setRoot(root);
+            fenetresLivraisonTreeView.setShowRoot(true);
         } else {
             // TODO
             System.err.println("PROBLEM !");

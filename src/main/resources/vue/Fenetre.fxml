@@ -8,17 +8,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <AnchorPane>
             <children>
-                <Label text="Fenêtres de livraison (TODO)" underline="true" />
-                <ListView fx:id="fenetresLivraisonListView" layoutX="14.0" layoutY="16.0" />
+                <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison (TODO)" underline="true" />
+                <TreeView fx:id="fenetresLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
             </children>
         </AnchorPane>
     </left>
     <center>
-        <ScrollPane id="planCanvasScrollPane" fx:id="planCanvasScrollPane" prefHeight="270.0" prefWidth="688.0" fitToHeight="true" fitToWidth="true">
+        <ScrollPane id="planCanvasScrollPane" fx:id="planCanvasScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="270.0" prefWidth="688.0">
             <content>
                 <Group fx:id="planGroup" />
             </content>
