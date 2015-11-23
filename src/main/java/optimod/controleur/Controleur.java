@@ -100,7 +100,7 @@ public class Controleur {
     }
 
     public void deselectionnerToutesIntersections(){
-        etatCourant.deselectionnerToutesIntersection(
+        etatCourant.deselectionnerToutesIntersections(
                 fenetreControleur, ordonnanceur, livraisonsSelectionnees
         );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
