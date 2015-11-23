@@ -4,7 +4,15 @@ import java.util.*;
 
 public class Intersection {
 
+    private int adresse;
 
+    private int x;
+
+    private int y;
+
+    private List<Troncon> sortants = new ArrayList<Troncon>();
+
+    private Livraison livraison;
 
     /**
      * Default constructor
@@ -22,17 +30,6 @@ public class Intersection {
         this.y = y;
         this.adresse = adresse;
     }
-
-
-    private int adresse;
-
-    private int x;
-
-    private int y;
-
-    private List<Troncon> sortants = new ArrayList<Troncon>();
-
-    private Livraison livraison;
 
 
     /**
