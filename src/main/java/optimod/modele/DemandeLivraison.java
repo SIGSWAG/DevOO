@@ -31,10 +31,12 @@ public class DemandeLivraison extends Observable {
 
 
     public boolean chargerDemandeLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        boolean retour = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
-        setChanged();
-        notifyObservers();
-        return retour;
+        boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+        if(demandeLivraisonChargee){
+            setChanged();
+            notifyObservers();
+        }
+        return demandeLivraisonChargee;
     }
 
     /**

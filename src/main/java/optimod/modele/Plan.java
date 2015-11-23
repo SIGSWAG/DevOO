@@ -26,10 +26,12 @@ public class Plan extends Observable {
     }
 
     public boolean chargerPlan() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        boolean retour = DeserialiseurXML.INSTANCE.chargerPlan(this);
-        setChanged();
-        notifyObservers();
-        return retour;
+        boolean planCharge = DeserialiseurXML.INSTANCE.chargerPlan(this);
+        if(planCharge){
+            setChanged();
+            notifyObservers();
+        }
+        return planCharge;
     }
 
     /**
