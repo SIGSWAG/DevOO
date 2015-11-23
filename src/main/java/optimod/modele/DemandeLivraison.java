@@ -106,6 +106,7 @@ public class DemandeLivraison extends Observable {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
+        // TODO Faire attention aux fenetres !
         if(livr1 == entrepot || livr2 == entrepot){
             System.out.println("erreur, action impossible sur l'entrepot");
             return;
