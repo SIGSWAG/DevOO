@@ -87,7 +87,7 @@ public class DemandeLivraison {
     }
 
     /**
-     * echange temporellement deux livraisons livr1 et livr2 et recalcule les PCC et les horaires
+     * echange temporellement deux livraisons livr1 et livr2 et recalcule les PCC et les horaires, les fenetre de livraison sont aussi echangées
      * @param livr1 la 1ere livraison à échanger
      * @param livr2 la 2nde livraison à échanger
      */
@@ -106,6 +106,26 @@ public class DemandeLivraison {
         livr2.setPrecedente(livr1PrecTemp);
         livr2.calculPCC(livr1SuivTemp);
         livr2.getPrecedente().calculPCC(livr2);
+
+        FenetreLivraison fenetre1 = null, fenetre2 = null;
+        for (FenetreLivraison f : this.fenetres) {
+            if(fenetre1 == null && f.getLivraisons().contains(livr1)){
+                fenetre1 = f;
+            }
+            if(fenetre2 == null && f.getLivraisons().contains(livr2)){
+                fenetre2 = f;
+            }
+            if(fenetre1 != null && fenetre2 != null){
+                break;
+            }
+        }
+        if(fenetre1 != fenetre2){
+            // Echange des fenetres
+            fenetre1.getLivraisons().remove(livr1);
+            fenetre1.getLivraisons().add(livr2);
+            fenetre2.getLivraisons().remove(livr2);
+            fenetre2.getLivraisons().add(livr1);
+        }
 
         if(livr1.getHeureLivraison() < livr2.getHeureLivraison())
             mettreAJourLesHeuresAPartirDe(livr1);
