@@ -1,8 +1,10 @@
 package optimod.controleur;
 
+import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by hdelval on 11/23/15.
@@ -32,19 +34,19 @@ public interface Etat {
      * @param fenetreControleur
      * @param listeDeCdes
      */
-    public void undo(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes);
+    public void undo(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Rejouer"
      * @param fenetreControleur
      */
-    public void redo(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes);
+    public void redo(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "+"
      * @param fenetreControleur
      */
-    public void ajouterLivraison(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
+    public void ajouterLivraison(FenetreControleur fenetreControleur);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Echanger"
@@ -55,8 +57,16 @@ public interface Etat {
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Supprimer"
      * @param fenetreControleur
+     * @param ordonnanceur
      */
     public void supprimerLivraison(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
+
+    /**
+     * Methode appelee par controleur apres un clic sur le bouton "Générer feuille de route"
+     * @param fenetreControleur
+     * @param ordonnanceur
+     */
+    public void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
 
     /**
      * Methode appelee par controleur apres la saisie d'un caractere au clavier
@@ -71,13 +81,52 @@ public interface Etat {
      * Precondition : p != null
      * @param fenetreControleur
      * @param listeDeCdes
-     * @param p = coordonnees du plan correspondant au point clique
+     * @param p coordonnees du plan correspondant au point clique
      */
     public void clicGauche(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes, Point p);
+
+    /**
+     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Precondition : p != null
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param p coordonnees du plan correspondant au point clique
+     * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
+     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     */
+    public void selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Livraison> livraisonsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Precondition : p != null
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param p coordonnees du plan correspondant au point clique
+     * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
+     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     */
+    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Livraison> livraisonsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Precondition : p != null
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     */
+    public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Livraison> livraisonsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic sur le bouton "Supprimer les livraisons selectionnees"
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param livraisonsSelectionnees toutes les livraisons selectionnees pour la suppression
+     */
+    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Livraison> livraisonsSelectionnees);
 
     /**
      * Méthode appelée après chaque action, permet de dire à la vue quels boutons activer
      * @param fenetreControleur la vue citée ci-dessus
      */
-    public void updateVue(FenetreControleur fenetreControleur);
+    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 }

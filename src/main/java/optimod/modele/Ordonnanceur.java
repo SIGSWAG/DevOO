@@ -95,4 +95,8 @@ public class Ordonnanceur {
     public void setPlan(Plan plan) {
         this.plan = plan;
     }
+
+    public void genererFeuilleDeRoute(){
+        demandeLivraison.genererFeuilleDeRoute();
+    }
 }

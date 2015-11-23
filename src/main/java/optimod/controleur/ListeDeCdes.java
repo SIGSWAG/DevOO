@@ -29,20 +29,8 @@ public class ListeDeCdes {
      * Annule temporairement la derniere commande ajoutee (cette commande pourra etre remise dans la liste avec redo)
      */
     public void undo(){
-        if (indiceCrt >= 0){
+        if (onPeutAnnuler()){
             Commande cde = liste.get(indiceCrt);
-            indiceCrt--;
-            cde.undoCde();
-        }
-    }
-
-    /**
-     * Supprime definitivement la derniere commande ajoutee (cette commande ne pourra pas etre remise dans la liste avec redo)
-     */
-    public void annule(){
-        if (indiceCrt >= 0){
-            Commande cde = liste.get(indiceCrt);
-            liste.remove(indiceCrt);
             indiceCrt--;
             cde.undoCde();
         }
@@ -52,7 +40,7 @@ public class ListeDeCdes {
      * Remet dans la liste la derniere commande annulee avec undo
      */
     public void redo(){
-        if (indiceCrt < liste.size()-1){
+        if (onPeutRejouer()){
             indiceCrt++;
             Commande cde = liste.get(indiceCrt);
             cde.doCde();
@@ -67,5 +55,19 @@ public class ListeDeCdes {
             liste.remove(indiceCrt);
             indiceCrt--;
         }
+    }
+
+    /**
+     * @return true si on peut annuler une commande, false sinon
+     */
+    public boolean onPeutAnnuler(){
+        return indiceCrt >= 0;
+    }
+
+    /**
+     * @return true si on peut rejouer une commande, false sinon
+     */
+    public boolean onPeutRejouer(){
+        return indiceCrt < liste.size()-1;
     }
 }
