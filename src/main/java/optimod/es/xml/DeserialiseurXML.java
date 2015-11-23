@@ -202,7 +202,7 @@ public enum DeserialiseurXML { // Singleton
             if(tempsDeb > tempsFi){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
-            if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() <= tempsDeb){
+            if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() < tempsDeb){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut supérieure ou égale à l'heureFin de la Plage précédente");
             }
 
