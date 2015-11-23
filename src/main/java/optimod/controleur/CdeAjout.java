@@ -27,6 +27,6 @@ public class CdeAjout implements Commande{
     }
 
     public void undoCde() {
-        ordonnanceur.supprimerLivraison(livraison);
+        ordonnanceur.supprimerLivraison(intersection.getLivraison());
     }
 }
