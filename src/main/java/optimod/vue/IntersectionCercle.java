@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class IntersectionCercle extends Pane {
 
-    public static final int TAILLE = 5;
+    public static final int TAILLE = 10;
 
     protected int cellId;
 
