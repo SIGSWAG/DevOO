@@ -34,8 +34,11 @@ public enum DeserialiseurXML { // Singleton
      * @throws IOException
      * @throws ExceptionXML
      */
-    public void chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+    public boolean chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        if(xml == null){
+            return false;
+        }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
@@ -44,9 +47,10 @@ public enum DeserialiseurXML { // Singleton
         if (racine.getNodeName().equals("Reseau")) {
             construirePlanAPartirDeDOMXML(racine, plan);
         }
-        else
+        else{
             throw new ExceptionXML("Document non conforme");
-
+        }
+        return true;
     }
 
     private void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{

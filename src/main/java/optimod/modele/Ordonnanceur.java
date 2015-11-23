@@ -23,8 +23,8 @@ public class Ordonnanceur {
     /**
      *
      */
-    public void chargerPlan() {
-        plan.chargerPlan();
+    public boolean chargerPlan() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
+        return plan.chargerPlan();
     }
 
     /**
