@@ -2,12 +2,16 @@ package optimod.controleur;
 
 
 import javafx.scene.control.Alert.AlertType;
+import optimod.es.xml.ExceptionXML;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -38,7 +42,7 @@ public abstract class EtatDefaut implements Etat{
         fenetreControleur.afficheMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
     public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
-        fenetreControleur.afficheMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
+        fenetreControleur.autoriseBoutons(false);
     }
     public void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur){
         fenetreControleur.afficheMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
