@@ -30,6 +30,25 @@ public class TronconPane extends Group {
         dessinerFleche();
     }
 
+    public Troncon getTroncon() {
+        return troncon;
+    }
+
+    private void dessinerFleche() {
+        final Intersection cible = troncon.getArrivee();
+        final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
+        final Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
+        final Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
+        final Path arrowEnd = new Path();
+
+        arrowEnd.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
+        arrowEnd.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
+        arrowEnd.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
+
+        getChildren().add(ligne);
+        getChildren().add(arrowEnd);
+    }
+
     private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {
         // http://stackoverflow.com/a/26705532
         double baX = x2 - x1;
@@ -59,25 +78,6 @@ public class TronconPane extends Group {
         }
         Point2D p2 = new Point2D(x1 - baX * abScalingFactor2, y1 - baY * abScalingFactor2);
         return Arrays.asList(p1, p2);
-    }
-
-    public Troncon getTroncon() {
-        return troncon;
-    }
-
-    private void dessinerFleche() {
-        final Intersection cible = troncon.getArrivee();
-        final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
-        final Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
-        final Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
-        final Path arrowEnd = new Path();
-
-        arrowEnd.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
-        arrowEnd.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
-        arrowEnd.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
-
-        getChildren().add(ligne);
-        getChildren().add(arrowEnd);
     }
 
 }
