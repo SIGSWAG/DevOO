@@ -33,6 +33,17 @@ public class MainTest {
         /**
          * Test Case 1
          */
+        initGraphe();
+    }
+
+
+    public static void initGraphe(){
+        /**
+         * Test Case 1
+         */
+
+        Ordonnanceur ordonnanceur = new Ordonnanceur();
+
         Intersection intersection1 = new Intersection(0, 0, 1, null);
         Intersection intersection2 = new Intersection(0, 0, 2, null);
         Intersection intersection3 = new Intersection(0, 0, 3, null);
@@ -55,7 +66,7 @@ public class MainTest {
 
 
         List<Troncon> tr2 = new ArrayList<Troncon>();
-        tr1.add(troncon3);
+        tr2.add(troncon3);
 
 
         intersection2.setSortants(tr2);
@@ -65,8 +76,8 @@ public class MainTest {
         Troncon troncon5 = new Troncon(intersection4, 1, 3, "4.2");
 
         List<Troncon> tr3 = new ArrayList<Troncon>();
-        tr1.add(troncon4);
-        tr1.add(troncon5);
+        tr3.add(troncon4);
+        tr3.add(troncon5);
 
         intersection3.setSortants(tr3);
 
@@ -80,16 +91,19 @@ public class MainTest {
 
         intersection4.setSortants(tr4);
 
-       /**Intersection 5**/
+        /**Intersection 5**/
         Troncon troncon7 = new Troncon(intersection3, 1, 1, "3.2");
         Troncon troncon8 = new Troncon(intersection6, 1, 2, "6.1");
+        Troncon troncon9 = new Troncon(intersection1, 1, 4, "6.1");
 
 
         List<Troncon> tr5 = new ArrayList<Troncon>();
         tr5.add(troncon7);
         tr5.add(troncon8);
+        tr5.add(troncon9);
 
         intersection5.setSortants(tr5);
+       // intersection6.setSortants(new ArrayList<Troncon>());
 
 
         Livraison livraison  = new Livraison(intersection1);
@@ -101,30 +115,68 @@ public class MainTest {
         Livraison livraison5  = new Livraison(intersection5);
         intersection5.setLivraison(livraison5);
 
+        Livraison livraison2 = new Livraison(intersection2);
+        intersection2.setLivraison(livraison2);
 
 
-        List<Chemin> chemins = new ArrayList<Chemin>();
-        chemins.add(livraison.calculPCC(livraison3));
-        chemins.add(livraison.calculPCC(livraison5));
-       // chemins.add(livraison3.calculPCC(livraison));
-        chemins.add(livraison3.calculPCC(livraison5));
-        //chemins.add(livraison5.calculPCC(livraison));
-        chemins.add(livraison5.calculPCC(livraison3));
+        List<Intersection> intersections = new ArrayList<Intersection>();
+        intersections.add(intersection1);
+        intersections.add(intersection2);
+        intersections.add(intersection3);
+        intersections.add(intersection4);
+        intersections.add(intersection5);
+        intersections.add(intersection6);
 
-        GraphePCC graphePCC = new GraphePCC(livraison, chemins);
-        List<Chemin> cheminsPCC = graphePCC.calculerItineraire();
+        ordonnanceur.getPlan().setIntersections(intersections);
+        ordonnanceur.getDemandeLivraison().setEntrepot(livraison);
 
-        for(Chemin chemin : cheminsPCC){
+        List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
-            System.out.println(" dep "+chemin.getDepart().getIntersection().getAdresse()+" arrivee "+chemin.getArrivee().getIntersection().getAdresse());
+
+        List<Livraison> entrep = new ArrayList<Livraison>();
+        entrep.add(livraison);
+        List<Livraison> f1 = new ArrayList<Livraison>();
+        f1.add(livraison3);
+        f1.add(livraison5);
+        List<Livraison> f2 = new ArrayList<Livraison>();
+        f2.add(livraison2);
+
+
+        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
+        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2,5,7);
+        livraison2.setHeureDebutFenetre(5);
+        livraison2.setHeureFinFenetre(7);
+
+        livraison3.setHeureDebutFenetre(8);
+        livraison3.setHeureFinFenetre(20);
+        livraison5.setHeureDebutFenetre(8);
+        livraison5.setHeureFinFenetre(20);
+        fenetres.add(fenetreLivraison2);
+        fenetres.add(fenetreLivraison1);
+
+        ordonnanceur.getDemandeLivraison().setFenetres(fenetres);
+
+
+
+
+
+        DemandeLivraison dl = ordonnanceur.getDemandeLivraison();
+        dl.calculerItineraire();
+
+        for(Chemin chemin : dl.getItineraire()){
+
+            System.out.println("from "+chemin.getDepart().getIntersection().getAdresse()+" to "+chemin.getArrivee().getIntersection().getAdresse()+" arrivee a "+chemin.getArrivee().getHeureLivraison());
+            if(chemin.getArrivee().estEnRetard()){
+                System.out.println(chemin.getArrivee().getIntersection().getAdresse()+" est en retard ");
+            }
+
         }
 
 
 
+
+
     }
-
-
-
 
 
 }

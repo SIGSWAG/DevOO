@@ -4,20 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.modele.*;
-import javafx.stage.Stage;
-import optimod.controleur.Controleur;
-import optimod.modele.Chemin;
 import optimod.modele.DemandeLivraison;
 import optimod.modele.Plan;
 import optimod.vue.plan.AfficheurPlan;
@@ -40,6 +33,26 @@ public class FenetreControleur implements Observer, Initializable {
     @FXML
     private Group planGroup;
 
+    @FXML
+    private Button chargerPlan;
+    @FXML
+    private Button chargerLivraisons;
+    @FXML
+    private Button calculerItineraire;
+    @FXML
+    private Button toutDeselectionner;
+    @FXML
+    private Button genererFeuilleRoute;
+    @FXML
+    private Button annuler;
+    @FXML
+    private Button rejouer;
+    @FXML
+    private Button ajouter;
+    @FXML
+    private Button supprimer;
+    @FXML
+    private Button echanger;
     @FXML
     private TreeView<String> fenetresLivraisonTreeView;
 
@@ -84,7 +97,7 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void annulerDerniereAction(ActionEvent evenement) {
-        controleur.annulerDerniereAction();
+        controleur.undo();
     }
 
     /**
@@ -92,7 +105,7 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void rejouerDerniereAction(ActionEvent evenement) {
-        controleur.rejouerDerniereAction();
+        controleur.redo();
     }
 
     /**
@@ -165,4 +178,87 @@ public class FenetreControleur implements Observer, Initializable {
         }
     }
 
+    public void activerChargerPlan(boolean estActif){
+        chargerPlan.setDisable(estActif);
+    }
+
+    public void activerChargerLivraisons(boolean estActif){
+        chargerLivraisons.setDisable(estActif);
+    }
+
+    public void activerToutDeselectionner(boolean estActif){
+        toutDeselectionner.setDisable(estActif);
+    }
+
+    public void activerGenererFeuilleRoute(boolean estActif){
+        genererFeuilleRoute.setDisable(estActif);
+    }
+
+    public void activerAnnuler(boolean estActif){
+        annuler.setDisable(estActif);
+    }
+
+    public void activerRejouer(boolean estActif){
+        rejouer.setDisable(estActif);
+    }
+
+    public void activerAjouter(boolean estActif){
+        ajouter.setDisable(estActif);
+    }
+
+    public void activerSupprimer(boolean estActif){
+        supprimer.setDisable(estActif);
+    }
+
+    public void activerEchanger(boolean estActif){
+        echanger.setDisable(estActif);
+    }
+
+    public void activerCalculerItineraire(boolean estActif){
+        calculerItineraire.setDisable(estActif);
+    }
+
+    public void activerSelections(boolean estActif){
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("selctions activees (ou pas)");
+    }
+
+    public void activerDeselections(boolean estActif){
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("deselections activees (ou pas)");
+    }
+
+    public void activerToutesLesDeselections(boolean estActif){
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("toutes les deselections activees (ou pas)");
+    }
+
+    public void autoriseBoutons(boolean estActif){
+        activerChargerPlan(estActif);
+        activerChargerLivraisons(estActif);
+        activerCalculerItineraire(estActif);
+        activerToutDeselectionner(estActif);
+        activerAnnuler(estActif);
+        activerGenererFeuilleRoute(estActif);
+        activerAjouter(estActif);
+        activerRejouer(estActif);
+        activerSupprimer(estActif);
+        activerEchanger(estActif);
+        activerSelections(estActif);
+    }
+
+    public void afficheMessage(String message, String titre, Alert.AlertType alertType){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
 }

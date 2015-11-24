@@ -9,11 +9,17 @@ public class Livraison {
 
     private int heureLivraison;
 
+    private int heureDebutFenetre;
+
+    private int heureFinFenetre;
+
     private Intersection intersection;
 
     private Chemin cheminVersSuivante;
 
     private Livraison precedente;
+
+
 
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
@@ -22,7 +28,7 @@ public class Livraison {
     /**
      *
      * Cette méthode permet de calculer le plus court chemin entre la livraison
-     * courante et une livraison quelconque. Utilise l'algorithme de Dijkstra (O(nlog(n))
+     * courante et une livraison quelconque. Utilise l'algorithme de Dijkstra.
      * @param destination la livraison vers laquelle on souhaite se diriger
      * @return le plus court chemin entre this et la livraison destination
      *
@@ -50,72 +56,78 @@ public class Livraison {
             Intersection currIntersection = currDi.getIntersection();
 
 
+
+
             if (currIntersection.getAdresse() == destination.intersection.getAdresse()) {
 
                 destinationTrouvee = true;
             } else {
 
-                Iterator<Troncon> it = currIntersection.getSortants().iterator();
+
+                if (currIntersection.getSortants() != null) {
+                    Iterator<Troncon> it = currIntersection.getSortants().iterator();
 
 
-                while (it.hasNext()) {
+                    while (it.hasNext()) {
 
-                    Troncon troncon = it.next();
-                    int next = troncon.getArrivee().getAdresse(); //adresse de l'arrivee
-                    Intersection intersection = troncon.getArrivee();
-                    int w = troncon.getDuree();
+                        Troncon troncon = it.next();
+                        int next = troncon.getArrivee().getAdresse(); //adresse de l'arrivee
+                        Intersection intersection = troncon.getArrivee();
+                        int w = troncon.getDuree();
 
-                    Integer dist = distances.get(next);
+                        Integer dist = distances.get(next);
 
-                    if (dist == null || dist > w + currDist) { //relachement de l'arc
+                        if (dist == null || dist > w + currDist) { //relachement de l'arc
 
-                        if (dist != null) {
+                            if (dist != null) {
 
-                            DijkstraIntersection di = new DijkstraIntersection(dist, intersection);
-                            tasBinaire.remove(di);
+                                DijkstraIntersection di = new DijkstraIntersection(dist, intersection);
+                                tasBinaire.remove(di);
+                            }
+
+
+                            tasBinaire.add(new DijkstraIntersection(w + currDist, intersection));//mise a jour tas binaire
+                            distances.put(next, w + currDist); // mise a jour distances
+                            parents.put(next, currIntersection); //mise a jour des parents
+
                         }
 
-
-                        tasBinaire.add(new DijkstraIntersection(w + currDist, intersection));//mise a jour tas binaire
-                        distances.put(next, w + currDist); // mise a jour distances
-                        parents.put(next, currIntersection); //mise a jour des parents
-
                     }
-
                 }
             }
 
         }
+        Chemin chemin = null;
+        if(destinationTrouvee) {
+            //il faut à présent calculer le chemin
+            int distanceArrivee = distances.get(destination.intersection.getAdresse());
+            chemin = new Chemin();
+            chemin.setDuree(distanceArrivee);
+            chemin.setDepart(this);
+            chemin.setArrivee(destination);
+            boolean depart = false;
+
+            List<Intersection> intersections = new ArrayList<Intersection>();
 
 
-        //il faut à présent calculer le chemin
-
-        int distanceArrivee = distances.get(destination.intersection.getAdresse());
-        Chemin chemin = new Chemin();
-        chemin.setDuree(distanceArrivee);
-        chemin.setDepart(this);
-        chemin.setArrivee(destination);
-        boolean depart = false;
-
-        List<Intersection> intersections=new ArrayList<Intersection>();
-
-        Intersection currIntersection=destination.intersection;
-
-        while(!depart){
-            currIntersection=parents.get(currIntersection.getAdresse());
+            Intersection currIntersection = destination.intersection;
 
 
-            if(currIntersection.getAdresse() == this.intersection.getAdresse()){
-                depart=true;
-            } else {
+            while (!depart) {
+                currIntersection = parents.get(currIntersection.getAdresse());
 
-                intersections.add(currIntersection);
+                if (currIntersection.getAdresse() == this.intersection.getAdresse()) {
+                    depart = true;
+                } else {
+
+                    intersections.add(currIntersection);
+                }
+
             }
 
+            Collections.reverse(intersections);
+            chemin.setIntersections(intersections);
         }
-
-        Collections.reverse(intersections);
-        chemin.setIntersections(intersections);
 
 
         return chemin;
@@ -157,6 +169,25 @@ public class Livraison {
         return this.cheminVersSuivante.getArrivee();
     }
 
+    public int getHeureDebutFenetre() {
+        return heureDebutFenetre;
+    }
+
+    public void setHeureDebutFenetre(int heureDebutFenetre) {
+        this.heureDebutFenetre = heureDebutFenetre;
+    }
+
+    public int getHeureFinFenetre() {
+        return heureFinFenetre;
+    }
+
+    public void setHeureFinFenetre(int heureFinFenetre) {
+        this.heureFinFenetre = heureFinFenetre;
+    }
+
+    public boolean estEnRetard(){
+        return heureLivraison > heureFinFenetre;
+    }
 
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {
         private int distance;
@@ -198,4 +229,6 @@ public class Livraison {
             this.intersection = intersection;
         }
     }
+
+
 }

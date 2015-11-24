@@ -25,16 +25,16 @@
     <top>
         <ToolBar>
             <items>
-                <Button mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
-                <Button mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
-                <Button mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
-                <Button disable="true" mnemonicParsing="false" onAction="#toutDeselectionner" text="Tout désélec" />
-                <Button disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
-                <Button mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
-                <Button mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
-                <Button mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
-                <Button mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
-                <Button mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
+                <Button fx:id="chargerPlan" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
+                <Button fx:id="chargerLivraisons" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
+                <Button fx:id="calculerItineraire" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
+                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#toutDeselectionner" text="Tout désélec" />
+                <Button fx:id="genererFeuilleRoute" disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
+                <Button fx:id="annuler" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
+                <Button fx:id="rejouer" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
+                <Button fx:id="ajouter" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
+                <Button fx:id="supprimer" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
+                <Button fx:id="echanger" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
             </items>
         </ToolBar>
     </top>
