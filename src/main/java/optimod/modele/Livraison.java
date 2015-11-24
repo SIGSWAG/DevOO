@@ -195,6 +195,16 @@ public class Livraison {
         return heureLivraison > heureFinFenetre;
     }
 
+    public int getHeure() {
+        return heureLivraison / 3600;
+    }
+
+    public int getMinute() {
+        return (heureLivraison % 3600) / 60;
+    }
+
+    public int getSeconde() { return (heureLivraison % 3600) % 60; }
+
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {
         private int distance;
         private Intersection intersection;
