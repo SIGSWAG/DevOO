@@ -1,7 +1,11 @@
 package optimod.modele;
 
 import optimod.es.xml.DeserialiseurXML;
+import optimod.es.xml.ExceptionXML;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -29,17 +33,13 @@ public class DemandeLivraison extends Observable {
     }
 
 
-    public void chargerDemandeLivraison() {
-        // TODO implement here
-
-        try {
-            DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+    public boolean chargerDemandeLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+        if(demandeLivraisonChargee){
             setChanged();
             notifyObservers();
         }
-        catch( Exception e){
-            System.out.println(e.getMessage());
-        }
+        return demandeLivraisonChargee;
     }
 
     /**

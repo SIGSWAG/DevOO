@@ -25,6 +25,12 @@ public class Livraison {
         this.intersection = intersection;
     }
 
+    public Livraison(Intersection intersection, int heureFinFenetre, int heureDebutFenetre) {
+        this.intersection = intersection;
+        this.heureFinFenetre = heureFinFenetre;
+        this.heureDebutFenetre = heureDebutFenetre;
+    }
+
     /**
      *
      * Cette méthode permet de calculer le plus court chemin entre la livraison
