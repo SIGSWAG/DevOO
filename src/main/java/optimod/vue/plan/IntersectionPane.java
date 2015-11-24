@@ -3,6 +3,7 @@ package optimod.vue.plan;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -11,12 +12,14 @@ import javafx.util.Duration;
 import optimod.modele.Intersection;
 
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Représente une intersection à l'écran.
  * Created by Jonathan on 19/11/2015.
  */
-public class IntersectionPane extends Circle {
+public class IntersectionPane extends Circle implements Initializable {
 
     public static final int TAILLE = 6;
 
@@ -35,27 +38,31 @@ public class IntersectionPane extends Circle {
 
         this.intersection = intersection;
 
-        setEstEntrepot(false);
+        estEntrepot = false;
         survol = false;
 
-        infobulle = new Tooltip(getTexteInfobulle());
+        infobulle = new Tooltip();
         dureeApparition(infobulle, 25);
 
-        this.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        setOnMouseEntered(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 survol();
             }
         });
-        this.setOnMouseExited(new EventHandler<MouseEvent>() {
+        setOnMouseExited(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 quitteSurvol();
             }
         });
     }
 
+    public void initialize(URL location, ResourceBundle resources) {
+        mettreAJour();
+    }
+
     public void setEstEntrepot(boolean estEntrepot) {
         this.estEntrepot = estEntrepot;
-        colorier();
+        mettreAJour();
     }
 
     private void survol() {
@@ -70,6 +77,11 @@ public class IntersectionPane extends Circle {
         colorier();
     }
 
+    private void mettreAJour() {
+        colorier();
+        genererTexteInfobulle();
+    }
+
     private void colorier() {
         if (survol)
             setFill(COULEUR_SURVOL);
@@ -79,11 +91,14 @@ public class IntersectionPane extends Circle {
             setFill(COULEUR_DEFAUT);
     }
 
-    private String getTexteInfobulle() {
-        return String.format("(%s;%s)\nAdresse : %s",
+    private void genererTexteInfobulle() {
+        String texte = String.format("(%s;%s)\nAdresse : %s",
                 intersection.getX(),
                 intersection.getY(),
                 intersection.getAdresse());
+        if (estEntrepot)
+            texte += "\nENTREPÔT";
+        infobulle.setText(texte);
     }
 
     public Intersection getIntersection() {
