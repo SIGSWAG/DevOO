@@ -7,7 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import optimod.modele.DemandeLivraison;
+import optimod.modele.DemandeLivraisons;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
 import optimod.modele.Plan;
@@ -57,7 +57,6 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        afficheurPlan.vider();
         controleur.chargerPlan();
     }
 
@@ -138,10 +137,9 @@ public class FenetreControleur implements Observer, Initializable {
         if (o instanceof Plan) {
             Plan plan = (Plan) o;
             afficheurPlan.chargerPlan(plan);
-
-        } else if (o instanceof DemandeLivraison) {
-            DemandeLivraison demandeLivraison = (DemandeLivraison) o;
-            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraison);
+        } else if (o instanceof DemandeLivraisons) {
+            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
         } else {
             // TODO
             System.err.println("PROBLEM !");

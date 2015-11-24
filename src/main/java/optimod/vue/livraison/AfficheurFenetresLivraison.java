@@ -1,14 +1,10 @@
 package optimod.vue.livraison;
 
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.util.Callback;
-import optimod.modele.DemandeLivraison;
+import optimod.modele.DemandeLivraisons;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
-
-import java.util.List;
 
 /**
  * Created by Jonathan on 24/11/2015.
@@ -21,13 +17,13 @@ public final class AfficheurFenetresLivraison {
         this.fenetreLivraisonTreeView = fenetreLivraisonTreeView;
     }
 
-    public void chargerFenetresLivraison(DemandeLivraison demandeLivraison) {
+    public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
         TreeItem<Object> fenetreLivaisonRoot = new TreeItem<>(new FenetreLivraison(null, 0, 0));
         fenetreLivaisonRoot.setExpanded(true);
         fenetreLivraisonTreeView.setRoot(fenetreLivaisonRoot);
         fenetreLivraisonTreeView.setShowRoot(false);
 
-        for (FenetreLivraison fenetreLivraison : demandeLivraison.getFenetres()) {
+        for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
             TreeItem<Object> fenetreLivraisonTreeItem = new TreeItem<>(fenetreLivraison);
             for(Livraison livraison : fenetreLivraison.getLivraisons()) {
                 TreeItem<Object> livraisonTreeItem = new TreeItem<>(livraison);

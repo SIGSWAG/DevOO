@@ -121,13 +121,13 @@ public enum DeserialiseurXML { // Singleton
 
     /**
      * Ouvre un fichier xml et cree une Demande de Livraison a partir du contenu du fichier
-     * @param demandeLivraison DemandeLivraison
+     * @param demandeLivraisons DemandeLivraisons
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      */
-    public void chargerDemandeLivraison(DemandeLivraison demandeLivraison) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
+    public void chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
@@ -135,13 +135,13 @@ public enum DeserialiseurXML { // Singleton
 
         // TODO vérifications dtd xsl
         if (racine.getNodeName().equals("JourneeType")) {
-            construireDemandeLivraisonAPartirDeDOMXML(racine, demandeLivraison);
+            construireDemandeLivraisonAPartirDeDOMXML(racine, demandeLivraisons);
         }
         else
             throw new ExceptionXML("Document non conforme");
     }
 
-    private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraison demandeLivraison) throws ExceptionXML, NumberFormatException{
+    private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraisons demandeLivraisons) throws ExceptionXML, NumberFormatException {
         // intersectionsUtilisees permet de vérifier que l'on ne va pas ajouter une Livraison dans une intersection utilisée par ce fichier
         List<Intersection> intersectionsUtilisees = new ArrayList<Intersection>();
         // fenetres représentes les fenêtre de livraison de la nouvelle demande de livraison
@@ -157,7 +157,7 @@ public enum DeserialiseurXML { // Singleton
         }
         Element elementEntrepot = (Element)listeEntrepots.item(0);
         int adresseEntrepot = Integer.parseInt(elementEntrepot.getAttribute("adresse"));
-        Intersection intersectionEntrepot = demandeLivraison.getPlan().trouverIntersection(adresseEntrepot);
+        Intersection intersectionEntrepot = demandeLivraisons.getPlan().trouverIntersection(adresseEntrepot);
         if (intersectionEntrepot == null)
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
 
@@ -222,7 +222,7 @@ public enum DeserialiseurXML { // Singleton
 
                 // Validation des attributs
                 int adresse = Integer.parseInt(elementlivraison.getAttribute("adresse"));
-                Intersection intersectionDeLivraison = demandeLivraison.getPlan().trouverIntersection(adresse);
+                Intersection intersectionDeLivraison = demandeLivraisons.getPlan().trouverIntersection(adresse);
                 if (intersectionDeLivraison == null)
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
                 if (intersectionsUtilisees.contains(intersectionDeLivraison))
@@ -239,15 +239,15 @@ public enum DeserialiseurXML { // Singleton
         }
 
         // On supprime toute trace des ancienne Livraisons
-        demandeLivraison.reset();
+        demandeLivraisons.reset();
 
-        // s'il n'y a eu aucunes erreur, on peut setter la nouvelle DemandeLivraison
+        // s'il n'y a eu aucunes erreur, on peut setter la nouvelle DemandeLivraisons
         // Setter l'entrepot
-        demandeLivraison.setEntrepot(entrepot);
+        demandeLivraisons.setEntrepot(entrepot);
         // retour de visibilité Intersection / Livraison
         entrepot.getIntersection().setLivraison(entrepot);
         // affectations des fenêtres de livraison
-        demandeLivraison.setFenetres(fenetres);
+        demandeLivraisons.setFenetres(fenetres);
         // retour de visibilité Intersection / Livraison
         for (FenetreLivraison f : fenetres ) {
             for (Livraison l : f.getLivraisons()) {

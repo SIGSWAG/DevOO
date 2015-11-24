@@ -1,6 +1,6 @@
 package modele;
 
-import optimod.modele.DemandeLivraison;
+import optimod.modele.DemandeLivraisons;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.modele.Plan;
@@ -12,14 +12,14 @@ import static org.junit.Assert.*;
 /**
  * Created by aurelien on 18/11/15.
  */
-public class DemandeLivraisonTest {
+public class DemandeLivraisonsTest {
 
-    private static DemandeLivraison demandeLivraison;
+    private static DemandeLivraisons demandeLivraisons;
 
     @BeforeClass
     public static void oneTimeSetUp() {
         Plan plan = new Plan();
-        demandeLivraison = new DemandeLivraison(plan);
+        demandeLivraisons = new DemandeLivraisons(plan);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class DemandeLivraisonTest {
         final Livraison livraisonAvant = new Livraison(new Intersection(1, 1, 1, null));
         final Livraison livraisonApres = new Livraison(new Intersection(2, 2, 2, null));
 
-        demandeLivraison.ajouterLivraison(nouvelleIntersection, livraisonAvant);
+        demandeLivraisons.ajouterLivraison(nouvelleIntersection, livraisonAvant);
 
         final Livraison nouvelleLivraison = nouvelleIntersection.getLivraison();
 
@@ -55,7 +55,7 @@ public class DemandeLivraisonTest {
         final Intersection intersection = new Intersection(0, 0, 0, null);
         final Livraison livraisonASupprimer = new Livraison(intersection);
 
-        demandeLivraison.supprimerLivraison(livraisonASupprimer);
+        demandeLivraisons.supprimerLivraison(livraisonASupprimer);
 
         assertNull(intersection.getLivraison());
 
