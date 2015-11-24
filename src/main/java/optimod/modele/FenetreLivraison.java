@@ -24,7 +24,11 @@ public class FenetreLivraison {
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisons) {
                 if (!depart.equals(arrivee)) {
-                    chemins.add(depart.calculPCC(arrivee)); // on ajoute le plus court chemin entre depart et arrivee
+                    System.out.println("dep "+depart.getIntersection().getAdresse()+" arr "+arrivee.getIntersection().getAdresse());
+                    Chemin chemin = depart.calculPCC(arrivee);
+                    if(chemin != null) {
+                        chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
+                    }
                 }
             }
         }
@@ -40,7 +44,11 @@ public class FenetreLivraison {
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisonsSuivantes) {
-                chemins.add(depart.calculPCC(arrivee)); // on ajoute le plus court chemin entre depart et arrivee
+                System.out.println("dep "+depart.getIntersection().getAdresse()+" arr "+arrivee.getIntersection().getAdresse());
+                Chemin chemin = depart.calculPCC(arrivee);
+                if(chemin != null) {
+                    chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
+                }
             }
         }
         return chemins;

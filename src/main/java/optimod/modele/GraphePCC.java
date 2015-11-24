@@ -1,6 +1,5 @@
 package optimod.modele;
 
-import javafx.util.Pair;
 import optimod.tsp.Graphe;
 import optimod.tsp.TSP;
 import optimod.tsp.TSP1;
@@ -22,13 +21,15 @@ public class GraphePCC implements Graphe {
 
     private Livraison entrepot;
 
-    private List<Chemin> chemins = new ArrayList<Chemin>();
-
     /**
      * Default constructor
      */
     public GraphePCC() {
     }
+
+
+    private List<Chemin> chemins = new ArrayList<Chemin>();
+
 
     /**
      * @param chemins les chemins à définissants le graphe
@@ -51,7 +52,7 @@ public class GraphePCC implements Graphe {
 
         TSP tsp = new TSP1();
 
-        tsp.chercheSolution(3, this);
+        tsp.chercheSolution(30, this);
 
 
         for(int i=0;i<graphe.length-1;i++){
@@ -69,7 +70,7 @@ public class GraphePCC implements Graphe {
     }
 
     /**
-     * 
+     *
      */
     private void convertirLivraisonsEnSommets() {
         if(chemins!=null) {
@@ -81,31 +82,33 @@ public class GraphePCC implements Graphe {
             while (it.hasNext()) {
 
                 Chemin chemin = it.next();
-                List<Chemin> cheminsCourants; //chemins pour la livraison courante
-                int adresse = chemin.getDepart().getIntersection().getAdresse();//adresse du depart
+                if (chemin != null) {
 
-                if (vus.get(adresse) == null) { //on passe pour la première fois sur la livraison
+                    List<Chemin> cheminsCourants; //chemins pour la livraison courante
+                    int adresse = chemin.getDepart().getIntersection().getAdresse();//adresse du depart
+
+                    if (vus.get(adresse) == null) { //on passe pour la première fois sur la livraison
 
 
-                    int index = i;
-                    if(adresse==entrepot.getIntersection().getAdresse()){ //cas de l'entrepot, toujours à zero
-                        index = 0;
+                        int index = i;
+                        if (adresse == entrepot.getIntersection().getAdresse()) { //cas de l'entrepot, toujours à zero
+                            index = 0;
+                        }
+
+
+                        cheminsCourants = new ArrayList<Chemin>();
+                        vus.put(adresse, index);
+                        cheminsParLivraison.put(index, cheminsCourants);
+                        if (index != 0) {
+                            i++;
+                        }
+
+                    } else {
+                        int index = vus.get(adresse);
+                        cheminsCourants = cheminsParLivraison.get(index); //on récupère la liste de chemins
                     }
-
-
-                    cheminsCourants = new ArrayList<Chemin>();
-
-                    vus.put(adresse, index);
-                    cheminsParLivraison.put(index, cheminsCourants);
-                    if(index!=0) {
-                        i++;
-                    }
-
-                } else {
-                    int index = vus.get(adresse);
-                    cheminsCourants = cheminsParLivraison.get(index); //on récupère la liste de chemins
+                    cheminsCourants.add(chemin);
                 }
-                cheminsCourants.add(chemin);
             }
         }
     }
@@ -115,7 +118,11 @@ public class GraphePCC implements Graphe {
      */
     private void construireGraphe(){
         if(cheminsParLivraison!=null) {
+
+
             int tailleGraphe = cheminsParLivraison.size();
+
+            System.out.println("taille du graphe "+tailleGraphe);
             graphe = new Chemin[tailleGraphe][tailleGraphe];
 
             for(int i=0;i<tailleGraphe;i++){
@@ -135,6 +142,7 @@ public class GraphePCC implements Graphe {
                     int arrivee = vus.get(chemin.getArrivee().getIntersection().getAdresse());
 
                     graphe[depart][arrivee]=chemin;
+
                 }
 
             }
