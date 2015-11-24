@@ -10,7 +10,7 @@ import optimod.modele.Intersection;
  */
 public class IntersectionPane extends Circle {
 
-    public static final int TAILLE = 15;
+    public static final int TAILLE = 5;
     public static final Color COULEUR = Color.BLACK;
 
     protected Intersection intersection;

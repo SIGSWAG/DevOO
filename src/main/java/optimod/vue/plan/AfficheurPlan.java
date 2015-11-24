@@ -14,9 +14,6 @@ import java.util.Collection;
  */
 public final class AfficheurPlan {
 
-    private static final double FACTEUR_FLECHE = 0.2;
-    private static final int TAILLE_ARC = 1;
-
     private Group group;
 
     public AfficheurPlan(Group group) {
