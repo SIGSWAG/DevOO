@@ -137,8 +137,8 @@ public class FenetreControleur implements Observer, Initializable {
      * Appelée lorsque l'utilisateur clique sur le bouton "Tout déselectionner" dans l'interface
      */
     @FXML
-    protected void toutDeselectionner(ActionEvent evenement) {
-        // Déselectionner sur le plan
+    protected void deselectionnerToutesIntersections(ActionEvent evenement) {
+        controleur.deselectionnerToutesIntersections();
     }
 
     /**
@@ -180,43 +180,43 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerChargerPlan(boolean estActif){
-        chargerPlan.setDisable(estActif);
+        chargerPlan.setDisable(!estActif);
     }
 
     public void activerChargerLivraisons(boolean estActif){
-        chargerLivraisons.setDisable(estActif);
+        chargerLivraisons.setDisable(!estActif);
     }
 
     public void activerToutDeselectionner(boolean estActif){
-        toutDeselectionner.setDisable(estActif);
+        toutDeselectionner.setDisable(!estActif);
     }
 
     public void activerGenererFeuilleRoute(boolean estActif){
-        genererFeuilleRoute.setDisable(estActif);
+        genererFeuilleRoute.setDisable(!estActif);
     }
 
     public void activerAnnuler(boolean estActif){
-        annuler.setDisable(estActif);
+        annuler.setDisable(!estActif);
     }
 
     public void activerRejouer(boolean estActif){
-        rejouer.setDisable(estActif);
+        rejouer.setDisable(!estActif);
     }
 
     public void activerAjouter(boolean estActif){
-        ajouter.setDisable(estActif);
+        ajouter.setDisable(!estActif);
     }
 
     public void activerSupprimer(boolean estActif){
-        supprimer.setDisable(estActif);
+        supprimer.setDisable(!estActif);
     }
 
     public void activerEchanger(boolean estActif){
-        echanger.setDisable(estActif);
+        echanger.setDisable(!estActif);
     }
 
     public void activerCalculerItineraire(boolean estActif){
-        calculerItineraire.setDisable(estActif);
+        calculerItineraire.setDisable(!estActif);
     }
 
     public void activerSelections(boolean estActif){
@@ -278,6 +278,9 @@ public class FenetreControleur implements Observer, Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
+        alert.setResizable(true);
+        alert.getDialogPane().setPrefSize(480, 320);
+
         alert.showAndWait();
     }
 
@@ -285,10 +288,9 @@ public class FenetreControleur implements Observer, Initializable {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(ex.getMessage());
 
 
-// Create expandable Exception.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         ex.printStackTrace(pw);
@@ -310,11 +312,13 @@ public class FenetreControleur implements Observer, Initializable {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-// Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
+        alert.setResizable(true);
 
         alert.showAndWait();
+    }
 
-        alert.showAndWait();
+    private void updateVue(){
+        this.controleur.updateVue();
     }
 }

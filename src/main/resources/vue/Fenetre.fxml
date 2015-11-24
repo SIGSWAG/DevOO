@@ -28,7 +28,7 @@
                 <Button fx:id="chargerPlan" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
                 <Button fx:id="chargerLivraisons" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
                 <Button fx:id="calculerItineraire" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
-                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#toutDeselectionner" text="Tout désélec" />
+                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#deselectionnerToutesIntersections" text="Tout désélec" />
                 <Button fx:id="genererFeuilleRoute" disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
                 <Button fx:id="annuler" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
                 <Button fx:id="rejouer" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />

@@ -35,7 +35,7 @@ public class EtatVisualisationDemandesLivr extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if(ordonnanceur.chargerDemandeLivraison())
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
         } catch (SAXException e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         } catch (ParserConfigurationException e) {
@@ -51,7 +51,7 @@ public class EtatVisualisationDemandesLivr extends EtatDefaut {
     public void calculerItineraire(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         ordonnanceur.calculerItineraire();
-        Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr); // TODO à changer
+        Controleur.setEtatCourant(Controleur.etatPrincipal);
     }
 
     @Override

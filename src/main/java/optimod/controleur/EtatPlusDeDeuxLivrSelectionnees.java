@@ -6,7 +6,6 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
@@ -50,7 +49,7 @@ public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         fenetreControleur.autoriseBoutons(false);
         for(Intersection inter: intersectionsSelectionnees){
             Livraison l =inter.getLivraison();

@@ -35,15 +35,15 @@ public class EtatAttenteDemandeLivr extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if(ordonnanceur.chargerDemandeLivraison())
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr); // TODO à changer
+                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
         } catch (SAXException e) {
-            e.printStackTrace();
+            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, exceptionXML);
         } catch (IOException e) {
-            e.printStackTrace();
+            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
 

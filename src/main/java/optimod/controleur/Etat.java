@@ -1,14 +1,10 @@
 package optimod.controleur;
 
-import optimod.es.xml.ExceptionXML;
 import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -113,16 +109,18 @@ public interface Etat {
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees toutes les intersections dont les livraisons sont selectionnees pour la suppression
+     * @param listeDeCdes
      */
-    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
+    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Echanger les livraisons selectionnees"
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees les deux intersections dont les livraisons sont selectionnees pour l'echange
+     * @param listeDeCdes
      */
-    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
+    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Annuler l'ajout d'une livraison"
@@ -136,8 +134,9 @@ public interface Etat {
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees les intersections selectionnees pour l'ajout
+     * @param listeDeCdes
      */
-    public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
+    public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes);
 
     /**
      * Méthode appelée après chaque action, permet de dire à la vue quels boutons activer

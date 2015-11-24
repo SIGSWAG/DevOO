@@ -47,7 +47,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         fenetreControleur.autoriseBoutons(false);
         for(Intersection inter: intersectionsSelectionnees){
             Livraison l =inter.getLivraison();
@@ -59,11 +59,12 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         fenetreControleur.autoriseBoutons(false);
         Livraison l1 = intersectionsSelectionnees.get(0).getLivraison();
         Livraison l2 = intersectionsSelectionnees.get(1).getLivraison();
         ordonnanceur.echangerLivraison(l1, l2);
+        listeDeCdes.ajoute(new CdeEchange(ordonnanceur, l1, l2));
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatInit);
     }

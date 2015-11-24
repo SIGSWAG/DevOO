@@ -1,8 +1,6 @@
 package optimod.controleur;
 
-import javafx.scene.control.Alert;
 import optimod.modele.Intersection;
-import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
@@ -14,13 +12,17 @@ import java.awt.*;
  */
 public class EtatAjoutLivrValidable extends EtatDefaut {
     @Override
-    public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+    public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         Intersection i1 = intersectionsSelectionnees.get(0);
         Intersection i2 = intersectionsSelectionnees.get(1);
-        if(i1.getLivraison() != null)
+        if(i1.getLivraison() != null) {
             ordonnanceur.ajouterLivraison(i2, i1.getLivraison());
-        else
+            listeDeCdes.ajoute(new CdeAjout(ordonnanceur, i1.getLivraison(), i2));
+        }
+        else {
             ordonnanceur.ajouterLivraison(i1, i2.getLivraison());
+            listeDeCdes.ajoute(new CdeAjout(ordonnanceur, i2.getLivraison(), i1));
+        }
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatPrincipal);
     }

@@ -35,14 +35,13 @@ public class Controleur {
 
     public Controleur(Ordonnanceur ordonnanceur) {
         this.ordonnanceur = ordonnanceur;
+        etatCourant = etatInit;
+        listeDeCdes = new ListeDeCdes();
     }
 
-    /**
-     * Change l'etat courant du controleur
-     * @param etat le nouvel etat courant
-     */
-    protected static void setEtatCourant(Etat etat){
-        etatCourant = etat;
+    public void updateVue() {
+        fenetreControleur.autoriseBoutons(false);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void chargerPlan() {
@@ -71,19 +70,28 @@ public class Controleur {
     }
 
     public void ajouterLivraison() {
+        etatCourant.ajouterLivraison(fenetreControleur);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+    }
 
+    public void validerAjoutLivraison(){
+        etatCourant.validerAjout(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void echangerLivraisons() {
-
+        etatCourant.echangeesLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void supprimerLivraison() {
-
+        etatCourant.supprimerLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void genererFeuilleDeRoute() {
         etatCourant.genererFeuilleDeRoute(fenetreControleur, ordonnanceur);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void selectionnerIntersection(Point p, int rayon){
@@ -109,5 +117,13 @@ public class Controleur {
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
+    }
+
+    /**
+     * Change l'etat courant du controleur
+     * @param etat le nouvel etat courant
+     */
+    protected static void setEtatCourant(Etat etat){
+        etatCourant = etat;
     }
 }
