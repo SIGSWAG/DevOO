@@ -10,7 +10,7 @@
         <AnchorPane>
             <children>
                 <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison (TODO)" underline="true" />
-                <TreeView fx:id="fenetresLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
+                <TreeView fx:id="fenetreLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
             </children>
         </AnchorPane>
     </left>

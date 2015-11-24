@@ -4,22 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import optimod.modele.*;
-import javafx.stage.Stage;
-import optimod.controleur.Controleur;
-import optimod.modele.Chemin;
 import optimod.modele.DemandeLivraison;
+import optimod.modele.FenetreLivraison;
+import optimod.modele.Livraison;
 import optimod.modele.Plan;
+import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
 
 import java.net.URL;
@@ -41,9 +33,11 @@ public class FenetreControleur implements Observer, Initializable {
     private Group planGroup;
 
     @FXML
-    private TreeView<String> fenetresLivraisonTreeView;
+    private TreeView<Object> fenetreLivraisonTreeView;
 
     private AfficheurPlan afficheurPlan;
+
+    private AfficheurFenetresLivraison afficheurFenetresLivraison;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -52,6 +46,10 @@ public class FenetreControleur implements Observer, Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup);
+        afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
+        fenetreLivraisonTreeView.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> selectionnerElementGraphe(newValue.getValue()));
     }
 
     /**
@@ -138,31 +136,27 @@ public class FenetreControleur implements Observer, Initializable {
     public void update(Observable o, Object arg) {
         // Si la mise à jour vient du plan, on redessine le plan
         if (o instanceof Plan) {
-
             Plan plan = (Plan) o;
             afficheurPlan.chargerPlan(plan);
 
         } else if (o instanceof DemandeLivraison) {
             DemandeLivraison demandeLivraison = (DemandeLivraison) o;
-
-            TreeItem<String> root = new TreeItem<String>("Fenêtres de livraison", null);
-
-            for (FenetreLivraison fenetreLivraison : demandeLivraison.getFenetres()) {
-                TreeItem<String> treeItem = new TreeItem<String>(fenetreLivraison.getHeureDebut() + " - " + fenetreLivraison.getHeureFin());
-                for(int i = 0; i < fenetreLivraison.getLivraisons().size(); i++) {
-                    Livraison livraison = fenetreLivraison.getLivraisons().get(i);
-                    TreeItem<String> treeItem1 = new TreeItem<String>(i + 1 + ". " + livraison.getIntersection().getAdresse());
-                    treeItem.getChildren().add(treeItem1);
-                }
-                root.getChildren().add(treeItem);
-            }
-
-            fenetresLivraisonTreeView.setRoot(root);
-            fenetresLivraisonTreeView.setShowRoot(true);
+            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraison);
         } else {
             // TODO
             System.err.println("PROBLEM !");
         }
     }
+
+    private void selectionnerElementGraphe(Object element) {
+        if(element instanceof FenetreLivraison) {
+            System.out.println("Fenêtre de livraison !");
+        }
+        else if(element instanceof Livraison) {
+            System.out.println("Livraison !");
+        }
+    }
+
+
 
 }
