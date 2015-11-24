@@ -19,21 +19,19 @@ import java.util.List;
  */
 public class TronconPane extends Group {
 
-    // TODO dessiner la flèche
+    public static final float TAILLE_FLECHE = 5;
 
     private IntersectionPane source;
     private Troncon troncon;
 
     public TronconPane(IntersectionPane source, Troncon troncon) {
-
         this.source = source;
         this.troncon = troncon;
-
         dessinerFleche();
-
     }
 
     private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {
+        // http://stackoverflow.com/a/26705532
         double baX = x2 - x1;
         double baY = y2 - y1;
         double caX = x2 - x1;
@@ -68,19 +66,15 @@ public class TronconPane extends Group {
     }
 
     private void dessinerFleche() {
+        final Intersection cible = troncon.getArrivee();
+        final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
+        final Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
+        final Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
+        final Path arrowEnd = new Path();
 
-        Intersection cible = troncon.getArrivee();
-
-        Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
-        Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
-
-        Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
-        Path arrowEnd = new Path();
-
-        int z = 5;
-        arrowEnd.getElements().add(new MoveTo(pointCible.getX() - z * tan.getX() - z * tan.getY(), pointCible.getY() - z * tan.getY() + z * tan.getX()));
+        arrowEnd.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
         arrowEnd.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
-        arrowEnd.getElements().add(new LineTo(pointCible.getX() - z * tan.getX() + z * tan.getY(), pointCible.getY() - z * tan.getY() - z * tan.getX()));
+        arrowEnd.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
 
         getChildren().add(ligne);
         getChildren().add(arrowEnd);
