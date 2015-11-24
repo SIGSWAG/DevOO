@@ -2,10 +2,7 @@ package optimod.vue.plan;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.Intersection;
-import optimod.modele.Plan;
-import optimod.modele.Troncon;
+import optimod.modele.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,32 +23,58 @@ public final class AfficheurPlan {
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
+
+        vider();
+
         for (Intersection intersection : plan.getIntersections()) {
             IntersectionPane intersectionPane = new IntersectionPane(intersection);
             group.getChildren().add(intersectionPane);
             for (Troncon troncon : intersection.getSortants()) {
                 group.getChildren().add(new TronconPane(intersectionPane, troncon));
             }
+            intersectionPane.toFront(); // Les intersections s'affichent au dessus des tronçons
         }
+
     }
 
     /**
      * Affiche une demande de livraison sur le plan.
-     *
      * @param demandeLivraisons
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
+
+        reinitialiserLivraisons();
+        Livraison entrepot = demandeLivraisons.getEntrepot();
+        IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
+        intersectionPane.setEstEntrepot(true);
 
     }
 
     /**
      * Vide le plan de tous ses éléments.
      */
-    public void vider() {
+    private void vider() {
         group.getChildren().clear();
     }
 
-    private Collection<IntersectionPane> getIntersectionsCercle() {
+    /**
+     * Réinitialise toutes les livraisons dessinées.
+     */
+    private void reinitialiserLivraisons() {
+        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
+            intersectionPane.setEstEntrepot(false);
+        }
+    }
+
+    private IntersectionPane trouverIntersectionPane(Intersection intersection) {
+        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
+            if (intersectionPane.getIntersection().equals(intersection))
+                return intersectionPane;
+        }
+        return null;
+    }
+
+    private Collection<IntersectionPane> getIntersectionsPane() {
         ArrayList<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof IntersectionPane) {

@@ -11,13 +11,17 @@ import optimod.modele.Intersection;
 public class IntersectionPane extends Circle {
 
     public static final int TAILLE = 6;
-    public static final Color COULEUR = Color.BLACK;
 
-    protected Intersection intersection;
+    public static final Color COULEUR_ENTREPOT = Color.GREEN;
+    public static final Color COULEUR_DEFAUT = Color.BLACK;
+
+    private Intersection intersection;
+    private boolean estEntrepot;
 
     public IntersectionPane(Intersection intersection) {
-        super(intersection.getX(), intersection.getY(), TAILLE, COULEUR);
+        super(intersection.getX(), intersection.getY(), TAILLE);
         this.intersection = intersection;
+        setEstEntrepot(false);
     }
 
     public Intersection getIntersection() {
@@ -30,6 +34,14 @@ public class IntersectionPane extends Circle {
 
     public int getY() {
         return intersection.getY();
+    }
+
+    public void setEstEntrepot(boolean estEntrepot) {
+        this.estEntrepot = estEntrepot;
+        if (estEntrepot)
+            setFill(COULEUR_ENTREPOT);
+        else
+            setFill(COULEUR_DEFAUT);
     }
 
 }

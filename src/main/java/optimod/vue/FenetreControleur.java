@@ -51,7 +51,6 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        afficheurPlan.vider();
         controleur.chargerPlan();
     }
 
