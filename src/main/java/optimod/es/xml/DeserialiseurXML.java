@@ -13,10 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Loïc Touzard on 18/11/2015.
@@ -209,8 +206,16 @@ public enum DeserialiseurXML { // Singleton
             if(tempsDeb > tempsFi){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
+            /*
             if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() < tempsDeb){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut supérieure ou égale à l'heureFin de la Plage précédente");
+            }
+            */
+            for (FenetreLivraison fl : fenetres) {
+                if ((tempsDeb < fl.getHeureFin() && tempsDeb > fl.getHeureDebut()) ||
+                        tempsFi < fl.getHeureFin() && tempsFi > fl.getHeureDebut()){
+                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Deux Plages doivent être distinctes");
+                }
             }
 
             // Parcours de toutes les Livraisons (Livraison)
@@ -248,12 +253,17 @@ public enum DeserialiseurXML { // Singleton
         // On supprime toute trace des ancienne Livraisons
         demandeLivraison.reset();
 
-        // s'il n'y a eu aucunes erreur, on peut setter la nouvelle DemandeLivraison
+        // s'il n'y a eu aucune erreur, on peut setter la nouvelle DemandeLivraison
         // Setter l'entrepot
         demandeLivraison.setEntrepot(entrepot);
         // retour de visibilité Intersection / Livraison
         entrepot.getIntersection().setLivraison(entrepot);
         // affectations des fenêtres de livraison
+        fenetres.sort(new Comparator<FenetreLivraison>() {
+            public int compare(FenetreLivraison o1, FenetreLivraison o2) {
+                return o1.getHeureDebut()-o2.getHeureDebut();
+            }
+        });
         demandeLivraison.setFenetres(fenetres);
         // retour de visibilité Intersection / Livraison
         for (FenetreLivraison f : fenetres ) {
