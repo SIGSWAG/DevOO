@@ -81,4 +81,12 @@ public class Intersection {
     public void setLivraison(Livraison livraison) {
         this.livraison = livraison;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Intersection)) {
+            return false;
+        }
+        return this.adresse == ((Intersection) obj).adresse;
+    }
 }
