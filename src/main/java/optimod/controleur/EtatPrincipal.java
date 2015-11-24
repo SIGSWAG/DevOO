@@ -60,13 +60,17 @@ public class EtatPrincipal extends EtatDefaut {
     }
 
     @Override
-    public void selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Livraison> livraisonsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
         Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
-            livraisonsSelectionnees.add(livraisonSelectionnee);
+            intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
+            return true;
+        }else{
+            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
+            return false;
         }
     }
 

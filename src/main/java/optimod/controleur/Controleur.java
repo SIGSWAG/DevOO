@@ -1,5 +1,6 @@
 package optimod.controleur;
 
+import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -17,7 +18,7 @@ public class Controleur {
     private Ordonnanceur ordonnanceur;
     private FenetreControleur fenetreControleur;
     private ListeDeCdes listeDeCdes;
-    private List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
+    private List<Intersection> intersectionsSelectionnees = new ArrayList<Intersection>();
 
     private static Etat etatCourant;
     // Instances associees a chaque etat possible du controleur
@@ -26,10 +27,10 @@ public class Controleur {
     protected static final EtatVisualisationDemandesLivr etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivr();
     protected static final EtatPrincipal etatPrincipal = new EtatPrincipal();
     protected static final EtatUneLivrSelectionnee etatUneLivrSelectionnee = new EtatUneLivrSelectionnee();
-//    protected static final EtatDeuxLivrSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivrSelectionnees();
-//    protected static final EtatPlusDeDeuxLivrSelectionnees etatPlusDeDeuxLivrSelectionnees = new EtatPlusDeDeuxLivrSelectionnees();
-//    protected static final EtatAjoutLivr etatAjoutLivr = new EtatAjoutLivr();
-//    protected static final EtatAjoutLivrValidable etatAjoutLivrValidable = new EtatAjoutLivrValidable();
+    protected static final EtatDeuxLivrSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivrSelectionnees();
+    protected static final EtatPlusDeDeuxLivrSelectionnees etatPlusDeDeuxLivrSelectionnees = new EtatPlusDeDeuxLivrSelectionnees();
+    protected static final EtatAjoutInit etatAjoutInit = new EtatAjoutInit();
+    protected static final EtatAjoutLivrValidable etatAjoutLivrValidable = new EtatAjoutLivrValidable();
 
 
     public Controleur(Ordonnanceur ordonnanceur) {
@@ -87,21 +88,21 @@ public class Controleur {
 
     public void selectionnerIntersection(Point p, int rayon){
         etatCourant.selectionnerIntersection(
-                fenetreControleur, ordonnanceur, p, rayon, livraisonsSelectionnees
+                fenetreControleur, ordonnanceur, p, rayon, intersectionsSelectionnees
         );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void deselectionnerIntersection(Point p, int rayon){
         etatCourant.deselectionnerIntersection(
-                fenetreControleur, ordonnanceur, p, rayon, livraisonsSelectionnees
+                fenetreControleur, ordonnanceur, p, rayon, intersectionsSelectionnees
         );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
     public void deselectionnerToutesIntersections(){
         etatCourant.deselectionnerToutesIntersections(
-                fenetreControleur, ordonnanceur, livraisonsSelectionnees
+                fenetreControleur, ordonnanceur, intersectionsSelectionnees
         );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }

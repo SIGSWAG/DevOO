@@ -1,6 +1,6 @@
 package optimod.controleur;
 
-import optimod.modele.Livraison;
+import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 import java.awt.*;
@@ -49,19 +49,6 @@ public interface Etat {
     public void ajouterLivraison(FenetreControleur fenetreControleur);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Echanger"
-     * @param fenetreControleur
-     */
-    public void echangerLivraisons(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
-
-    /**
-     * Methode appelee par controleur apres un clic sur le bouton "Supprimer"
-     * @param fenetreControleur
-     * @param ordonnanceur
-     */
-    public void supprimerLivraison(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
-
-    /**
      * Methode appelee par controleur apres un clic sur le bouton "Générer feuille de route"
      * @param fenetreControleur
      * @param ordonnanceur
@@ -92,9 +79,9 @@ public interface Etat {
      * @param ordonnanceur
      * @param p coordonnees du plan correspondant au point clique
      * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
-     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
      */
-    public void selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Livraison> livraisonsSelectionnees);
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
@@ -103,26 +90,49 @@ public interface Etat {
      * @param ordonnanceur
      * @param p coordonnees du plan correspondant au point clique
      * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
-     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
      */
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Livraison> livraisonsSelectionnees);
+    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
      * @param ordonnanceur
-     * @param livraisonsSelectionnees toutes les livraisons actuellement selectionnees
+     * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
      */
-    public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Livraison> livraisonsSelectionnees);
+    public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Methode appelee par controleur apres un clic sur le bouton "Supprimer les livraisons selectionnees"
      * @param fenetreControleur
      * @param ordonnanceur
-     * @param livraisonsSelectionnees toutes les livraisons selectionnees pour la suppression
+     * @param intersectionsSelectionnees toutes les intersections dont les livraisons sont selectionnees pour la suppression
      */
-    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Livraison> livraisonsSelectionnees);
+    public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic sur le bouton "Echanger les livraisons selectionnees"
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param intersectionsSelectionnees les deux intersections dont les livraisons sont selectionnees pour l'echange
+     */
+    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic sur le bouton "Annuler l'ajout d'une livraison"
+     * @param fenetreControleur
+     * @param intersectionsSelectionnees les intersections selectionnees pour l'ajout
+     */
+    public void annulerAjout(FenetreControleur fenetreControleur, List<Intersection> intersectionsSelectionnees);
+
+    /**
+     * Methode appelee par controleur apres un clic sur le bouton "Valider l'ajout de la livraison"
+     * @param fenetreControleur
+     * @param ordonnanceur
+     * @param intersectionsSelectionnees les intersections selectionnees pour l'ajout
+     */
+    public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Méthode appelée après chaque action, permet de dire à la vue quels boutons activer

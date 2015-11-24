@@ -222,7 +222,7 @@ public class FenetreControleur implements Observer, Initializable {
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("selctions activees (ou pas)");
+        System.out.println("selections activees (ou pas)");
     }
 
     public void activerDeselections(boolean estActif){
@@ -239,18 +239,36 @@ public class FenetreControleur implements Observer, Initializable {
         System.out.println("toutes les deselections activees (ou pas)");
     }
 
+    public void activerAnnulerAjout(boolean estActif) {
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("on peut annuler l'ajout pour revenir à l'état principal");
+    }
+
+    public void activerValiderAjout(boolean estActif) {
+        /**
+         * TODO @jonathan @aurélien
+         */
+        System.out.println("on peut valider l'ajout pour revenir à l'état principal");
+    }
+
     public void autoriseBoutons(boolean estActif){
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
-        activerCalculerItineraire(estActif);
         activerToutDeselectionner(estActif);
-        activerAnnuler(estActif);
         activerGenererFeuilleRoute(estActif);
-        activerAjouter(estActif);
+        activerAnnuler(estActif);
         activerRejouer(estActif);
+        activerAjouter(estActif);
         activerSupprimer(estActif);
         activerEchanger(estActif);
+        activerCalculerItineraire(estActif);
         activerSelections(estActif);
+        activerDeselections(estActif);
+        activerToutesLesDeselections(estActif);
+        activerAnnulerAjout(estActif);
+        activerValiderAjout(estActif);
     }
 
     public void afficheMessage(String message, String titre, Alert.AlertType alertType){

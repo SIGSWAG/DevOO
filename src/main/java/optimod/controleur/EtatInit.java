@@ -17,7 +17,7 @@ public class EtatInit extends EtatDefaut {
     }
 
     @Override
-    public void updateVue(FenetreControleur fenetreControleur){
+    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerChargerPlan(true);
     }
 

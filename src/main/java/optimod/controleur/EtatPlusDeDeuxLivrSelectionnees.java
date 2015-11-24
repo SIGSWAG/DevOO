@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * Created by hdelval on 11/23/15.
  */
-public class EtatUneLivrSelectionnee extends EtatDefaut {
+public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     @Override
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
@@ -21,7 +21,6 @@ public class EtatUneLivrSelectionnee extends EtatDefaut {
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatDeuxLivrSelectionnees);
             return true;
         }else{
             fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
@@ -36,7 +35,10 @@ public class EtatUneLivrSelectionnee extends EtatDefaut {
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.remove(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatPrincipal);
+            if(intersectionsSelectionnees.size() > 2)
+                Controleur.setEtatCourant(Controleur.etatPlusDeDeuxLivrSelectionnees);
+            else
+                Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
         }
     }
 
