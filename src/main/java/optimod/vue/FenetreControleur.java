@@ -6,19 +6,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import optimod.modele.*;
-import javafx.stage.Stage;
-import optimod.controleur.Controleur;
-import optimod.modele.Chemin;
-import optimod.modele.DemandeLivraison;
+import optimod.modele.DemandeLivraisons;
+import optimod.modele.FenetreLivraison;
+import optimod.modele.Livraison;
 import optimod.modele.Plan;
 import optimod.vue.plan.AfficheurPlan;
 
@@ -142,12 +134,13 @@ public class FenetreControleur implements Observer, Initializable {
             Plan plan = (Plan) o;
             afficheurPlan.chargerPlan(plan);
 
-        } else if (o instanceof DemandeLivraison) {
-            DemandeLivraison demandeLivraison = (DemandeLivraison) o;
+        } else if (o instanceof DemandeLivraisons) {
+            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
 
+            // Mise à jour de la liste de livraisons
             TreeItem<String> root = new TreeItem<String>("Fenêtres de livraison", null);
 
-            for (FenetreLivraison fenetreLivraison : demandeLivraison.getFenetres()) {
+            for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
                 TreeItem<String> treeItem = new TreeItem<String>(fenetreLivraison.getHeureDebut() + " - " + fenetreLivraison.getHeureFin());
                 for(int i = 0; i < fenetreLivraison.getLivraisons().size(); i++) {
                     Livraison livraison = fenetreLivraison.getLivraisons().get(i);
@@ -159,6 +152,10 @@ public class FenetreControleur implements Observer, Initializable {
 
             fenetresLivraisonTreeView.setRoot(root);
             fenetresLivraisonTreeView.setShowRoot(true);
+
+            // Mise à jour du plan
+            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+
         } else {
             // TODO
             System.err.println("PROBLEM !");

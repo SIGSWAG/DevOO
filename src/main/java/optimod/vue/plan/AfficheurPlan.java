@@ -2,6 +2,7 @@ package optimod.vue.plan;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import optimod.modele.DemandeLivraisons;
 import optimod.modele.Intersection;
 import optimod.modele.Plan;
 import optimod.modele.Troncon;
@@ -22,7 +23,6 @@ public final class AfficheurPlan {
 
     /**
      * Ajoute des intersections au plan, ainsi que leurs tronçons.
-     *
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
@@ -33,6 +33,15 @@ public final class AfficheurPlan {
                 group.getChildren().add(new TronconPane(intersectionPane, troncon));
             }
         }
+    }
+
+    /**
+     * Affiche une demande de livraison sur le plan.
+     *
+     * @param demandeLivraisons
+     */
+    public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
+
     }
 
     /**
