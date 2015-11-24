@@ -77,7 +77,6 @@ public enum DeserialiseurXML { // Singleton
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être positive");
 
             // Création de l'intersection
-
             intersections.put(adresse, new Intersection(x, y, adresse));
             noeudsListe.put(adresse, noeud);
         }
@@ -237,7 +236,7 @@ public enum DeserialiseurXML { // Singleton
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
 
                 // Création de la Livraison et liaisons
-                Livraison livraison = new Livraison(intersectionDeLivraison);
+                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi);
                 livraisons.add(livraison);
                 intersectionsUtilisees.add(intersectionDeLivraison);
             }
