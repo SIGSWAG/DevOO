@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class DemandeLivraison extends Observable {
+public class DemandeLivraisons extends Observable {
 
 
     private static int TEMPS_ARRET = 1;
@@ -26,7 +26,7 @@ public class DemandeLivraison extends Observable {
     /**
      * Default constructor
      */
-    public DemandeLivraison(Plan pl) {
+    public DemandeLivraisons(Plan pl) {
         this.plan = pl;
         this.itineraire = new ArrayList<Chemin>();
         this.fenetres = new ArrayList<FenetreLivraison>();

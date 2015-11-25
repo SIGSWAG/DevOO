@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Ordonnanceur {
 
-    private DemandeLivraison demandeLivraison;
+    private DemandeLivraisons demandeLivraisons;
 
     private Plan plan;
 
@@ -17,7 +17,7 @@ public class Ordonnanceur {
      */
     public Ordonnanceur() {
         plan = new Plan();
-        demandeLivraison = new DemandeLivraison(plan);
+        demandeLivraisons = new DemandeLivraisons(plan);
     }
 
     /**
@@ -50,14 +50,14 @@ public class Ordonnanceur {
      *
      */
     public boolean chargerDemandeLivraison() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
-        return demandeLivraison.chargerDemandeLivraison();
+        return demandeLivraisons.chargerDemandeLivraison();
     }
 
     /**
      * 
      */
     public void calculerItineraire() {
-        demandeLivraison.calculerItineraire();
+        demandeLivraisons.calculerItineraire();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Ordonnanceur {
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        demandeLivraison.ajouterLivraison(intersection, livr);
+        demandeLivraisons.ajouterLivraison(intersection, livr);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Ordonnanceur {
      * @param livr la livraison à supprimer
      */
     public void supprimerLivraison(Livraison livr) {
-        demandeLivraison.supprimerLivraison(livr);
+        demandeLivraisons.supprimerLivraison(livr);
     }
 
     /**
@@ -83,15 +83,15 @@ public class Ordonnanceur {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
-        demandeLivraison.echangerLivraison(livr1, livr2);
+        demandeLivraisons.echangerLivraison(livr1, livr2);
     }
 
-    public DemandeLivraison getDemandeLivraison() {
-        return demandeLivraison;
+    public DemandeLivraisons getDemandeLivraisons() {
+        return demandeLivraisons;
     }
 
-    public void setDemandeLivraison(DemandeLivraison demandeLivraison) {
-        this.demandeLivraison = demandeLivraison;
+    public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
+        this.demandeLivraisons = demandeLivraisons;
     }
 
     public Plan getPlan() {
@@ -103,6 +103,6 @@ public class Ordonnanceur {
     }
 
     public void genererFeuilleDeRoute(){
-        demandeLivraison.genererFeuilleDeRoute();
+        demandeLivraisons.genererFeuilleDeRoute();
     }
 }

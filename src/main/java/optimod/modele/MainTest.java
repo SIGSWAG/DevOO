@@ -128,7 +128,7 @@ public class MainTest {
         intersections.add(intersection6);
 
         ordonnanceur.getPlan().setIntersections(intersections);
-        ordonnanceur.getDemandeLivraison().setEntrepot(livraison);
+        ordonnanceur.getDemandeLivraisons().setEntrepot(livraison);
 
         List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
@@ -154,13 +154,13 @@ public class MainTest {
         fenetres.add(fenetreLivraison2);
         fenetres.add(fenetreLivraison1);
 
-        ordonnanceur.getDemandeLivraison().setFenetres(fenetres);
+        ordonnanceur.getDemandeLivraisons().setFenetres(fenetres);
 
 
 
 
 
-        DemandeLivraison dl = ordonnanceur.getDemandeLivraison();
+        DemandeLivraisons dl = ordonnanceur.getDemandeLivraisons();
         dl.calculerItineraire();
 
         for(Chemin chemin : dl.getItineraire()){

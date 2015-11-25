@@ -9,8 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import optimod.modele.*;
-import optimod.modele.DemandeLivraison;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import optimod.modele.DemandeLivraisons;
+import optimod.modele.FenetreLivraison;
+import optimod.modele.Livraison;
 import optimod.modele.Plan;
 import optimod.vue.plan.AfficheurPlan;
 
@@ -73,7 +76,6 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
-        afficheurPlan.vider();
         controleur.chargerPlan();
     }
 
@@ -156,12 +158,13 @@ public class FenetreControleur implements Observer, Initializable {
             Plan plan = (Plan) o;
             afficheurPlan.chargerPlan(plan);
 
-        } else if (o instanceof DemandeLivraison) {
-            DemandeLivraison demandeLivraison = (DemandeLivraison) o;
+        } else if (o instanceof DemandeLivraisons) {
+            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
 
+            // Mise à jour de la liste de livraisons
             TreeItem<String> root = new TreeItem<String>("Fenêtres de livraison", null);
 
-            for (FenetreLivraison fenetreLivraison : demandeLivraison.getFenetres()) {
+            for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
                 TreeItem<String> treeItem = new TreeItem<String>(fenetreLivraison.getHeureDebut() + " - " + fenetreLivraison.getHeureFin());
                 for(int i = 0; i < fenetreLivraison.getLivraisons().size(); i++) {
                     Livraison livraison = fenetreLivraison.getLivraisons().get(i);
@@ -173,6 +176,10 @@ public class FenetreControleur implements Observer, Initializable {
 
             fenetresLivraisonTreeView.setRoot(root);
             fenetresLivraisonTreeView.setShowRoot(true);
+
+            // Mise à jour du plan
+            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+
         } else {
             // TODO
             System.err.println("PROBLEM !");
