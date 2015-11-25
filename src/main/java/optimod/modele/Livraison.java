@@ -113,26 +113,29 @@ public class Livraison {
             chemin.setArrivee(destination);
             boolean depart = false;
 
-            List<Intersection> intersections = new ArrayList<Intersection>();
+            List<Troncon> troncons = new ArrayList<>();
 
 
             Intersection currIntersection = destination.intersection;
 
 
             while (!depart) {
-                currIntersection = parents.get(currIntersection.getAdresse());
+                Intersection parent = parents.get(currIntersection.getAdresse());
 
                 if (currIntersection.getAdresse() == this.intersection.getAdresse()) {
                     depart = true;
                 } else {
 
-                    intersections.add(currIntersection);
+                    Troncon troncon = parent.getTronconVers(currIntersection);
+
+                    troncons.add(troncon);
                 }
+                currIntersection=parent;
 
             }
 
-            Collections.reverse(intersections);
-            chemin.setIntersections(intersections);
+            Collections.reverse(troncons);
+            chemin.setTroncons(troncons);
         }
 
 

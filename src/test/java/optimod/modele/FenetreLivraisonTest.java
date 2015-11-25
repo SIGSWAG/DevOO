@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class FenetreLivraisonTest {
 
+
+
+
+
+
     @Test
     public void testCalculPCCInterne() throws Exception {
         Intersection intersection1 = new Intersection(0, 0, 1, null);
@@ -103,8 +108,8 @@ public class FenetreLivraisonTest {
 
         FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
 
+        List<Chemin> chemins = fenetreLivraison1.calculPCCInterne();
 
-        
     }
 
     @Test

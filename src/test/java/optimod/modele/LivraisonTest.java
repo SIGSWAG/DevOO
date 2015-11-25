@@ -64,8 +64,8 @@ public class LivraisonTest {
 
         assertEquals(chemin.getArrivee(), livraison4);
         assertEquals(chemin.getDepart(), livraison);
-        assertEquals(chemin.getIntersections().size(), 1);
-        assertEquals(chemin.getIntersections().get(0), intersection2);
+        assertEquals(chemin.getTroncons().size(), 2);
+        assertEquals(chemin.getTroncons().get(0).getArrivee(), intersection2);
 
     }
 
