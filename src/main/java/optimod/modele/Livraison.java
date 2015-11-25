@@ -1,8 +1,5 @@
 package optimod.modele;
 
-import javafx.util.Pair;
-import optimod.modele.Intersection;
-
 import java.util.*;
 
 public class Livraison {
@@ -20,7 +17,6 @@ public class Livraison {
     private Livraison precedente;
 
 
-
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
@@ -32,36 +28,31 @@ public class Livraison {
     }
 
     /**
-     *
      * Cette méthode permet de calculer le plus court chemin entre la livraison
      * courante et une livraison quelconque. Utilise l'algorithme de Dijkstra.
+     *
      * @param destination la livraison vers laquelle on souhaite se diriger
      * @return le plus court chemin entre this et la livraison destination
-     *
-     *
-     *
      */
     public Chemin calculPCC(Livraison destination) {
 
-        Hashtable<Integer,Integer> distances = new Hashtable<Integer,Integer>(); //intersection, distance
-        Hashtable<Integer,Intersection> parents = new Hashtable<Integer, Intersection>(); //parents
+        Hashtable<Integer, Integer> distances = new Hashtable<Integer, Integer>(); //intersection, distance
+        Hashtable<Integer, Intersection> parents = new Hashtable<Integer, Intersection>(); //parents
         PriorityQueue<DijkstraIntersection> tasBinaire = new PriorityQueue<DijkstraIntersection>();//distance, intersection
 
         boolean destinationTrouvee = false;
 
-        distances.put(this.intersection.getAdresse(),0);
+        distances.put(this.intersection.getAdresse(), 0);
         tasBinaire.add(new DijkstraIntersection(0, this.intersection));
-        parents.put(this.intersection.getAdresse(),this.intersection);
+        parents.put(this.intersection.getAdresse(), this.intersection);
 
-        while(!tasBinaire.isEmpty() && !destinationTrouvee) {
+        while (!tasBinaire.isEmpty() && !destinationTrouvee) {
 
             DijkstraIntersection currDi = tasBinaire.poll(); // on prend l'intersection a la plus petite distance
 
 
             int currDist = currDi.getDistance();
             Intersection currIntersection = currDi.getIntersection();
-
-
 
 
             if (currIntersection.getAdresse() == destination.intersection.getAdresse()) {
@@ -104,7 +95,7 @@ public class Livraison {
 
         }
         Chemin chemin = null;
-        if(destinationTrouvee) {
+        if (destinationTrouvee) {
             //il faut à présent calculer le chemin
             int distanceArrivee = distances.get(destination.intersection.getAdresse());
             chemin = new Chemin();
@@ -171,7 +162,7 @@ public class Livraison {
         this.precedente = precedente;
     }
 
-    public Livraison getSuivante(){
+    public Livraison getSuivante() {
         return this.cheminVersSuivante.getArrivee();
     }
 
@@ -191,7 +182,7 @@ public class Livraison {
         this.heureFinFenetre = heureFinFenetre;
     }
 
-    public boolean estEnRetard(){
+    public boolean estEnRetard() {
         return heureLivraison > heureFinFenetre;
     }
 
@@ -203,13 +194,15 @@ public class Livraison {
         return (heureLivraison % 3600) / 60;
     }
 
-    public int getSeconde() { return (heureLivraison % 3600) % 60; }
+    public int getSeconde() {
+        return (heureLivraison % 3600) % 60;
+    }
 
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {
         private int distance;
         private Intersection intersection;
 
-        public DijkstraIntersection(int distance, Intersection intersection){
+        public DijkstraIntersection(int distance, Intersection intersection) {
             this.distance = distance;
             this.intersection = intersection;
         }
@@ -217,13 +210,14 @@ public class Livraison {
         public int compareTo(DijkstraIntersection autre) {
             return Double.compare(this.distance, autre.distance);
         }
+
         @Override
         public boolean equals(Object obj) {
 
-            if(obj instanceof DijkstraIntersection){
+            if (obj instanceof DijkstraIntersection) {
                 DijkstraIntersection di = (DijkstraIntersection) obj;
 
-                return di.distance==distance && di.intersection.getAdresse() == intersection.getAdresse();
+                return di.distance == distance && di.intersection.getAdresse() == intersection.getAdresse();
             }
             return false;
         }
