@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <AnchorPane>
+            <children>
+                <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison (TODO)" underline="true" />
+                <TreeView fx:id="fenetreLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <ScrollPane id="planCanvasScrollPane" fx:id="planCanvasScrollPane" fitToHeight="true" fitToWidth="true"
+                    hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
+            <content>
+                <Group fx:id="planGroup" />
+            </content>
+        </ScrollPane>
+    </center>
+    <top>
+        <ToolBar>
+            <items>
+                <Button fx:id="chargerPlan" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
+                <Button fx:id="chargerLivraisons" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
+                <Button fx:id="calculerItineraire" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
+                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#deselectionnerToutesIntersections" text="Tout désélec" />
+                <Button fx:id="genererFeuilleRoute" disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
+                <Button fx:id="annuler" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
+                <Button fx:id="rejouer" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
+                <Button fx:id="ajouter" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
+                <Button fx:id="supprimer" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
+                <Button fx:id="echanger" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
+            </items>
+        </ToolBar>
+    </top>
+</BorderPane>
