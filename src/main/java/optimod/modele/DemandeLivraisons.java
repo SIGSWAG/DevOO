@@ -2,6 +2,8 @@ package optimod.modele;
 
 import optimod.es.xml.DeserialiseurXML;
 import optimod.es.xml.ExceptionXML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,6 +14,7 @@ import java.util.Observable;
 
 public class DemandeLivraisons extends Observable {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static int TEMPS_ARRET = 1;
 
@@ -28,8 +31,8 @@ public class DemandeLivraisons extends Observable {
      */
     public DemandeLivraisons(Plan pl) {
         this.plan = pl;
-        this.itineraire = new ArrayList<Chemin>();
-        this.fenetres = new ArrayList<FenetreLivraison>();
+        this.itineraire = new ArrayList<>();
+        this.fenetres = new ArrayList<>();
     }
 
 
@@ -48,9 +51,9 @@ public class DemandeLivraisons extends Observable {
      * Puis appelle la méthode de GraphePCC permettant de trouver le + court parcours dans ce graphe.
      */
     public void calculerItineraire() {
-        List<Chemin> graphe = new ArrayList<Chemin>();
+        List<Chemin> graphe = new ArrayList<>();
 
-        List<Livraison> listeEntrepot = new ArrayList<Livraison>();
+        List<Livraison> listeEntrepot = new ArrayList<>();
         listeEntrepot.add(entrepot);
         FenetreLivraison fenEntrepot = new FenetreLivraison(listeEntrepot,0,1);
 
@@ -177,7 +180,7 @@ public class DemandeLivraisons extends Observable {
      */
     public void supprimerLivraison(Livraison livr) {
         if(livr == entrepot){
-            System.out.println("erreur, action impossible sur l'entrepot");
+            logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
             return;
         }
         livr.getSuivante().setPrecedente(livr.getPrecedente());
@@ -194,8 +197,8 @@ public class DemandeLivraisons extends Observable {
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
         // TODO Faire attention aux fenetres !
-        if(livr1 == entrepot || livr2 == entrepot){
-            System.out.println("erreur, action impossible sur l'entrepot");
+        if(livr1 == entrepot || livr2 == entrepot) {
+            logger.error("Action impossible sur l'entrepot");
             return;
         }
         Livraison livr1PrecTemp = livr1.getPrecedente();
