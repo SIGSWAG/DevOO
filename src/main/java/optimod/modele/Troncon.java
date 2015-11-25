@@ -12,12 +12,15 @@ public class Troncon {
 
     private String nom;
 
+    private boolean estEmprunte;
+
     public Troncon(Intersection intersection, double vitesse, double longueur, String nom) {
         this.duree = (int) (longueur / vitesse);
         this.arrivee = intersection;
         this.nom = nom;
         this.longueur = longueur;
         this.vitesse = vitesse;
+        this.estEmprunte = false;
     }
 
     public int getDuree() {
@@ -42,5 +45,13 @@ public class Troncon {
 
     public double getVitesse() {
         return vitesse;
+    }
+
+    public boolean estEmprunte() {
+        return estEmprunte;
+    }
+
+    public void setEstEmprunte(boolean estEmprunte) {
+        this.estEmprunte = estEmprunte;
     }
 }

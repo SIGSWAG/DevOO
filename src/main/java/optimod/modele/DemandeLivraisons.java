@@ -2,6 +2,8 @@ package optimod.modele;
 
 import optimod.es.xml.DeserialiseurXML;
 import optimod.es.xml.ExceptionXML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,6 +14,7 @@ import java.util.Observable;
 
 public class DemandeLivraisons extends Observable {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static int TEMPS_ARRET = 1;
 
@@ -82,6 +85,8 @@ public class DemandeLivraisons extends Observable {
 
         for(Chemin chemin : itineraire){
 
+            mettreAJourTronconsEmpruntes(chemin);
+
             Livraison arrivee = chemin.getArrivee();
             Livraison depart = chemin.getDepart();
             depart.setCheminVersSuivante(chemin); //on maj le chemin vers la livraison suivante
@@ -97,11 +102,46 @@ public class DemandeLivraisons extends Observable {
 
         }
 
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
+    }
 
 
+    private void mettreAJourTronconsEmpruntes(Chemin chemin){
+
+        Intersection depart = chemin.getDepart().getIntersection();
+        Intersection arrivee = chemin.getArrivee().getIntersection();
+
+        if(chemin.getIntersections() != null && chemin.getIntersections().size()>0){
+
+            //depart vers premiereIntersection
+            Troncon premierTroncon = depart.getTronconVers(chemin.getIntersections().get(0));
+            if(premierTroncon != null ){
+                premierTroncon.setEstEmprunte(true);
+            }
+
+            for(int i=1; i<chemin.getIntersections().size()-1; i++){ //intersection quelconque vers suivante
+                Intersection dep = chemin.getIntersections().get(i-1);
+                Intersection arr = chemin.getIntersections().get(i);
+
+                Troncon troncon = dep.getTronconVers(arr);
+                if(troncon != null ){
+                    troncon.setEstEmprunte(true);
+                }
+            }
+
+            // de la derniere intersection vers l'arrivee
+            Intersection derniereIntersection = chemin.getIntersections().get(chemin.getIntersections().size()-1);
+            Troncon dernierTroncon = derniereIntersection.getTronconVers(arrivee);
+
+            if(dernierTroncon != null ){
+                dernierTroncon.setEstEmprunte(true);
+            }
 
 
-
+        }else { //chemin direct, pas d'intersection
+            Troncon troncon = depart.getTronconVers(arrivee);
+            troncon.setEstEmprunte(true);
+        }
 
     }
 
@@ -111,9 +151,11 @@ public class DemandeLivraisons extends Observable {
      */
     private void mettreAJourLesHeuresAPartirDe(Livraison livr) {
         while(!livr.equals(entrepot)){
-            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree());
+            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET);
             livr = livr.getSuivante();
         }
+        entrepot.setHeureLivraison(entrepot.getPrecedente().getHeureLivraison()+entrepot.getPrecedente().getCheminVersSuivante().getDuree()+TEMPS_ARRET);
+
     }
 
     /**
@@ -138,7 +180,7 @@ public class DemandeLivraisons extends Observable {
      */
     public void supprimerLivraison(Livraison livr) {
         if(livr == entrepot){
-            System.out.println("erreur, action impossible sur l'entrepot");
+            logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
             return;
         }
         livr.getSuivante().setPrecedente(livr.getPrecedente());
@@ -155,8 +197,8 @@ public class DemandeLivraisons extends Observable {
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
         // TODO Faire attention aux fenetres !
-        if(livr1 == entrepot || livr2 == entrepot){
-            System.out.println("erreur, action impossible sur l'entrepot");
+        if(livr1 == entrepot || livr2 == entrepot) {
+            logger.error("Action impossible sur l'entrepot");
             return;
         }
         Livraison livr1PrecTemp = livr1.getPrecedente();
@@ -205,6 +247,18 @@ public class DemandeLivraisons extends Observable {
      */
     public void reset(){
         itineraire = new ArrayList<Chemin>();
+
+        //reset les troncons (est emprunte)
+        List<Intersection> intersections = plan.getIntersections();
+        for(Intersection intersection : intersections){
+            if(intersection.getSortants() != null && intersection.getSortants().size()>0){
+                List<Troncon> sortants = intersection.getSortants();
+                for(Troncon troncon : sortants){
+                    troncon.setEstEmprunte(false);
+                }
+            }
+        }
+
 
         // suppression de tous les liens Intersection -> Livraison
         for (FenetreLivraison f : fenetres){
