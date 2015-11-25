@@ -65,7 +65,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
         ordonnanceur.echangerLivraison(l1, l2);
         listeDeCdes.ajoute(new CdeEchange(ordonnanceur, l1, l2));
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatInit);
+        Controleur.setEtatCourant(Controleur.etatPrincipal);
     }
 
     @Override
