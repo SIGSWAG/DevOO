@@ -2,10 +2,8 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -42,18 +40,10 @@ public class IntersectionPane extends Circle implements Initializable {
         survol = false;
 
         infobulle = new Tooltip();
-        dureeApparition(infobulle, 25);
+        dureeApparition(infobulle, 1);
 
-        setOnMouseEntered(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                survol();
-            }
-        });
-        setOnMouseExited(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                quitteSurvol();
-            }
-        });
+        setOnMouseEntered(event -> survol());
+        setOnMouseExited(event -> quitteSurvol());
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,7 +57,8 @@ public class IntersectionPane extends Circle implements Initializable {
 
     private void survol() {
         survol = true;
-        Tooltip.install(this, infobulle);
+        if (!infobulle.getText().isEmpty())
+            Tooltip.install(this, infobulle);
         colorier();
     }
 
