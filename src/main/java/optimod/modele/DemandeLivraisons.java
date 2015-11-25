@@ -31,8 +31,8 @@ public class DemandeLivraisons extends Observable {
      */
     public DemandeLivraisons(Plan pl) {
         this.plan = pl;
-        this.itineraire = new ArrayList<Chemin>();
-        this.fenetres = new ArrayList<FenetreLivraison>();
+        this.itineraire = new ArrayList<>();
+        this.fenetres = new ArrayList<>();
     }
 
 
@@ -51,9 +51,9 @@ public class DemandeLivraisons extends Observable {
      * Puis appelle la méthode de GraphePCC permettant de trouver le + court parcours dans ce graphe.
      */
     public void calculerItineraire() {
-        List<Chemin> graphe = new ArrayList<Chemin>();
+        List<Chemin> graphe = new ArrayList<>();
 
-        List<Livraison> listeEntrepot = new ArrayList<Livraison>();
+        List<Livraison> listeEntrepot = new ArrayList<>();
         listeEntrepot.add(entrepot);
         FenetreLivraison fenEntrepot = new FenetreLivraison(listeEntrepot,0,1);
 

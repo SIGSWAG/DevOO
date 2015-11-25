@@ -13,7 +13,7 @@ public class FenetreLivraison {
 
     private int heureFin;
 
-    private List<Livraison> livraisons = new ArrayList<Livraison>();
+    private List<Livraison> livraisons = new ArrayList<>();
 
     public FenetreLivraison(List<Livraison> livraisons, int heureDebut, int heureFin) {
         this.livraisons = livraisons;
@@ -25,7 +25,7 @@ public class FenetreLivraison {
      * Contrat : Calcule les plus courts chemins entre toutes les livraisons présentes au sein de la fenêtere
      */
     public List<Chemin> calculPCCInterne() {
-        List<Chemin> chemins = new ArrayList<Chemin>();
+        List<Chemin> chemins = new ArrayList<>();
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisons) {
                 if (!depart.equals(arrivee)) {
@@ -45,7 +45,7 @@ public class FenetreLivraison {
      * @param fdl : fenêtre de livraison suivante
      */
     public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
-        List<Chemin> chemins = new ArrayList<Chemin>();
+        List<Chemin> chemins = new ArrayList<>();
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisonsSuivantes) {

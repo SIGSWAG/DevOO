@@ -191,10 +191,13 @@ public class FenetreControleur implements Observer, Initializable {
 
     private void selectionnerElementGraphe(Object element) {
         if(element instanceof FenetreLivraison) {
+            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
         }
         else if(element instanceof Livraison) {
+            Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
+            afficheurPlan.selectionnerIntersection(livraison);
         }
     }
 
