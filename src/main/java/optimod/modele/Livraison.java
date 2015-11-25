@@ -19,17 +19,19 @@ public class Livraison {
 
     private Livraison precedente;
 
-
+    private int idClient;
 
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
 
-    public Livraison(Intersection intersection, int heureFinFenetre, int heureDebutFenetre) {
+    public Livraison(Intersection intersection, int heureDebutFenetre, int heureFinFenetre, int idClient) {
         this.intersection = intersection;
-        this.heureFinFenetre = heureFinFenetre;
         this.heureDebutFenetre = heureDebutFenetre;
+        this.heureFinFenetre = heureFinFenetre;
+        this.idClient = idClient;
     }
+
 
     /**
      *
@@ -207,6 +209,14 @@ public class Livraison {
     }
 
     public int getSeconde() { return (heureLivraison % 3600) % 60; }
+
+    public int getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
+    }
 
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {
         private int distance;
