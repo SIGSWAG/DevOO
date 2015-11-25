@@ -99,12 +99,7 @@ public class DemandeLivraisons extends Observable {
 
         }
 
-
-
-
-
-
-
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
 
