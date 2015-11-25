@@ -11,6 +11,7 @@ import optimod.modele.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,9 +24,43 @@ public final class AfficheurPlan {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private Group group;
+    
+    private List<Color> couleurs;
+
+    private List<Color> couleursUtilisees;
 
     public AfficheurPlan(Group group) {
         this.group = group;
+        try {
+            this.couleurs = chargerToutesLesCouleurs();
+        } catch (ClassNotFoundException e) {
+            logger.error("Classe Color non trouvée, impossible de charger les couleurs", e);
+            this.couleurs = new ArrayList<>();
+        } catch (IllegalAccessException e) {
+            logger.error("Accès illégal à une propriété", e);
+            this.couleurs = new ArrayList<>();
+        }
+        this.couleursUtilisees = new ArrayList<>();
+        this.couleursUtilisees.add(IntersectionPane.COULEUR_DEFAUT);
+        this.couleursUtilisees.add(IntersectionPane.COULEUR_ENTREPOT);
+        this.couleursUtilisees.add(IntersectionPane.COULEUR_LIVRAISON);
+        this.couleursUtilisees.add(IntersectionPane.COULEUR_SURVOL);
+    }
+
+    private static final List<Color> chargerToutesLesCouleurs() throws ClassNotFoundException, IllegalAccessException {
+        List<Color> couleurs = new ArrayList<>();
+        Class clazz = Class.forName("javafx.scene.paint.Color");
+        if (clazz != null) {
+            Field[] champs = clazz.getFields();
+            for(int i = 0; i < champs.length; i++) {
+                Field champ = champs[i];
+                Object obj = champ.get(null);
+                if(obj instanceof Color) {
+                    couleurs.add((Color) obj);
+                }
+            }
+        }
+        return couleurs;
     }
 
     /**
@@ -96,7 +131,48 @@ public final class AfficheurPlan {
         }
     }
 
+    public void selectionnerIntersections(FenetreLivraison fenetreLivraison) {
+        logger.debug("Coloriage de la fenêtre de livraison");
+        Color couleur = choisirCouleurNonUtilisee();
+        if(couleur == null) {
+            logger.error("Pas de couleur disponible pour colorier les intersections de la fenêtre de livraison");
+            // TODO Throw Exception
+            return;
+        }
 
+        for(Livraison livraison : fenetreLivraison.getLivraisons()) {
+            Intersection intersection = livraison.getIntersection();
+            IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
+            if(intersectionPane.aUneLivraison()) {
+                logger.debug("Coloriage de l'intersection en {}", couleur.toString());
+                intersectionPane.setFill(couleur);
+            }
+        }
+    }
+
+    private Color choisirCouleurNonUtilisee() {
+        if(couleursUtilisees.isEmpty()) {
+            Color couleur = couleurs.get(0);
+            couleursUtilisees.add(couleur);
+            return couleur;
+        }
+
+        for(Color couleur : couleurs) {
+            boolean estUtilisee = false;
+            for(Color couleurUtilisee : couleursUtilisees) {
+                if(couleurUtilisee.equals(couleur)) {
+                    estUtilisee = true;
+                    break;
+                }
+            }
+            if(!estUtilisee) {
+                couleursUtilisees.add(couleur);
+                return couleur;
+            }
+        }
+
+        return null;
+    }
 
     private Collection<IntersectionPane> getIntersectionsPane() {
         List<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();

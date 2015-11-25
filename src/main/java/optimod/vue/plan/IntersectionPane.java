@@ -31,6 +31,8 @@ public class IntersectionPane extends Circle implements Initializable {
     private boolean estEntrepot;
     private boolean survol;
 
+    private Color ancienneCouleur;
+
     private Tooltip infobulle;
 
     public IntersectionPane(Intersection intersection) {
@@ -43,6 +45,8 @@ public class IntersectionPane extends Circle implements Initializable {
 
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
+
+        ancienneCouleur = COULEUR_LIVRAISON;
 
         setOnMouseEntered(event -> survol());
         setOnMouseExited(event -> quitteSurvol());
@@ -57,11 +61,12 @@ public class IntersectionPane extends Circle implements Initializable {
         mettreAJour();
     }
 
-    private boolean aLivraison() {
+    public boolean aUneLivraison() {
         return intersection.getLivraison() != null;
     }
 
     private void survol() {
+        ancienneCouleur = (Color)getFill();
         survol = true;
         if (!infobulle.getText().isEmpty())
             Tooltip.install(this, infobulle);
@@ -84,8 +89,8 @@ public class IntersectionPane extends Circle implements Initializable {
             setFill(COULEUR_SURVOL);
         else if (estEntrepot)
             setFill(COULEUR_ENTREPOT);
-        else if (aLivraison())
-            setFill(COULEUR_LIVRAISON);
+        else if (aUneLivraison())
+            setFill(ancienneCouleur);
         else
             setFill(COULEUR_DEFAUT);
     }
@@ -97,7 +102,7 @@ public class IntersectionPane extends Circle implements Initializable {
         texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
-        if (aLivraison()) {
+        if (aUneLivraison()) {
             Livraison livraison = intersection.getLivraison();
             texte += String.format("\nFenêtre de livraison : %s - %s",
                     livraison.getHeureDebutFenetre(),
