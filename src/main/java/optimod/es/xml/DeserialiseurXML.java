@@ -239,9 +239,10 @@ public enum DeserialiseurXML { // Singleton
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
                 if (intersectionsUtilisees.contains(intersectionDeLivraison))
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
+                int idClient = Integer.parseInt(elementlivraison.getAttribute("client"));
 
                 // Création de la Livraison et liaisons
-                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi);
+                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi, idClient);
                 livraisons.add(livraison);
                 intersectionsUtilisees.add(intersectionDeLivraison);
             }
