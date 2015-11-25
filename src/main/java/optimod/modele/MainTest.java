@@ -33,6 +33,9 @@ public class MainTest {
         /**
          * Test Case 1
          */
+        /**
+         * Test Case 1
+         */
         initGraphe();
     }
 
@@ -157,18 +160,19 @@ public class MainTest {
         ordonnanceur.getDemandeLivraisons().setFenetres(fenetres);
 
 
-
-
-
         DemandeLivraisons dl = ordonnanceur.getDemandeLivraisons();
         dl.calculerItineraire();
 
         for(Chemin chemin : dl.getItineraire()){
 
             System.out.println("from "+chemin.getDepart().getIntersection().getAdresse()+" to "+chemin.getArrivee().getIntersection().getAdresse()+" arrivee a "+chemin.getArrivee().getHeureLivraison());
-            if(chemin.getArrivee().estEnRetard()){
-                System.out.println(chemin.getArrivee().getIntersection().getAdresse()+" est en retard ");
+            for(Troncon troncon :  chemin.getTroncons()){
+
+
+                System.out.println("arrivee a "+troncon.getArrivee().getAdresse()+" apres "+troncon.getDuree());
             }
+
+
 
         }
 
