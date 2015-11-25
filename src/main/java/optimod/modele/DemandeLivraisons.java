@@ -111,9 +111,11 @@ public class DemandeLivraisons extends Observable {
      */
     private void mettreAJourLesHeuresAPartirDe(Livraison livr) {
         while(!livr.equals(entrepot)){
-            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree());
+            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET);
             livr = livr.getSuivante();
         }
+        entrepot.setHeureLivraison(entrepot.getPrecedente().getHeureLivraison()+entrepot.getPrecedente().getCheminVersSuivante().getDuree()+TEMPS_ARRET);
+
     }
 
     /**
