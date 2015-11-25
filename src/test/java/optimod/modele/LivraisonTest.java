@@ -1,9 +1,5 @@
-package modele;
+package optimod.modele;
 
-import optimod.modele.Chemin;
-import optimod.modele.Intersection;
-import optimod.modele.Livraison;
-import optimod.modele.Troncon;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -42,7 +38,7 @@ public class LivraisonTest {
 
 
         List<Troncon> tr2 = new ArrayList<Troncon>();
-        tr1.add(troncon3);
+        tr2.add(troncon3);
 
 
         intersection2.setSortants(tr2);
@@ -52,8 +48,8 @@ public class LivraisonTest {
         Troncon troncon5 = new Troncon(intersection4, 1, 3, "4.2");
 
         List<Troncon> tr3 = new ArrayList<Troncon>();
-        tr1.add(troncon4);
-        tr1.add(troncon5);
+        tr3.add(troncon4);
+        tr3.add(troncon5);
 
         intersection3.setSortants(tr3);
 
@@ -68,8 +64,8 @@ public class LivraisonTest {
 
         assertEquals(chemin.getArrivee(), livraison4);
         assertEquals(chemin.getDepart(), livraison);
-        assertEquals(chemin.getIntersections().size(), 2);
-        assertEquals(chemin.getIntersections().get(0), intersection2);
+        assertEquals(chemin.getTroncons().size(), 2);
+        assertEquals(chemin.getTroncons().get(0).getArrivee(), intersection2);
 
     }
 

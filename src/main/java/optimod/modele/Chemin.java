@@ -9,7 +9,7 @@ public class Chemin {
 
     private int duree;
 
-    private List<Intersection> intersections = new ArrayList<Intersection>();
+    private List<Troncon> troncons = new ArrayList<>();
 
     private Livraison depart;
 
@@ -29,12 +29,12 @@ public class Chemin {
         this.duree = duree;
     }
 
-    public List<Intersection> getIntersections() {
-        return intersections;
+    public List<Troncon> getTroncons() {
+        return troncons;
     }
 
-    public void setIntersections(List<Intersection> intersections) {
-        this.intersections = intersections;
+    public void setTroncons(List<Troncon> troncons) {
+        this.troncons = troncons;
     }
 
     public Livraison getDepart() {

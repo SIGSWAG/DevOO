@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.List;
-import java.awt.*;
 
 /**
  * Created by hdelval on 11/23/15.
@@ -23,13 +22,7 @@ public class EtatPrincipal extends EtatDefaut {
         try {
             if(ordonnanceur.chargerPlan())
                 Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
-        } catch (SAXException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ParserConfigurationException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ExceptionXML exceptionXML) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, exceptionXML);
-        } catch (IOException e) {
+        } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
@@ -40,13 +33,7 @@ public class EtatPrincipal extends EtatDefaut {
         try {
             if(ordonnanceur.chargerDemandeLivraison())
                 Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
-        } catch (SAXException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ParserConfigurationException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ExceptionXML exceptionXML) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, exceptionXML);
-        } catch (IOException e) {
+        } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
@@ -84,9 +71,8 @@ public class EtatPrincipal extends EtatDefaut {
     }
 
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);

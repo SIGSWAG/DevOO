@@ -24,7 +24,7 @@ public enum DeserialiseurXML { // Singleton
     private Stage fenetre;
 
     /**
-     * Ouvre un fichier xml et cree plan a partir du contenu du fichier
+     * Ouvre un fichier XML et cree le plan a partir du contenu du fichier
      * @param plan Plan
      * @throws ParserConfigurationException
      * @throws SAXException
@@ -33,6 +33,19 @@ public enum DeserialiseurXML { // Singleton
      */
     public boolean chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        return chargerPlan(plan, xml);
+    }
+
+    /**
+     * Lis un fichier XML et cree le plan a partir du contenu du fichier
+     * @param plan Plan
+     * @param xml Fichier XML du plan
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     */
+    public boolean chargerPlan(Plan plan, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         if(xml == null){
             return false;
         }
@@ -40,7 +53,6 @@ public enum DeserialiseurXML { // Singleton
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
 
-        // TODO vérifications dtd xsl
         if (racine.getNodeName().equals("Reseau")) {
             construirePlanAPartirDeDOMXML(racine, plan);
         }
@@ -115,12 +127,12 @@ public enum DeserialiseurXML { // Singleton
         }
 
         // s'il n'y a eu aucunes erreur, on peut inserer ces Intersections dans le plan
-        plan.reset();
+        plan.reinitialiser();
         plan.setIntersections(new ArrayList<Intersection>(intersections.values()));
     }
 
     /**
-     * Ouvre un fichier xml et cree une Demande de Livraison a partir du contenu du fichier
+     * Ouvre un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
      * @param demandeLivraisons DemandeLivraisons
      * @throws ParserConfigurationException
      * @throws SAXException
@@ -129,6 +141,19 @@ public enum DeserialiseurXML { // Singleton
      */
     public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        return chargerDemandeLivraison(demandeLivraisons, xml);
+    }
+
+    /**
+     * Lis un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
+     * @param demandeLivraisons DemandeLivraisons
+     * @param xml Fichier XML de la demande de livraison
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     */
+    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         if(xml == null){
             return false;
         }
@@ -239,9 +264,10 @@ public enum DeserialiseurXML { // Singleton
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
                 if (intersectionsUtilisees.contains(intersectionDeLivraison))
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
+                int idClient = Integer.parseInt(elementlivraison.getAttribute("client"));
 
                 // Création de la Livraison et liaisons
-                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi);
+                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi, idClient);
                 livraisons.add(livraison);
                 intersectionsUtilisees.add(intersectionDeLivraison);
             }

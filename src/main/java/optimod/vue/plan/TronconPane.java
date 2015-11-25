@@ -2,10 +2,9 @@ package optimod.vue.plan;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import optimod.modele.Intersection;
 import optimod.modele.Troncon;
 
@@ -21,13 +20,30 @@ public class TronconPane extends Group {
 
     public static final float TAILLE_FLECHE = 5;
 
+    public static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
+    public static final Color COULEUR_EMPRUNTEE = Color.RED;
+
     private IntersectionPane source;
     private Troncon troncon;
 
     public TronconPane(IntersectionPane source, Troncon troncon) {
+        super();
         this.source = source;
         this.troncon = troncon;
+
         dessinerFleche();
+        mettreAJour();
+    }
+
+    public void mettreAJour() {
+        Color couleur = COULEUR_DEFAUT;
+        if (troncon.estEmprunte()) {
+            couleur = COULEUR_EMPRUNTEE;
+            toFront(); // On met la flèche dessus pour être sûr qu'elle soit visible
+        }
+        for (Node noeud : getChildren()) {
+            ((Shape) noeud).setStroke(couleur); // La flèche n'est composée que de Shapes, on peut donc convertir
+        }
     }
 
     public Troncon getTroncon() {
@@ -36,17 +52,22 @@ public class TronconPane extends Group {
 
     private void dessinerFleche() {
         final Intersection cible = troncon.getArrivee();
-        final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
-        final Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
-        final Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
-        final Path arrowEnd = new Path();
 
-        arrowEnd.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
-        arrowEnd.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
-        arrowEnd.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
+        // Calcul d'où "part" et "arrive" la flèche pour éviter qu'elle ne passe sur les intersections
+        final Point2D pointSource = intersectionCercleLigne(cible.getX(), cible.getY(), source.getX(), source.getY()).get(0);
+        final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
+
+        final Line ligne = new Line(pointSource.getX(), pointSource.getY(), pointCible.getX(), pointCible.getY());
+
+        final Point2D tan = new Point2D(pointCible.getX() - pointSource.getX(), pointCible.getY() - pointSource.getY()).normalize();
+
+        final Path fleche = new Path();
+        fleche.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
+        fleche.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
+        fleche.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
 
         getChildren().add(ligne);
-        getChildren().add(arrowEnd);
+        getChildren().add(fleche);
     }
 
     private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {

@@ -1,52 +1,22 @@
 package optimod.modele;
 
-import javafx.util.Pair;
-import optimod.tsp.Graphe;
-import optimod.tsp.GrapheComplet;
-import optimod.tsp.TSP;
-import optimod.tsp.TSP1;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 /**
- * Created by Thibault on 19/11/2015.
+ * Created by aurelien on 18/11/15.
  */
-public class MainTest {
+public class FenetreLivraisonTest {
 
 
-    public static void main(String[] args) {
-
-        /** TSP tsp = new TSP1();
-         for (int nbSommets = 8; nbSommets <= 16; nbSommets += 2){
-         System.out.println("Graphes de "+nbSommets+" sommets :");
-         Graphe g = new GrapheComplet(nbSommets);
-         long tempsDebut = System.currentTimeMillis();
-         tsp.chercheSolution(60000, g);
-         System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
-         +(System.currentTimeMillis() - tempsDebut)+"ms : ");
-         for (int i=0; i<nbSommets; i++)
-         System.out.print(tsp.getSolution(i)+" ");
-         System.out.println();
-         }*/
-        /**
-         * Test Case 1
-         */
-        /**
-         * Test Case 1
-         */
-        initGraphe();
-    }
 
 
-    public static void initGraphe(){
-        /**
-         * Test Case 1
-         */
 
-        Ordonnanceur ordonnanceur = new Ordonnanceur();
 
+    @Test
+    public void testCalculPCCInterne() throws Exception {
         Intersection intersection1 = new Intersection(0, 0, 1, null);
         Intersection intersection2 = new Intersection(0, 0, 2, null);
         Intersection intersection3 = new Intersection(0, 0, 3, null);
@@ -106,7 +76,7 @@ public class MainTest {
         tr5.add(troncon9);
 
         intersection5.setSortants(tr5);
-       // intersection6.setSortants(new ArrayList<Troncon>());
+        // intersection6.setSortants(new ArrayList<Troncon>());
 
 
         Livraison livraison  = new Livraison(intersection1);
@@ -130,57 +100,20 @@ public class MainTest {
         intersections.add(intersection5);
         intersections.add(intersection6);
 
-        ordonnanceur.getPlan().setIntersections(intersections);
-        ordonnanceur.getDemandeLivraisons().setEntrepot(livraison);
-
         List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
-
-        List<Livraison> entrep = new ArrayList<Livraison>();
-        entrep.add(livraison);
         List<Livraison> f1 = new ArrayList<Livraison>();
         f1.add(livraison3);
         f1.add(livraison5);
-        List<Livraison> f2 = new ArrayList<Livraison>();
-        f2.add(livraison2);
-
 
         FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
-        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2,5,7);
-        livraison2.setHeureDebutFenetre(5);
-        livraison2.setHeureFinFenetre(7);
 
-        livraison3.setHeureDebutFenetre(8);
-        livraison3.setHeureFinFenetre(20);
-        livraison5.setHeureDebutFenetre(8);
-        livraison5.setHeureFinFenetre(20);
-        fenetres.add(fenetreLivraison2);
-        fenetres.add(fenetreLivraison1);
-
-        ordonnanceur.getDemandeLivraisons().setFenetres(fenetres);
-
-
-        DemandeLivraisons dl = ordonnanceur.getDemandeLivraisons();
-        dl.calculerItineraire();
-
-        for(Chemin chemin : dl.getItineraire()){
-
-            System.out.println("from "+chemin.getDepart().getIntersection().getAdresse()+" to "+chemin.getArrivee().getIntersection().getAdresse()+" arrivee a "+chemin.getArrivee().getHeureLivraison());
-            for(Troncon troncon :  chemin.getTroncons()){
-
-
-                System.out.println("arrivee a "+troncon.getArrivee().getAdresse()+" apres "+troncon.getDuree());
-            }
-
-
-
-        }
-
-
-
-
+        List<Chemin> chemins = fenetreLivraison1.calculPCCInterne();
 
     }
 
+    @Test
+    public void testCalculerPCCSuivant() throws Exception {
 
+    }
 }

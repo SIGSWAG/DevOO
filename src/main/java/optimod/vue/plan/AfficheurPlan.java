@@ -8,6 +8,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import optimod.modele.*;
+import optimod.vue.FenetreControleur;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ import java.util.List;
  */
 public final class AfficheurPlan {
 
+    private FenetreControleur fenetreControleur;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private Group group;
@@ -29,8 +31,9 @@ public final class AfficheurPlan {
 
     private List<Color> couleursUtilisees;
 
-    public AfficheurPlan(Group group) {
+    public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
+        this.fenetreControleur = fenetreControleur;
         try {
             this.couleurs = chargerToutesLesCouleurs();
         } catch (ClassNotFoundException e) {
@@ -65,13 +68,14 @@ public final class AfficheurPlan {
 
     /**
      * Ajoute des intersections au plan, ainsi que leurs tronçons.
+     *
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
         vider();
 
         for (Intersection intersection : plan.getIntersections()) {
-            IntersectionPane intersectionPane = new IntersectionPane(intersection);
+            IntersectionPane intersectionPane = new IntersectionPane(intersection, fenetreControleur);
             group.getChildren().add(intersectionPane);
             for (Troncon troncon : intersection.getSortants()) {
                 group.getChildren().add(new TronconPane(intersectionPane, troncon));
@@ -82,6 +86,7 @@ public final class AfficheurPlan {
 
     /**
      * Affiche une demande de livraison sur le plan.
+     *
      * @param demandeLivraisons
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
@@ -90,6 +95,15 @@ public final class AfficheurPlan {
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
+
+    }
+
+    /**
+     * Affiche un itinéraire sur le plan.
+     */
+    public void chargerItineraire() {
+
+        getTronconsPane().forEach(TronconPane::mettreAJour);
 
     }
 
@@ -120,7 +134,7 @@ public final class AfficheurPlan {
     public void selectionnerIntersection(Livraison livraison) {
         Intersection intersection = livraison.getIntersection();
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
-        if(intersectionPane != null) {
+        if (intersectionPane != null) {
             logger.debug("Surbrillance");
             //intersectionPane.setStyle("-fx-background-color:#10cc00;");
             if (Platform.isSupported(ConditionalFeature.EFFECT)) {
@@ -151,27 +165,33 @@ public final class AfficheurPlan {
     }
 
     private Color choisirCouleurNonUtilisee() {
-        if(couleursUtilisees.isEmpty()) {
+        if (couleursUtilisees.isEmpty()) {
             Color couleur = couleurs.get(0);
             couleursUtilisees.add(couleur);
             return couleur;
         }
 
-        for(Color couleur : couleurs) {
+        for (Color couleur : couleurs) {
             boolean estUtilisee = false;
-            for(Color couleurUtilisee : couleursUtilisees) {
-                if(couleurUtilisee.equals(couleur)) {
+            for (Color couleurUtilisee : couleursUtilisees) {
+                if (couleurUtilisee.equals(couleur)) {
                     estUtilisee = true;
                     break;
                 }
             }
-            if(!estUtilisee) {
+            if (!estUtilisee) {
                 couleursUtilisees.add(couleur);
                 return couleur;
             }
         }
 
         return null;
+    }
+
+    public void deselectionnerToutesIntersections() {
+        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
+            intersectionPane.deselectionner();
+        }
     }
 
     private Collection<IntersectionPane> getIntersectionsPane() {
@@ -184,7 +204,7 @@ public final class AfficheurPlan {
         return intersectionsCercle;
     }
 
-    private Collection<TronconPane> getTronconsLigne() {
+    private Collection<TronconPane> getTronconsPane() {
         List<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {

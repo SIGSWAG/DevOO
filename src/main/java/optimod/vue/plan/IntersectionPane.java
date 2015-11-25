@@ -2,23 +2,21 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
+import optimod.vue.FenetreControleur;
 
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Représente une intersection à l'écran.
  * Created by Jonathan on 19/11/2015.
  */
-public class IntersectionPane extends Circle implements Initializable {
+public class IntersectionPane extends Circle {
 
     public static final int TAILLE = 6;
 
@@ -26,22 +24,26 @@ public class IntersectionPane extends Circle implements Initializable {
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
     public static final Color COULEUR_SURVOL = Color.BLUE;
     public static final Color COULEUR_LIVRAISON = Color.RED;
+    private FenetreControleur fenetreControleur;
 
     private Intersection intersection;
     private boolean estEntrepot;
     private boolean survol;
+    private boolean clicke;
 
     private Color ancienneCouleur;
 
     private Tooltip infobulle;
 
-    public IntersectionPane(Intersection intersection) {
+    public IntersectionPane(Intersection intersection, FenetreControleur fenetreControleur) {
         super(intersection.getX(), intersection.getY(), TAILLE);
 
         this.intersection = intersection;
+        this.fenetreControleur = fenetreControleur;
 
         estEntrepot = false;
         survol = false;
+        clicke = false;
 
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
@@ -50,10 +52,31 @@ public class IntersectionPane extends Circle implements Initializable {
 
         setOnMouseEntered(event -> survol());
         setOnMouseExited(event -> quitteSurvol());
+        setOnMouseClicked(event -> click());
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        mettreAJour();
+    private void click() {
+        if (estEntrepot)
+            return;
+        if (clicke) {
+            deselectionner();
+        } else {
+            selectionner();
+        }
+    }
+
+    public void selectionner() {
+        if (!clicke && fenetreControleur.selectionner(this.intersection)) {
+            clicke = !clicke;
+            colorier();
+        }
+    }
+
+    public void deselectionner() {
+        if (clicke && fenetreControleur.deselectionner(this.intersection)) {
+            clicke = !clicke;
+            colorier();
+        }
     }
 
     public void setEstEntrepot(boolean estEntrepot) {
@@ -85,7 +108,7 @@ public class IntersectionPane extends Circle implements Initializable {
     }
 
     private void colorier() {
-        if (survol)
+        if (survol || clicke)
             setFill(COULEUR_SURVOL);
         else if (estEntrepot)
             setFill(COULEUR_ENTREPOT);

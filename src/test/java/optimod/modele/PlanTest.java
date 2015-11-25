@@ -1,4 +1,4 @@
-package modele;
+package optimod.modele;
 
 import org.junit.Test;
 

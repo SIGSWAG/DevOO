@@ -8,9 +8,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 public class DemandeLivraisons extends Observable {
 
@@ -26,13 +24,18 @@ public class DemandeLivraisons extends Observable {
 
     private Livraison entrepot;
 
+    private int heureDebutItineraire;
+
+
+
     /**
      * Default constructor
      */
     public DemandeLivraisons(Plan pl) {
         this.plan = pl;
-        this.itineraire = new ArrayList<>();
-        this.fenetres = new ArrayList<>();
+        this.itineraire = new ArrayList<Chemin>();
+        this.fenetres = new ArrayList<FenetreLivraison>();
+
     }
 
 
@@ -40,7 +43,7 @@ public class DemandeLivraisons extends Observable {
         boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         if(demandeLivraisonChargee){
             setChanged();
-            notifyObservers();
+            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEES);
         }
         return demandeLivraisonChargee;
     }
@@ -51,6 +54,8 @@ public class DemandeLivraisons extends Observable {
      * Puis appelle la méthode de GraphePCC permettant de trouver le + court parcours dans ce graphe.
      */
     public void calculerItineraire() {
+
+        System.out.println("Calcul lancé");
         List<Chemin> graphe = new ArrayList<>();
 
         List<Livraison> listeEntrepot = new ArrayList<>();
@@ -81,7 +86,7 @@ public class DemandeLivraisons extends Observable {
         premiereLivraison.setHeureLivraison(premiereLivraison.getHeureDebutFenetre()); //la première livraison arrive
         fenetreCouranteDebut = premiereLivraison.getHeureDebutFenetre();
         //à l'heure de sa fenetre
-        heureDepartItineraire = premiereLivraison.getHeureDebutFenetre()-premierChemin.getDuree(); //on part de l'entrepot
+        heureDebutItineraire = premiereLivraison.getHeureDebutFenetre()-premierChemin.getDuree(); //on part de l'entrepot
 
         for(Chemin chemin : itineraire){
 
@@ -102,46 +107,19 @@ public class DemandeLivraisons extends Observable {
 
         }
 
+
+        setChanged();
+
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
 
     private void mettreAJourTronconsEmpruntes(Chemin chemin){
 
-        Intersection depart = chemin.getDepart().getIntersection();
-        Intersection arrivee = chemin.getArrivee().getIntersection();
+       for(Troncon troncon : chemin.getTroncons()){
 
-        if(chemin.getIntersections() != null && chemin.getIntersections().size()>0){
-
-            //depart vers premiereIntersection
-            Troncon premierTroncon = depart.getTronconVers(chemin.getIntersections().get(0));
-            if(premierTroncon != null ){
-                premierTroncon.setEstEmprunte(true);
-            }
-
-            for(int i=1; i<chemin.getIntersections().size()-1; i++){ //intersection quelconque vers suivante
-                Intersection dep = chemin.getIntersections().get(i-1);
-                Intersection arr = chemin.getIntersections().get(i);
-
-                Troncon troncon = dep.getTronconVers(arr);
-                if(troncon != null ){
-                    troncon.setEstEmprunte(true);
-                }
-            }
-
-            // de la derniere intersection vers l'arrivee
-            Intersection derniereIntersection = chemin.getIntersections().get(chemin.getIntersections().size()-1);
-            Troncon dernierTroncon = derniereIntersection.getTronconVers(arrivee);
-
-            if(dernierTroncon != null ){
-                dernierTroncon.setEstEmprunte(true);
-            }
-
-
-        }else { //chemin direct, pas d'intersection
-            Troncon troncon = depart.getTronconVers(arrivee);
-            troncon.setEstEmprunte(true);
-        }
+           troncon.setEstEmprunte(true);
+       }
 
     }
 
@@ -168,10 +146,34 @@ public class DemandeLivraisons extends Observable {
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
         livr.setPrecedente(nouvelleLivraison);
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
-        nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
-        Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-        nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
-        mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+        if(nouveauPCC1 != null){
+            Chemin ch = livr.getPrecedente().getCheminVersSuivante();
+            for(Troncon troncon : ch.getTroncons()){
+                troncon.setEstEmprunte(false);
+            }
+
+            Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
+
+            if(nouveauPCC2 != null){
+                nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
+                nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
+
+                for(Troncon troncon : nouveauPCC1.getTroncons()){
+                    troncon.setEstEmprunte(true);
+                }
+                for(Troncon troncon : nouveauPCC2.getTroncons()){
+                    troncon.setEstEmprunte(true);
+                }
+
+                mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+
+            }
+
+
+
+        }
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
+
     }
 
     /**
@@ -188,6 +190,7 @@ public class DemandeLivraisons extends Observable {
         livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
         mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
         livr.getIntersection().setLivraison(null);
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
     /**
@@ -239,6 +242,7 @@ public class DemandeLivraisons extends Observable {
         else {
             mettreAJourLesHeuresAPartirDe(livr2);
         }
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
     /**
@@ -246,18 +250,22 @@ public class DemandeLivraisons extends Observable {
      * Supprime tous les liens qu'ont les intersections vers les livraisons existantes
      */
     public void reset(){
-        itineraire = new ArrayList<Chemin>();
 
-        //reset les troncons (est emprunte)
-        List<Intersection> intersections = plan.getIntersections();
-        for(Intersection intersection : intersections){
-            if(intersection.getSortants() != null && intersection.getSortants().size()>0){
-                List<Troncon> sortants = intersection.getSortants();
-                for(Troncon troncon : sortants){
-                    troncon.setEstEmprunte(false);
-                }
+
+
+        for(Chemin chemin : itineraire) {
+
+            for (Troncon tr : chemin.getTroncons()) {
+                tr.setEstEmprunte(false);
             }
         }
+
+
+
+
+        itineraire = new ArrayList<Chemin>();
+
+
 
 
         // suppression de tous les liens Intersection -> Livraison
@@ -308,6 +316,14 @@ public class DemandeLivraisons extends Observable {
     }
 
     public void genererFeuilleDeRoute() {
+
+        System.out.println("Depart entrepot : ("+entrepot.getIntersection().getAdresse()+")"+heureDebutItineraire );
+        for(Chemin chemin : itineraire) {
+
+
+
+        }
+
 
     }
 }
