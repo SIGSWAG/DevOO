@@ -6,6 +6,7 @@ import optimod.modele.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by aurelien on 23/11/15.
@@ -23,7 +24,6 @@ public final class AfficheurPlan {
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
-
         vider();
 
         for (Intersection intersection : plan.getIntersections()) {
@@ -34,7 +34,6 @@ public final class AfficheurPlan {
             }
             intersectionPane.toFront(); // Les intersections s'affichent au dessus des tronçons
         }
-
     }
 
     /**
@@ -74,8 +73,14 @@ public final class AfficheurPlan {
         return null;
     }
 
+    public void selectionnerIntersection(Livraison livraison) {
+        // TODO
+    }
+
+
+
     private Collection<IntersectionPane> getIntersectionsPane() {
-        ArrayList<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();
+        List<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof IntersectionPane) {
                 intersectionsCercle.add((IntersectionPane) noeud);
@@ -85,7 +90,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<TronconPane> getTronconsLigne() {
-        ArrayList<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
+        List<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {
                 tronconsLigne.add((TronconPane) noeud);
@@ -105,7 +110,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<Troncon> getTroncons() {
-        ArrayList<Troncon> troncons = new ArrayList<Troncon>();
+        List<Troncon> troncons = new ArrayList<Troncon>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {
                 troncons.add(((TronconPane) noeud).getTroncon());

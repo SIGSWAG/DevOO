@@ -20,7 +20,6 @@ public class Livraison {
     private Livraison precedente;
 
 
-
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
