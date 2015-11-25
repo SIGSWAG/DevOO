@@ -147,12 +147,9 @@ public class DemandeLivraisons extends Observable {
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
         Livraison nouvelleLivraison = new Livraison(intersection);
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
-        livr.setPrecedente(nouvelleLivraison);
+
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
         if(nouveauPCC1 != null){
-
-
-
 
             Chemin ch = livr.getPrecedente().getCheminVersSuivante();
             int indexASupprimer = 0;
@@ -169,6 +166,7 @@ public class DemandeLivraisons extends Observable {
             Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
 
             if(nouveauPCC2 != null){
+                livr.setPrecedente(nouvelleLivraison);
                 nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
                 nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
 
@@ -277,8 +275,8 @@ public class DemandeLivraisons extends Observable {
         Chemin cheminl1suiv = livr1.getCheminVersSuivante();
 
         //chemins de l2
-        Chemin cheminl2prec = livr1PrecTemp.getCheminVersSuivante();
-        Chemin cheminl2suiv = livr1.getCheminVersSuivante();
+        Chemin cheminl2prec = livr2PrecTemp.getCheminVersSuivante();
+        Chemin cheminl2suiv = livr2.getCheminVersSuivante();
 
 
         //pcc 1
@@ -296,10 +294,10 @@ public class DemandeLivraisons extends Observable {
         cheminsNonParcourus.add(cheminl2suiv);
 
         List<Chemin> cheminsParcourus = new ArrayList<>();
-        cheminsNonParcourus.add(cheminl1l2suiv);
-        cheminsNonParcourus.add(cheminl2precl1);
-        cheminsNonParcourus.add(cheminl2l1suiv);
-        cheminsNonParcourus.add(cheminl1precl2);
+        cheminsParcourus.add(cheminl1l2suiv);
+        cheminsParcourus.add(cheminl2precl1);
+        cheminsParcourus.add(cheminl2l1suiv);
+        cheminsParcourus.add(cheminl1precl2);
 
         if(cheminl1l2suiv != null && cheminl1precl2 != null && cheminl2l1suiv != null && cheminl2precl1 != null ) {
 
@@ -379,6 +377,8 @@ public class DemandeLivraisons extends Observable {
                 mettreAJourLesHeuresAPartirDe(livr2);
             }
         }
+
+        setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
