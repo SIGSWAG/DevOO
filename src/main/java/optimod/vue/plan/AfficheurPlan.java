@@ -1,9 +1,16 @@
 package optimod.vue.plan;
 
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 import optimod.modele.*;
 import optimod.vue.FenetreControleur;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +22,8 @@ import java.util.List;
 public final class AfficheurPlan {
 
     private FenetreControleur fenetreControleur;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     private Group group;
 
     public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
@@ -77,7 +86,17 @@ public final class AfficheurPlan {
     }
 
     public void selectionnerIntersection(Livraison livraison) {
-        // TODO
+        Intersection intersection = livraison.getIntersection();
+        IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
+        if(intersectionPane != null) {
+            logger.debug("Surbrillance");
+            //intersectionPane.setStyle("-fx-background-color:#10cc00;");
+            if (Platform.isSupported(ConditionalFeature.EFFECT)) {
+                DropShadow dropShadow = new DropShadow(10, Color.BLUE);
+                dropShadow.setBlurType(BlurType.GAUSSIAN);
+                intersectionPane.setEffect(dropShadow);
+            }
+        }
     }
 
     public void deselectionnerToutesIntersections(){
