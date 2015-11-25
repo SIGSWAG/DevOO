@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.TreeView;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -174,26 +173,33 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void update(Observable o, Object arg) {
-        // Si la mise à jour vient du plan, on redessine le plan
-        if (o instanceof Plan) {
-            Plan plan = (Plan) o;
-            afficheurPlan.chargerPlan(plan);
-        } else if (o instanceof DemandeLivraisons) {
-            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
-            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
-            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
-        } else {
-            // TODO
-            logger.warn("PROBLEM !");
+        Evenement evenement = (Evenement) arg;
+        if (evenement != null) {
+
+            // Si la mise à jour vient du plan, on redessine le plan
+            if (evenement.equals(Evenement.PLAN_CHARGE)) {
+                Plan plan = (Plan) o;
+                afficheurPlan.chargerPlan(plan);
+            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEES)) {
+                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+            } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+                afficheurPlan.chargerItineraire();
+            } else {
+                // TODO
+                logger.warn("PROBLEM !");
+            }
+
         }
     }
 
+
     private void selectionnerElementGraphe(Object element) {
-        if(element instanceof FenetreLivraison) {
+        if (element instanceof FenetreLivraison) {
             FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
-        }
-        else if(element instanceof Livraison) {
+        } else if (element instanceof Livraison) {
             Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
             afficheurPlan.selectionnerIntersection(livraison);
@@ -201,51 +207,51 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
 
-    public void activerChargerPlan(boolean estActif){
+    public void activerChargerPlan(boolean estActif) {
         chargerPlan.setDisable(!estActif);
     }
 
-    public void activerChargerLivraisons(boolean estActif){
+    public void activerChargerLivraisons(boolean estActif) {
         chargerLivraisons.setDisable(!estActif);
     }
 
-    public void activerToutDeselectionner(boolean estActif){
+    public void activerToutDeselectionner(boolean estActif) {
         toutDeselectionner.setDisable(!estActif);
     }
 
-    public void activerGenererFeuilleRoute(boolean estActif){
+    public void activerGenererFeuilleRoute(boolean estActif) {
         genererFeuilleRoute.setDisable(!estActif);
     }
 
-    public void activerAnnuler(boolean estActif){
+    public void activerAnnuler(boolean estActif) {
         annuler.setDisable(!estActif);
     }
 
-    public void activerRejouer(boolean estActif){
+    public void activerRejouer(boolean estActif) {
         rejouer.setDisable(!estActif);
     }
 
-    public void activerAjouter(boolean estActif){
+    public void activerAjouter(boolean estActif) {
         ajouter.setDisable(!estActif);
     }
 
-    public void activerSupprimer(boolean estActif){
+    public void activerSupprimer(boolean estActif) {
         supprimer.setDisable(!estActif);
     }
 
-    public void activerEchanger(boolean estActif){
+    public void activerEchanger(boolean estActif) {
         echanger.setDisable(!estActif);
     }
 
-    public void activerCalculerItineraire(boolean estActif){
+    public void activerCalculerItineraire(boolean estActif) {
         calculerItineraire.setDisable(!estActif);
     }
 
-    public void activerSelections(boolean estActif){
+    public void activerSelections(boolean estActif) {
         this.selectionsActivees = estActif;
     }
 
-    public void activerDeselections(boolean estActif){
+    public void activerDeselections(boolean estActif) {
         this.deselectionsActivees = estActif;
     }
 
@@ -263,7 +269,7 @@ public class FenetreControleur implements Observer, Initializable {
         logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
-    public void autoriseBoutons(boolean estActif){
+    public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
         activerToutDeselectionner(estActif);
@@ -280,7 +286,7 @@ public class FenetreControleur implements Observer, Initializable {
         activerValiderAjout(estActif);
     }
 
-    public void afficheMessage(String message, String titre, Alert.AlertType alertType){
+    public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -292,7 +298,7 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex){
+    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -326,19 +332,19 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    private void updateVue(){
+    private void updateVue() {
         this.controleur.updateVue();
     }
 
     public boolean selectionner(Intersection intersection) {
-        if(selectionsActivees) {
+        if (selectionsActivees) {
             return this.controleur.selectionnerIntersection(intersection);
         }
         return false;
     }
 
     public boolean deselectionner(Intersection intersection) {
-        if(deselectionsActivees) {
+        if (deselectionsActivees) {
             return this.controleur.deselectionnerIntersection(intersection);
         }
         return false;

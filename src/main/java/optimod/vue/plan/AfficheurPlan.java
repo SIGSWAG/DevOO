@@ -33,6 +33,7 @@ public final class AfficheurPlan {
 
     /**
      * Ajoute des intersections au plan, ainsi que leurs tronçons.
+     *
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
@@ -50,6 +51,7 @@ public final class AfficheurPlan {
 
     /**
      * Affiche une demande de livraison sur le plan.
+     *
      * @param demandeLivraisons
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
@@ -58,6 +60,15 @@ public final class AfficheurPlan {
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
+
+    }
+
+    /**
+     * Affiche un itinéraire sur le plan.
+     */
+    public void chargerItineraire() {
+
+        getTronconsPane().forEach(TronconPane::mettreAJour);
 
     }
 
@@ -88,7 +99,7 @@ public final class AfficheurPlan {
     public void selectionnerIntersection(Livraison livraison) {
         Intersection intersection = livraison.getIntersection();
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
-        if(intersectionPane != null) {
+        if (intersectionPane != null) {
             logger.debug("Surbrillance");
             //intersectionPane.setStyle("-fx-background-color:#10cc00;");
             if (Platform.isSupported(ConditionalFeature.EFFECT)) {
@@ -99,8 +110,8 @@ public final class AfficheurPlan {
         }
     }
 
-    public void deselectionnerToutesIntersections(){
-        for(IntersectionPane intersectionPane: getIntersectionsPane()){
+    public void deselectionnerToutesIntersections() {
+        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
             intersectionPane.deselectionner();
         }
     }
@@ -115,7 +126,7 @@ public final class AfficheurPlan {
         return intersectionsCercle;
     }
 
-    private Collection<TronconPane> getTronconsLigne() {
+    private Collection<TronconPane> getTronconsPane() {
         List<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {

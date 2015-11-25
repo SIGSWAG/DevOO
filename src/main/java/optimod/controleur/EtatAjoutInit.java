@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class EtatAjoutInit extends EtatDefaut {
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(intersectionsSelectionnees.size() == 0){
@@ -30,9 +30,9 @@ public class EtatAjoutInit extends EtatDefaut {
     }
 
     @Override
-    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
-        if(intersectionSelectionnee != null) {
+        if (intersectionSelectionnee != null) {
             intersectionsSelectionnees.remove(intersectionSelectionnee);
             return true;
         }

@@ -127,7 +127,7 @@ public enum DeserialiseurXML { // Singleton
         }
 
         // s'il n'y a eu aucunes erreur, on peut inserer ces Intersections dans le plan
-        plan.reset();
+        plan.reinitialiser();
         plan.setIntersections(new ArrayList<Intersection>(intersections.values()));
     }
 

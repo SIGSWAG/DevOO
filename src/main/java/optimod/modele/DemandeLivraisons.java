@@ -43,7 +43,7 @@ public class DemandeLivraisons extends Observable {
         boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         if(demandeLivraisonChargee){
             setChanged();
-            notifyObservers();
+            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEES);
         }
         return demandeLivraisonChargee;
     }
@@ -108,6 +108,8 @@ public class DemandeLivraisons extends Observable {
         }
 
 
+        setChanged();
+
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
@@ -144,10 +146,34 @@ public class DemandeLivraisons extends Observable {
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
         livr.setPrecedente(nouvelleLivraison);
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
-        nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
-        Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-        nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
-        mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+        if(nouveauPCC1 != null){
+            Chemin ch = livr.getPrecedente().getCheminVersSuivante();
+            for(Troncon troncon : ch.getTroncons()){
+                troncon.setEstEmprunte(false);
+            }
+
+            Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
+
+            if(nouveauPCC2 != null){
+                nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
+                nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
+
+                for(Troncon troncon : nouveauPCC1.getTroncons()){
+                    troncon.setEstEmprunte(true);
+                }
+                for(Troncon troncon : nouveauPCC2.getTroncons()){
+                    troncon.setEstEmprunte(true);
+                }
+
+                mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+
+            }
+
+
+
+        }
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
+
     }
 
     /**
@@ -164,6 +190,7 @@ public class DemandeLivraisons extends Observable {
         livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
         mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
         livr.getIntersection().setLivraison(null);
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
     /**
@@ -215,6 +242,7 @@ public class DemandeLivraisons extends Observable {
         else {
             mettreAJourLesHeuresAPartirDe(livr2);
         }
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
     /**
@@ -224,13 +252,15 @@ public class DemandeLivraisons extends Observable {
     public void reset(){
 
 
-        for(Chemin chemin : itineraire){
 
-            for(Troncon tr : chemin.getTroncons()){
+        for(Chemin chemin : itineraire) {
+
+            for (Troncon tr : chemin.getTroncons()) {
                 tr.setEstEmprunte(false);
             }
-
         }
+
+
 
 
         itineraire = new ArrayList<Chemin>();
@@ -288,15 +318,11 @@ public class DemandeLivraisons extends Observable {
     public void genererFeuilleDeRoute() {
 
         System.out.println("Depart entrepot : ("+entrepot.getIntersection().getAdresse()+")"+heureDebutItineraire );
-        for(Chemin chemin : itineraire){
-
-          //  for(In)
+        for(Chemin chemin : itineraire) {
 
 
 
         }
-
-
 
 
     }

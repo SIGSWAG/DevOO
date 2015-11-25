@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
@@ -27,7 +27,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
@@ -65,7 +65,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
         ordonnanceur.echangerLivraison(l1, l2);
         listeDeCdes.ajoute(new CdeEchange(ordonnanceur, l1, l2));
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatInit);
+        Controleur.setEtatCourant(Controleur.etatPrincipal);
     }
 
     @Override
