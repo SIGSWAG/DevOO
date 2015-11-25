@@ -27,9 +27,9 @@ public class EtatAjoutLivrValidable extends EtatDefaut {
     }
 
     @Override
-    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
-        if(intersectionSelectionnee != null) {
+        if (intersectionSelectionnee != null) {
             intersectionsSelectionnees.remove(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatAjoutInit);
             return true;

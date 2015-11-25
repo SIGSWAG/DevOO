@@ -99,7 +99,7 @@ public final class AfficheurPlan {
     public void selectionnerIntersection(Livraison livraison) {
         Intersection intersection = livraison.getIntersection();
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
-        if(intersectionPane != null) {
+        if (intersectionPane != null) {
             logger.debug("Surbrillance");
             //intersectionPane.setStyle("-fx-background-color:#10cc00;");
             if (Platform.isSupported(ConditionalFeature.EFFECT)) {
@@ -110,8 +110,8 @@ public final class AfficheurPlan {
         }
     }
 
-    public void deselectionnerToutesIntersections(){
-        for(IntersectionPane intersectionPane: getIntersectionsPane()){
+    public void deselectionnerToutesIntersections() {
+        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
             intersectionPane.deselectionner();
         }
     }

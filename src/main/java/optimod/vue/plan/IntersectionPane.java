@@ -2,7 +2,6 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -12,8 +11,6 @@ import optimod.modele.Livraison;
 import optimod.vue.FenetreControleur;
 
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Représente une intersection à l'écran.
@@ -55,24 +52,24 @@ public class IntersectionPane extends Circle {
     }
 
     private void click() {
-        if(estEntrepot)
+        if (estEntrepot)
             return;
-        if(clicke){
+        if (clicke) {
             deselectionner();
-        }else{
+        } else {
             selectionner();
         }
     }
 
     public void selectionner() {
-        if(!clicke && fenetreControleur.selectionner(this.intersection)){
+        if (!clicke && fenetreControleur.selectionner(this.intersection)) {
             clicke = !clicke;
             colorier();
         }
     }
 
     public void deselectionner() {
-        if(clicke && fenetreControleur.deselectionner(this.intersection)){
+        if (clicke && fenetreControleur.deselectionner(this.intersection)) {
             clicke = !clicke;
             colorier();
         }

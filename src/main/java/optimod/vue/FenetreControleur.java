@@ -4,14 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.TreeView;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import optimod.modele.*;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
@@ -250,11 +247,11 @@ public class FenetreControleur implements Observer, Initializable {
         calculerItineraire.setDisable(!estActif);
     }
 
-    public void activerSelections(boolean estActif){
+    public void activerSelections(boolean estActif) {
         this.selectionsActivees = estActif;
     }
 
-    public void activerDeselections(boolean estActif){
+    public void activerDeselections(boolean estActif) {
         this.deselectionsActivees = estActif;
     }
 
@@ -340,14 +337,14 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public boolean selectionner(Intersection intersection) {
-        if(selectionsActivees) {
+        if (selectionsActivees) {
             return this.controleur.selectionnerIntersection(intersection);
         }
         return false;
     }
 
     public boolean deselectionner(Intersection intersection) {
-        if(deselectionsActivees) {
+        if (deselectionsActivees) {
             return this.controleur.deselectionnerIntersection(intersection);
         }
         return false;

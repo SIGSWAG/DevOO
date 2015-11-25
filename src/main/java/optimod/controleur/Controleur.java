@@ -1,13 +1,11 @@
 package optimod.controleur;
 
 import optimod.modele.Intersection;
-import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
-import java.awt.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
