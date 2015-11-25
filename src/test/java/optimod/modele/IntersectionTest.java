@@ -1,6 +1,5 @@
-package modele;
+package optimod.modele;
 
-import optimod.modele.Intersection;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

@@ -1,9 +1,5 @@
-package modele;
+package optimod.modele;
 
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.Intersection;
-import optimod.modele.Livraison;
-import optimod.modele.Plan;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,18 +8,27 @@ import static org.junit.Assert.*;
 /**
  * Created by aurelien on 18/11/15.
  */
-public class DemandeLivraisonsTest {
+public class OrdonnanceurTest {
 
-    private static DemandeLivraisons demandeLivraisons;
+    private static Ordonnanceur ordonnanceur;
 
     @BeforeClass
     public static void oneTimeSetUp() {
-        Plan plan = new Plan();
-        demandeLivraisons = new DemandeLivraisons(plan);
+        ordonnanceur = new Ordonnanceur();
     }
 
     @Test
-    public void testChargerDemandeLivraison() throws Exception {
+    public void testChargerPlan() throws Exception {
+        // TODO à implémenter
+    }
+
+    @Test
+    public void testTrouverIntersection() throws Exception {
+        // TODO à implémenter
+    }
+
+    @Test
+    public void testTrouverIntersection1() throws Exception {
         // TODO à implémenter
     }
 
@@ -39,7 +44,7 @@ public class DemandeLivraisonsTest {
         final Livraison livraisonAvant = new Livraison(new Intersection(1, 1, 1, null));
         final Livraison livraisonApres = new Livraison(new Intersection(2, 2, 2, null));
 
-        demandeLivraisons.ajouterLivraison(nouvelleIntersection, livraisonAvant);
+        ordonnanceur.ajouterLivraison(nouvelleIntersection, livraisonAvant);
 
         final Livraison nouvelleLivraison = nouvelleIntersection.getLivraison();
 
@@ -55,7 +60,7 @@ public class DemandeLivraisonsTest {
         final Intersection intersection = new Intersection(0, 0, 0, null);
         final Livraison livraisonASupprimer = new Livraison(intersection);
 
-        demandeLivraisons.supprimerLivraison(livraisonASupprimer);
+        ordonnanceur.supprimerLivraison(livraisonASupprimer);
 
         assertNull(intersection.getLivraison());
 
