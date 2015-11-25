@@ -14,9 +14,8 @@ import java.awt.*;
  */
 public class EtatAjoutInit extends EtatDefaut {
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(intersectionsSelectionnees.size() == 0){
             intersectionsSelectionnees.add(intersectionSelectionnee);
@@ -32,9 +31,8 @@ public class EtatAjoutInit extends EtatDefaut {
     }
 
     @Override
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         if(intersectionSelectionnee != null)
             intersectionsSelectionnees.remove(intersectionSelectionnee);
     }

@@ -14,9 +14,8 @@ import java.awt.*;
  */
 public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);
@@ -29,9 +28,8 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.remove(intersectionSelectionnee);
@@ -74,7 +72,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
         fenetreControleur.activerSelections(true);
         fenetreControleur.activerDeselections(true);
         fenetreControleur.activerEchanger(true);
-        fenetreControleur.activerToutesLesDeselections(true);
+        fenetreControleur.activerToutDeselectionner(true);
         fenetreControleur.activerSupprimer(true);
     }
 }

@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.FenetreLivraison;
-import optimod.modele.Livraison;
-import optimod.modele.Plan;
+import optimod.modele.*;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
 
@@ -75,14 +72,18 @@ public class FenetreControleur implements Observer, Initializable {
     private AfficheurPlan afficheurPlan;
 
     private AfficheurFenetresLivraison afficheurFenetresLivraison;
+    private boolean selectionsActivees;
+    private boolean deselectionsActivees;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
+        selectionsActivees = false;
+        deselectionsActivees = false;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        afficheurPlan = new AfficheurPlan(planGroup);
+        afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
         fenetreLivraisonTreeView.getSelectionModel()
                 .selectedItemProperty()
@@ -235,24 +236,11 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerSelections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        System.out.println("selections activees (ou pas)");
+        this.selectionsActivees = estActif;
     }
 
     public void activerDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        System.out.println("deselections activees (ou pas)");
-    }
-
-    public void activerToutesLesDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        System.out.println("toutes les deselections activees (ou pas)");
+        this.deselectionsActivees = estActif;
     }
 
     public void activerAnnulerAjout(boolean estActif) {
@@ -282,7 +270,6 @@ public class FenetreControleur implements Observer, Initializable {
         activerCalculerItineraire(estActif);
         activerSelections(estActif);
         activerDeselections(estActif);
-        activerToutesLesDeselections(estActif);
         activerAnnulerAjout(estActif);
         activerValiderAjout(estActif);
     }
@@ -335,5 +322,21 @@ public class FenetreControleur implements Observer, Initializable {
 
     private void updateVue(){
         this.controleur.updateVue();
+    }
+
+    public boolean selectionner(Intersection intersection) {
+        if(selectionsActivees && intersection.getLivraison() != null) {
+            this.controleur.selectionnerIntersection(intersection);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deselectionner(Intersection intersection) {
+        if(deselectionsActivees && intersection.getLivraison() != null) {
+            this.controleur.deselectionnerIntersection(intersection);
+            return true;
+        }
+        return false;
     }
 }

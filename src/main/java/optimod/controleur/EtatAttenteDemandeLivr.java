@@ -19,13 +19,7 @@ public class EtatAttenteDemandeLivr extends EtatDefaut {
         try {
             if(ordonnanceur.chargerPlan())
                 Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
-        } catch (SAXException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ParserConfigurationException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ExceptionXML exceptionXML) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, exceptionXML);
-        } catch (IOException e) {
+        } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
@@ -36,13 +30,7 @@ public class EtatAttenteDemandeLivr extends EtatDefaut {
         try {
             if(ordonnanceur.chargerDemandeLivraison())
                 Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
-        } catch (SAXException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ParserConfigurationException e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
-        } catch (ExceptionXML exceptionXML) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, exceptionXML);
-        } catch (IOException e) {
+        } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }

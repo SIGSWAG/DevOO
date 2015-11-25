@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import optimod.modele.Intersection;
+import optimod.vue.FenetreControleur;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -24,26 +25,47 @@ public class IntersectionPane extends Circle implements Initializable {
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
     public static final Color COULEUR_DEFAUT = Color.BLACK;
     public static final Color COULEUR_SURVOL = Color.BLUE;
+    private FenetreControleur fenetreControleur;
 
     private Intersection intersection;
     private boolean estEntrepot;
     private boolean survol;
+    private boolean clicke;
 
     private Tooltip infobulle;
 
-    public IntersectionPane(Intersection intersection) {
+    public IntersectionPane(Intersection intersection, FenetreControleur fenetreControleur) {
         super(intersection.getX(), intersection.getY(), TAILLE);
 
         this.intersection = intersection;
+        this.fenetreControleur = fenetreControleur;
 
         estEntrepot = false;
         survol = false;
+        clicke = false;
 
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
 
         setOnMouseEntered(event -> survol());
         setOnMouseExited(event -> quitteSurvol());
+        setOnMouseClicked(event -> click());
+    }
+
+    private void click() {
+        if(estEntrepot)
+            return;
+        if(clicke){
+            if(fenetreControleur.deselectionner(this.intersection)){
+                clicke = !clicke;
+                colorier();
+            }
+        }else{
+            if(fenetreControleur.selectionner(this.intersection)){
+                clicke = !clicke;
+                colorier();
+            }
+        }
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,7 +96,7 @@ public class IntersectionPane extends Circle implements Initializable {
     }
 
     private void colorier() {
-        if (survol)
+        if (survol || clicke)
             setFill(COULEUR_SURVOL);
         else if (estEntrepot)
             setFill(COULEUR_ENTREPOT);

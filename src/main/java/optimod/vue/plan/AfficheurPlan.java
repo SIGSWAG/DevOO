@@ -3,6 +3,7 @@ package optimod.vue.plan;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import optimod.modele.*;
+import optimod.vue.FenetreControleur;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,10 +13,12 @@ import java.util.Collection;
  */
 public final class AfficheurPlan {
 
+    private FenetreControleur fenetreControleur;
     private Group group;
 
-    public AfficheurPlan(Group group) {
+    public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
+        this.fenetreControleur = fenetreControleur;
     }
 
     /**
@@ -27,7 +30,7 @@ public final class AfficheurPlan {
         vider();
 
         for (Intersection intersection : plan.getIntersections()) {
-            IntersectionPane intersectionPane = new IntersectionPane(intersection);
+            IntersectionPane intersectionPane = new IntersectionPane(intersection, fenetreControleur);
             group.getChildren().add(intersectionPane);
             for (Troncon troncon : intersection.getSortants()) {
                 group.getChildren().add(new TronconPane(intersectionPane, troncon));
