@@ -41,26 +41,36 @@ public class FenetreControleur implements Observer, Initializable {
 
     @FXML
     private Button chargerPlan;
+
     @FXML
     private Button chargerLivraisons;
+
     @FXML
     private Button calculerItineraire;
+
     @FXML
     private Button toutDeselectionner;
+
     @FXML
     private Button genererFeuilleRoute;
+
     @FXML
     private Button annuler;
+
     @FXML
     private Button rejouer;
+
     @FXML
     private Button ajouter;
+
     @FXML
     private Button supprimer;
+
     @FXML
     private Button echanger;
+
     @FXML
-    private TreeView<String> fenetresLivraisonTreeView;
+    private TreeView<Object> fenetreLivraisonTreeView;
 
     private AfficheurPlan afficheurPlan;
 
