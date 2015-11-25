@@ -82,6 +82,22 @@ public class Intersection {
         this.livraison = livraison;
     }
 
+    public Troncon getTronconVers(Intersection intersection){
+
+
+        if(sortants == null || sortants.size() == 0){
+            return null;
+        }
+        for(Troncon troncon : sortants){
+            if(troncon.getArrivee() == intersection){
+                return troncon;
+            }
+
+        }
+        return null;
+
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Intersection)) {
