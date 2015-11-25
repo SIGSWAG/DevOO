@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.FenetreLivraison;
-import optimod.modele.Livraison;
-import optimod.modele.Plan;
+import optimod.modele.*;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
 import org.slf4j.Logger;
@@ -175,26 +172,33 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void update(Observable o, Object arg) {
-        // Si la mise à jour vient du plan, on redessine le plan
-        if (o instanceof Plan) {
-            Plan plan = (Plan) o;
-            afficheurPlan.chargerPlan(plan);
-        } else if (o instanceof DemandeLivraisons) {
-            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
-            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
-            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
-        } else {
-            // TODO
-            logger.warn("PROBLEM !");
+        Evenement evenement = (Evenement) arg;
+        if (evenement != null) {
+
+            // Si la mise à jour vient du plan, on redessine le plan
+            if (evenement.equals(Evenement.PLAN_CHARGE)) {
+                Plan plan = (Plan) o;
+                afficheurPlan.chargerPlan(plan);
+            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEES)) {
+                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+            } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+                afficheurPlan.chargerItineraire();
+            } else {
+                // TODO
+                logger.warn("PROBLEM !");
+            }
+
         }
     }
 
+
     private void selectionnerElementGraphe(Object element) {
-        if(element instanceof FenetreLivraison) {
+        if (element instanceof FenetreLivraison) {
             FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
-        }
-        else if(element instanceof Livraison) {
+        } else if (element instanceof Livraison) {
             Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
             afficheurPlan.selectionnerIntersection(livraison);
@@ -202,61 +206,61 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
 
-    public void activerChargerPlan(boolean estActif){
+    public void activerChargerPlan(boolean estActif) {
         chargerPlan.setDisable(!estActif);
     }
 
-    public void activerChargerLivraisons(boolean estActif){
+    public void activerChargerLivraisons(boolean estActif) {
         chargerLivraisons.setDisable(!estActif);
     }
 
-    public void activerToutDeselectionner(boolean estActif){
+    public void activerToutDeselectionner(boolean estActif) {
         toutDeselectionner.setDisable(!estActif);
     }
 
-    public void activerGenererFeuilleRoute(boolean estActif){
+    public void activerGenererFeuilleRoute(boolean estActif) {
         genererFeuilleRoute.setDisable(!estActif);
     }
 
-    public void activerAnnuler(boolean estActif){
+    public void activerAnnuler(boolean estActif) {
         annuler.setDisable(!estActif);
     }
 
-    public void activerRejouer(boolean estActif){
+    public void activerRejouer(boolean estActif) {
         rejouer.setDisable(!estActif);
     }
 
-    public void activerAjouter(boolean estActif){
+    public void activerAjouter(boolean estActif) {
         ajouter.setDisable(!estActif);
     }
 
-    public void activerSupprimer(boolean estActif){
+    public void activerSupprimer(boolean estActif) {
         supprimer.setDisable(!estActif);
     }
 
-    public void activerEchanger(boolean estActif){
+    public void activerEchanger(boolean estActif) {
         echanger.setDisable(!estActif);
     }
 
-    public void activerCalculerItineraire(boolean estActif){
+    public void activerCalculerItineraire(boolean estActif) {
         calculerItineraire.setDisable(!estActif);
     }
 
-    public void activerSelections(boolean estActif){
+    public void activerSelections(boolean estActif) {
         /**
          * TODO @jonathan @aurélien
          */
         logger.debug("selections activees (ou pas)");
     }
 
-    public void activerDeselections(boolean estActif){
+    public void activerDeselections(boolean estActif) {
         /**
          * TODO @jonathan @aurélien
          */
         logger.debug("deselections activees (ou pas)");
     }
 
-    public void activerToutesLesDeselections(boolean estActif){
+    public void activerToutesLesDeselections(boolean estActif) {
         /**
          * TODO @jonathan @aurélien
          */
@@ -277,7 +281,7 @@ public class FenetreControleur implements Observer, Initializable {
         logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
-    public void autoriseBoutons(boolean estActif){
+    public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
         activerToutDeselectionner(estActif);
@@ -295,7 +299,7 @@ public class FenetreControleur implements Observer, Initializable {
         activerValiderAjout(estActif);
     }
 
-    public void afficheMessage(String message, String titre, Alert.AlertType alertType){
+    public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -307,7 +311,7 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex){
+    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -341,7 +345,7 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    private void updateVue(){
+    private void updateVue() {
         this.controleur.updateVue();
     }
 }

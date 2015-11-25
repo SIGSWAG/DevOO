@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * Représente une intersection à l'écran.
  * Created by Jonathan on 19/11/2015.
  */
-public class IntersectionPane extends Circle implements Initializable {
+public class IntersectionPane extends Circle {
 
     public static final int TAILLE = 6;
 
@@ -46,9 +46,7 @@ public class IntersectionPane extends Circle implements Initializable {
 
         setOnMouseEntered(event -> survol());
         setOnMouseExited(event -> quitteSurvol());
-    }
 
-    public void initialize(URL location, ResourceBundle resources) {
         mettreAJour();
     }
 

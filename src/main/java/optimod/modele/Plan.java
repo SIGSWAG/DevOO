@@ -29,7 +29,7 @@ public class Plan extends Observable {
         boolean planCharge = DeserialiseurXML.INSTANCE.chargerPlan(this);
         if(planCharge){
             setChanged();
-            notifyObservers();
+            notifyObservers(Evenement.PLAN_CHARGE);
         }
         return planCharge;
     }
@@ -50,10 +50,10 @@ public class Plan extends Observable {
     }
 
     /**
-     * réalloue tous les attributs à des attributs vides
+     * Réinitialise le plan.
      */
-    public void reset(){
-        intersections = new ArrayList<Intersection>();
+    public void reinitialiser(){
+        intersections = new ArrayList<>();
         setChanged();
         notifyObservers();
     }

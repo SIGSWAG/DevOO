@@ -7,5 +7,4 @@ public enum Evenement {
     PLAN_CHARGE,
     DEMANDE_LIVRAISONS_CHARGEES,
     ITINERAIRE_CALCULE
-
 }

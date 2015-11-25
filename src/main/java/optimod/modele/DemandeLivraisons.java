@@ -40,7 +40,7 @@ public class DemandeLivraisons extends Observable {
         boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         if(demandeLivraisonChargee){
             setChanged();
-            notifyObservers();
+            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEES);
         }
         return demandeLivraisonChargee;
     }
@@ -102,6 +102,7 @@ public class DemandeLivraisons extends Observable {
 
         }
 
+        setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
@@ -248,7 +249,7 @@ public class DemandeLivraisons extends Observable {
     public void reset(){
         itineraire = new ArrayList<Chemin>();
 
-        //reset les troncons (est emprunte)
+        //reinitialiser les troncons (est emprunte)
         List<Intersection> intersections = plan.getIntersections();
         for(Intersection intersection : intersections){
             if(intersection.getSortants() != null && intersection.getSortants().size()>0){

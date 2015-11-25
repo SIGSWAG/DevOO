@@ -21,6 +21,7 @@ public final class AfficheurPlan {
 
     /**
      * Ajoute des intersections au plan, ainsi que leurs tronçons.
+     *
      * @param plan Le plan à charger.
      */
     public void chargerPlan(Plan plan) {
@@ -38,6 +39,7 @@ public final class AfficheurPlan {
 
     /**
      * Affiche une demande de livraison sur le plan.
+     *
      * @param demandeLivraisons
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
@@ -46,6 +48,15 @@ public final class AfficheurPlan {
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
+
+    }
+
+    /**
+     * Affiche un itinéraire sur le plan.
+     */
+    public void chargerItineraire() {
+
+        getTronconsPane().forEach(TronconPane::mettreAJour);
 
     }
 
@@ -78,7 +89,6 @@ public final class AfficheurPlan {
     }
 
 
-
     private Collection<IntersectionPane> getIntersectionsPane() {
         List<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();
         for (Node noeud : group.getChildren()) {
@@ -89,7 +99,7 @@ public final class AfficheurPlan {
         return intersectionsCercle;
     }
 
-    private Collection<TronconPane> getTronconsLigne() {
+    private Collection<TronconPane> getTronconsPane() {
         List<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {
