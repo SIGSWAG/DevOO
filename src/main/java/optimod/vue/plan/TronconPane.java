@@ -1,22 +1,16 @@
 package optimod.vue.plan;
 
-import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import optimod.modele.Intersection;
 import optimod.modele.Troncon;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Représente un tronçon à l'écran.
@@ -48,11 +42,7 @@ public class TronconPane extends Group {
             toFront(); // On met la flèche dessus pour être sûr qu'elle soit visible
         }
         for (Node noeud : getChildren()) {
-            if (noeud instanceof Line) { // Le corps de la flèche
-                ((Line) noeud).setStroke(couleur);
-            } else if (noeud instanceof Path) {
-                ((Path) noeud).setStroke(couleur);
-            }
+            ((Shape) noeud).setStroke(couleur); // La flèche n'est composée que de Shapes, on peut donc convertir
         }
     }
 
@@ -62,11 +52,14 @@ public class TronconPane extends Group {
 
     private void dessinerFleche() {
         final Intersection cible = troncon.getArrivee();
+
+        // Calcul d'où "part" et "arrive" la flèche pour éviter qu'elle ne passe sur les intersections
+        final Point2D pointSource = intersectionCercleLigne(cible.getX(), cible.getY(), source.getX(), source.getY()).get(0);
         final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
 
-        final Line ligne = new Line(source.getX(), source.getY(), pointCible.getX(), pointCible.getY());
+        final Line ligne = new Line(pointSource.getX(), pointSource.getY(), pointCible.getX(), pointCible.getY());
 
-        final Point2D tan = new Point2D(cible.getX() - source.getX(), cible.getY() - source.getY()).normalize();
+        final Point2D tan = new Point2D(pointCible.getX() - pointSource.getX(), pointCible.getY() - pointSource.getY()).normalize();
 
         final Path fleche = new Path();
         fleche.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
