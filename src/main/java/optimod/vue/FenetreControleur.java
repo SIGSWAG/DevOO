@@ -18,6 +18,8 @@ import optimod.modele.Livraison;
 import optimod.modele.Plan;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,7 +35,10 @@ import java.util.ResourceBundle;
  */
 public class FenetreControleur implements Observer, Initializable {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     private Stage fenetre;
+
     private Controleur controleur;
 
     @FXML
@@ -180,16 +185,16 @@ public class FenetreControleur implements Observer, Initializable {
             afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
         } else {
             // TODO
-            System.err.println("PROBLEM !");
+            logger.warn("PROBLEM !");
         }
     }
 
     private void selectionnerElementGraphe(Object element) {
         if(element instanceof FenetreLivraison) {
-            System.out.println("Fenêtre de livraison !");
+            logger.debug("Fenêtre de livraison !");
         }
         else if(element instanceof Livraison) {
-            System.out.println("Livraison !");
+            logger.debug("Livraison !");
         }
     }
 
@@ -238,35 +243,35 @@ public class FenetreControleur implements Observer, Initializable {
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("selections activees (ou pas)");
+        logger.debug("selections activees (ou pas)");
     }
 
     public void activerDeselections(boolean estActif){
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("deselections activees (ou pas)");
+        logger.debug("deselections activees (ou pas)");
     }
 
     public void activerToutesLesDeselections(boolean estActif){
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("toutes les deselections activees (ou pas)");
+        logger.debug("toutes les deselections activees (ou pas)");
     }
 
     public void activerAnnulerAjout(boolean estActif) {
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("on peut annuler l'ajout pour revenir à l'état principal");
+        logger.debug("on peut annuler l'ajout pour revenir à l'état principal");
     }
 
     public void activerValiderAjout(boolean estActif) {
         /**
          * TODO @jonathan @aurélien
          */
-        System.out.println("on peut valider l'ajout pour revenir à l'état principal");
+        logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
     public void autoriseBoutons(boolean estActif){

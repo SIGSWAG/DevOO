@@ -3,10 +3,14 @@ package optimod.modele;
 import optimod.tsp.Graphe;
 import optimod.tsp.TSP;
 import optimod.tsp.TSP1;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class GraphePCC implements Graphe {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      *
@@ -122,7 +126,7 @@ public class GraphePCC implements Graphe {
 
             int tailleGraphe = cheminsParLivraison.size();
 
-            System.out.println("taille du graphe "+tailleGraphe);
+            logger.info("Taille du graphe {}", tailleGraphe);
             graphe = new Chemin[tailleGraphe][tailleGraphe];
 
             for(int i=0;i<tailleGraphe;i++){

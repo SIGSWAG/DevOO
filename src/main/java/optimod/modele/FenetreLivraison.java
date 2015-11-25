@@ -1,8 +1,13 @@
 package optimod.modele;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 public class FenetreLivraison {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private int heureDebut;
 
@@ -24,7 +29,7 @@ public class FenetreLivraison {
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisons) {
                 if (!depart.equals(arrivee)) {
-                    System.out.println("dep "+depart.getIntersection().getAdresse()+" arr "+arrivee.getIntersection().getAdresse());
+                    logger.debug("dep {} arr {}", depart.getIntersection().getAdresse(), arrivee.getIntersection().getAdresse());
                     Chemin chemin = depart.calculPCC(arrivee);
                     if(chemin != null) {
                         chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
@@ -44,7 +49,7 @@ public class FenetreLivraison {
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisonsSuivantes) {
-                System.out.println("dep "+depart.getIntersection().getAdresse()+" arr "+arrivee.getIntersection().getAdresse());
+                logger.debug("dep {} arr {}", depart.getIntersection().getAdresse(), arrivee.getIntersection().getAdresse());
                 Chemin chemin = depart.calculPCC(arrivee);
                 if(chemin != null) {
                     chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
