@@ -54,6 +54,8 @@ public class DemandeLivraisons extends Observable {
      * Puis appelle la méthode de GraphePCC permettant de trouver le + court parcours dans ce graphe.
      */
     public void calculerItineraire() {
+
+        System.out.println("Calcul lancé");
         List<Chemin> graphe = new ArrayList<>();
 
         List<Livraison> listeEntrepot = new ArrayList<>();
@@ -104,6 +106,7 @@ public class DemandeLivraisons extends Observable {
             }
 
         }
+
 
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
