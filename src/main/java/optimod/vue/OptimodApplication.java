@@ -39,6 +39,7 @@ public class OptimodApplication extends Application {
         // Mise en place du controleur qui réagit aux évenements utilisateurs côté vue
         FenetreControleur fenetreControleur = new FenetreControleur(fenetre, controleur);
         loader.setController(fenetreControleur);
+        controleur.setFenetreControleur(fenetreControleur);
 
         ordonnanceur.getPlan().addObserver(fenetreControleur);
         ordonnanceur.getDemandeLivraisons().addObserver(fenetreControleur);
@@ -53,6 +54,7 @@ public class OptimodApplication extends Application {
         fenetre.setTitle(TITRE_FENETRE);
         fenetre.setScene(new Scene(root));
         fenetre.show();
+        controleur.updateVue();
     }
 
     /**

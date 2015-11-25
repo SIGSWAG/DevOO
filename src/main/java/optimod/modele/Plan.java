@@ -3,7 +3,11 @@ package optimod.modele;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import optimod.es.xml.DeserialiseurXML;
+import optimod.es.xml.ExceptionXML;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -21,16 +25,13 @@ public class Plan extends Observable {
         this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 
-    public void chargerPlan() {
-        try {
-            DeserialiseurXML.INSTANCE.chargerPlan(this);
+    public boolean chargerPlan() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        boolean planCharge = DeserialiseurXML.INSTANCE.chargerPlan(this);
+        if(planCharge){
             setChanged();
             notifyObservers();
         }
-        catch( Exception e){
-            // TODO Gérer les exceptions
-            System.out.println(e.getMessage());
-        }
+        return planCharge;
     }
 
     /**

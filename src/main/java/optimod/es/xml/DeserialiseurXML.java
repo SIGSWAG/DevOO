@@ -13,10 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Loïc Touzard on 18/11/2015.
@@ -34,8 +31,11 @@ public enum DeserialiseurXML { // Singleton
      * @throws IOException
      * @throws ExceptionXML
      */
-    public void chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+    public boolean chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        if(xml == null){
+            return false;
+        }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
@@ -44,9 +44,10 @@ public enum DeserialiseurXML { // Singleton
         if (racine.getNodeName().equals("Reseau")) {
             construirePlanAPartirDeDOMXML(racine, plan);
         }
-        else
+        else{
             throw new ExceptionXML("Document non conforme");
-
+        }
+        return true;
     }
 
     private void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML, NumberFormatException{
@@ -73,7 +74,6 @@ public enum DeserialiseurXML { // Singleton
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être positive");
 
             // Création de l'intersection
-
             intersections.put(adresse, new Intersection(x, y, adresse));
             noeudsListe.put(adresse, noeud);
         }
@@ -127,8 +127,11 @@ public enum DeserialiseurXML { // Singleton
      * @throws IOException
      * @throws ExceptionXML
      */
-    public void chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
         File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        if(xml == null){
+            return false;
+        }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
@@ -139,6 +142,7 @@ public enum DeserialiseurXML { // Singleton
         }
         else
             throw new ExceptionXML("Document non conforme");
+        return true;
     }
 
     private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraisons demandeLivraisons) throws ExceptionXML, NumberFormatException {
@@ -202,8 +206,16 @@ public enum DeserialiseurXML { // Singleton
             if(tempsDeb > tempsFi){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
+            /*
             if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() < tempsDeb){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut supérieure ou égale à l'heureFin de la Plage précédente");
+            }
+            */
+            for (FenetreLivraison fl : fenetres) {
+                if ((tempsDeb < fl.getHeureFin() && tempsDeb > fl.getHeureDebut()) ||
+                        tempsFi < fl.getHeureFin() && tempsFi > fl.getHeureDebut()){
+                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Deux Plages doivent être distinctes");
+                }
             }
 
             // Parcours de toutes les Livraisons (Livraison)
@@ -229,7 +241,7 @@ public enum DeserialiseurXML { // Singleton
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
 
                 // Création de la Livraison et liaisons
-                Livraison livraison = new Livraison(intersectionDeLivraison);
+                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi);
                 livraisons.add(livraison);
                 intersectionsUtilisees.add(intersectionDeLivraison);
             }
@@ -247,6 +259,12 @@ public enum DeserialiseurXML { // Singleton
         // retour de visibilité Intersection / Livraison
         entrepot.getIntersection().setLivraison(entrepot);
         // affectations des fenêtres de livraison
+
+        fenetres.sort(new Comparator<FenetreLivraison>() {
+            public int compare(FenetreLivraison o1, FenetreLivraison o2) {
+                return o1.getHeureDebut()-o2.getHeureDebut();
+            }
+        });
         demandeLivraisons.setFenetres(fenetres);
         // retour de visibilité Intersection / Livraison
         for (FenetreLivraison f : fenetres ) {

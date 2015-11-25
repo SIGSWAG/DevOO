@@ -45,9 +45,6 @@ public enum OuvreurDeFichierXML { // Singleton
         if(fichierChoisi != null) {
             setDernierFichierOuvert(fichierChoisi);
         }
-        else{
-            throw new ExceptionXML("Problème à l'ouverture du fichier");
-        }
 
         return fichierChoisi;
     }

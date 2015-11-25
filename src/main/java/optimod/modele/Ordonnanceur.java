@@ -1,5 +1,11 @@
 package optimod.modele;
 
+import optimod.es.xml.ExceptionXML;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+
 public class Ordonnanceur {
 
     private DemandeLivraisons demandeLivraisons;
@@ -17,8 +23,8 @@ public class Ordonnanceur {
     /**
      *
      */
-    public void chargerPlan() {
-        plan.chargerPlan();
+    public boolean chargerPlan() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
+        return plan.chargerPlan();
     }
 
     /**
@@ -43,8 +49,8 @@ public class Ordonnanceur {
     /**
      *
      */
-    public void chargerDemandeLivraison() {
-        demandeLivraisons.chargerDemandeLivraison();
+    public boolean chargerDemandeLivraison() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
+        return demandeLivraisons.chargerDemandeLivraison();
     }
 
     /**
@@ -94,5 +100,9 @@ public class Ordonnanceur {
 
     public void setPlan(Plan plan) {
         this.plan = plan;
+    }
+
+    public void genererFeuilleDeRoute(){
+        demandeLivraisons.genererFeuilleDeRoute();
     }
 }

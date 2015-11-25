@@ -1,12 +1,19 @@
 package optimod.modele;
 
 import optimod.es.xml.DeserialiseurXML;
+import optimod.es.xml.ExceptionXML;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 public class DemandeLivraisons extends Observable {
+
+
+    private static int TEMPS_ARRET = 1;
 
     private List<Chemin> itineraire;
 
@@ -26,17 +33,13 @@ public class DemandeLivraisons extends Observable {
     }
 
 
-    public void chargerDemandeLivraison() {
-        // TODO implement here
-
-        try {
-            DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+    public boolean chargerDemandeLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
+        if(demandeLivraisonChargee){
             setChanged();
             notifyObservers();
         }
-        catch( Exception e){
-            System.out.println(e.getMessage());
-        }
+        return demandeLivraisonChargee;
     }
 
     /**
@@ -46,6 +49,15 @@ public class DemandeLivraisons extends Observable {
      */
     public void calculerItineraire() {
         List<Chemin> graphe = new ArrayList<Chemin>();
+
+        List<Livraison> listeEntrepot = new ArrayList<Livraison>();
+        listeEntrepot.add(entrepot);
+        FenetreLivraison fenEntrepot = new FenetreLivraison(listeEntrepot,0,1);
+
+
+        graphe.addAll(fenEntrepot.calculPCCSuivant(fenetres.get(0)));//on calcule les plus courts chemins de l'entrepot a la premiere fenetre
+
+
         // toutes les fenetres sauf la derniere
         for(int i = 0 ; i < fenetres.size() - 1 ; i++){
             FenetreLivraison fenetre = fenetres.get(i);
@@ -53,8 +65,44 @@ public class DemandeLivraisons extends Observable {
             graphe.addAll(fenetre.calculPCCSuivant(fenetres.get(i+1)));
         }
         graphe.addAll(fenetres.get(fenetres.size()-1).calculPCCInterne());
+        graphe.addAll(fenetres.get(fenetres.size()-1).calculPCCSuivant(fenEntrepot)); //calcul PCC vers entrepot.
         GraphePCC leGrapheAResoudre = new GraphePCC(entrepot,graphe);
-        this.itineraire = leGrapheAResoudre.calculerItineraire();
+        this.itineraire = leGrapheAResoudre.calculerItineraire(); //calcul de l'itinéraire
+
+        //il faut maintenant mettre à jour les livraisons (suivantes et précédentes)
+        int heureDepartItineraire = 0;
+        int duree = 0;
+        int fenetreCouranteDebut = 0; //heure de début de fenetre de la livraison courante
+        Chemin premierChemin = itineraire.get(0);
+        Livraison premiereLivraison = premierChemin.getArrivee();
+        premiereLivraison.setHeureLivraison(premiereLivraison.getHeureDebutFenetre()); //la première livraison arrive
+        fenetreCouranteDebut = premiereLivraison.getHeureDebutFenetre();
+        //à l'heure de sa fenetre
+        heureDepartItineraire = premiereLivraison.getHeureDebutFenetre()-premierChemin.getDuree(); //on part de l'entrepot
+
+        for(Chemin chemin : itineraire){
+
+            Livraison arrivee = chemin.getArrivee();
+            Livraison depart = chemin.getDepart();
+            depart.setCheminVersSuivante(chemin); //on maj le chemin vers la livraison suivante
+            arrivee.setPrecedente(depart);//on maj le pointeur vers la livraison precedente
+
+            if(depart.getIntersection().getAdresse() != entrepot.getIntersection().getAdresse()) {//temps déja maj pour l'entrepot
+                if (arrivee.getHeureDebutFenetre() < depart.getHeureLivraison() + chemin.getDuree() + TEMPS_ARRET) { //pas d'attente
+                    arrivee.setHeureLivraison(depart.getHeureLivraison() + chemin.getDuree() + TEMPS_ARRET);
+                } else {
+                    arrivee.setHeureLivraison(arrivee.getHeureDebutFenetre());
+                }
+            }
+
+        }
+
+
+
+
+
+
+
     }
 
     /**
@@ -106,6 +154,7 @@ public class DemandeLivraisons extends Observable {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
+        // TODO Faire attention aux fenetres !
         if(livr1 == entrepot || livr2 == entrepot){
             System.out.println("erreur, action impossible sur l'entrepot");
             return;
@@ -202,5 +251,9 @@ public class DemandeLivraisons extends Observable {
 
     public void setEntrepot(Livraison entrepot) {
         this.entrepot = entrepot;
+    }
+
+    public void genererFeuilleDeRoute() {
+
     }
 }
