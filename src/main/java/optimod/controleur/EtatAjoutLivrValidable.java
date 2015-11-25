@@ -5,7 +5,6 @@ import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
 import java.util.List;
-import java.awt.*;
 
 /**
  * Created by hdelval on 11/23/15.
@@ -28,11 +27,14 @@ public class EtatAjoutLivrValidable extends EtatDefaut {
     }
 
     @Override
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
-        if(intersectionSelectionnee != null)
+        if(intersectionSelectionnee != null) {
             intersectionsSelectionnees.remove(intersectionSelectionnee);
+            Controleur.setEtatCourant(Controleur.etatAjoutInit);
+            return true;
+        }
+        return false;
     }
 
     @Override

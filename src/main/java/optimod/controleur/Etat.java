@@ -4,7 +4,6 @@ import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -68,32 +67,21 @@ public interface Etat {
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
-     * @param listeDeCdes
-     * @param p coordonnees du plan correspondant au point clique
+     * @param ordonnanceur
+     * @param intersection l'intersection selectionnée
+     * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
      */
-    public void clicGauche(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes, Point p);
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersection, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
      * @param ordonnanceur
-     * @param p coordonnees du plan correspondant au point clique
-     * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
+     * @param intersection l'intersection déselectionnée
      * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
      */
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees);
-
-    /**
-     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
-     * Precondition : p != null
-     * @param fenetreControleur
-     * @param ordonnanceur
-     * @param p coordonnees du plan correspondant au point clique
-     * @param rayon le rayon d'imprecision du click, pour localiser la Livraison
-     * @param intersectionsSelectionnees toutes les intersections actuellement selectionnees
-     */
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees);
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersection, List<Intersection> intersectionsSelectionnees);
 
     /**
      * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
