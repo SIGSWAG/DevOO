@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import optimod.modele.Intersection;
+import optimod.modele.Livraison;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -21,9 +22,10 @@ public class IntersectionPane extends Circle implements Initializable {
 
     public static final int TAILLE = 6;
 
-    public static final Color COULEUR_ENTREPOT = Color.GREEN;
     public static final Color COULEUR_DEFAUT = Color.BLACK;
+    public static final Color COULEUR_ENTREPOT = Color.GREEN;
     public static final Color COULEUR_SURVOL = Color.BLUE;
+    public static final Color COULEUR_LIVRAISON = Color.RED;
 
     private Intersection intersection;
     private boolean estEntrepot;
@@ -55,6 +57,10 @@ public class IntersectionPane extends Circle implements Initializable {
         mettreAJour();
     }
 
+    private boolean aLivraison() {
+        return intersection.getLivraison() != null;
+    }
+
     private void survol() {
         survol = true;
         if (!infobulle.getText().isEmpty())
@@ -78,17 +84,26 @@ public class IntersectionPane extends Circle implements Initializable {
             setFill(COULEUR_SURVOL);
         else if (estEntrepot)
             setFill(COULEUR_ENTREPOT);
+        else if (aLivraison())
+            setFill(COULEUR_LIVRAISON);
         else
             setFill(COULEUR_DEFAUT);
     }
 
     private void genererTexteInfobulle() {
-        String texte = String.format("(%s;%s)\nAdresse : %s",
+        String texte = String.format("(%s;%s)",
                 intersection.getX(),
-                intersection.getY(),
-                intersection.getAdresse());
+                intersection.getY());
+        texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
+        if (aLivraison()) {
+            Livraison livraison = intersection.getLivraison();
+            texte += String.format("\nFenêtre de livraison : %s - %s",
+                    livraison.getHeureDebutFenetre(),
+                    livraison.getHeureFinFenetre());
+        }
+
         infobulle.setText(texte);
     }
 
@@ -109,7 +124,8 @@ public class IntersectionPane extends Circle implements Initializable {
      * <p>
      * Source : http://stackoverflow.com/a/27739605
      *
-     * @param tooltip
+     * @param tooltip L'infobulle à modifier.
+     * @param duree   La durée d'apparition
      */
     private static void dureeApparition(Tooltip tooltip, int duree) {
         try {
