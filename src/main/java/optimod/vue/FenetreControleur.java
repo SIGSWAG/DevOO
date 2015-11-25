@@ -10,12 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.FenetreLivraison;
-import optimod.modele.Livraison;
-import optimod.modele.Plan;
+import optimod.modele.*;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
 import org.slf4j.Logger;
@@ -80,14 +75,18 @@ public class FenetreControleur implements Observer, Initializable {
     private AfficheurPlan afficheurPlan;
 
     private AfficheurFenetresLivraison afficheurFenetresLivraison;
+    private boolean selectionsActivees;
+    private boolean deselectionsActivees;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
+        selectionsActivees = false;
+        deselectionsActivees = false;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        afficheurPlan = new AfficheurPlan(planGroup);
+        afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
         fenetreLivraisonTreeView.getSelectionModel()
                 .selectedItemProperty()
@@ -163,7 +162,7 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void deselectionnerToutesIntersections(ActionEvent evenement) {
-        controleur.deselectionnerToutesIntersections();
+        afficheurPlan.deselectionnerToutesIntersections();
     }
 
     /**
@@ -243,24 +242,11 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerSelections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("selections activees (ou pas)");
+        this.selectionsActivees = estActif;
     }
 
     public void activerDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("deselections activees (ou pas)");
-    }
-
-    public void activerToutesLesDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("toutes les deselections activees (ou pas)");
+        this.deselectionsActivees = estActif;
     }
 
     public void activerAnnulerAjout(boolean estActif) {
@@ -290,7 +276,6 @@ public class FenetreControleur implements Observer, Initializable {
         activerCalculerItineraire(estActif);
         activerSelections(estActif);
         activerDeselections(estActif);
-        activerToutesLesDeselections(estActif);
         activerAnnulerAjout(estActif);
         activerValiderAjout(estActif);
     }
@@ -343,5 +328,19 @@ public class FenetreControleur implements Observer, Initializable {
 
     private void updateVue(){
         this.controleur.updateVue();
+    }
+
+    public boolean selectionner(Intersection intersection) {
+        if(selectionsActivees) {
+            return this.controleur.selectionnerIntersection(intersection);
+        }
+        return false;
+    }
+
+    public boolean deselectionner(Intersection intersection) {
+        if(deselectionsActivees) {
+            return this.controleur.deselectionnerIntersection(intersection);
+        }
+        return false;
     }
 }

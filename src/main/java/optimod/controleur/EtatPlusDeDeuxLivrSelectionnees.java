@@ -7,16 +7,14 @@ import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
 import java.util.List;
-import java.awt.*;
 
 /**
  * Created by hdelval on 11/23/15.
  */
 public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     @Override
-    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);
@@ -28,17 +26,18 @@ public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Point p, int rayon, List<Intersection> intersectionsSelectionnees){
+    public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
-        Intersection intersectionSelectionnee = ordonnanceur.trouverIntersection(p.x, p.y, rayon);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if(livraisonSelectionnee != null){
             intersectionsSelectionnees.remove(intersectionSelectionnee);
             if(intersectionsSelectionnees.size() > 2)
                 Controleur.setEtatCourant(Controleur.etatPlusDeDeuxLivrSelectionnees);
             else
-                Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
+                Controleur.setEtatCourant(Controleur.etatDeuxLivrSelectionnees);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -64,7 +63,7 @@ public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerSelections(true);
         fenetreControleur.activerDeselections(true);
-        fenetreControleur.activerToutesLesDeselections(true);
+        fenetreControleur.activerToutDeselectionner(true);
         fenetreControleur.activerSupprimer(true);
     }
 }

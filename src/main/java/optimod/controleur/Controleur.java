@@ -94,18 +94,24 @@ public class Controleur {
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
-    public void selectionnerIntersection(Point p, int rayon){
-        etatCourant.selectionnerIntersection(
-                fenetreControleur, ordonnanceur, p, rayon, intersectionsSelectionnees
-        );
+    public boolean selectionnerIntersection(Intersection intersection){
+        boolean res = false;
+        if(intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
+            res = etatCourant.selectionnerIntersection(
+                    fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
+            );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        return res;
     }
 
-    public void deselectionnerIntersection(Point p, int rayon){
-        etatCourant.deselectionnerIntersection(
-                fenetreControleur, ordonnanceur, p, rayon, intersectionsSelectionnees
-        );
+    public boolean deselectionnerIntersection(Intersection intersection){
+        boolean res = false;
+        if(intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
+            res = etatCourant.deselectionnerIntersection(
+                    fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
+            );
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        return res;
     }
 
     public void deselectionnerToutesIntersections(){
