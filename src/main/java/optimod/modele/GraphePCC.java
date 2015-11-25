@@ -12,11 +12,6 @@ public class GraphePCC implements Graphe {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    /**
-     *
-     */
-    //private Hashtable<Integer,Integer> mappingInverse;//calculatedIndex-->realIndex
-
     private Hashtable<Integer,List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 
     private Hashtable<Integer, Integer> vus = new Hashtable<Integer, Integer>();//reel --> calcule

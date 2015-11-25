@@ -172,9 +172,9 @@ public class MainTest {
                 System.out.println("arrivee a "+troncon.getArrivee().getAdresse()+" apres "+troncon.getDuree());
             }
 
-
-
         }
+
+
 
 
 
