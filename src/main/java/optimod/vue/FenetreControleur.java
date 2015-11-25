@@ -140,6 +140,7 @@ public class FenetreControleur implements Observer, Initializable {
         } else if (o instanceof DemandeLivraisons) {
             DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
             afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
         } else {
             // TODO
             System.err.println("PROBLEM !");
