@@ -77,6 +77,11 @@ public class Controleur {
         etatCourant.updateVue(fenetreControleur, listeDeCdes);
     }
 
+    public void annulerAjoutLivraison(){
+        etatCourant.annulerAjout(fenetreControleur, intersectionsSelectionnees);
+        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+    }
+
     public void echangerLivraisons() {
         etatCourant.echangeesLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.updateVue(fenetreControleur, listeDeCdes);

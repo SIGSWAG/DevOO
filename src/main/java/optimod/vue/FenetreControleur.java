@@ -4,6 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -69,6 +73,12 @@ public class FenetreControleur implements Observer, Initializable {
     private Button echanger;
 
     @FXML
+    private Button validerAjoutLivraison;
+
+    @FXML
+    private Button annulerAjoutLivraison;
+
+    @FXML
     private TreeView<Object> fenetreLivraisonTreeView;
 
     private AfficheurPlan afficheurPlan;
@@ -87,6 +97,7 @@ public class FenetreControleur implements Observer, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
+        genererFeuilleRoute.setVisible(false);
         fenetreLivraisonTreeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selectionnerElementGraphe(newValue.getValue()));
@@ -164,6 +175,16 @@ public class FenetreControleur implements Observer, Initializable {
         afficheurPlan.deselectionnerToutesIntersections();
     }
 
+    @FXML
+    protected void validerAjoutLivraison(ActionEvent evenement) {
+        controleur.validerAjoutLivraison();
+    }
+
+    @FXML
+    protected void annulerAjoutLivraison(ActionEvent evenement) {
+        controleur.annulerAjoutLivraison();
+    }
+
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Générer feuille de route" dans l'interface
      */
@@ -199,7 +220,9 @@ public class FenetreControleur implements Observer, Initializable {
         if (element instanceof FenetreLivraison) {
             FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
-        } else if (element instanceof Livraison) {
+            afficheurPlan.selectionnerIntersections(fenetreLivraison);
+        }
+        else if(element instanceof Livraison) {
             Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
             afficheurPlan.selectionnerIntersection(livraison);

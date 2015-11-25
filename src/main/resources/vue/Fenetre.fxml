@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
     <left>
-        <AnchorPane>
+        <AnchorPane prefHeight="372.0" prefWidth="262.0">
             <children>
                 <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison (TODO)" underline="true" />
                 <TreeView fx:id="fenetreLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
@@ -15,15 +18,14 @@
         </AnchorPane>
     </left>
     <center>
-        <ScrollPane id="planCanvasScrollPane" fx:id="planCanvasScrollPane" fitToHeight="true" fitToWidth="true"
-                    hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
+        <ScrollPane id="planCanvasScrollPane" fx:id="planCanvasScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" prefHeight="381.0" prefWidth="812.0" vbarPolicy="AS_NEEDED">
             <content>
                 <Group fx:id="planGroup" />
             </content>
         </ScrollPane>
     </center>
     <top>
-        <ToolBar>
+        <ToolBar prefHeight="45.0" prefWidth="1270.0">
             <items>
                 <Button fx:id="chargerPlan" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
                 <Button fx:id="chargerLivraisons" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
@@ -35,6 +37,8 @@
                 <Button fx:id="ajouter" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
                 <Button fx:id="supprimer" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
                 <Button fx:id="echanger" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
+                <Button fx:id="validerAjoutLivraison" mnemonicParsing="false" onAction="#validerAjoutLivraison" text="Valider" />
+                <Button fx:id="annulerAjoutLivraison" mnemonicParsing="false" onAction="#annulerAjoutLivraison" text="Annuler" />
             </items>
         </ToolBar>
     </top>
