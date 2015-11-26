@@ -9,6 +9,8 @@ import javafx.util.Duration;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.vue.FenetreControleur;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 
@@ -17,6 +19,8 @@ import java.lang.reflect.Field;
  * Created by Jonathan on 19/11/2015.
  */
 public class IntersectionPane extends Circle {
+
+    private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
 
     public static final int TAILLE = 6;
 
@@ -50,9 +54,9 @@ public class IntersectionPane extends Circle {
 
         ancienneCouleur = COULEUR_LIVRAISON;
 
-        setOnMouseEntered(event -> survol());
-        setOnMouseExited(event -> quitteSurvol());
-        setOnMouseClicked(event -> click());
+        setOnMouseEntered(evenement -> survol());
+        setOnMouseExited(evenement -> quitteSurvol());
+        setOnMouseClicked(evenement -> click());
     }
 
     private void click() {
@@ -108,14 +112,18 @@ public class IntersectionPane extends Circle {
     }
 
     private void colorier() {
-        if (survol || clicke)
+        if (survol || clicke) {
             setFill(COULEUR_SURVOL);
-        else if (estEntrepot)
+        }
+        else if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-        else if (aUneLivraison())
+        }
+        else if (aUneLivraison()) {
             setFill(ancienneCouleur);
-        else
+        }
+        else {
             setFill(COULEUR_DEFAUT);
+        }
     }
 
     private void genererTexteInfobulle() {
@@ -148,7 +156,7 @@ public class IntersectionPane extends Circle {
     }
 
     /**
-     * Hack permettant de personnaliser la durée d'apparition des infobulles.
+     * Permet de personnaliser la durée d'apparition des infobulles.
      * <p>
      * Source : http://stackoverflow.com/a/27739605
      *
@@ -157,20 +165,20 @@ public class IntersectionPane extends Circle {
      */
     private static void dureeApparition(Tooltip tooltip, int duree) {
         try {
-            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
-            fieldBehavior.setAccessible(true);
-            Object objBehavior = fieldBehavior.get(tooltip);
+            Field comportementChamp = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            comportementChamp.setAccessible(true);
+            Object comportementObjet = comportementChamp.get(tooltip);
 
-            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
-            fieldTimer.setAccessible(true);
-            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+            Field timerChamp = comportementObjet.getClass().getDeclaredField("activationTimer");
+            timerChamp.setAccessible(true);
+            Timeline objTimer = (Timeline) timerChamp.get(comportementObjet);
 
             objTimer.getKeyFrames().clear();
             objTimer.getKeyFrames().add(new KeyFrame(new Duration(duree)));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
+        catch(NoSuchFieldException | IllegalAccessException e) {
+            logger.error("Problème dans la mise en place de la durée d'apparition de l'infobulle", e);
+        }
     }
 
 }

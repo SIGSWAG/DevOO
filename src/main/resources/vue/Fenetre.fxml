@@ -12,7 +12,7 @@
     <left>
         <AnchorPane prefHeight="372.0" prefWidth="262.0">
             <children>
-                <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison (TODO)" underline="true" />
+                <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison" underline="true" />
                 <TreeView fx:id="fenetreLivraisonTreeView" layoutX="14.0" layoutY="16.0" />
             </children>
         </AnchorPane>
@@ -32,11 +32,11 @@
                 <Button fx:id="calculerItineraire" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
                 <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#deselectionnerToutesIntersections" text="Tout désélec" />
                 <Button fx:id="genererFeuilleRoute" disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
-                <Button fx:id="annuler" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
-                <Button fx:id="rejouer" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
-                <Button fx:id="ajouter" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
-                <Button fx:id="supprimer" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
-                <Button fx:id="echanger" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
+                <Button fx:id="annulerAction" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
+                <Button fx:id="rejouerAction" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
+                <Button fx:id="ajouterLivraison" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
+                <Button fx:id="supprimerLivraison" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
+                <Button fx:id="echangerLivraisons" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
                 <Button fx:id="validerAjoutLivraison" mnemonicParsing="false" onAction="#validerAjoutLivraison" text="Valider" />
                 <Button fx:id="annulerAjoutLivraison" mnemonicParsing="false" onAction="#annulerAjoutLivraison" text="Annuler" />
             </items>

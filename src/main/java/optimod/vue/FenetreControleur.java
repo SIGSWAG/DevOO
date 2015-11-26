@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -33,7 +34,7 @@ import java.util.ResourceBundle;
  */
 public class FenetreControleur implements Observer, Initializable {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Stage fenetre;
 
@@ -58,19 +59,19 @@ public class FenetreControleur implements Observer, Initializable {
     private Button genererFeuilleRoute;
 
     @FXML
-    private Button annuler;
+    private Button annulerAction;
 
     @FXML
-    private Button rejouer;
+    private Button rejouerAction;
 
     @FXML
-    private Button ajouter;
+    private Button ajouterLivraison;
 
     @FXML
-    private Button supprimer;
+    private Button supprimerLivraison;
 
     @FXML
-    private Button echanger;
+    private Button echangerLivraisons;
 
     @FXML
     private Button validerAjoutLivraison;
@@ -97,10 +98,35 @@ public class FenetreControleur implements Observer, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
-        genererFeuilleRoute.setVisible(false);
-        fenetreLivraisonTreeView.getSelectionModel()
-                .selectedItemProperty()
+
+        fenetreLivraisonTreeView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selectionnerElementGraphe(newValue.getValue()));
+        fenetreLivraisonTreeView.getSelectionModel();
+        associerVisibiliteBoutons();
+        validerAjoutLivraison.setVisible(false);
+        annulerAjoutLivraison.setVisible(false);
+
+    }
+
+    /**
+     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter les changements de visiblité
+     * et ainsi mettre à jour la vue en conséquence
+     */
+    private void associerVisibiliteBoutons() {
+        Class fenetreControleurClass = getClass();
+        for(Field champ : fenetreControleurClass.getDeclaredFields()) {
+            Object champObj = null;
+            try {
+                champObj = champ.get(this);
+            } catch (IllegalAccessException e) {
+                logger.error("Impossible d'associer les boutons à leurs controleurs", e);
+                afficheException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
+            }
+            if(champObj instanceof Button) {
+                Button bouton = (Button) champObj;
+                bouton.managedProperty().bind(bouton.visibleProperty());
+            }
+        }
     }
 
     /**
@@ -171,9 +197,7 @@ public class FenetreControleur implements Observer, Initializable {
      * Appelée lorsque l'utilisateur clique sur le bouton "Tout déselectionner" dans l'interface
      */
     @FXML
-    protected void deselectionnerToutesIntersections(ActionEvent evenement) {
-        afficheurPlan.deselectionnerToutesIntersections();
-    }
+    protected void deselectionnerToutesIntersections(ActionEvent evenement) { controleur.deselectionnerToutesIntersections(); }
 
     @FXML
     protected void validerAjoutLivraison(ActionEvent evenement) {
@@ -193,6 +217,7 @@ public class FenetreControleur implements Observer, Initializable {
         controleur.genererFeuilleDeRoute();
     }
 
+    @Override
     public void update(Observable o, Object arg) {
         Evenement evenement = (Evenement) arg;
         if (evenement != null) {
@@ -247,23 +272,23 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerAnnuler(boolean estActif) {
-        annuler.setDisable(!estActif);
+        annulerAction.setDisable(!estActif);
     }
 
     public void activerRejouer(boolean estActif) {
-        rejouer.setDisable(!estActif);
+        rejouerAction.setDisable(!estActif);
     }
 
     public void activerAjouter(boolean estActif) {
-        ajouter.setDisable(!estActif);
+        ajouterLivraison.setDisable(!estActif);
     }
 
     public void activerSupprimer(boolean estActif) {
-        supprimer.setDisable(!estActif);
+        supprimerLivraison.setDisable(!estActif);
     }
 
     public void activerEchanger(boolean estActif) {
-        echanger.setDisable(!estActif);
+        echangerLivraisons.setDisable(!estActif);
     }
 
     public void activerCalculerItineraire(boolean estActif) {
@@ -279,16 +304,12 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerAnnulerAjout(boolean estActif) {
-        /**
-         * TODO @jonathan @aurélien
-         */
+        annulerAjoutLivraison.setVisible(true);
         logger.debug("on peut annuler l'ajout pour revenir à l'état principal");
     }
 
     public void activerValiderAjout(boolean estActif) {
-        /**
-         * TODO @jonathan @aurélien
-         */
+        validerAjoutLivraison.setVisible(true);
         logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 

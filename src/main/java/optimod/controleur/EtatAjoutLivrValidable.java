@@ -45,7 +45,7 @@ public class EtatAjoutLivrValidable extends EtatDefaut {
     }
 
     @Override
-    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerDeselections(true);
         fenetreControleur.activerAnnulerAjout(true);
         fenetreControleur.activerValiderAjout(true);

@@ -10,7 +10,7 @@ import java.util.*;
 
 public class GraphePCC implements Graphe {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Hashtable<Integer,List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 

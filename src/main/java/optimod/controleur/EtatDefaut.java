@@ -59,7 +59,7 @@ public abstract class EtatDefaut implements Etat{
         fenetreControleur.afficheMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
-    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes) {
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
     }
 }

@@ -85,7 +85,7 @@ public class EtatPrincipal extends EtatDefaut {
     }
 
     @Override
-    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerChargerLivraisons(true);
         fenetreControleur.activerChargerPlan(true);
         fenetreControleur.activerAjouter(true);

@@ -12,51 +12,51 @@ import java.util.List;
 
 public interface Etat {
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Charger Plan"
+     * Methode appelee par controleur après un clic sur le bouton "Charger Plan"
      * @param fenetreControleur
      */
     void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Charger Livraisons"
+     * Methode appelee par controleur après un clic sur le bouton "Charger Livraisons"
      * @param fenetreControleur
      */
     void chargerDemandeLivraisons(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Calculer l'itinéraire"
+     * Methode appelee par controleur après un clic sur le bouton "Calculer l'itinéraire"
      * @param fenetreControleur
      */
     void calculerItineraire(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Annuler"
+     * Methode appelee par controleur après un clic sur le bouton "Annuler"
      * @param fenetreControleur
      * @param listeDeCdes
      */
     void undo(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Rejouer"
+     * Methode appelee par controleur après un clic sur le bouton "Rejouer"
      * @param fenetreControleur
      */
     void redo(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "+"
+     * Methode appelee par controleur après un clic sur le bouton "+"
      * @param fenetreControleur
      */
     void ajouterLivraison(FenetreControleur fenetreControleur);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Générer feuille de route"
+     * Methode appelee par controleur après un clic sur le bouton "Générer feuille de route"
      * @param fenetreControleur
      * @param ordonnanceur
      */
     void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
 
     /**
-     * Methode appelee par controleur apres la saisie d'un caractere au clavier
+     * Methode appelee par controleur après la saisie d'un caractere au clavier
      * @param fenetreControleur
      * @param listeDeCdes
      * @param codeCar le code ASCII du caractere saisi
@@ -64,7 +64,7 @@ public interface Etat {
     void carSaisi(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCdes listeDeCdes, int codeCar);
 
     /**
-     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Methode appelee par controleur après un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
      * @param ordonnanceur
@@ -74,7 +74,7 @@ public interface Etat {
     boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersection, List<Intersection> intersectionsSelectionnees);
 
     /**
-     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Methode appelee par controleur après un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
      * @param ordonnanceur
@@ -84,7 +84,7 @@ public interface Etat {
     boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersection, List<Intersection> intersectionsSelectionnees);
 
     /**
-     * Methode appelee par controleur apres un clic gauche sur un point de la vue graphique
+     * Methode appelee par controleur après un clic gauche sur un point de la vue graphique
      * Precondition : p != null
      * @param fenetreControleur
      * @param ordonnanceur
@@ -93,7 +93,7 @@ public interface Etat {
     void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Supprimer les livraisons selectionnees"
+     * Methode appelee par controleur après un clic sur le bouton "Supprimer les livraisons selectionnees"
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees toutes les intersections dont les livraisons sont selectionnees pour la suppression
@@ -102,7 +102,7 @@ public interface Etat {
     void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Echanger les livraisons selectionnees"
+     * Methode appelee par controleur après un clic sur le bouton "Echanger les livraisons selectionnees"
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees les deux intersections dont les livraisons sont selectionnees pour l'echange
@@ -111,14 +111,14 @@ public interface Etat {
     void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Annuler l'ajout d'une livraison"
+     * Methode appelee par controleur après un clic sur le bouton "Annuler l'ajout d'une livraison"
      * @param fenetreControleur
      * @param intersectionsSelectionnees les intersections selectionnees pour l'ajout
      */
     void annulerAjout(FenetreControleur fenetreControleur, List<Intersection> intersectionsSelectionnees);
 
     /**
-     * Methode appelee par controleur apres un clic sur le bouton "Valider l'ajout de la livraison"
+     * Methode appelee par controleur après un clic sur le bouton "Valider l'ajout de la livraison"
      * @param fenetreControleur
      * @param ordonnanceur
      * @param intersectionsSelectionnees les intersections selectionnees pour l'ajout
@@ -130,5 +130,5 @@ public interface Etat {
      * Méthode appelée après chaque action, permet de dire à la vue quels boutons activer
      * @param fenetreControleur la vue citée ci-dessus
      */
-    void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
+    void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes);
 }

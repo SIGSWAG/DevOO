@@ -22,8 +22,9 @@ import java.util.List;
  */
 public final class AfficheurPlan {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     private FenetreControleur fenetreControleur;
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private Group group;
     

@@ -12,7 +12,7 @@ import java.util.*;
 
 public class DemandeLivraisons extends Observable {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static int TEMPS_ARRET = 1;
 

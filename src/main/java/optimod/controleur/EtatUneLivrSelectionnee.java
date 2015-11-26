@@ -59,7 +59,7 @@ public class EtatUneLivrSelectionnee extends EtatDefaut {
     }
 
     @Override
-    public void updateVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerSelections(true);
         fenetreControleur.activerDeselections(true);
         fenetreControleur.activerToutDeselectionner(true);

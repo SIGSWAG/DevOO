@@ -39,62 +39,62 @@ public class Controleur {
 
     public void updateVue() {
         fenetreControleur.autoriseBoutons(false);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void chargerPlan() {
         etatCourant.chargerPlan(fenetreControleur, ordonnanceur);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void chargerDemandeLivraisons() {
         etatCourant.chargerDemandeLivraisons(fenetreControleur, ordonnanceur);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void calculerItineraire() {
         etatCourant.calculerItineraire(fenetreControleur, ordonnanceur);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void undo() {
         etatCourant.undo(fenetreControleur, listeDeCdes);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void redo() {
         etatCourant.redo(fenetreControleur, listeDeCdes);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void ajouterLivraison() {
         etatCourant.ajouterLivraison(fenetreControleur);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void validerAjoutLivraison(){
         etatCourant.validerAjout(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void annulerAjoutLivraison(){
         etatCourant.annulerAjout(fenetreControleur, intersectionsSelectionnees);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void echangerLivraisons() {
         etatCourant.echangeesLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void supprimerLivraison() {
         etatCourant.supprimerLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void genererFeuilleDeRoute() {
         etatCourant.genererFeuilleDeRoute(fenetreControleur, ordonnanceur);
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public boolean selectionnerIntersection(Intersection intersection){
@@ -103,7 +103,7 @@ public class Controleur {
             res = etatCourant.selectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
             );
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }
 
@@ -113,7 +113,7 @@ public class Controleur {
             res = etatCourant.deselectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
             );
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }
 
@@ -121,7 +121,7 @@ public class Controleur {
         etatCourant.deselectionnerToutesIntersections(
                 fenetreControleur, ordonnanceur, intersectionsSelectionnees
         );
-        etatCourant.updateVue(fenetreControleur, listeDeCdes);
+        etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {

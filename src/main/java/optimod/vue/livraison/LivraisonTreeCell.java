@@ -9,31 +9,37 @@ import optimod.modele.Livraison;
  */
 class LivraisonTreeCell extends TreeCell<Object> {
 
+    private static final String FORMAT_HEURE = "%02d:%02d:%02d";
+
     public LivraisonTreeCell()
     {
         super();
     }
 
     @Override
-    public void updateItem( Object item, boolean empty )
+    public void updateItem(Object item, boolean empty )
     {
-        super.updateItem( item, empty );
+        super.updateItem(item, empty);
 
-        if ( empty )
+        if(empty)
         {
-            setText( null );
+            setText(null);
         }
         else
         {
             if(item instanceof FenetreLivraison) {
                 FenetreLivraison fenetreLivraison = (FenetreLivraison) item;
-                setText(fenetreLivraison.getHeureDebut() + " - " + fenetreLivraison.getHeureFin());
+                String heureDebut = String.format(FORMAT_HEURE,
+                        fenetreLivraison.getHeureDebutHeure(), fenetreLivraison.getHeureDebutMinute(), fenetreLivraison.getHeureDebutSeconde());
+                String heureFin = String.format(FORMAT_HEURE,
+                        fenetreLivraison.getHeureFinHeure(), fenetreLivraison.getHeureFinMinute(), fenetreLivraison.getHeureFinSeconde());
+                setText(heureDebut + " - " + heureFin);
             }
             else if(item instanceof Livraison) {
                 Livraison livraison = (Livraison) item;
-                setText("Client 300" /** +  livraison.getClient **/ + " au " + livraison.getIntersection().getAdresse());
+                setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse());
             }
         }
-        setGraphic( null );
+        setGraphic(null);
     }
 }
