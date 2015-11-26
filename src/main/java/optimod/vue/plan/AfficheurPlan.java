@@ -48,7 +48,6 @@ public final class AfficheurPlan {
         this.couleursUtilisees.add(IntersectionPane.COULEUR_DEFAUT);
         this.couleursUtilisees.add(IntersectionPane.COULEUR_ENTREPOT);
         this.couleursUtilisees.add(IntersectionPane.COULEUR_LIVRAISON);
-        this.couleursUtilisees.add(IntersectionPane.COULEUR_SURVOL);
     }
 
     private static final List<Color> chargerToutesLesCouleurs() throws ClassNotFoundException, IllegalAccessException {
@@ -135,15 +134,11 @@ public final class AfficheurPlan {
     public void selectionnerIntersection(Livraison livraison) {
         Intersection intersection = livraison.getIntersection();
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
-        if (intersectionPane != null) {
-            logger.debug("Surbrillance");
-            //intersectionPane.setStyle("-fx-background-color:#10cc00;");
-            if (Platform.isSupported(ConditionalFeature.EFFECT)) {
-                DropShadow dropShadow = new DropShadow(10, Color.BLUE);
-                dropShadow.setBlurType(BlurType.GAUSSIAN);
-                intersectionPane.setEffect(dropShadow);
-            }
-        }
+        intersectionPane.selectionner();
+    }
+
+    public void deselectionnerToutesIntersections() {
+        getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
     public void selectionnerIntersections(FenetreLivraison fenetreLivraison) {
@@ -187,12 +182,6 @@ public final class AfficheurPlan {
         }
 
         return null;
-    }
-
-    public void deselectionnerToutesIntersections() {
-        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
-            intersectionPane.deselectionner();
-        }
     }
 
     private Collection<IntersectionPane> getIntersectionsPane() {

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Created by Jonathan on 18/11/2015.
  */
 public class Controleur {
@@ -72,12 +71,12 @@ public class Controleur {
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
-    public void validerAjoutLivraison(){
+    public void validerAjoutLivraison() {
         etatCourant.validerAjout(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
-    public void annulerAjoutLivraison(){
+    public void annulerAjoutLivraison() {
         etatCourant.annulerAjout(fenetreControleur, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
@@ -97,9 +96,9 @@ public class Controleur {
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
-    public boolean selectionnerIntersection(Intersection intersection){
+    public boolean selectionnerIntersection(Intersection intersection) {
         boolean res = false;
-        if(intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
+        if (intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
             res = etatCourant.selectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
             );
@@ -107,9 +106,9 @@ public class Controleur {
         return res;
     }
 
-    public boolean deselectionnerIntersection(Intersection intersection){
+    public boolean deselectionnerIntersection(Intersection intersection) {
         boolean res = false;
-        if(intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
+        if (intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
             res = etatCourant.deselectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
             );
@@ -117,10 +116,8 @@ public class Controleur {
         return res;
     }
 
-    public void deselectionnerToutesIntersections(){
-        etatCourant.deselectionnerToutesIntersections(
-                fenetreControleur, ordonnanceur, intersectionsSelectionnees
-        );
+    public void deselectionnerToutesIntersections() {
+        etatCourant.deselectionnerToutesIntersections(fenetreControleur, ordonnanceur, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
@@ -130,9 +127,10 @@ public class Controleur {
 
     /**
      * Change l'etat courant du controleur
+     *
      * @param etat le nouvel etat courant
      */
-    protected static void setEtatCourant(Etat etat){
+    protected static void setEtatCourant(Etat etat) {
         etatCourant = etat;
     }
 }

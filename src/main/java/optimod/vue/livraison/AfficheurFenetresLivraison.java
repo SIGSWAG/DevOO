@@ -1,10 +1,12 @@
 package optimod.vue.livraison;
 
+import javafx.beans.binding.ObjectBinding;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import optimod.modele.DemandeLivraisons;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
+import optimod.vue.plan.AfficheurPlan;
 
 /**
  * Created by Jonathan on 24/11/2015.
@@ -12,9 +14,14 @@ import optimod.modele.Livraison;
 public final class AfficheurFenetresLivraison {
 
     private TreeView<Object> fenetreLivraisonTreeView;
+    private AfficheurPlan afficheurPlan;
 
-    public AfficheurFenetresLivraison(TreeView<Object> fenetreLivraisonTreeView) {
+    public AfficheurFenetresLivraison(TreeView<Object> fenetreLivraisonTreeView, AfficheurPlan afficheurPlan) {
         this.fenetreLivraisonTreeView = fenetreLivraisonTreeView;
+        this.afficheurPlan = afficheurPlan;
+
+        fenetreLivraisonTreeView.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
     }
 
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
@@ -25,18 +32,24 @@ public final class AfficheurFenetresLivraison {
 
         for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
             TreeItem<Object> fenetreLivraisonTreeItem = new TreeItem<>(fenetreLivraison);
-            for(Livraison livraison : fenetreLivraison.getLivraisons()) {
+            for (Livraison livraison : fenetreLivraison.getLivraisons()) {
                 TreeItem<Object> livraisonTreeItem = new TreeItem<>(livraison);
                 fenetreLivraisonTreeItem.getChildren().add(livraisonTreeItem);
             }
             fenetreLivaisonRoot.getChildren().add(fenetreLivraisonTreeItem);
 
             fenetreLivraisonTreeView.setCellFactory(callback -> new LivraisonTreeCell());
-//            fenetreLivraisonTreeView.setCellFactory(new Callback<TreeView<Object>, TreeCell<Object>>() {
-//                public TreeCell<Object> call(TreeView<Object> param) {
-//                    return new LivraisonTreeCell();
-//                }
-//            });
         }
     }
+
+    private void clicElementListe(Object element) {
+        if (element instanceof FenetreLivraison) {
+            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
+            afficheurPlan.selectionnerIntersections(fenetreLivraison);
+        } else if (element instanceof Livraison) {
+            Livraison livraison = (Livraison) element;
+            afficheurPlan.selectionnerIntersection(livraison);
+        }
+    }
+
 }
