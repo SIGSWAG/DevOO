@@ -9,19 +9,17 @@ import optimod.modele.Livraison;
 /**
  * Created by Jonathan on 24/11/2015.
  */
-public final class AfficheurFenetresLivraison {
+public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
-    private TreeView<Object> fenetreLivraisonTreeView;
-
-    public AfficheurFenetresLivraison(TreeView<Object> fenetreLivraisonTreeView) {
-        this.fenetreLivraisonTreeView = fenetreLivraisonTreeView;
+    public AfficheurFenetresLivraison() {
+        super();
     }
 
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
         TreeItem<Object> fenetreLivaisonRoot = new TreeItem<>(new FenetreLivraison(null, 0, 0));
         fenetreLivaisonRoot.setExpanded(true);
-        fenetreLivraisonTreeView.setRoot(fenetreLivaisonRoot);
-        fenetreLivraisonTreeView.setShowRoot(false);
+        setRoot(fenetreLivaisonRoot);
+        setShowRoot(false);
 
         for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
             TreeItem<Object> fenetreLivraisonTreeItem = new TreeItem<>(fenetreLivraison);
@@ -31,7 +29,7 @@ public final class AfficheurFenetresLivraison {
             }
             fenetreLivaisonRoot.getChildren().add(fenetreLivraisonTreeItem);
 
-            fenetreLivraisonTreeView.setCellFactory(callback -> new LivraisonTreeCell());
+            setCellFactory(callback -> new LivraisonTreeCell());
 //            fenetreLivraisonTreeView.setCellFactory(new Callback<TreeView<Object>, TreeCell<Object>>() {
 //                public TreeCell<Object> call(TreeView<Object> param) {
 //                    return new LivraisonTreeCell();

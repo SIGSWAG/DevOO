@@ -20,42 +20,42 @@ public class GraphePCC implements Graphe {
 
     private Livraison entrepot;
 
+    private TSP tsp;
+
+    private List<Chemin> chemins = new ArrayList<Chemin>();
+
     /**
      * Default constructor
      */
     public GraphePCC() {
+        this.tsp = new TSP1();
     }
-
-
-    private List<Chemin> chemins = new ArrayList<Chemin>();
-
 
     /**
      * @param chemins les chemins à définissants le graphe
      */
     public GraphePCC(Livraison entrepot, List<Chemin> chemins) {
-
+        this();
         this.chemins = chemins;
         this.entrepot=entrepot;
         convertirLivraisonsEnSommets();
         construireGraphe();
-
-
     }
 
     /**
      * TODO !! Vide de sens pour l'instant
      */
     public List<Chemin> calculerItineraire() {
-        List<Chemin> plusCourtParcours = new ArrayList<Chemin>();
-
-        TSP tsp = new TSP1();
+        List<Chemin> plusCourtParcours = new ArrayList<>();
 
         tsp.chercheSolution(30, this);
 
 
         for(int i=0;i<graphe.length-1;i++){
-
+            if(tsp == null) {
+                logger.error("TSP nul {}", i);
+                return null;
+            }
             int livraison = tsp.getSolution(i);
             int livraisonSuivante = tsp.getSolution(i+1);
 

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,23 +33,33 @@ public final class AfficheurPlan {
 
     private List<Color> couleursUtilisees;
 
+    private List<IntersectionPane> intersectionsSelectionnees;
+
     public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
         this.fenetreControleur = fenetreControleur;
-        try {
-            this.couleurs = chargerToutesLesCouleurs();
-        } catch (ClassNotFoundException e) {
-            logger.error("Classe Color non trouvée, impossible de charger les couleurs", e);
-            this.couleurs = new ArrayList<>();
-        } catch (IllegalAccessException e) {
-            logger.error("Accès illégal à une propriété", e);
-            this.couleurs = new ArrayList<>();
-        }
+        this.couleurs = chargerCouleurs();
         this.couleursUtilisees = new ArrayList<>();
         this.couleursUtilisees.add(IntersectionPane.COULEUR_DEFAUT);
         this.couleursUtilisees.add(IntersectionPane.COULEUR_ENTREPOT);
         this.couleursUtilisees.add(IntersectionPane.COULEUR_LIVRAISON);
         this.couleursUtilisees.add(IntersectionPane.COULEUR_SURVOL);
+        this.intersectionsSelectionnees = new ArrayList<>();
+    }
+
+    private final List<Color> chargerCouleurs() {
+        List<Color> couleurs = chargerEchantillonCouleurs();
+//        try {
+//            couleurs = chargerToutesLesCouleurs();
+//        } catch (ClassNotFoundException e) {
+//            logger.error("Classe Color non trouvée, impossible de charger les couleurs", e);
+//            this.couleurs = new ArrayList<>();
+//        } catch (IllegalAccessException e) {
+//            logger.error("Accès illégal à une propriété", e);
+//            this.couleurs = new ArrayList<>();
+//        }
+
+        return couleurs;
     }
 
     private static final List<Color> chargerToutesLesCouleurs() throws ClassNotFoundException, IllegalAccessException {
@@ -64,6 +75,25 @@ public final class AfficheurPlan {
                 }
             }
         }
+        Collections.shuffle(couleurs);
+        return couleurs;
+    }
+
+    private static final List<Color> chargerEchantillonCouleurs() {
+        List<Color> couleurs = new ArrayList<>();
+        couleurs.add(Color.RED);
+        couleurs.add(Color.YELLOW);
+        couleurs.add(Color.GREEN);
+        couleurs.add(Color.BROWN);
+        couleurs.add(Color.GOLD);
+        couleurs.add(Color.VIOLET);
+        couleurs.add(Color.PINK);
+        couleurs.add(Color.ORANGE);
+        couleurs.add(Color.OLIVE);
+        couleurs.add(Color.STEELBLUE);
+
+        Collections.shuffle(couleurs);
+
         return couleurs;
     }
 
@@ -91,11 +121,13 @@ public final class AfficheurPlan {
      * @param demandeLivraisons
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
-
         reinitialiserLivraisons();
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
+        for(FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
+            colorierLivraisons(fenetreLivraison);
+        }
 
     }
 
@@ -132,21 +164,38 @@ public final class AfficheurPlan {
         return null;
     }
 
-    public void selectionnerIntersection(Livraison livraison) {
+    public void selectionnerLivraison(Livraison livraison, boolean deselectionnerAvant) {
         Intersection intersection = livraison.getIntersection();
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
             logger.debug("Surbrillance");
+            if(deselectionnerAvant) {
+                deselectionnerIntersections();
+            }
             //intersectionPane.setStyle("-fx-background-color:#10cc00;");
             if (Platform.isSupported(ConditionalFeature.EFFECT)) {
                 DropShadow dropShadow = new DropShadow(10, Color.BLUE);
                 dropShadow.setBlurType(BlurType.GAUSSIAN);
                 intersectionPane.setEffect(dropShadow);
+                intersectionsSelectionnees.add(intersectionPane);
             }
         }
     }
 
-    public void selectionnerIntersections(FenetreLivraison fenetreLivraison) {
+    public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
+        deselectionnerIntersections();
+        for(Livraison livraison : fenetreLivraison.getLivraisons()) {
+            selectionnerLivraison(livraison, false);
+        }
+    }
+
+    public void deselectionnerIntersections() {
+        for(IntersectionPane intersectionPane : intersectionsSelectionnees) {
+            intersectionPane.setEffect(null);
+        }
+    }
+
+    public void colorierLivraisons(FenetreLivraison fenetreLivraison) {
         logger.debug("Coloriage de la fenêtre de livraison");
         Color couleur = choisirCouleurNonUtilisee();
         if(couleur == null) {

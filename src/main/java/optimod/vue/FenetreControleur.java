@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeView;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -80,12 +79,12 @@ public class FenetreControleur implements Observer, Initializable {
     private Button annulerAjoutLivraison;
 
     @FXML
-    private TreeView<Object> fenetreLivraisonTreeView;
+    private AfficheurFenetresLivraison afficheurFenetresLivraison;
 
     private AfficheurPlan afficheurPlan;
 
-    private AfficheurFenetresLivraison afficheurFenetresLivraison;
     private boolean selectionsActivees;
+
     private boolean deselectionsActivees;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
@@ -97,11 +96,11 @@ public class FenetreControleur implements Observer, Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
-        afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
+        afficheurFenetresLivraison.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        fenetreLivraisonTreeView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> selectionnerElementGraphe(newValue.getValue()));
-        fenetreLivraisonTreeView.getSelectionModel();
+        afficheurFenetresLivraison.getSelectionModel().selectedItemProperty()
+                .addListener((observable, ancienneValeur, nouvelleValeur) -> selectionnerElementGraphe(nouvelleValeur.getValue()));
+
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
@@ -245,12 +244,12 @@ public class FenetreControleur implements Observer, Initializable {
         if (element instanceof FenetreLivraison) {
             FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
-            afficheurPlan.selectionnerIntersections(fenetreLivraison);
+            afficheurPlan.selectionnerLivraisons(fenetreLivraison);
         }
         else if(element instanceof Livraison) {
             Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
-            afficheurPlan.selectionnerIntersection(livraison);
+            afficheurPlan.selectionnerLivraison(livraison, true);
         }
     }
 
@@ -326,8 +325,6 @@ public class FenetreControleur implements Observer, Initializable {
         activerCalculerItineraire(estActif);
         activerSelections(estActif);
         activerDeselections(estActif);
-        activerAnnulerAjout(estActif);
-        activerValiderAjout(estActif);
     }
 
     public void afficheMessage(String message, String titre, Alert.AlertType alertType) {

@@ -17,26 +17,24 @@ class LivraisonTreeCell extends TreeCell<Object> {
     }
 
     @Override
-    public void updateItem(Object item, boolean empty )
+    public void updateItem(Object element, boolean vide)
     {
-        super.updateItem(item, empty);
+        super.updateItem(element, vide);
 
-        if(empty)
-        {
+        if(vide) {
             setText(null);
         }
-        else
-        {
-            if(item instanceof FenetreLivraison) {
-                FenetreLivraison fenetreLivraison = (FenetreLivraison) item;
+        else {
+            if(element instanceof FenetreLivraison) {
+                FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
                 String heureDebut = String.format(FORMAT_HEURE,
                         fenetreLivraison.getHeureDebutHeure(), fenetreLivraison.getHeureDebutMinute(), fenetreLivraison.getHeureDebutSeconde());
                 String heureFin = String.format(FORMAT_HEURE,
                         fenetreLivraison.getHeureFinHeure(), fenetreLivraison.getHeureFinMinute(), fenetreLivraison.getHeureFinSeconde());
                 setText(heureDebut + " - " + heureFin);
             }
-            else if(item instanceof Livraison) {
-                Livraison livraison = (Livraison) item;
+            else if(element instanceof Livraison) {
+                Livraison livraison = (Livraison) element;
                 setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse());
             }
         }

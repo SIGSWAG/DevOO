@@ -126,7 +126,7 @@ public class IntersectionPane extends Circle {
         }
     }
 
-    private void genererTexteInfobulle() {
+    public String genererTexteIntersection(Intersection intersection) {
         String texte = String.format("(%s;%s)",
                 intersection.getX(),
                 intersection.getY());
@@ -140,6 +140,11 @@ public class IntersectionPane extends Circle {
                     livraison.getHeureFinFenetre());
         }
 
+        return texte;
+    }
+
+    private void genererTexteInfobulle() {
+        String texte = genererTexteIntersection(intersection);
         infobulle.setText(texte);
     }
 
