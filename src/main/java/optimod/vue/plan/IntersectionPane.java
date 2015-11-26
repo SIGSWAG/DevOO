@@ -2,7 +2,12 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -26,16 +31,13 @@ public class IntersectionPane extends Circle {
 
     public static final Color COULEUR_DEFAUT = Color.BLACK;
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
-    public static final Color COULEUR_SURVOL = Color.BLUE;
-    public static final Color COULEUR_LIVRAISON = Color.RED;
+    public static final Color COULEUR_LIVRAISON = Color.BLUE;
     private FenetreControleur fenetreControleur;
 
     private Intersection intersection;
     private boolean estEntrepot;
     private boolean survol;
-    private boolean clicke;
-
-    private Color ancienneCouleur;
+    private boolean selectionne;
 
     private Tooltip infobulle;
 
@@ -47,12 +49,10 @@ public class IntersectionPane extends Circle {
 
         estEntrepot = false;
         survol = false;
-        clicke = false;
+        selectionne = false;
 
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
-
-        ancienneCouleur = COULEUR_LIVRAISON;
 
         setOnMouseEntered(evenement -> survol());
         setOnMouseExited(evenement -> quitteSurvol());
@@ -62,7 +62,7 @@ public class IntersectionPane extends Circle {
     private void click() {
         if (estEntrepot)
             return;
-        if (clicke) {
+        if (selectionne) {
             deselectionner();
         } else {
             selectionner();
@@ -70,17 +70,13 @@ public class IntersectionPane extends Circle {
     }
 
     public void selectionner() {
-        if (!clicke && fenetreControleur.selectionner(this.intersection)) {
-            clicke = !clicke;
-            colorier();
-        }
+        selectionne = true;
+        colorier();
     }
 
     public void deselectionner() {
-        if (clicke && fenetreControleur.deselectionner(this.intersection)) {
-            clicke = !clicke;
-            colorier();
-        }
+        selectionne = false;
+        colorier();
     }
 
     public void setEstEntrepot(boolean estEntrepot) {
@@ -93,7 +89,6 @@ public class IntersectionPane extends Circle {
     }
 
     private void survol() {
-        ancienneCouleur = (Color)getFill();
         survol = true;
         if (!infobulle.getText().isEmpty())
             Tooltip.install(this, infobulle);
@@ -112,18 +107,24 @@ public class IntersectionPane extends Circle {
     }
 
     private void colorier() {
-        if (survol || clicke) {
-            setFill(COULEUR_SURVOL);
-        }
-        else if (estEntrepot) {
+        if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-        }
-        else if (aUneLivraison()) {
-            setFill(ancienneCouleur);
-        }
-        else {
+        } else if (survol && aUneLivraison()) {
+            setCursor(Cursor.HAND);
+        } else if (aUneLivraison()) {
+           // On laisse la couleur
+        } else {
             setFill(COULEUR_DEFAUT);
         }
+
+        if (selectionne) {
+            DropShadow dropShadow = new DropShadow(10, Color.BLUE);
+            dropShadow.setBlurType(BlurType.GAUSSIAN);
+            setEffect(dropShadow);
+        } else {
+            setEffect(null);
+        }
+
     }
 
     public String genererTexteIntersection(Intersection intersection) {
@@ -180,8 +181,7 @@ public class IntersectionPane extends Circle {
 
             objTimer.getKeyFrames().clear();
             objTimer.getKeyFrames().add(new KeyFrame(new Duration(duree)));
-        }
-        catch(NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             logger.error("Problème dans la mise en place de la durée d'apparition de l'infobulle", e);
         }
     }

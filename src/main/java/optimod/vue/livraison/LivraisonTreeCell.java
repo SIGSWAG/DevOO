@@ -1,8 +1,10 @@
 package optimod.vue.livraison;
 
 import javafx.scene.control.TreeCell;
+import javafx.scene.paint.Color;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
+import optimod.vue.plan.IntersectionPane;
 
 /**
  * Created by Jonathan on 24/11/2015.
@@ -11,9 +13,13 @@ class LivraisonTreeCell extends TreeCell<Object> {
 
     private static final String FORMAT_HEURE = "%02d:%02d:%02d";
 
-    public LivraisonTreeCell()
-    {
+    private IntersectionPane intersectionPane;
+
+    private AfficheurFenetresLivraison afficheurFenetresLivraison;
+
+    public LivraisonTreeCell(AfficheurFenetresLivraison afficheurFenetresLivraison) {
         super();
+        this.afficheurFenetresLivraison = afficheurFenetresLivraison;
     }
 
     @Override
@@ -32,6 +38,7 @@ class LivraisonTreeCell extends TreeCell<Object> {
                 String heureFin = String.format(FORMAT_HEURE,
                         fenetreLivraison.getHeureFinHeure(), fenetreLivraison.getHeureFinMinute(), fenetreLivraison.getHeureFinSeconde());
                 setText(heureDebut + " - " + heureFin);
+                setTextFill(afficheurFenetresLivraison.getCouleur(fenetreLivraison));
             }
             else if(element instanceof Livraison) {
                 Livraison livraison = (Livraison) element;
@@ -39,5 +46,13 @@ class LivraisonTreeCell extends TreeCell<Object> {
             }
         }
         setGraphic(null);
+    }
+
+    public IntersectionPane getIntersectionPane() {
+        return intersectionPane;
+    }
+
+    public void setIntersectionPane(IntersectionPane intersectionPane) {
+        this.intersectionPane = intersectionPane;
     }
 }

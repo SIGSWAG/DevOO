@@ -96,11 +96,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
-        afficheurFenetresLivraison.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        afficheurFenetresLivraison.getSelectionModel().selectedItemProperty()
-                .addListener((observable, ancienneValeur, nouvelleValeur) -> selectionnerElementGraphe(nouvelleValeur.getValue()));
-
+        afficheurFenetresLivraison.setAfficheurPlan(afficheurPlan);
+        afficheurPlan.setAfficheurFenetresLivraison(afficheurFenetresLivraison);
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
@@ -113,7 +110,7 @@ public class FenetreControleur implements Observer, Initializable {
      */
     private void associerVisibiliteBoutons() {
         Class fenetreControleurClass = getClass();
-        for(Field champ : fenetreControleurClass.getDeclaredFields()) {
+        for (Field champ : fenetreControleurClass.getDeclaredFields()) {
             Object champObj = null;
             try {
                 champObj = champ.get(this);
@@ -121,7 +118,7 @@ public class FenetreControleur implements Observer, Initializable {
                 logger.error("Impossible d'associer les boutons à leurs controleurs", e);
                 afficheException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
             }
-            if(champObj instanceof Button) {
+            if (champObj instanceof Button) {
                 Button bouton = (Button) champObj;
                 bouton.managedProperty().bind(bouton.visibleProperty());
             }
@@ -196,7 +193,9 @@ public class FenetreControleur implements Observer, Initializable {
      * Appelée lorsque l'utilisateur clique sur le bouton "Tout déselectionner" dans l'interface
      */
     @FXML
-    protected void deselectionnerToutesIntersections(ActionEvent evenement) { controleur.deselectionnerToutesIntersections(); }
+    protected void deselectionnerToutesIntersections(ActionEvent evenement) {
+        controleur.deselectionnerToutesIntersections();
+    }
 
     @FXML
     protected void validerAjoutLivraison(ActionEvent evenement) {
@@ -238,7 +237,6 @@ public class FenetreControleur implements Observer, Initializable {
 
         }
     }
-
 
     private void selectionnerElementGraphe(Object element) {
         if (element instanceof FenetreLivraison) {
