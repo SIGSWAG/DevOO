@@ -43,6 +43,7 @@ class LivraisonTreeCell extends TreeCell<Object> {
             else if(element instanceof Livraison) {
                 Livraison livraison = (Livraison) element;
                 setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse());
+                setTextFill(Color.BLACK);
             }
         }
         setGraphic(null);
