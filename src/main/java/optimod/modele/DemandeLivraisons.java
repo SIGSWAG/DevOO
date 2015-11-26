@@ -454,8 +454,31 @@ public class DemandeLivraisons extends Observable {
 
     public void genererFeuilleDeRoute() {
 
+        System.out.println("-------Feuile de route------");
         System.out.println("Depart entrepot : ("+entrepot.getIntersection().getAdresse()+")"+heureDebutItineraire );
         for(Chemin chemin : itineraire) {
+
+            System.out.println("Chemin de "+chemin.getDepart().getIntersection().getAdresse()+" à "+chemin.getArrivee().getIntersection()
+            .getAdresse());
+
+
+            Troncon rueCourante=chemin.getTroncons().get(0);
+            double distanceRue=0;
+            for(Troncon troncon : chemin.getTroncons()){
+
+                if(troncon.getNom().equals(rueCourante.getNom())){
+                   distanceRue+=troncon.getLongueur();
+                }else{
+                    System.out.println("Prendre rue "+rueCourante.getNom()+" sur "+distanceRue+"m");
+                    distanceRue = troncon.getLongueur();
+                    rueCourante=troncon;
+
+                }
+
+
+
+            }
+            System.out.println("Arrivee a la livraison "+chemin.getArrivee().getIntersection().getAdresse()+" a "+chemin.getArrivee().getHeure()+" : "+chemin.getArrivee().getMinute());
 
 
 
