@@ -1,8 +1,9 @@
 package optimod.es.xml;
 
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import optimod.modele.*;
-import optimod.vue.es.xml.OuvreurDeFichierXML;
+import optimod.vue.es.OuvreurDeFichier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,6 +21,12 @@ import java.util.*;
  */
 public enum DeserialiseurXML { // Singleton
     INSTANCE;
+    private List<FileChooser.ExtensionFilter> extensions = new ArrayList<FileChooser.ExtensionFilter>();
+
+    DeserialiseurXML(){
+        extensions.add(new FileChooser.ExtensionFilter("eXtensible Markup Language (*.xml)", "*.xml"));
+        extensions.add(new FileChooser.ExtensionFilter("Toute extension (*.*)", "*.*"));
+    }
 
     private Stage fenetre;
 
@@ -32,7 +39,10 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerPlan(Plan plan) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        File xml = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions)
+                .setMode(OuvreurDeFichier.MODE_LECTURE)
+                .setTitre("Sélectionner le plan à charger")
+                .ouvre(fenetre);
         return chargerPlan(plan, xml);
     }
 
@@ -140,7 +150,10 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        File xml = OuvreurDeFichierXML.INSTANCE.ouvre(fenetre);
+        File xml = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions)
+                .setMode(OuvreurDeFichier.MODE_LECTURE)
+                .setTitre("Sélectionner la demande de livraison à charger")
+                .ouvre(fenetre);
         return chargerDemandeLivraison(demandeLivraisons, xml);
     }
 
