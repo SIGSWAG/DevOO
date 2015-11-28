@@ -94,7 +94,7 @@ public final class AfficheurPlan {
         couleurs.add(Color.OLIVE);
         couleurs.add(Color.STEELBLUE);
 
-        Collections.shuffle(couleurs);
+        //Collections.shuffle(couleurs);
 
         return couleurs;
     }
@@ -248,7 +248,8 @@ public final class AfficheurPlan {
             }
         }
 
-        return null;
+        // TODO voir avec Jonathan si on peut améliorer la logique ici...
+        return Color.RED; // Si aucune couleur n'est disponible, on renvoie une couleur par défaut.
     }
 
     private Collection<IntersectionPane> getIntersectionsPane() {
