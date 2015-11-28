@@ -1,14 +1,19 @@
 package optimod.modele;
 
+import optimod.es.txt.GenerateurDeFeuilleDeRoute;
 import optimod.es.xml.DeserialiseurXML;
 import optimod.es.xml.ExceptionXML;
+import optimod.vue.es.OuvreurDeFichier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 public class DemandeLivraisons extends Observable {
 
@@ -43,7 +48,7 @@ public class DemandeLivraisons extends Observable {
         boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         if(demandeLivraisonChargee){
             setChanged();
-            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEES);
+            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEE);
         }
         return demandeLivraisonChargee;
     }
@@ -452,38 +457,7 @@ public class DemandeLivraisons extends Observable {
         this.entrepot = entrepot;
     }
 
-    public void genererFeuilleDeRoute() {
-
-        System.out.println("-------Feuile de route------");
-        System.out.println("Depart entrepot : ("+entrepot.getIntersection().getAdresse()+")"+heureDebutItineraire );
-        for(Chemin chemin : itineraire) {
-
-            System.out.println("Chemin de "+chemin.getDepart().getIntersection().getAdresse()+" à "+chemin.getArrivee().getIntersection()
-            .getAdresse());
-
-
-            Troncon rueCourante=chemin.getTroncons().get(0);
-            double distanceRue=0;
-            for(Troncon troncon : chemin.getTroncons()){
-
-                if(troncon.getNom().equals(rueCourante.getNom())){
-                   distanceRue+=troncon.getLongueur();
-                }else{
-                    System.out.println("Prendre rue "+rueCourante.getNom()+" sur "+distanceRue+"m");
-                    distanceRue = troncon.getLongueur();
-                    rueCourante=troncon;
-
-                }
-
-
-
-            }
-            System.out.println("Arrivee a la livraison "+chemin.getArrivee().getIntersection().getAdresse()+" a "+chemin.getArrivee().getHeure()+" : "+chemin.getArrivee().getMinute());
-
-
-
-        }
-
-
+    public boolean genererFeuilleDeRoute() throws IOException {
+        return GenerateurDeFeuilleDeRoute.INSTANCE.genererFeuilleDeRoute(entrepot, heureDebutItineraire, itineraire);
     }
 }

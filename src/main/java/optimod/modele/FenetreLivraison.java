@@ -3,9 +3,10 @@ package optimod.modele;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FenetreLivraison {
+public class FenetreLivraison implements Comparable<FenetreLivraison> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -103,5 +104,14 @@ public class FenetreLivraison {
 
     public int getHeureFinSeconde() { return (heureFin % 3600) % 60; }
 
+    @Override
+    public int compareTo(FenetreLivraison autre) {
+        if (heureDebut < autre.heureDebut && heureFin < autre.heureFin)
+            return -1;
+        if (heureDebut > autre.heureDebut && heureFin > autre.heureFin)
+            return 1;
 
+        // Ne devrait pas arriver... Les fenêtres de livraisons ne peuvent normalement pas se chevaucher.
+        return 0;
+    }
 }
