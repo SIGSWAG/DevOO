@@ -44,7 +44,7 @@ public class MainTest {
         pass = calculePointPassage(arr,source,d);
         System.out.println("Point "+pass.getX()+" : "+pass.getY());*/
 
-     
+
 
 
 
