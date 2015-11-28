@@ -2,8 +2,6 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
@@ -28,6 +26,8 @@ public class IntersectionPane extends Circle {
     private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
 
     public static final int TAILLE = 6;
+
+    private static final String FORMAT_HEURE = "%02d:%02d:%02d";
 
     public static final Color COULEUR_DEFAUT = Color.BLACK;
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
@@ -136,9 +136,13 @@ public class IntersectionPane extends Circle {
             texte += "\nENTREPÔT";
         if (aUneLivraison()) {
             Livraison livraison = intersection.getLivraison();
+            String heureDebut = String.format(FORMAT_HEURE,
+                    livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
+            String heureFin = String.format(FORMAT_HEURE,
+                    livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
             texte += String.format("\nFenêtre de livraison : %s - %s",
-                    livraison.getHeureDebutFenetre(),
-                    livraison.getHeureFinFenetre());
+                    heureDebut,
+                    heureFin);
         }
 
         return texte;
