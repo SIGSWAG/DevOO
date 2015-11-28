@@ -53,6 +53,7 @@ public class Troncon {
         return compteurPassage>0;
     }
 
+    public int getCompteurPassage(){return compteurPassage;}
     public void incrementeCompteurPassage() {
          compteurPassage++;
     }

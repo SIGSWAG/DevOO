@@ -1,5 +1,6 @@
 package optimod.modele;
 
+import javafx.geometry.Point2D;
 import javafx.util.Pair;
 import optimod.tsp.Graphe;
 import optimod.tsp.GrapheComplet;
@@ -36,7 +37,14 @@ public class MainTest {
         /**
          * Test Case 1
          */
-        initGraphe();
+
+        Point2D source = new Point2D(152.64532447121232,447.9676831903636);
+        Point2D arr = new Point2D(241.35467552878768,416.0323168096364);
+        double d = 10;
+        Point2D pass = calculePointPassage(source,arr,d);
+        System.out.println("Point "+pass.getX()+" : "+pass.getY());
+        pass = calculePointPassage(arr,source,d);
+        System.out.println("Point "+pass.getX()+" : "+pass.getY());
     }
 
 
@@ -182,5 +190,31 @@ public class MainTest {
 
     }
 
+
+
+    public static Point2D calculePointPassage(Point2D p1, Point2D p2, double distance){
+
+        double a = p2.getY() - p1.getY();
+        double b = p1.getX() - p2.getX();
+        double c = - (a * p1.getX() + b * p1.getY());
+
+        double j = b*(p1.getX()+p2.getX())/2 - a*(p1.getY() + p2.getY())/2;
+
+        double d = distance * Math.sqrt(a*a+b*b) - c;
+
+        double X=0;
+        double Y=0;
+        double det = a*a + b*b;
+
+
+
+            X = 1/det * (j * b - d * a);
+            Y = - 1/det * (j * a + b * d);
+
+
+        return new Point2D(X,Y);
+
+
+    }
 
 }
