@@ -12,6 +12,7 @@ import java.util.List;
 public class EtatAjoutLivrValidable extends EtatDefaut {
     @Override
     public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
+        fenetreControleur.autoriseBoutons(false);
         Intersection i1 = intersectionsSelectionnees.get(0);
         Intersection i2 = intersectionsSelectionnees.get(1);
         if(i1.getLivraison() != null) {

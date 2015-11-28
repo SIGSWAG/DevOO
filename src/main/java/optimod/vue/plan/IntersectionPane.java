@@ -2,8 +2,6 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
@@ -28,6 +26,8 @@ public class IntersectionPane extends Circle {
     private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
 
     public static final int TAILLE = 6;
+
+    private static final String FORMAT_HEURE = "%02d:%02d:%02d";
 
     public static final Color COULEUR_DEFAUT = Color.BLACK;
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
@@ -63,9 +63,9 @@ public class IntersectionPane extends Circle {
         if (estEntrepot)
             return;
         if (selectionne) {
-            deselectionner();
+            fenetreControleur.deselectionner(intersection);
         } else {
-            selectionner();
+            fenetreControleur.selectionner(intersection);
         }
     }
 
@@ -101,7 +101,7 @@ public class IntersectionPane extends Circle {
         colorier();
     }
 
-    private void mettreAJour() {
+    public void mettreAJour() {
         colorier();
         genererTexteInfobulle();
     }
@@ -112,7 +112,7 @@ public class IntersectionPane extends Circle {
         } else if (survol && aUneLivraison()) {
             setCursor(Cursor.HAND);
         } else if (aUneLivraison()) {
-           // On laisse la couleur
+            // On laisse la couleur
         } else {
             setFill(COULEUR_DEFAUT);
         }
@@ -134,11 +134,17 @@ public class IntersectionPane extends Circle {
         texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
-        if (aUneLivraison()) {
+        else if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
             Livraison livraison = intersection.getLivraison();
+            String heureDebut = String.format(FORMAT_HEURE, livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
+            String heureFin = String.format(FORMAT_HEURE, livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
             texte += String.format("\nFenêtre de livraison : %s - %s",
-                    livraison.getHeureDebutFenetre(),
-                    livraison.getHeureFinFenetre());
+                    heureDebut,
+                    heureFin);
+            if (livraison.initeraireCalcule()) {
+                String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
+                texte += "\nHeure de livraison prévue : " + heureLivraison;
+            }
         }
 
         return texte;

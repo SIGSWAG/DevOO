@@ -23,15 +23,13 @@ class LivraisonTreeCell extends TreeCell<Object> {
     }
 
     @Override
-    public void updateItem(Object element, boolean vide)
-    {
+    public void updateItem(Object element, boolean vide) {
         super.updateItem(element, vide);
 
-        if(vide) {
+        if (vide) {
             setText(null);
-        }
-        else {
-            if(element instanceof FenetreLivraison) {
+        } else {
+            if (element instanceof FenetreLivraison) {
                 FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
                 String heureDebut = String.format(FORMAT_HEURE,
                         fenetreLivraison.getHeureDebutHeure(), fenetreLivraison.getHeureDebutMinute(), fenetreLivraison.getHeureDebutSeconde());
@@ -39,26 +37,25 @@ class LivraisonTreeCell extends TreeCell<Object> {
                         fenetreLivraison.getHeureFinHeure(), fenetreLivraison.getHeureFinMinute(), fenetreLivraison.getHeureFinSeconde());
                 setText(heureDebut + " - " + heureFin);
                 setTextFill(afficheurFenetresLivraison.getCouleur(fenetreLivraison));
-            }
-            else if(element instanceof Livraison) {
+            } else if (element instanceof Livraison) {
 
 
                 Livraison livraison = (Livraison) element;
-                String retard="";
+                String retard = "";
                 String heure = "";
-                if(livraison.estEnRetard()){
-                   retard="\nLivraison en retard";
+                if (livraison.estEnRetard()) {
+                    retard = "\nLivraison en retard";
                 }
-                if(livraison.initeraireCalcule()){
-                    String minute="";
-                    if(livraison.getMinute()<10){
-                        minute="0";
+                if (livraison.initeraireCalcule()) {
+                    String minute = "";
+                    if (livraison.getMinute() < 10) {
+                        minute = "0";
                     }
-                    minute+=livraison.getMinute();
+                    minute += livraison.getMinute();
 
-                    heure+=livraison.getHeure()+":"+minute;
+                    heure += livraison.getHeure() + ":" + minute;
                 }
-                setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse()+" "+heure+retard);
+                setText("Client " + livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse() + " " + heure + retard);
                 setTextFill(Color.BLACK);
 
             }
@@ -66,11 +63,4 @@ class LivraisonTreeCell extends TreeCell<Object> {
         setGraphic(null);
     }
 
-    public IntersectionPane getIntersectionPane() {
-        return intersectionPane;
-    }
-
-    public void setIntersectionPane(IntersectionPane intersectionPane) {
-        this.intersectionPane = intersectionPane;
-    }
 }

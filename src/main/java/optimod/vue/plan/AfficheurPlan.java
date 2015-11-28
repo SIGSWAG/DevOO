@@ -29,14 +29,12 @@ public final class AfficheurPlan {
     private FenetreControleur fenetreControleur;
 
     private Group group;
-    
+
     private List<Color> couleurs;
 
     private List<Color> couleursUtilisees;
 
     private List<IntersectionPane> intersectionsSelectionnees;
-
-    private AfficheurFenetresLivraison afficheurFenetresLivraison;
 
     public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
@@ -69,10 +67,10 @@ public final class AfficheurPlan {
         Class clazz = Class.forName("javafx.scene.paint.Color");
         if (clazz != null) {
             Field[] champs = clazz.getFields();
-            for(int i = 0; i < champs.length; i++) {
+            for (int i = 0; i < champs.length; i++) {
                 Field champ = champs[i];
                 Object obj = champ.get(null);
-                if(obj instanceof Color) {
+                if (obj instanceof Color) {
                     couleurs.add((Color) obj);
                 }
             }
@@ -94,7 +92,7 @@ public final class AfficheurPlan {
         couleurs.add(Color.OLIVE);
         couleurs.add(Color.STEELBLUE);
 
-        Collections.shuffle(couleurs);
+        //Collections.shuffle(couleurs);
 
         return couleurs;
     }
@@ -127,16 +125,14 @@ public final class AfficheurPlan {
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
-
+        mettreAJour();
     }
 
     /**
      * Affiche un itinéraire sur le plan.
      */
     public void chargerItineraire() {
-
-        getTronconsPane().forEach(TronconPane::mettreAJour);
-
+        mettreAJour();
     }
 
     /**
@@ -144,6 +140,14 @@ public final class AfficheurPlan {
      */
     private void vider() {
         group.getChildren().clear();
+    }
+
+    /**
+     * Mets à jour l'affichage du plan.
+     */
+    private void mettreAJour() {
+        getTronconsPane().forEach(TronconPane::mettreAJour);
+        getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
     }
 
     /**
@@ -163,38 +167,36 @@ public final class AfficheurPlan {
         return null;
     }
 
-    public void selectionnerLivraison(Livraison livraison, boolean deselectionnerAvant) {
-        Intersection intersection = livraison.getIntersection();
+    public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
-            logger.debug("Surbrillance");
-            if(deselectionnerAvant) {
-                deselectionnerIntersections();
-            }
-            //intersectionPane.setStyle("-fx-background-color:#10cc00;");
-            if (Platform.isSupported(ConditionalFeature.EFFECT)) {
-                DropShadow dropShadow = new DropShadow(10, Color.BLUE);
-                dropShadow.setBlurType(BlurType.GAUSSIAN);
-                intersectionPane.setEffect(dropShadow);
-                intersectionsSelectionnees.add(intersectionPane);
-            }
+            intersectionPane.selectionner();
+            intersectionsSelectionnees.add(intersectionPane);
         }
-        intersectionPane.selectionner();
     }
 
     public void deselectionnerToutesIntersections() {
         getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
+    public void deselectionner(Intersection i){
+        IntersectionPane ip = trouverIntersectionPane(i);
+        logger.debug("deselection");
+        if(ip != null) {
+            ip.deselectionner();
+            intersectionsSelectionnees.remove(ip);
+        }
+    }
+
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
         deselectionnerIntersections();
         for(Livraison livraison : fenetreLivraison.getLivraisons()) {
-            selectionnerLivraison(livraison, false);
+            selectionner(livraison.getIntersection());
         }
     }
 
     private void deselectionnerIntersections() {
-        for(IntersectionPane intersectionPane : intersectionsSelectionnees) {
+        for (IntersectionPane intersectionPane : intersectionsSelectionnees) {
             intersectionPane.setEffect(null);
         }
     }
@@ -202,16 +204,16 @@ public final class AfficheurPlan {
     public Color colorierLivraisons(FenetreLivraison fenetreLivraison) {
         logger.debug("Coloriage de la fenêtre de livraison");
         Color couleur = choisirCouleurNonUtilisee();
-        if(couleur == null) {
+        if (couleur == null) {
             logger.error("Pas de couleur disponible pour colorier les intersections de la fenêtre de livraison");
             // TODO Throw Exception
             return null;
         }
 
-        for(Livraison livraison : fenetreLivraison.getLivraisons()) {
+        for (Livraison livraison : fenetreLivraison.getLivraisons()) {
             Intersection intersection = livraison.getIntersection();
             IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
-            if(intersectionPane.aUneLivraison()) {
+            if (intersectionPane.aUneLivraison()) {
                 logger.debug("Coloriage de l'intersection en {}", couleur.toString());
                 intersectionPane.setFill(couleur);
 
@@ -242,7 +244,8 @@ public final class AfficheurPlan {
             }
         }
 
-        return null;
+        // TODO voir avec Jonathan si on peut améliorer la logique ici...
+        return Color.RED; // Si aucune couleur n'est disponible, on renvoie une couleur par défaut.
     }
 
     private Collection<IntersectionPane> getIntersectionsPane() {
@@ -283,10 +286,6 @@ public final class AfficheurPlan {
             }
         }
         return troncons;
-    }
-
-    public void setAfficheurFenetresLivraison(AfficheurFenetresLivraison afficheurFenetresLivraison) {
-        this.afficheurFenetresLivraison = afficheurFenetresLivraison;
     }
 
 }
