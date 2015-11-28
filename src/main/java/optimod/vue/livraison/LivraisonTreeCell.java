@@ -41,9 +41,26 @@ class LivraisonTreeCell extends TreeCell<Object> {
                 setTextFill(afficheurFenetresLivraison.getCouleur(fenetreLivraison));
             }
             else if(element instanceof Livraison) {
+
+
                 Livraison livraison = (Livraison) element;
-                setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse());
+                String retard="";
+                String heure = "";
+                if(livraison.estEnRetard()){
+                   retard="\nLivraison en retard";
+                }
+                if(livraison.initeraireCalcule()){
+                    String minute="";
+                    if(livraison.getMinute()<10){
+                        minute="0";
+                    }
+                    minute+=livraison.getMinute();
+
+                    heure+=livraison.getHeure()+":"+minute;
+                }
+                setText("Client " +  livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse()+" "+heure+retard);
                 setTextFill(Color.BLACK);
+
             }
         }
         setGraphic(null);

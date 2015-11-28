@@ -21,6 +21,7 @@ public class Livraison {
 
     private int idClient;
 
+
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
@@ -30,6 +31,7 @@ public class Livraison {
         this.heureDebutFenetre = heureDebutFenetre;
         this.heureFinFenetre = heureFinFenetre;
         this.idClient = idClient;
+        this.heureLivraison = -1;
     }
 
 
@@ -216,6 +218,10 @@ public class Livraison {
 
     public void setIdClient(int idClient) {
         this.idClient = idClient;
+    }
+
+    public boolean initeraireCalcule(){
+        return heureLivraison >= 0;
     }
 
     private class DijkstraIntersection implements Comparable<DijkstraIntersection> {

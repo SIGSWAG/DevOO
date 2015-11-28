@@ -14,7 +14,7 @@ public class DemandeLivraisons extends Observable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static int TEMPS_ARRET = 1;
+    private static int TEMPS_ARRET = 10*60;
 
     private List<Chemin> itineraire;
 
