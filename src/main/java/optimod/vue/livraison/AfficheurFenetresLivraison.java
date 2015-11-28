@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import optimod.modele.DemandeLivraisons;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
+import optimod.vue.FenetreControleur;
 import optimod.vue.plan.AfficheurPlan;
 
 import java.util.HashMap;
@@ -18,15 +19,14 @@ import java.util.Map;
  */
 public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
-    private AfficheurPlan afficheurPlan;
-
     private Map<FenetreLivraison, Color> couleurFenetresLivraison;
+    private FenetreControleur fenetreControleur;
 
     public AfficheurFenetresLivraison() {
         this.couleurFenetresLivraison = new HashMap<>();
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
+                .addListener((observable, oldValue, newValue) -> clicElementListe());
     }
 
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
@@ -36,7 +36,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
         setShowRoot(false);
 
         for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
-            Color couleur = afficheurPlan.colorierLivraisons(fenetreLivraison);
+            Color couleur = fenetreControleur.colorierLivraisons(fenetreLivraison);
             couleurFenetresLivraison.put(fenetreLivraison, couleur);
             TreeItem<Object> fenetreLivraisonTreeItem = new TreeItem<>(fenetreLivraison);
             for (Livraison livraison : fenetreLivraison.getLivraisons()) {
@@ -46,25 +46,55 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
             fenetreLivaisonRoot.getChildren().add(fenetreLivraisonTreeItem);
             setCellFactory(callback -> new LivraisonTreeCell(this));
         }
-
     }
 
     public Color getCouleur(FenetreLivraison fenetreLivraison) {
         return couleurFenetresLivraison.get(fenetreLivraison);
     }
 
-    private void clicElementListe(Object element) {
-        if (element instanceof FenetreLivraison) {
-            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
-            afficheurPlan.selectionnerLivraisons(fenetreLivraison);
-        } else if (element instanceof Livraison) {
-            Livraison livraison = (Livraison) element;
-            afficheurPlan.selectionnerLivraison(livraison, true);
+    private void clicElementListe() {
+//        if (element instanceof FenetreLivraison) {
+//            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
+//            fenetreControleur.selectionnerLivraisons(fenetreLivraison);
+//        } else {
+        fenetreControleur.deselectionnerTout();
+        for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
+            try {
+                Object o = getSelectionModel().getSelectedItems().get(i).getValue();
+                if (o instanceof Livraison) {
+                    fenetreControleur.selectionner(((Livraison) o).getIntersection());
+                }
+            }catch (NullPointerException e){
+                return;
+            }
+        }
+//        }
+    }
+
+    public void selectionner(Livraison l){
+        int item_index = 0;
+        for (int i = 0; i < getRoot().getChildren().size(); i++) {
+            Object o = getRoot().getChildren().get(i).getValue();
+            if(o instanceof FenetreLivraison){
+                for(int j = 0 ; j < getRoot().getChildren().get(i).getChildren().size() ; j++) {
+                    Object o1 = getRoot().getChildren().get(i).getChildren().get(j).getValue();
+                    if (o1 instanceof Livraison && l == o1) {
+                        if(!getSelectionModel().isSelected(item_index + j + 1))
+                            System.out.println("todo");
+//                            getSelectionModel().select(item_index + j + 1);
+                        return;
+                    }
+                }
+            }
+            item_index += getRoot().getChildren().get(i).getChildren().size() + i;
         }
     }
 
-    public void setAfficheurPlan(AfficheurPlan afficheurPlan) {
-        this.afficheurPlan = afficheurPlan;
+    public void deselectionner(Livraison l){
+
     }
 
+    public void setFenetreControleur(FenetreControleur fenetreControleur) {
+        this.fenetreControleur = fenetreControleur;
+    }
 }

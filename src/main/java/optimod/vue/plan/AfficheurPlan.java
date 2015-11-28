@@ -36,8 +36,6 @@ public final class AfficheurPlan {
 
     private List<IntersectionPane> intersectionsSelectionnees;
 
-    private AfficheurFenetresLivraison afficheurFenetresLivraison;
-
     public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
         this.fenetreControleur = fenetreControleur;
@@ -163,33 +161,31 @@ public final class AfficheurPlan {
         return null;
     }
 
-    public void selectionnerLivraison(Livraison livraison, boolean deselectionnerAvant) {
-        Intersection intersection = livraison.getIntersection();
+    public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
-            logger.debug("Surbrillance");
-            if(deselectionnerAvant) {
-                deselectionnerIntersections();
-            }
-            //intersectionPane.setStyle("-fx-background-color:#10cc00;");
-            if (Platform.isSupported(ConditionalFeature.EFFECT)) {
-                DropShadow dropShadow = new DropShadow(10, Color.BLUE);
-                dropShadow.setBlurType(BlurType.GAUSSIAN);
-                intersectionPane.setEffect(dropShadow);
-                intersectionsSelectionnees.add(intersectionPane);
-            }
+            intersectionPane.selectionner();
+            intersectionsSelectionnees.add(intersectionPane);
         }
-        intersectionPane.selectionner();
     }
 
     public void deselectionnerToutesIntersections() {
         getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
+    public void deselectionner(Intersection i){
+        IntersectionPane ip = trouverIntersectionPane(i);
+        logger.debug("deselection");
+        if(ip != null) {
+            ip.deselectionner();
+            intersectionsSelectionnees.remove(ip);
+        }
+    }
+
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
         deselectionnerIntersections();
         for(Livraison livraison : fenetreLivraison.getLivraisons()) {
-            selectionnerLivraison(livraison, false);
+            selectionner(livraison.getIntersection());
         }
     }
 
@@ -283,10 +279,6 @@ public final class AfficheurPlan {
             }
         }
         return troncons;
-    }
-
-    public void setAfficheurFenetresLivraison(AfficheurFenetresLivraison afficheurFenetresLivraison) {
-        this.afficheurFenetresLivraison = afficheurFenetresLivraison;
     }
 
 }

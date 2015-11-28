@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
 import optimod.modele.*;
@@ -96,12 +97,10 @@ public class FenetreControleur implements Observer, Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
-        afficheurFenetresLivraison.setAfficheurPlan(afficheurPlan);
-        afficheurPlan.setAfficheurFenetresLivraison(afficheurFenetresLivraison);
+        afficheurFenetresLivraison.setFenetreControleur(this);
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
-
     }
 
     /**
@@ -194,7 +193,7 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void deselectionnerToutesIntersections(ActionEvent evenement) {
-        controleur.deselectionnerToutesIntersections();
+        deselectionnerTout();
     }
 
     @FXML
@@ -235,19 +234,6 @@ public class FenetreControleur implements Observer, Initializable {
                 logger.warn("PROBLEM !");
             }
 
-        }
-    }
-
-    private void selectionnerElementGraphe(Object element) {
-        if (element instanceof FenetreLivraison) {
-            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
-            logger.debug("Fenêtre de livraison !");
-            afficheurPlan.selectionnerLivraisons(fenetreLivraison);
-        }
-        else if(element instanceof Livraison) {
-            Livraison livraison = (Livraison) element;
-            logger.debug("Livraison !");
-            afficheurPlan.selectionnerLivraison(livraison, true);
         }
     }
 
@@ -379,15 +365,39 @@ public class FenetreControleur implements Observer, Initializable {
 
     public boolean selectionner(Intersection intersection) {
         if (selectionsActivees) {
-            return this.controleur.selectionnerIntersection(intersection);
+            if(this.controleur.selectionnerIntersection(intersection)){
+                this.afficheurPlan.selectionner(intersection);
+                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
+            }else{
+                return false;
+            }
         }
         return false;
     }
 
     public boolean deselectionner(Intersection intersection) {
-        if (deselectionsActivees) {
-            return this.controleur.deselectionnerIntersection(intersection);
+        if(deselectionsActivees) {
+            if(this.controleur.deselectionnerIntersection(intersection)){
+                afficheurPlan.deselectionner(intersection);
+            }
         }
         return false;
     }
+
+    public Color colorierLivraisons(FenetreLivraison fenetreLivraison) {
+        return afficheurPlan.colorierLivraisons(fenetreLivraison);
+    }
+
+    public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
+        afficheurPlan.selectionnerLivraisons(fenetreLivraison);
+    }
+
+
+    public void deselectionnerTout() {
+        if(deselectionsActivees) {
+            controleur.deselectionnerToutesIntersections();
+            afficheurPlan.deselectionnerToutesIntersections();
+        }
+    }
+
 }

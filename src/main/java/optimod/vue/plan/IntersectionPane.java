@@ -63,9 +63,9 @@ public class IntersectionPane extends Circle {
         if (estEntrepot)
             return;
         if (selectionne) {
-            deselectionner();
+            fenetreControleur.deselectionner(intersection);
         } else {
-            selectionner();
+            fenetreControleur.selectionner(intersection);
         }
     }
 

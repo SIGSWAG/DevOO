@@ -66,11 +66,4 @@ class LivraisonTreeCell extends TreeCell<Object> {
         setGraphic(null);
     }
 
-    public IntersectionPane getIntersectionPane() {
-        return intersectionPane;
-    }
-
-    public void setIntersectionPane(IntersectionPane intersectionPane) {
-        this.intersectionPane = intersectionPane;
-    }
 }
