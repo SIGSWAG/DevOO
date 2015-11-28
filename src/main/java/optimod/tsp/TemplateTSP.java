@@ -65,9 +65,11 @@ public abstract class TemplateTSP implements TSP {
 	 */	
 	private void branchAndBound(int sommetCrt, Collection<Integer> nonVus, Collection<Integer> vus, int coutVus){
 		if (System.currentTimeMillis() - tpsDebut > tpsLimite) return;
+		System.out.println("nb nonVus "+nonVus.size());
 	    if (nonVus.size() == 0){ // tous les sommets ont ete visites
 	    	if (g.estArc(sommetCrt,0)){ // on peut retourner au sommet de depart (0)
-	    		if (coutVus+g.getCout(sommetCrt,0) < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
+				System.out.println("retour au départ, chemin trouvé");
+				if (coutVus+g.getCout(sommetCrt,0) < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
 	    			vus.toArray(meilleureSolution);
 	    			coutMeilleureSolution = coutVus+g.getCout(sommetCrt,0);
 	    		}

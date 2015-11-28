@@ -3,6 +3,7 @@ package optimod.modele;
 import optimod.tsp.Graphe;
 import optimod.tsp.TSP;
 import optimod.tsp.TSP1;
+import optimod.tsp.TSP2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ public class GraphePCC implements Graphe {
      * Default constructor
      */
     public GraphePCC() {
-        this.tsp = new TSP1();
+        this.tsp = new TSP2();
     }
 
     /**
@@ -48,7 +49,9 @@ public class GraphePCC implements Graphe {
     public List<Chemin> calculerItineraire() {
         List<Chemin> plusCourtParcours = new ArrayList<>();
 
-        tsp.chercheSolution(30, this);
+        tsp.chercheSolution(60000, this);
+
+        System.out.println("fin du calcul");
 
 
         for(int i=0;i<graphe.length-1;i++){
@@ -159,7 +162,6 @@ public class GraphePCC implements Graphe {
 
     public int getCout(int i, int j) {
 
-        int len= graphe.length;
 
         if(i<0 || i>=graphe.length || j<0 || j>=graphe.length){
             return -1;
