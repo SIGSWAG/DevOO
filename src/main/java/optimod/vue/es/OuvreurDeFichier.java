@@ -36,7 +36,7 @@ public enum OuvreurDeFichier { // Singleton
      * @param fenetreCourante La fenêtre à laquelle l'explorateur de fichiers sera rattaché
      * @return Le fichier en tant que File, ou null si aucun fichier n'a été sélectionné
      */
-    public File ouvre(Stage fenetreCourante) throws ExceptionXML {
+    public File ouvre(Stage fenetreCourante){
         //explorateurFichier.setTitle(TITRE_OUVREUR_DE_FICHIER);
         // Filtre sur les extensions : filtre XML par défaut, et choix d'afficher tous les fichiers
         //explorateurFichier.getExtensionFilters().addAll(
@@ -67,10 +67,10 @@ public enum OuvreurDeFichier { // Singleton
     protected File getDernierFichierOuvert() {
         Preferences prefs = Preferences.userNodeForPackage(OptimodApplication.class);
         String cheminFichier = null;
-        if(MODE = MODE_LECTURE){
+        if(MODE == MODE_LECTURE){
             cheminFichier = prefs.get(CLE_REGISTRE_FICHIER_CHOISI_LECTURE, null);
         }
-        else if(MODE = MODE_ECRITURE){
+        else if(MODE == MODE_ECRITURE){
             cheminFichier = prefs.get(CLE_REGISTRE_FICHIER_CHOISI_ECRITURE, null);
         }
         if (cheminFichier != null) {
@@ -87,10 +87,10 @@ public enum OuvreurDeFichier { // Singleton
     protected void setDernierFichierOuvert(File fichierChoisi) {
         Preferences prefs = Preferences.userNodeForPackage(OptimodApplication.class);
         if (fichierChoisi != null) {
-            if(MODE = MODE_LECTURE){
+            if(MODE == MODE_LECTURE){
                 prefs.put(CLE_REGISTRE_FICHIER_CHOISI_LECTURE, fichierChoisi.getPath());
             }
-            else if(MODE = MODE_ECRITURE){
+            else if(MODE == MODE_ECRITURE){
                 prefs.put(CLE_REGISTRE_FICHIER_CHOISI_ECRITURE, fichierChoisi.getPath());
             }
         }
@@ -102,10 +102,10 @@ public enum OuvreurDeFichier { // Singleton
      * @return Le fichier choisi par l'utilisateur, ou null s'il a annulé sa sélection
      */
     protected File ouvreFenetreDeDialogue(Stage fenetre) {
-        if(MODE = MODE_LECTURE){
+        if(MODE == MODE_LECTURE){
             return explorateurFichier.showOpenDialog(fenetre);
         }
-        else if(MODE = MODE_ECRITURE){
+        else if(MODE == MODE_ECRITURE){
            return  explorateurFichier.showSaveDialog(fenetre);
         }
         else{

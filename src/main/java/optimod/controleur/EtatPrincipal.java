@@ -55,7 +55,11 @@ public class EtatPrincipal extends EtatDefaut {
     @Override
     public void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur){
         fenetreControleur.autoriseBoutons(false);
-        ordonnanceur.genererFeuilleDeRoute();
+        try {
+            ordonnanceur.genererFeuilleDeRoute();
+        } catch (IOException e) {
+            fenetreControleur.afficheException("Erreur lors de l'écriture de la feuille de route.", "Erreur E/S", Alert.AlertType.ERROR, e);
+        }
     }
 
     @Override
