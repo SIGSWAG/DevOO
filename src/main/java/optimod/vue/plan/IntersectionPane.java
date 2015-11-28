@@ -134,7 +134,7 @@ public class IntersectionPane extends Circle {
         texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
-        if (aUneLivraison()) {
+        else if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
             Livraison livraison = intersection.getLivraison();
             String heureDebut = String.format(FORMAT_HEURE,
                     livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
