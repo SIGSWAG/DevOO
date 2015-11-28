@@ -1,9 +1,6 @@
 package optimod.modele;
 
-import optimod.tsp.Graphe;
-import optimod.tsp.TSP;
-import optimod.tsp.TSP1;
-import optimod.tsp.TSP2;
+import optimod.tsp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +26,7 @@ public class GraphePCC implements Graphe {
      * Default constructor
      */
     public GraphePCC() {
-        this.tsp = new TSP2();
+        this.tsp = new TSP3();
     }
 
     /**
@@ -38,14 +35,12 @@ public class GraphePCC implements Graphe {
     public GraphePCC(Livraison entrepot, List<Chemin> chemins) {
         this();
         this.chemins = chemins;
-        this.entrepot=entrepot;
+        this.entrepot = entrepot;
         convertirLivraisonsEnSommets();
         construireGraphe();
     }
 
-    /**
-     * TODO !! Vide de sens pour l'instant
-     */
+
     public List<Chemin> calculerItineraire() {
         List<Chemin> plusCourtParcours = new ArrayList<>();
 
@@ -78,7 +73,7 @@ public class GraphePCC implements Graphe {
         if(chemins!=null) {
 
 
-            cheminsParLivraison = new Hashtable<Integer, List<Chemin>>();
+            cheminsParLivraison = new Hashtable<>();
             Iterator<Chemin> it = chemins.iterator();
             int i = 1;
             while (it.hasNext()) {
@@ -90,7 +85,6 @@ public class GraphePCC implements Graphe {
                     int adresse = chemin.getDepart().getIntersection().getAdresse();//adresse du depart
 
                     if (vus.get(adresse) == null) { //on passe pour la première fois sur la livraison
-
 
                         int index = i;
                         if (adresse == entrepot.getIntersection().getAdresse()) { //cas de l'entrepot, toujours à zero
@@ -124,9 +118,9 @@ public class GraphePCC implements Graphe {
 
             int tailleGraphe = cheminsParLivraison.size();
 
-            logger.info("Taille du graphe {}", tailleGraphe);
-            graphe = new Chemin[tailleGraphe][tailleGraphe];
 
+            graphe = new Chemin[tailleGraphe][tailleGraphe];
+            logger.info("Taille du graphe {}", graphe.length);
             for(int i=0;i<tailleGraphe;i++){
                 for(int j=0;j<tailleGraphe;j++){
                     graphe[i][j]=null;
@@ -149,7 +143,18 @@ public class GraphePCC implements Graphe {
 
             }
 
+            for(int i=0;i<tailleGraphe;i++){
+                for(int j=0;j<tailleGraphe;j++){
+                    if( graphe[i][j]==null){
+                        System.out.print("N, ");
+                    }else {
+                        System.out.print(graphe[i][j].getDuree()+", ");
+                    }
+                }
+                System.out.println("");
+            }
         }
+
 
     }
 
@@ -187,7 +192,6 @@ public class GraphePCC implements Graphe {
         return chemins;
     }
 
-    // à virer ???
     public void setChemins(List<Chemin> chemins) {
         this.chemins = chemins;
     }

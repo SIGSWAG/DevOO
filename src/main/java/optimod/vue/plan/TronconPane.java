@@ -68,7 +68,6 @@ public class TronconPane extends Group {
             System.out.println("waring");
         }
         do {
-            System.out.println("Dessin fleche "+compteur);
             final Path fleche = new Path();
             QuadCurve quad = new QuadCurve();
             quad.setStartX(pointSource.getX());
