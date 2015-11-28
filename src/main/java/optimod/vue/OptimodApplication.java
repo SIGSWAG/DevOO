@@ -53,6 +53,7 @@ public class OptimodApplication extends Application {
 
         fenetre.setTitle(TITRE_FENETRE);
         fenetre.setScene(new Scene(root));
+        //fenetre.setFullScreen(true);
         fenetre.show();
         controleur.updateVue();
     }

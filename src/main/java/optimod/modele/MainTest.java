@@ -1,14 +1,13 @@
 package optimod.modele;
 
+import javafx.geometry.Point2D;
 import javafx.util.Pair;
 import optimod.tsp.Graphe;
 import optimod.tsp.GrapheComplet;
 import optimod.tsp.TSP;
 import optimod.tsp.TSP1;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Created by Thibault on 19/11/2015.
@@ -36,11 +35,25 @@ public class MainTest {
         /**
          * Test Case 1
          */
-        initGraphe();
+
+        /**Point2D source = new Point2D(152.64532447121232,447.9676831903636);
+        Point2D arr = new Point2D(241.35467552878768,416.0323168096364);
+        double d = 10;
+        Point2D pass = calculePointPassage(source,arr,d);
+        System.out.println("Point "+pass.getX()+" : "+pass.getY());
+        pass = calculePointPassage(arr,source,d);
+        System.out.println("Point "+pass.getX()+" : "+pass.getY());*/
+
+     
+
+
+
     }
 
 
-    public static void initGraphe(){
+
+
+    public static void initGraphe() {
         /**
          * Test Case 1
          */
@@ -106,16 +119,16 @@ public class MainTest {
         tr5.add(troncon9);
 
         intersection5.setSortants(tr5);
-       // intersection6.setSortants(new ArrayList<Troncon>());
+        // intersection6.setSortants(new ArrayList<Troncon>());
 
 
-        Livraison livraison  = new Livraison(intersection1);
+        Livraison livraison = new Livraison(intersection1);
         intersection1.setLivraison(livraison);
 
-        Livraison livraison3  = new Livraison(intersection3);
+        Livraison livraison3 = new Livraison(intersection3);
         intersection3.setLivraison(livraison3);
 
-        Livraison livraison5  = new Livraison(intersection5);
+        Livraison livraison5 = new Livraison(intersection5);
         intersection5.setLivraison(livraison5);
 
         Livraison livraison2 = new Livraison(intersection2);
@@ -145,8 +158,8 @@ public class MainTest {
         f2.add(livraison2);
 
 
-        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
-        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2,5,7);
+        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1, 8, 20);
+        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2, 5, 7);
         livraison2.setHeureDebutFenetre(5);
         livraison2.setHeureFinFenetre(7);
 
@@ -163,24 +176,23 @@ public class MainTest {
         DemandeLivraisons dl = ordonnanceur.getDemandeLivraisons();
         dl.calculerItineraire();
 
-        for(Chemin chemin : dl.getItineraire()){
+        for (Chemin chemin : dl.getItineraire()) {
 
-            System.out.println("from "+chemin.getDepart().getIntersection().getAdresse()+" to "+chemin.getArrivee().getIntersection().getAdresse()+" arrivee a "+chemin.getArrivee().getHeureLivraison());
-            for(Troncon troncon :  chemin.getTroncons()){
+            System.out.println("from " + chemin.getDepart().getIntersection().getAdresse() + " to " + chemin.getArrivee().getIntersection().getAdresse() + " arrivee a " + chemin.getArrivee().getHeureLivraison());
+            for (Troncon troncon : chemin.getTroncons()) {
 
 
-                System.out.println("arrivee a "+troncon.getArrivee().getAdresse()+" apres "+troncon.getDuree());
+                System.out.println("arrivee a " + troncon.getArrivee().getAdresse() + " apres " + troncon.getDuree());
             }
-
-
 
         }
 
 
+    }
 
 
 
     }
 
 
-}
+

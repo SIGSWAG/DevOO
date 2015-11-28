@@ -2,54 +2,81 @@ package optimod.vue.plan;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.fxml.Initializable;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
+import optimod.vue.FenetreControleur;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Représente une intersection à l'écran.
  * Created by Jonathan on 19/11/2015.
  */
-public class IntersectionPane extends Circle implements Initializable {
+public class IntersectionPane extends Circle {
+
+    private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
 
     public static final int TAILLE = 6;
 
     public static final Color COULEUR_DEFAUT = Color.BLACK;
     public static final Color COULEUR_ENTREPOT = Color.GREEN;
-    public static final Color COULEUR_SURVOL = Color.BLUE;
-    public static final Color COULEUR_LIVRAISON = Color.RED;
+    public static final Color COULEUR_LIVRAISON = Color.BLUE;
+    private FenetreControleur fenetreControleur;
 
     private Intersection intersection;
     private boolean estEntrepot;
     private boolean survol;
+    private boolean selectionne;
 
     private Tooltip infobulle;
 
-    public IntersectionPane(Intersection intersection) {
+    public IntersectionPane(Intersection intersection, FenetreControleur fenetreControleur) {
         super(intersection.getX(), intersection.getY(), TAILLE);
 
         this.intersection = intersection;
+        this.fenetreControleur = fenetreControleur;
 
         estEntrepot = false;
         survol = false;
+        selectionne = false;
 
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
 
-        setOnMouseEntered(event -> survol());
-        setOnMouseExited(event -> quitteSurvol());
+        setOnMouseEntered(evenement -> survol());
+        setOnMouseExited(evenement -> quitteSurvol());
+        setOnMouseClicked(evenement -> click());
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        mettreAJour();
+    private void click() {
+        if (estEntrepot)
+            return;
+        if (selectionne) {
+            deselectionner();
+        } else {
+            selectionner();
+        }
+    }
+
+    public void selectionner() {
+        selectionne = true;
+        colorier();
+    }
+
+    public void deselectionner() {
+        selectionne = false;
+        colorier();
     }
 
     public void setEstEntrepot(boolean estEntrepot) {
@@ -57,7 +84,7 @@ public class IntersectionPane extends Circle implements Initializable {
         mettreAJour();
     }
 
-    private boolean aLivraison() {
+    public boolean aUneLivraison() {
         return intersection.getLivraison() != null;
     }
 
@@ -80,30 +107,45 @@ public class IntersectionPane extends Circle implements Initializable {
     }
 
     private void colorier() {
-        if (survol)
-            setFill(COULEUR_SURVOL);
-        else if (estEntrepot)
+        if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-        else if (aLivraison())
-            setFill(COULEUR_LIVRAISON);
-        else
+        } else if (survol && aUneLivraison()) {
+            setCursor(Cursor.HAND);
+        } else if (aUneLivraison()) {
+           // On laisse la couleur
+        } else {
             setFill(COULEUR_DEFAUT);
+        }
+
+        if (selectionne) {
+            DropShadow dropShadow = new DropShadow(10, Color.BLUE);
+            dropShadow.setBlurType(BlurType.GAUSSIAN);
+            setEffect(dropShadow);
+        } else {
+            setEffect(null);
+        }
+
     }
 
-    private void genererTexteInfobulle() {
+    public String genererTexteIntersection(Intersection intersection) {
         String texte = String.format("(%s;%s)",
                 intersection.getX(),
                 intersection.getY());
         texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
-        if (aLivraison()) {
+        if (aUneLivraison()) {
             Livraison livraison = intersection.getLivraison();
             texte += String.format("\nFenêtre de livraison : %s - %s",
                     livraison.getHeureDebutFenetre(),
                     livraison.getHeureFinFenetre());
         }
 
+        return texte;
+    }
+
+    private void genererTexteInfobulle() {
+        String texte = genererTexteIntersection(intersection);
         infobulle.setText(texte);
     }
 
@@ -120,7 +162,7 @@ public class IntersectionPane extends Circle implements Initializable {
     }
 
     /**
-     * Hack permettant de personnaliser la durée d'apparition des infobulles.
+     * Permet de personnaliser la durée d'apparition des infobulles.
      * <p>
      * Source : http://stackoverflow.com/a/27739605
      *
@@ -129,20 +171,19 @@ public class IntersectionPane extends Circle implements Initializable {
      */
     private static void dureeApparition(Tooltip tooltip, int duree) {
         try {
-            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
-            fieldBehavior.setAccessible(true);
-            Object objBehavior = fieldBehavior.get(tooltip);
+            Field comportementChamp = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            comportementChamp.setAccessible(true);
+            Object comportementObjet = comportementChamp.get(tooltip);
 
-            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
-            fieldTimer.setAccessible(true);
-            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+            Field timerChamp = comportementObjet.getClass().getDeclaredField("activationTimer");
+            timerChamp.setAccessible(true);
+            Timeline objTimer = (Timeline) timerChamp.get(comportementObjet);
 
             objTimer.getKeyFrames().clear();
             objTimer.getKeyFrames().add(new KeyFrame(new Duration(duree)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            logger.error("Problème dans la mise en place de la durée d'apparition de l'infobulle", e);
         }
-
     }
 
 }

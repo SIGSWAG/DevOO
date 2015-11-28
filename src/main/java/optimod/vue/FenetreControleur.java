@@ -4,18 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import optimod.modele.DemandeLivraisons;
-import optimod.modele.FenetreLivraison;
-import optimod.modele.Livraison;
-import optimod.modele.Plan;
+import optimod.modele.*;
 import optimod.vue.livraison.AfficheurFenetresLivraison;
 import optimod.vue.plan.AfficheurPlan;
 import org.slf4j.Logger;
@@ -23,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,7 +33,7 @@ import java.util.ResourceBundle;
  */
 public class FenetreControleur implements Observer, Initializable {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Stage fenetre;
 
@@ -60,38 +58,71 @@ public class FenetreControleur implements Observer, Initializable {
     private Button genererFeuilleRoute;
 
     @FXML
-    private Button annuler;
+    private Button annulerAction;
 
     @FXML
-    private Button rejouer;
+    private Button rejouerAction;
 
     @FXML
-    private Button ajouter;
+    private Button ajouterLivraison;
 
     @FXML
-    private Button supprimer;
+    private Button supprimerLivraison;
 
     @FXML
-    private Button echanger;
+    private Button echangerLivraisons;
 
     @FXML
-    private TreeView<Object> fenetreLivraisonTreeView;
+    private Button validerAjoutLivraison;
+
+    @FXML
+    private Button annulerAjoutLivraison;
+
+    @FXML
+    private AfficheurFenetresLivraison afficheurFenetresLivraison;
 
     private AfficheurPlan afficheurPlan;
 
-    private AfficheurFenetresLivraison afficheurFenetresLivraison;
+    private boolean selectionsActivees;
+
+    private boolean deselectionsActivees;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
+        selectionsActivees = false;
+        deselectionsActivees = false;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        afficheurPlan = new AfficheurPlan(planGroup);
-        afficheurFenetresLivraison = new AfficheurFenetresLivraison(fenetreLivraisonTreeView);
-        fenetreLivraisonTreeView.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> selectionnerElementGraphe(newValue.getValue()));
+        afficheurPlan = new AfficheurPlan(planGroup, this);
+        afficheurFenetresLivraison.setAfficheurPlan(afficheurPlan);
+        afficheurPlan.setAfficheurFenetresLivraison(afficheurFenetresLivraison);
+        associerVisibiliteBoutons();
+        validerAjoutLivraison.setVisible(false);
+        annulerAjoutLivraison.setVisible(false);
+
+    }
+
+    /**
+     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter les changements de visiblité
+     * et ainsi mettre à jour la vue en conséquence
+     */
+    private void associerVisibiliteBoutons() {
+        Class fenetreControleurClass = getClass();
+        for (Field champ : fenetreControleurClass.getDeclaredFields()) {
+            Object champObj = null;
+            try {
+                champObj = champ.get(this);
+            } catch (IllegalAccessException e) {
+                logger.error("Impossible d'associer les boutons à leurs controleurs", e);
+                afficheException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
+            }
+            if (champObj instanceof Button) {
+                Button bouton = (Button) champObj;
+                bouton.managedProperty().bind(bouton.visibleProperty());
+            }
+        }
     }
 
     /**
@@ -166,6 +197,16 @@ public class FenetreControleur implements Observer, Initializable {
         controleur.deselectionnerToutesIntersections();
     }
 
+    @FXML
+    protected void validerAjoutLivraison(ActionEvent evenement) {
+        controleur.validerAjoutLivraison();
+    }
+
+    @FXML
+    protected void annulerAjoutLivraison(ActionEvent evenement) {
+        controleur.annulerAjoutLivraison();
+    }
+
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Générer feuille de route" dans l'interface
      */
@@ -174,110 +215,102 @@ public class FenetreControleur implements Observer, Initializable {
         controleur.genererFeuilleDeRoute();
     }
 
+    @Override
     public void update(Observable o, Object arg) {
-        // Si la mise à jour vient du plan, on redessine le plan
-        if (o instanceof Plan) {
-            Plan plan = (Plan) o;
-            afficheurPlan.chargerPlan(plan);
-        } else if (o instanceof DemandeLivraisons) {
-            DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
-            afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
-            afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
-        } else {
-            // TODO
-            logger.warn("PROBLEM !");
+        Evenement evenement = (Evenement) arg;
+        if (evenement != null) {
+
+            // Si la mise à jour vient du plan, on redessine le plan
+            if (evenement.equals(Evenement.PLAN_CHARGE)) {
+                Plan plan = (Plan) o;
+                afficheurPlan.chargerPlan(plan);
+            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEES)) {
+                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+            } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+                afficheurPlan.chargerItineraire();
+            } else {
+                // TODO
+                logger.warn("PROBLEM !");
+            }
+
         }
     }
 
     private void selectionnerElementGraphe(Object element) {
-        if(element instanceof FenetreLivraison) {
+        if (element instanceof FenetreLivraison) {
             FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
             logger.debug("Fenêtre de livraison !");
+            afficheurPlan.selectionnerLivraisons(fenetreLivraison);
         }
         else if(element instanceof Livraison) {
             Livraison livraison = (Livraison) element;
             logger.debug("Livraison !");
-            afficheurPlan.selectionnerIntersection(livraison);
+            afficheurPlan.selectionnerLivraison(livraison, true);
         }
     }
 
 
-    public void activerChargerPlan(boolean estActif){
+    public void activerChargerPlan(boolean estActif) {
         chargerPlan.setDisable(!estActif);
     }
 
-    public void activerChargerLivraisons(boolean estActif){
+    public void activerChargerLivraisons(boolean estActif) {
         chargerLivraisons.setDisable(!estActif);
     }
 
-    public void activerToutDeselectionner(boolean estActif){
+    public void activerToutDeselectionner(boolean estActif) {
         toutDeselectionner.setDisable(!estActif);
     }
 
-    public void activerGenererFeuilleRoute(boolean estActif){
+    public void activerGenererFeuilleRoute(boolean estActif) {
         genererFeuilleRoute.setDisable(!estActif);
     }
 
-    public void activerAnnuler(boolean estActif){
-        annuler.setDisable(!estActif);
+    public void activerAnnuler(boolean estActif) {
+        annulerAction.setDisable(!estActif);
     }
 
-    public void activerRejouer(boolean estActif){
-        rejouer.setDisable(!estActif);
+    public void activerRejouer(boolean estActif) {
+        rejouerAction.setDisable(!estActif);
     }
 
-    public void activerAjouter(boolean estActif){
-        ajouter.setDisable(!estActif);
+    public void activerAjouter(boolean estActif) {
+        ajouterLivraison.setDisable(!estActif);
     }
 
-    public void activerSupprimer(boolean estActif){
-        supprimer.setDisable(!estActif);
+    public void activerSupprimer(boolean estActif) {
+        supprimerLivraison.setDisable(!estActif);
     }
 
-    public void activerEchanger(boolean estActif){
-        echanger.setDisable(!estActif);
+    public void activerEchanger(boolean estActif) {
+        echangerLivraisons.setDisable(!estActif);
     }
 
-    public void activerCalculerItineraire(boolean estActif){
+    public void activerCalculerItineraire(boolean estActif) {
         calculerItineraire.setDisable(!estActif);
     }
 
-    public void activerSelections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("selections activees (ou pas)");
+    public void activerSelections(boolean estActif) {
+        this.selectionsActivees = estActif;
     }
 
-    public void activerDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("deselections activees (ou pas)");
-    }
-
-    public void activerToutesLesDeselections(boolean estActif){
-        /**
-         * TODO @jonathan @aurélien
-         */
-        logger.debug("toutes les deselections activees (ou pas)");
+    public void activerDeselections(boolean estActif) {
+        this.deselectionsActivees = estActif;
     }
 
     public void activerAnnulerAjout(boolean estActif) {
-        /**
-         * TODO @jonathan @aurélien
-         */
+        annulerAjoutLivraison.setVisible(true);
         logger.debug("on peut annuler l'ajout pour revenir à l'état principal");
     }
 
     public void activerValiderAjout(boolean estActif) {
-        /**
-         * TODO @jonathan @aurélien
-         */
+        validerAjoutLivraison.setVisible(true);
         logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
-    public void autoriseBoutons(boolean estActif){
+    public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
         activerToutDeselectionner(estActif);
@@ -290,12 +323,9 @@ public class FenetreControleur implements Observer, Initializable {
         activerCalculerItineraire(estActif);
         activerSelections(estActif);
         activerDeselections(estActif);
-        activerToutesLesDeselections(estActif);
-        activerAnnulerAjout(estActif);
-        activerValiderAjout(estActif);
     }
 
-    public void afficheMessage(String message, String titre, Alert.AlertType alertType){
+    public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -307,7 +337,7 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex){
+    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -341,7 +371,21 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    private void updateVue(){
+    private void updateVue() {
         this.controleur.updateVue();
+    }
+
+    public boolean selectionner(Intersection intersection) {
+        if (selectionsActivees) {
+            return this.controleur.selectionnerIntersection(intersection);
+        }
+        return false;
+    }
+
+    public boolean deselectionner(Intersection intersection) {
+        if (deselectionsActivees) {
+            return this.controleur.deselectionnerIntersection(intersection);
+        }
+        return false;
     }
 }

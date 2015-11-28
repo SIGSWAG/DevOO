@@ -8,11 +8,13 @@ public class Troncon {
 
     private int duree;
 
+    private int compteurPassage;
+
     private Intersection arrivee;
 
     private String nom;
 
-    private boolean estEmprunte;
+
 
     public Troncon(Intersection intersection, double vitesse, double longueur, String nom) {
         this.duree = (int) (longueur / vitesse);
@@ -20,7 +22,7 @@ public class Troncon {
         this.nom = nom;
         this.longueur = longueur;
         this.vitesse = vitesse;
-        this.estEmprunte = false;
+        this.compteurPassage = 0;
     }
 
     public int getDuree() {
@@ -48,10 +50,17 @@ public class Troncon {
     }
 
     public boolean estEmprunte() {
-        return estEmprunte;
+        return compteurPassage>0;
     }
 
-    public void setEstEmprunte(boolean estEmprunte) {
-        this.estEmprunte = estEmprunte;
+    public int getCompteurPassage(){return compteurPassage;}
+    public void incrementeCompteurPassage() {
+         compteurPassage++;
+    }
+    public void decrementeCompteurPassage() {
+        compteurPassage = compteurPassage > 0 ? compteurPassage-1 : 0 ;
+    }
+    public void resetCompteur(){
+        compteurPassage = 0;
     }
 }

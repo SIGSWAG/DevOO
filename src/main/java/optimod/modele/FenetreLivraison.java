@@ -7,7 +7,7 @@ import java.util.*;
 
 public class FenetreLivraison {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private int heureDebut;
 

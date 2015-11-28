@@ -1,8 +1,6 @@
 package optimod.modele;
 
-import optimod.tsp.Graphe;
-import optimod.tsp.TSP;
-import optimod.tsp.TSP1;
+import optimod.tsp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,12 +8,7 @@ import java.util.*;
 
 public class GraphePCC implements Graphe {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
-     *
-     */
-    //private Hashtable<Integer,Integer> mappingInverse;//calculatedIndex-->realIndex
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Hashtable<Integer,List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 
@@ -25,42 +18,42 @@ public class GraphePCC implements Graphe {
 
     private Livraison entrepot;
 
+    private TSP tsp;
+
+    private List<Chemin> chemins = new ArrayList<Chemin>();
+
     /**
      * Default constructor
      */
     public GraphePCC() {
+        this.tsp = new TSP3();
     }
-
-
-    private List<Chemin> chemins = new ArrayList<Chemin>();
-
 
     /**
      * @param chemins les chemins à définissants le graphe
      */
     public GraphePCC(Livraison entrepot, List<Chemin> chemins) {
-
+        this();
         this.chemins = chemins;
-        this.entrepot=entrepot;
+        this.entrepot = entrepot;
         convertirLivraisonsEnSommets();
         construireGraphe();
-
-
     }
 
-    /**
-     * TODO !! Vide de sens pour l'instant
-     */
+
     public List<Chemin> calculerItineraire() {
-        List<Chemin> plusCourtParcours = new ArrayList<Chemin>();
+        List<Chemin> plusCourtParcours = new ArrayList<>();
 
-        TSP tsp = new TSP1();
+        tsp.chercheSolution(60000, this);
 
-        tsp.chercheSolution(30, this);
+        System.out.println("fin du calcul");
 
 
         for(int i=0;i<graphe.length-1;i++){
-
+            if(tsp == null) {
+                logger.error("TSP nul {}", i);
+                return null;
+            }
             int livraison = tsp.getSolution(i);
             int livraisonSuivante = tsp.getSolution(i+1);
 
@@ -80,7 +73,7 @@ public class GraphePCC implements Graphe {
         if(chemins!=null) {
 
 
-            cheminsParLivraison = new Hashtable<Integer, List<Chemin>>();
+            cheminsParLivraison = new Hashtable<>();
             Iterator<Chemin> it = chemins.iterator();
             int i = 1;
             while (it.hasNext()) {
@@ -92,7 +85,6 @@ public class GraphePCC implements Graphe {
                     int adresse = chemin.getDepart().getIntersection().getAdresse();//adresse du depart
 
                     if (vus.get(adresse) == null) { //on passe pour la première fois sur la livraison
-
 
                         int index = i;
                         if (adresse == entrepot.getIntersection().getAdresse()) { //cas de l'entrepot, toujours à zero
@@ -126,9 +118,9 @@ public class GraphePCC implements Graphe {
 
             int tailleGraphe = cheminsParLivraison.size();
 
-            logger.info("Taille du graphe {}", tailleGraphe);
-            graphe = new Chemin[tailleGraphe][tailleGraphe];
 
+            graphe = new Chemin[tailleGraphe][tailleGraphe];
+            logger.info("Taille du graphe {}", graphe.length);
             for(int i=0;i<tailleGraphe;i++){
                 for(int j=0;j<tailleGraphe;j++){
                     graphe[i][j]=null;
@@ -151,7 +143,18 @@ public class GraphePCC implements Graphe {
 
             }
 
+            for(int i=0;i<tailleGraphe;i++){
+                for(int j=0;j<tailleGraphe;j++){
+                    if( graphe[i][j]==null){
+                        System.out.print("N, ");
+                    }else {
+                        System.out.print(graphe[i][j].getDuree()+", ");
+                    }
+                }
+                System.out.println("");
+            }
         }
+
 
     }
 
@@ -164,7 +167,6 @@ public class GraphePCC implements Graphe {
 
     public int getCout(int i, int j) {
 
-        int len= graphe.length;
 
         if(i<0 || i>=graphe.length || j<0 || j>=graphe.length){
             return -1;
@@ -190,7 +192,6 @@ public class GraphePCC implements Graphe {
         return chemins;
     }
 
-    // à virer ???
     public void setChemins(List<Chemin> chemins) {
         this.chemins = chemins;
     }
