@@ -301,12 +301,12 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerAnnulerAjout(boolean estActif) {
-        annulerAjoutLivraison.setVisible(true);
+        annulerAjoutLivraison.setVisible(estActif);
         logger.debug("on peut annuler l'ajout pour revenir à l'état principal");
     }
 
     public void activerValiderAjout(boolean estActif) {
-        validerAjoutLivraison.setVisible(true);
+        validerAjoutLivraison.setVisible(estActif);
         logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
@@ -323,6 +323,8 @@ public class FenetreControleur implements Observer, Initializable {
         activerCalculerItineraire(estActif);
         activerSelections(estActif);
         activerDeselections(estActif);
+        activerAnnulerAjout(estActif);
+        activerValiderAjout(estActif);
     }
 
     public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
