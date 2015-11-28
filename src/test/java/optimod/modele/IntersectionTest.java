@@ -21,4 +21,31 @@ public class IntersectionTest {
         assertTrue(intersection.estLocalisee(0, 1, 1));
 
     }
+
+    public static void comparerIntersections(Intersection intersectionATester, Intersection intersectionType) {
+    	comparerIntersectionsPrimitives(intersectionATester, intersectionType);
+
+    	List<Troncon> tronconsATester = intersectionATester.getTroncons();
+    	List<Troncon> tronconsType = intersectionType.getTroncons();
+
+    	assertNotNull(tronconsATester);
+    	assertNotNull(tronconsType);
+
+    	assertEquals(tronconATester.size(), tronconType.size());
+
+    	for(int i = 0; i < tronconATester.size(); i++) {
+    		Troncon tronconATester = tronconsATester.get(i);
+    		Troncon tronconType = tronconsType.get(i);
+    		TronconTest.comparerTroncons(tronconATester, tronconsType);
+    	}
+    }
+
+    private static void comparerIntersectionsPrimitives(Intersection intersectionATester, Intersection intersectionType) {
+    	assertNotNull(intersectionATester)
+    	assertNotNull(intersectionType)
+
+    	assertEquals(intersectionATester.getX(), intersectionType.getX());
+    	assertEquals(intersectionATester.getY(), intersectionType.getY());
+    	assertEquals(intersectionATester.getAdresse(), intersectionType.getAdresse());
+    }
 }

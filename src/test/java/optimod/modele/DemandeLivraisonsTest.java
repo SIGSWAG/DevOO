@@ -40,9 +40,9 @@ public class DemandeLivraisonsTest {
         final Livraison nouvelleLivraison = nouvelleIntersection.getLivraison();
 
         assertNotNull(nouvelleLivraison);
-        assertEquals(nouvelleLivraison.getPrecedente(), livraisonAvant);
-        assertEquals(livraisonApres.getPrecedente(), nouvelleLivraison);
-
+        LivraisonTest.comparerLivraisons(nouvelleLivraison.getPrecedente(), livraisonAvant);
+        
+        LivraisonTest.comparerLivraisons(livraisonApres.getPrecedente(), nouvelleLivraison);
     }
 
     @Test
@@ -59,6 +59,6 @@ public class DemandeLivraisonsTest {
 
     @Test
     public void testEchangerLivraison() throws Exception {
-        // TODO à voir avec l'hexanome ce que signifie vraiment "échanger"
+        
     }
 }
