@@ -2,7 +2,7 @@ package optimod.es.xml;
 
 import javafx.stage.Stage;
 import optimod.modele.*;
-import optimod.vue.xml.OuvreurDeFichierXML;
+import optimod.vue.es.xml.OuvreurDeFichierXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

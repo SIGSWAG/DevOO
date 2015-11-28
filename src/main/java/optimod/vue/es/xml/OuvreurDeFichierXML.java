@@ -1,4 +1,4 @@
-package optimod.vue.xml;
+package optimod.vue.es.xml;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
