@@ -277,7 +277,7 @@ public enum DeserialiseurXML { // Singleton
         }
 
         // On supprime toute trace des ancienne Livraisons
-        demandeLivraisons.reset();
+        demandeLivraisons.reinitialiser();
 
         // s'il n'y a eu aucunes erreur, on peut setter la nouvelle DemandeLivraisons
         // Setter l'entrepot
