@@ -1,6 +1,5 @@
 package optimod.vue.livraison;
 
-import javafx.beans.binding.ObjectBinding;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -10,8 +9,7 @@ import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
 import optimod.vue.plan.AfficheurPlan;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Jonathan on 24/11/2015.
@@ -22,28 +20,49 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
     private Map<FenetreLivraison, Color> couleurFenetresLivraison;
 
+    private DemandeLivraisons demandeLivraisons;
+
     public AfficheurFenetresLivraison() {
         this.couleurFenetresLivraison = new HashMap<>();
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
+        getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
+    }
+
+    public void reinitialiser() {
+        if (getRoot() != null)
+            getRoot().getChildren().clear();
     }
 
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
+        this.demandeLivraisons = demandeLivraisons;
+
         TreeItem<Object> fenetreLivaisonRoot = new TreeItem<>(new FenetreLivraison(null, 0, 0));
         fenetreLivaisonRoot.setExpanded(true);
         setRoot(fenetreLivaisonRoot);
         setShowRoot(false);
 
+        mettreAJour();
+    }
+
+    public void mettreAJour() {
+
+        reinitialiser();
+
         for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
             Color couleur = afficheurPlan.colorierLivraisons(fenetreLivraison);
             couleurFenetresLivraison.put(fenetreLivraison, couleur);
             TreeItem<Object> fenetreLivraisonTreeItem = new TreeItem<>(fenetreLivraison);
-            for (Livraison livraison : fenetreLivraison.getLivraisons()) {
+
+            // On trie les livraisons par heure de passage prévues afin qu'elles s'affichent dans l'ordre.
+            List<Livraison> livraisonsTriees = new ArrayList<>(fenetreLivraison.getLivraisons());
+            Collections.sort(livraisonsTriees, (liv1, liv2) -> Integer.compare(liv1.getHeureLivraison(), liv2.getHeureLivraison()));
+
+            for (Livraison livraison : livraisonsTriees) {
                 TreeItem<Object> livraisonTreeItem = new TreeItem<>(livraison);
                 fenetreLivraisonTreeItem.getChildren().add(livraisonTreeItem);
             }
-            fenetreLivaisonRoot.getChildren().add(fenetreLivraisonTreeItem);
+
+            getRoot().getChildren().add(fenetreLivraisonTreeItem);
             setCellFactory(callback -> new LivraisonTreeCell(this));
         }
 

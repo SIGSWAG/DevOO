@@ -11,7 +11,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 public class DemandeLivraisons extends Observable {
 
@@ -46,7 +48,7 @@ public class DemandeLivraisons extends Observable {
         boolean demandeLivraisonChargee = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(this);
         if(demandeLivraisonChargee){
             setChanged();
-            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEES);
+            notifyObservers(Evenement.DEMANDE_LIVRAISONS_CHARGEE);
         }
         return demandeLivraisonChargee;
     }
