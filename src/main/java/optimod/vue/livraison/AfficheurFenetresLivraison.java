@@ -1,6 +1,5 @@
 package optimod.vue.livraison;
 
-import javafx.beans.binding.ObjectBinding;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -22,18 +21,33 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
     private Map<FenetreLivraison, Color> couleurFenetresLivraison;
 
+    private DemandeLivraisons demandeLivraisons;
+
     public AfficheurFenetresLivraison() {
         this.couleurFenetresLivraison = new HashMap<>();
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
+        getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> clicElementListe(newValue.getValue()));
+    }
+
+    public void reinitialiser() {
+        if (getRoot() != null)
+            getRoot().getChildren().clear();
     }
 
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
+        this.demandeLivraisons = demandeLivraisons;
+
         TreeItem<Object> fenetreLivaisonRoot = new TreeItem<>(new FenetreLivraison(null, 0, 0));
         fenetreLivaisonRoot.setExpanded(true);
         setRoot(fenetreLivaisonRoot);
         setShowRoot(false);
+
+        mettreAJour();
+    }
+
+    public void mettreAJour() {
+
+        reinitialiser();
 
         for (FenetreLivraison fenetreLivraison : demandeLivraisons.getFenetres()) {
             Color couleur = afficheurPlan.colorierLivraisons(fenetreLivraison);
@@ -43,7 +57,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                 TreeItem<Object> livraisonTreeItem = new TreeItem<>(livraison);
                 fenetreLivraisonTreeItem.getChildren().add(livraisonTreeItem);
             }
-            fenetreLivaisonRoot.getChildren().add(fenetreLivraisonTreeItem);
+            getRoot().getChildren().add(fenetreLivraisonTreeItem);
             setCellFactory(callback -> new LivraisonTreeCell(this));
         }
 

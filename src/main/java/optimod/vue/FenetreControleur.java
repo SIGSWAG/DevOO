@@ -4,10 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
@@ -223,12 +223,14 @@ public class FenetreControleur implements Observer, Initializable {
             // Si la mise à jour vient du plan, on redessine le plan
             if (evenement.equals(Evenement.PLAN_CHARGE)) {
                 Plan plan = (Plan) o;
+                afficheurFenetresLivraison.reinitialiser();
                 afficheurPlan.chargerPlan(plan);
-            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEES)) {
+            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEE)) {
                 DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
             } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+                afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire();
             } else {
                 // TODO
