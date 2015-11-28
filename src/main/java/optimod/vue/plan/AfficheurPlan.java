@@ -170,17 +170,8 @@ public final class AfficheurPlan {
     public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
-            logger.debug("Surbrillance");
-            if (deselectionnerAvant) {
-                deselectionnerIntersections();
-            }
-            //intersectionPane.setStyle("-fx-background-color:#10cc00;");
-            if (Platform.isSupported(ConditionalFeature.EFFECT)) {
-                DropShadow dropShadow = new DropShadow(10, Color.BLUE);
-                dropShadow.setBlurType(BlurType.GAUSSIAN);
-                intersectionPane.setEffect(dropShadow);
-                intersectionsSelectionnees.add(intersectionPane);
-            }
+            intersectionPane.selectionner();
+            intersectionsSelectionnees.add(intersectionPane);
         }
     }
 
