@@ -136,6 +136,7 @@ public final class AfficheurPlan {
     public void chargerItineraire() {
 
         getTronconsPane().forEach(TronconPane::mettreAJour);
+        getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
 
     }
 

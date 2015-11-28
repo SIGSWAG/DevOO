@@ -101,7 +101,7 @@ public class IntersectionPane extends Circle {
         colorier();
     }
 
-    private void mettreAJour() {
+    public void mettreAJour() {
         colorier();
         genererTexteInfobulle();
     }
@@ -112,7 +112,7 @@ public class IntersectionPane extends Circle {
         } else if (survol && aUneLivraison()) {
             setCursor(Cursor.HAND);
         } else if (aUneLivraison()) {
-           // On laisse la couleur
+            // On laisse la couleur
         } else {
             setFill(COULEUR_DEFAUT);
         }
@@ -136,13 +136,15 @@ public class IntersectionPane extends Circle {
             texte += "\nENTREPÔT";
         else if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
             Livraison livraison = intersection.getLivraison();
-            String heureDebut = String.format(FORMAT_HEURE,
-                    livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
-            String heureFin = String.format(FORMAT_HEURE,
-                    livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
+            String heureDebut = String.format(FORMAT_HEURE, livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
+            String heureFin = String.format(FORMAT_HEURE, livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
             texte += String.format("\nFenêtre de livraison : %s - %s",
                     heureDebut,
                     heureFin);
+            if (livraison.initeraireCalcule()) {
+                String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
+                texte += "\nHeure de livraison prévue : " + heureLivraison;
+            }
         }
 
         return texte;
