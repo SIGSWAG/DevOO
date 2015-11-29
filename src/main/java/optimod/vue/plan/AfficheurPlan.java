@@ -145,7 +145,7 @@ public final class AfficheurPlan {
     /**
      * Mets à jour l'affichage du plan.
      */
-    private void mettreAJour() {
+    public void mettreAJour() {
         getTronconsPane().forEach(TronconPane::mettreAJour);
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
     }

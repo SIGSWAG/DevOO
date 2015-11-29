@@ -253,7 +253,7 @@ public class DemandeLivraisons extends Observable {
 
 
         setChanged();
-        notifyObservers(Evenement.ITINERAIRE_CALCULE);
+        notifyObservers(Evenement.SUPPRESSION_LIVRAISON);
     }
 
     /**

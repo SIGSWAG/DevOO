@@ -185,6 +185,8 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void supprimerLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.supprimerLivraison();
     }
 
@@ -232,6 +234,11 @@ public class FenetreControleur implements Observer, Initializable {
             } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire();
+            } else if (evenement.equals(Evenement.SUPPRESSION_LIVRAISON)) {
+                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+                deselectionnerTout();
             } else {
                 // TODO
                 logger.warn("PROBLEM !");

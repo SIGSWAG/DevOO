@@ -109,7 +109,7 @@ public class IntersectionPane extends Circle {
     private void colorier() {
         if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-        } else if (survol && aUneLivraison()) {
+        } else if (survol) {
             setCursor(Cursor.HAND);
         } else if (aUneLivraison()) {
             // On laisse la couleur
