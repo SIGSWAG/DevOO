@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.layout.*?>
 <?import optimod.vue.livraison.AfficheurFenetresLivraison?>
-
 <BorderPane prefHeight="461.0" prefWidth="1304.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <AnchorPane prefHeight="372.0" prefWidth="262.0">
             <children>
-                <Label layoutX="15.0" layoutY="-3.0" text="Fenêtres de livraison" underline="true" />
-                <AfficheurFenetresLivraison fx:id="afficheurFenetresLivraison" layoutX="14.0" layoutY="16.0" />
+                <AfficheurFenetresLivraison fx:id="afficheurFenetresLivraison" AnchorPane.bottomAnchor="0"
+                                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                                            AnchorPane.topAnchor="0"/>
             </children>
         </AnchorPane>
     </left>
