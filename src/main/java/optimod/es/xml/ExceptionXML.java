@@ -5,7 +5,7 @@ package optimod.es.xml;
  */
 public class ExceptionXML extends Exception {
 
-    public ExceptionXML(String message) {
+    public ExceptionXML(final String message) {
         super(message);
     }
 
