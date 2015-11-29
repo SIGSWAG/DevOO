@@ -82,9 +82,7 @@ public class TronconPane extends Group {
         quad.setStrokeWidth(1);
         quad.setFill(null);
 
-        double courbe = 10 * (ratioCourbe - 1);
-        if (courbe < 0)
-            courbe = 0;
+        final double courbe = 10 * ratioCourbe;
         final Point2D pass = calculePointPassage(pointCible, pointSource, courbe);
 
         quad.setControlX(pass.getX());
