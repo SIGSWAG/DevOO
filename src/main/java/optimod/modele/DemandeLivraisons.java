@@ -222,6 +222,7 @@ public class DemandeLivraisons extends Observable {
             return;
         }else if(livr.getPrecedente() == livr.getSuivante()){ //il ne reste qu'une livraison
 
+            livr.getIntersection().setLivraison(null);
             Chemin aller = entrepot.getCheminVersSuivante();
             Chemin retour = livr.getCheminVersSuivante();
 
