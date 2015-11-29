@@ -47,5 +47,6 @@ public class EtatVisualisationDemandesLivr extends EtatDefaut {
         fenetreControleur.activerChargerLivraisons(true);
         fenetreControleur.activerChargerPlan(true);
         fenetreControleur.activerCalculerItineraire(true);
+        listeDeCdes.reset();
     }
 }
