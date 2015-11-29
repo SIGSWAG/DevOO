@@ -14,35 +14,34 @@ import java.util.List;
  */
 public class CdeSuppression implements Commande{
     private Ordonnanceur ordonnanceur;
-    private List<Livraison> livraisons;
-    private HashMap<Integer,FenetreLivraison> fenetreLivraisons;
-
+    private List<Livraison> livraisonsASupprimer;
+    private HashMap<Integer,FenetreLivraison> fenetresLivraisons;
     /**
-     * Cree la commande qui supprime une liste de Livraison l de la DemandeLivraison
+     * Cree la commande qui supprime une liste de Livraisons l de la DemandeLivraison
      * @param o
      * @param l
      */
     public CdeSuppression(Ordonnanceur o, List<Livraison> l){
         this.ordonnanceur = o;
-        this.livraisons = l;
-        this.fenetreLivraisons = new HashMap<>();
+        this.livraisonsASupprimer = l;
+        this.fenetresLivraisons = new HashMap<>();
+        for (Livraison livraison : livraisonsASupprimer) {
+            fenetresLivraisons.put(
+                    livraison.getIntersection().getAdresse(),
+                    ordonnanceur.trouverFenetreDeLivraison(livraison)
+            );
+        }
     }
 
     public void doCde() {
-        for (int i = 0; i < livraisons.size(); i++) {
-
-            FenetreLivraison fen = ordonnanceur.trouverFenetreDeLivraison(livraisons.get(i));
-            fenetreLivraisons.put(livraisons.get(i).getIntersection().getAdresse(), fen);
-            Intersection inters = ordonnanceur.trouverIntersection(livraisons.get(i).getIntersection().getAdresse());
-            ordonnanceur.supprimerLivraison(inters.getLivraison());
+        for (int i = 0; i < livraisonsASupprimer.size(); i++) {
+            ordonnanceur.supprimerLivraison(livraisonsASupprimer.get(i));
         }
     }
 
     public void undoCde() {
-        for (int i = livraisons.size()-1; i >= 0; i--) {
-            Intersection inters = ordonnanceur.trouverIntersection(livraisons.get(i).getSuivante().getIntersection().getAdresse());
-
-            ordonnanceur.ajouterLivraison(livraisons.get(i).getIntersection(), inters.getLivraison(), fenetreLivraisons.get(livraisons.get(i).getIntersection().getAdresse()));
+        for (int i = livraisonsASupprimer.size()-1; i >= 0; i--) {
+            ordonnanceur.ajouterLivraison(livraisonsASupprimer.get(i), livraisonsASupprimer.get(i).getSuivante() , fenetresLivraisons.get(livraisonsASupprimer.get(i).getIntersection().getAdresse()));
         }
     }
 }

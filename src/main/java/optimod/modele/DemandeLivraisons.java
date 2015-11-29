@@ -152,14 +152,12 @@ public class DemandeLivraisons extends Observable {
 
     /**
      * Contrat : ajoute la livraison sur l'intersection donnée en paramètre et AVANT la livraison donnée en paramètre
-     * @param intersection l'intersection sur laquelle on ajoute la livraison
+     * @param nouvelleLivraison la livraison à ajouter
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
-    public void ajouterLivraison(Intersection intersection, Livraison livr, FenetreLivraison fenetreLivraison) {
-        // TODO, insertion de nouvelleLivraison dans une fenetre de livraison ?
-        Livraison nouvelleLivraison = new Livraison(intersection, fenetreLivraison.getHeureDebut(), fenetreLivraison.getHeureFin(), -1);
-        intersection.setLivraison(nouvelleLivraison);
+    public void ajouterLivraison(Livraison nouvelleLivraison, Livraison livr, FenetreLivraison fenetreLivraison) {
 
+        nouvelleLivraison.getIntersection().setLivraison(nouvelleLivraison);
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
 
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);

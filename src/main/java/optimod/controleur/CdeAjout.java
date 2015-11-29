@@ -10,10 +10,12 @@ import java.util.List;
 public class CdeAjout implements Commande{
     private Ordonnanceur ordonnanceur;
     private Livraison livraison;
+    private Livraison nouvelleLivraison;
     private Intersection intersection;
+    private FenetreLivraison fenetreDeNouvelleLivraison;
 
     /**
-     * Cree la commande qui ajoute une Intersection i avant la Livraison l à la DemandeLivraison
+     * Cree la commande qui ajoute une Livraison sur l'Intersection i avant la Livraison l à la DemandeLivraison
      * @param o
      * @param l
      * @param i
@@ -22,12 +24,12 @@ public class CdeAjout implements Commande{
         this.ordonnanceur = o;
         this.livraison = l;
         this.intersection = i;
+        this.fenetreDeNouvelleLivraison = o.trouverFenetreDeLivraison(l);
+        this.nouvelleLivraison = new Livraison(intersection, this.fenetreDeNouvelleLivraison.getHeureDebut(), this.fenetreDeNouvelleLivraison.getHeureFin(), -1);
     }
 
     public void doCde() {
-
-        FenetreLivraison fenetre = ordonnanceur.trouverFenetreDeLivraison(livraison);
-        ordonnanceur.ajouterLivraison(intersection, livraison, fenetre);
+        ordonnanceur.ajouterLivraison(nouvelleLivraison, livraison, fenetreDeNouvelleLivraison);
     }
 
     public void undoCde() {
