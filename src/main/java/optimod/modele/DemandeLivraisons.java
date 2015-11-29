@@ -577,9 +577,10 @@ public class DemandeLivraisons extends Observable {
                }
            }
         }
-        return null;
-
-
+        if(livraison == entrepot)
+            return fenetres.get(fenetres.size()-1); // on renvoie la derniere fenetre de livraison pour pouvoir ajouter une livraison en dernière position
+        else
+            return null;
     }
     public List<Chemin> getItineraire() {
         return itineraire;
