@@ -102,7 +102,7 @@ public class Ordonnanceur {
         this.plan = plan;
     }
 
-    public void genererFeuilleDeRoute(){
+    public void genererFeuilleDeRoute() throws IOException {
         demandeLivraisons.genererFeuilleDeRoute();
     }
 }

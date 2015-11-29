@@ -4,30 +4,34 @@ import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 
+import java.util.List;
+
 /**
  * Created by (PRO) Loïc Touzard on 23/11/2015.
  */
 public class CdeSuppression implements Commande{
     private Ordonnanceur ordonnanceur;
-    private Livraison livraison;
-    private Intersection intersection;
+    private List<Livraison> livraisons;
 
     /**
-     * Cree la commande qui ajoute supprime une Livraison l de la DemandeLivraison
+     * Cree la commande qui supprime une liste de Livraison l de la DemandeLivraison
      * @param o
      * @param l
      */
-    public CdeSuppression(Ordonnanceur o, Livraison l){
+    public CdeSuppression(Ordonnanceur o, List<Livraison> l){
         this.ordonnanceur = o;
-        this.livraison = l;
-        this.intersection = l.getIntersection();
+        this.livraisons = l;
     }
 
     public void doCde() {
-        ordonnanceur.supprimerLivraison(livraison);
+        for (int i = 0; i < livraisons.size(); i++) {
+            ordonnanceur.supprimerLivraison(livraisons.get(i));
+        }
     }
 
     public void undoCde() {
-        ordonnanceur.ajouterLivraison(intersection, livraison.getSuivante());
+        for (int i = livraisons.size()-1; i >= 0; i--) {
+            ordonnanceur.ajouterLivraison(livraisons.get(i).getIntersection(), livraisons.get(i).getSuivante());
+        }
     }
 }

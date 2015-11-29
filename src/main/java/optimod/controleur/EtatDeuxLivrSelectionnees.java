@@ -6,6 +6,7 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,11 +49,13 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     @Override
     public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         fenetreControleur.autoriseBoutons(false);
+        List<Livraison> lesLivraisonsASupp = new ArrayList<Livraison>();
         for(Intersection inter: intersectionsSelectionnees){
             Livraison l =inter.getLivraison();
             if(l != null)
-                ordonnanceur.supprimerLivraison(l);
+                lesLivraisonsASupp.add(l);
         }
+        listeDeCdes.ajoute(new CdeSuppression(ordonnanceur,lesLivraisonsASupp));
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatPrincipal);
     }
@@ -62,7 +65,6 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         Livraison l1 = intersectionsSelectionnees.get(0).getLivraison();
         Livraison l2 = intersectionsSelectionnees.get(1).getLivraison();
-        ordonnanceur.echangerLivraison(l1, l2);
         listeDeCdes.ajoute(new CdeEchange(ordonnanceur, l1, l2));
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatPrincipal);
