@@ -48,17 +48,22 @@ public class Troncon {
     }
 
     public boolean estEmprunte() {
-        return compteurPassage>0;
+        return compteurPassage > 0;
     }
 
-    public int getCompteurPassage(){return compteurPassage;}
+    public int getCompteurPassage() {
+        return compteurPassage;
+    }
+
     public void incrementeCompteurPassage() {
-         compteurPassage++;
+        compteurPassage++;
     }
+
     public void decrementeCompteurPassage() {
-        compteurPassage = compteurPassage > 0 ? compteurPassage-1 : 0 ;
+        compteurPassage = compteurPassage > 0 ? compteurPassage - 1 : 0;
     }
-    public void resetCompteur(){
+
+    public void resetCompteur() {
         compteurPassage = 0;
     }
 }
