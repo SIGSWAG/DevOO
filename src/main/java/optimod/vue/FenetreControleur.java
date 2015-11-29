@@ -230,31 +230,34 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(final Observable o, final Object arg) {
         final Evenement evenement = (Evenement) arg;
         if (evenement != null) {
 
             // Si la mise à jour vient du plan, on redessine le plan
             if (evenement.equals(Evenement.PLAN_CHARGE)) {
+
                 final Plan plan = (Plan) o;
                 afficheurFenetresLivraison.reinitialiser();
                 afficheurPlan.chargerPlan(plan);
-            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEE)) {
-                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
 
+            } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEE)) {
+
+                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
                 couleursFenetres = new HashMap<>();
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+
+            } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+
+                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
 
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
-            } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
-                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
-            } else if (evenement.equals(Evenement.SUPPRESSION_LIVRAISON)) {
-                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
-                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
-                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
-                // deselectionnerTout();
+
             } else {
                 // TODO
                 logger.warn("Événement invalide.");

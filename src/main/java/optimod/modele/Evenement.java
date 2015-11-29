@@ -6,6 +6,5 @@ package optimod.modele;
 public enum Evenement {
     PLAN_CHARGE,
     DEMANDE_LIVRAISONS_CHARGEE,
-    ITINERAIRE_CALCULE,
-    SUPPRESSION_LIVRAISON
+    ITINERAIRE_CALCULE
 }

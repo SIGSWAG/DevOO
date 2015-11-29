@@ -24,7 +24,7 @@ public class TronconPane extends Group {
     public static final float TAILLE_FLECHE = 5;
 
     private static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
-    private final List<Color> couleurs;
+    private List<Color> couleurs;
 
     private final IntersectionPane source;
     private final Troncon troncon;
@@ -32,18 +32,18 @@ public class TronconPane extends Group {
     public TronconPane(final IntersectionPane source, final Troncon troncon) {
         this.source = source;
         this.troncon = troncon;
-        couleurs = new ArrayList<>();
 
+        reinitialiser();
         mettreAJour();
+    }
+
+    public void reinitialiser() {
+        couleurs = new ArrayList<>();
     }
 
     public void mettreAJour() {
         getChildren().clear();
         dessinerFleches();
-    }
-
-    public Troncon getTroncon() {
-        return troncon;
     }
 
     private void dessinerFleches() {
@@ -166,4 +166,9 @@ public class TronconPane extends Group {
         return new Point2D(X, Y);
 
     }
+
+    public Troncon getTroncon() {
+        return troncon;
+    }
+
 }

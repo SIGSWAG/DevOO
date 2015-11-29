@@ -54,15 +54,15 @@ public final class AfficheurPlan {
      *
      * @param demandeLivraisons
      */
-    public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) throws NullPointerException {
-        reinitialiserLivraisons();
+    public void chargerDemandeLivraisons(final DemandeLivraisons demandeLivraisons) throws NullPointerException {
+        reinitialiser();
 
-        Livraison entrepot = demandeLivraisons.getEntrepot();
-        IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
+        final Livraison entrepot = demandeLivraisons.getEntrepot();
+        final IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
 
         demandeLivraisons.getFenetres().forEach(fenetreLivraison -> {
-            Color couleur = fenetreControleur.associerCouleur(fenetreLivraison);
+            final Color couleur = fenetreControleur.associerCouleur(fenetreLivraison);
             fenetreLivraison.getLivraisons().forEach(livraison -> {
                 trouverIntersectionPane(livraison.getIntersection()).setCouleur(couleur);
             });
@@ -122,10 +122,10 @@ public final class AfficheurPlan {
     /**
      * Réinitialise toutes les livraisons dessinées.
      */
-    private void reinitialiserLivraisons() {
-        for (IntersectionPane intersectionPane : getIntersectionsPane()) {
-            intersectionPane.reinitialiser();
-        }
+    private void reinitialiser() {
+        getIntersectionsPane().forEach(intersectionPane -> intersectionPane.reinitialiser());
+        getTronconsPane().forEach(tronconPane -> tronconPane.reinitialiser());
+
     }
 
     private IntersectionPane trouverIntersectionPane(Intersection intersection) {

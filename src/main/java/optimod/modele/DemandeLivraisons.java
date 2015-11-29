@@ -3,13 +3,11 @@ package optimod.modele;
 import optimod.es.txt.GenerateurDeFeuilleDeRoute;
 import optimod.es.xml.DeserialiseurXML;
 import optimod.es.xml.ExceptionXML;
-import optimod.vue.es.OuvreurDeFichier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class DemandeLivraisons extends Observable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static int TEMPS_ARRET = 10*60;
+    private static final int TEMPS_ARRET = 10 * 60;
 
     private List<Chemin> itineraire;
 
@@ -245,7 +243,7 @@ public class DemandeLivraisons extends Observable {
             }
 
             setChanged();
-            notifyObservers(Evenement.SUPPRESSION_LIVRAISON);
+            notifyObservers(Evenement.ITINERAIRE_CALCULE);
 
             return;
 
@@ -302,9 +300,8 @@ public class DemandeLivraisons extends Observable {
             System.out.println("PCC est null !!!!");
         }
 
-
         setChanged();
-        notifyObservers(Evenement.SUPPRESSION_LIVRAISON);
+        notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
     /**
