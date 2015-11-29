@@ -41,8 +41,6 @@ public class TronconTest {
 		IntersectionTest.comparerIntersectionsPrimitives(intersectionArriveeATester, intersectionArriveeType);
     }
 
-
-	@Test
     public static void comparerTronconsPrimitives(Troncon tronconATester, Troncon tronconType) {
     	assertNotNull(tronconATester);
     	assertNotNull(tronconType);
