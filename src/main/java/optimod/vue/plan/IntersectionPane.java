@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -117,8 +118,7 @@ public class IntersectionPane extends Circle {
     private void colorier() {
         if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-            final DropShadow ombre = new DropShadow(20, COULEUR_ENTREPOT);
-            ombre.setBlurType(BlurType.GAUSSIAN);
+            final InnerShadow ombre = new InnerShadow(10, Color.WHITE);
             setEffect(ombre);
             return;
         }
