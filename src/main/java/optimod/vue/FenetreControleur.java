@@ -169,6 +169,8 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void ajouterLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.ajouterLivraison();
     }
 
@@ -177,6 +179,8 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void echangerLivraisons(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.echangerLivraisons();
     }
 
