@@ -220,6 +220,25 @@ public class DemandeLivraisons extends Observable {
         if(livr == entrepot){
             logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
             return;
+        }else if(livr.getPrecedente() == livr.getSuivante()){ //il ne reste qu'une livraison
+
+            Chemin aller = entrepot.getCheminVersSuivante();
+            Chemin retour = livr.getCheminVersSuivante();
+
+            for(Troncon tr : aller.getTroncons()){
+                tr.decrementeCompteurPassage();
+            }
+            for(Troncon tr : retour.getTroncons()){
+                tr.decrementeCompteurPassage();
+            }
+            Chemin cheminVide = new Chemin();
+            cheminVide.setArrivee(entrepot);
+            cheminVide.setDepart(entrepot);
+            cheminVide.setDuree(0);
+            cheminVide.setTroncons(new ArrayList<>());
+            entrepot.setPrecedente(entrepot);
+            entrepot.setCheminVersSuivante(cheminVide);
+
         }
 
         Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
