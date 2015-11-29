@@ -25,13 +25,16 @@ public class IntersectionTest {
 
 
     public static void comparerIntersections(Intersection intersectionATester, Intersection intersectionType) {
-    	comparerIntersectionsPrimitives(intersectionATester, intersectionType);
+        comparerIntersectionsPrimitives(intersectionATester, intersectionType);
+
 
     	List<Troncon> tronconsATester = intersectionATester.getSortants();
     	List<Troncon> tronconsType = intersectionType.getSortants();
 
-    	assertNotNull(tronconsATester);
-    	assertNotNull(tronconsType);
+
+        assertNotNull(tronconsATester);
+        assertNotNull(tronconsType);
+
 
     	assertEquals(tronconsATester.size(), tronconsType.size());
 
@@ -46,9 +49,17 @@ public class IntersectionTest {
     public static void comparerIntersectionsPrimitives(Intersection intersectionATester, Intersection intersectionType) {
     	assertNotNull(intersectionATester);
     	assertNotNull(intersectionType);
+        List<Troncon> tronconsATester = intersectionATester.getSortants();
+        List<Troncon> tronconsType = intersectionType.getSortants();
+        assertEquals(tronconsATester.size(), tronconsType.size());
 
-    	assertEquals(intersectionATester.getX(), intersectionType.getX());
-    	assertEquals(intersectionATester.getY(), intersectionType.getY());
-    	assertEquals(intersectionATester.getAdresse(), intersectionType.getAdresse());
+        // TODO vérifier ce code ! Pourquoi faire des traitements après le dernier assert ?
+        for (int i = 0; i < tronconsATester.size(); i++) {
+            Troncon tronconATester = tronconsATester.get(i);
+            Troncon tronconType = tronconsType.get(i);
+            TronconTest.comparerTroncons(tronconATester, tronconType);
+        }
     }
+
+
 }
