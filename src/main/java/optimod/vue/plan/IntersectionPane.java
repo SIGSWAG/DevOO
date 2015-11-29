@@ -80,8 +80,6 @@ public class IntersectionPane extends Group {
     }
 
     private void click() {
-        if (estEntrepot)
-            return;
         if (selectionne) {
             fenetreControleur.deselectionner(intersection);
         } else {

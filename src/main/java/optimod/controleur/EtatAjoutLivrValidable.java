@@ -44,8 +44,17 @@ public class EtatAjoutLivrValidable extends EtatDefaut {
     }
 
     @Override
+    public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+        fenetreControleur.autoriseBoutons(false);
+        intersectionsSelectionnees.clear();
+        Controleur.setEtatCourant(Controleur.etatAjoutInit);
+    }
+
+    @Override
     public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerDeselections(true);
+        fenetreControleur.activerToutDeselectionner(true);
+        fenetreControleur.activerDeselectionsEntrepot(true);
         fenetreControleur.activerAnnulerAjout(true);
         fenetreControleur.activerValiderAjout(true);
     }

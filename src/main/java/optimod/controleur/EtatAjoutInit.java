@@ -16,14 +16,14 @@ public class EtatAjoutInit extends EtatDefaut {
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(intersectionsSelectionnees.size() == 0){
+        if(intersectionsSelectionnees.size() == 0 && livraisonSelectionnee != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);
-        }else if(livraisonSelectionnee == null && intersectionsSelectionnees.get(0).getLivraison() != null ||
-                livraisonSelectionnee != null && intersectionsSelectionnees.get(0).getLivraison() == null){
+        }else if(livraisonSelectionnee == null && intersectionsSelectionnees.size() == 1 && intersectionsSelectionnees.get(0).getLivraison() != null){
             intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatAjoutLivrValidable);
         }else{
-            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection. Vous devez selectionner une intersection vide où insérer la livraison et une livraison existate avant laquelle ajouter la livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
+            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection. Vous devez d'abbord selectionner une livraison existante avant laquelle ajouter la livraison.\n\n" +
+                    "Puis sélectionner une intersection vide où insérer la nouvelle livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
         return true;
@@ -40,6 +40,13 @@ public class EtatAjoutInit extends EtatDefaut {
     }
 
     @Override
+    public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees){
+        fenetreControleur.autoriseBoutons(false);
+        intersectionsSelectionnees.clear();
+        Controleur.setEtatCourant(Controleur.etatAjoutInit);
+    }
+
+    @Override
     public void annulerAjout(FenetreControleur fenetreControleur, List<Intersection> intersectionsSelectionnees){
         fenetreControleur.autoriseBoutons(false);
         intersectionsSelectionnees.clear();
@@ -49,7 +56,10 @@ public class EtatAjoutInit extends EtatDefaut {
     @Override
     public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
         fenetreControleur.activerSelections(true);
+        fenetreControleur.activerSelectionsEntrepot(true);
+        fenetreControleur.activerDeselectionsEntrepot(true);
         fenetreControleur.activerDeselections(true);
+        fenetreControleur.activerToutDeselectionner(true);
         fenetreControleur.activerAnnulerAjout(true);
     }
 }

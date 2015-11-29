@@ -17,11 +17,10 @@ public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.add(intersectionSelectionnee);
             return true;
         }else{
-            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
     }
@@ -30,7 +29,7 @@ public class EtatPlusDeDeuxLivrSelectionnees extends EtatDefaut {
     public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.remove(intersectionSelectionnee);
             if(intersectionsSelectionnees.size() > 2)
                 Controleur.setEtatCourant(Controleur.etatPlusDeDeuxLivrSelectionnees);

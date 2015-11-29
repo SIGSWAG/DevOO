@@ -85,6 +85,8 @@ public class FenetreControleur implements Observer, Initializable {
     private boolean selectionsActivees;
 
     private boolean deselectionsActivees;
+    private boolean entrepotSelectionnable = false;
+    private boolean entrepotDeselectionnable = false;
 
     private Map<FenetreLivraison, Color> couleursFenetres;
     private final List<Color> couleursPossibles;
@@ -181,6 +183,8 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void echangerLivraisons(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.echangerLivraisons();
     }
 
@@ -189,6 +193,8 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void supprimerLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.supprimerLivraison();
     }
 
@@ -203,11 +209,15 @@ public class FenetreControleur implements Observer, Initializable {
 
     @FXML
     protected void validerAjoutLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.validerAjoutLivraison();
     }
 
     @FXML
     protected void annulerAjoutLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.annulerAjoutLivraison();
     }
 
@@ -240,6 +250,11 @@ public class FenetreControleur implements Observer, Initializable {
                 final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
+            } else if (evenement.equals(Evenement.SUPPRESSION_LIVRAISON)) {
+                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
+                afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
+                // deselectionnerTout();
             } else {
                 // TODO
                 logger.warn("Événement invalide.");
@@ -334,6 +349,14 @@ public class FenetreControleur implements Observer, Initializable {
         validerAjoutLivraison.setVisible(estActif);
     }
 
+    public void activerDeselectionsEntrepot(boolean b) {
+        entrepotDeselectionnable = b;
+    }
+
+    public void activerSelectionsEntrepot(boolean b) {
+        entrepotSelectionnable = b;
+    }
+
     public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
@@ -349,6 +372,8 @@ public class FenetreControleur implements Observer, Initializable {
         activerDeselections(estActif);
         activerAnnulerAjout(estActif);
         activerValiderAjout(estActif);
+        activerSelectionsEntrepot(estActif);
+        activerDeselectionsEntrepot(estActif);
     }
 
     public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
@@ -405,7 +430,7 @@ public class FenetreControleur implements Observer, Initializable {
         if (selectionsActivees) {
             if (this.controleur.selectionnerIntersection(intersection)) {
                 this.afficheurPlan.selectionner(intersection);
-//                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
+                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
                 return true;
             } else {
                 return false;
@@ -427,12 +452,10 @@ public class FenetreControleur implements Observer, Initializable {
         afficheurPlan.selectionnerLivraisons(fenetreLivraison);
     }
 
-
     public void deselectionnerTout() {
         if (deselectionsActivees) {
             controleur.deselectionnerToutesIntersections();
             afficheurPlan.deselectionnerToutesIntersections();
         }
     }
-
 }

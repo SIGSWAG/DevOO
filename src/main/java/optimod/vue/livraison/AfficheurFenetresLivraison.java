@@ -1,5 +1,8 @@
 package optimod.vue.livraison;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -20,11 +23,17 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
     private FenetreControleur fenetreControleur;
 
     private DemandeLivraisons demandeLivraisons;
+    private boolean ecouteurActive = true;
 
     public AfficheurFenetresLivraison() {
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clicElementListe());
+        getSelectionModel().getSelectedItems()
+                .addListener(new ListChangeListener<TreeItem>() {
+                    @Override
+                    public void onChanged(Change<? extends TreeItem> change) {
+                       clicElementListe();
+                    }
+                });
     }
 
     public void reinitialiser() {
@@ -66,24 +75,21 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
     }
 
     private void clicElementListe() {
-//        if (element instanceof FenetreLivraison) {
-//            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
-//            fenetreControleur.selectionnerLivraisons(fenetreLivraison);
-//        } else {
-        List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
-        for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
-            try {
-                Object o = getSelectionModel().getSelectedItems().get(i).getValue();
-                if (o instanceof Livraison) {
-                    livraisonsSelectionnees.add((Livraison) o);
+        if(ecouteurActive) {
+            List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
+            for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
+                try {
+                    Object o = getSelectionModel().getSelectedItems().get(i).getValue();
+                    if (o instanceof Livraison) {
+                        livraisonsSelectionnees.add((Livraison) o);
+                    }
+                } catch (NullPointerException e) {
+                    //
                 }
-            } catch (NullPointerException e) {
-                //
             }
+            fenetreControleur.deselectionnerTout();
+            livraisonsSelectionnees.forEach(l -> fenetreControleur.selectionner(l.getIntersection()));
         }
-        fenetreControleur.deselectionnerTout();
-        livraisonsSelectionnees.forEach(l -> fenetreControleur.selectionner(l.getIntersection()));
-//        }
     }
 
     private void expand() {
@@ -102,8 +108,9 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                 for (int j = 0; j < objectTreeItem.getChildren().size(); j++) {
                     Object o1 = objectTreeItem.getChildren().get(j).getValue();
                     if (o1 instanceof Livraison && l == o1) {
-                        if (!getSelectionModel().isSelected(itemIndex + j + 1))
+                        if(!getSelectionModel().isSelected(itemIndex + j + 1)) {
                             getSelectionModel().select(itemIndex + j + 1);
+                        }
                         return;
                     }
                 }
@@ -124,8 +131,9 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                 for (int j = 0; j < objectTreeItem.getChildren().size(); j++) {
                     Object o1 = objectTreeItem.getChildren().get(j).getValue();
                     if (o1 instanceof Livraison && l != o1) {
-                        if (getSelectionModel().isSelected(itemIndex + j + 1))
+                        if(getSelectionModel().isSelected(itemIndex + j + 1)) {
                             livrSelectionnees.add(itemIndex + j + 1);
+                        }
                     }
                 }
             }
@@ -138,8 +146,11 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
         }
     }
 
+    // deselection sans action !
     public void deselectionnerTout() {
+        ecouteurActive = false;
         getSelectionModel().clearSelection();
+        ecouteurActive = true;
     }
 
     public FenetreControleur getFenetreControleur() {

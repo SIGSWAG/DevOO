@@ -18,8 +18,10 @@ public class ListeDeCdes {
      * @param c
      */
     public void ajoute(Commande c){
-        for (int i=indiceCrt+1; i<liste.size(); i++)
+        int i = indiceCrt+1;
+        while(i<liste.size()){
             liste.remove(i);
+        }
         indiceCrt++;
         liste.add(indiceCrt, c);
         c.doCde();
@@ -51,10 +53,8 @@ public class ListeDeCdes {
      * Supprime definitivement toutes les commandes de liste
      */
     public void reset(){
-        while (indiceCrt >=0){
-            liste.remove(indiceCrt);
-            indiceCrt--;
-        }
+        indiceCrt = -1;
+        liste.clear();
     }
 
     /**
