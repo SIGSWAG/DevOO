@@ -150,7 +150,7 @@ public class DemandeLivraisons extends Observable {
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        // TODO, insertion dasn une fenetre de livraison ?
+        // TODO, insertion de nouvelleLivraison dans une fenetre de livraison ?
         Livraison nouvelleLivraison = new Livraison(intersection, livr.getHeureDebutFenetre(), livr.getHeureFinFenetre(), -1);
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
         intersection.setLivraison(nouvelleLivraison);
