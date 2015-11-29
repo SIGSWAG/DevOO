@@ -136,6 +136,12 @@ public class DemandeLivraisons extends Observable {
      * @param livr la livraison à partir de laquelle on recalcule les heures
      */
     private void mettreAJourLesHeuresAPartirDe(Livraison livr) {
+
+        if(livr.getPrecedente() == entrepot){
+            livr.setHeureLivraison(livr.getHeureDebutFenetre());
+            livr = livr.getSuivante();
+            heureDebutItineraire = entrepot.getCheminVersSuivante().getDuree();
+        }
         while(!livr.equals(entrepot)){
             livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET);
             livr = livr.getSuivante();
@@ -149,14 +155,17 @@ public class DemandeLivraisons extends Observable {
      * @param intersection l'intersection sur laquelle on ajoute la livraison
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
-    public void ajouterLivraison(Intersection intersection, Livraison livr) {
+    public void ajouterLivraison(Intersection intersection, Livraison livr, FenetreLivraison fenetreLivraison) {
         // TODO, insertion de nouvelleLivraison dans une fenetre de livraison ?
-        Livraison nouvelleLivraison = new Livraison(intersection, livr.getHeureDebutFenetre(), livr.getHeureFinFenetre(), -1);
-        nouvelleLivraison.setPrecedente(livr.getPrecedente());
+        Livraison nouvelleLivraison = new Livraison(intersection, fenetreLivraison.getHeureDebut(), fenetreLivraison.getHeureFin(), -1);
         intersection.setLivraison(nouvelleLivraison);
 
+        nouvelleLivraison.setPrecedente(livr.getPrecedente());
+
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
+        System.out.println("Chemin de "+nouvelleLivraison.getPrecedente().getIntersection().getAdresse()+" a "+nouvelleLivraison.getIntersection().getAdresse());
         if(nouveauPCC1 != null){
+
 
             Chemin ch = livr.getPrecedente().getCheminVersSuivante();
             int indexASupprimer = 0;
@@ -171,7 +180,7 @@ public class DemandeLivraisons extends Observable {
             }
 
             Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-
+            System.out.println("Chemin de "+nouvelleLivraison.getIntersection().getAdresse()+" a "+livr.getIntersection().getAdresse());
             if(nouveauPCC2 != null){
                 livr.setPrecedente(nouvelleLivraison);
                 nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
@@ -189,8 +198,13 @@ public class DemandeLivraisons extends Observable {
                     troncon.incrementeCompteurPassage();
                 }
 
+                fenetreLivraison.getLivraisons().add(nouvelleLivraison);
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+            }else{
+                System.out.println("chemin 2 null");
             }
+        }else{
+            System.out.println("Chemin 1 null");
         }
 
         setChanged();
@@ -206,6 +220,26 @@ public class DemandeLivraisons extends Observable {
         if(livr == entrepot){
             logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
             return;
+        }else if(livr.getPrecedente() == livr.getSuivante()){ //il ne reste qu'une livraison
+
+            Chemin aller = entrepot.getCheminVersSuivante();
+            Chemin retour = livr.getCheminVersSuivante();
+
+            for(Troncon tr : aller.getTroncons()){
+                tr.decrementeCompteurPassage();
+            }
+            for(Troncon tr : retour.getTroncons()){
+                tr.decrementeCompteurPassage();
+            }
+            Chemin cheminVide = new Chemin();
+            cheminVide.setArrivee(entrepot);
+            cheminVide.setDepart(entrepot);
+            cheminVide.setDuree(0);
+            cheminVide.setTroncons(new ArrayList<>());
+            entrepot.setPrecedente(entrepot);
+            entrepot.setCheminVersSuivante(cheminVide);
+            itineraire.clear();
+
         }
 
         Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
@@ -216,6 +250,7 @@ public class DemandeLivraisons extends Observable {
             System.out.println("suppression de "+livr.getIntersection().getAdresse()+" pcc de "+
             nouveauPCC.getDepart().getIntersection().getAdresse()+" vers "+nouveauPCC.getArrivee().getIntersection().getAdresse()+" longueur chemin "+nouveauPCC.getTroncons().size());
             Chemin cheminASupprimer = livr.getPrecedente().getCheminVersSuivante();
+            Chemin cheminASupprimer2 = livr.getCheminVersSuivante();
 
             int indexASupprimer = 0; //index de suppression
             for(int i=0; i<itineraire.size(); i++){
@@ -226,6 +261,7 @@ public class DemandeLivraisons extends Observable {
 
             itineraire.add(indexASupprimer, nouveauPCC); //mise a jour itineraire
             itineraire.remove(cheminASupprimer);
+            itineraire.remove(cheminASupprimer2);
 
             for(Troncon tr : livr.getPrecedente().getCheminVersSuivante().getTroncons()){
                 tr.decrementeCompteurPassage();
@@ -243,6 +279,15 @@ public class DemandeLivraisons extends Observable {
             }
             mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
             livr.getIntersection().setLivraison(null);
+
+            //on supprime la livraison de la fenetre
+            for (FenetreLivraison f : this.fenetres) {
+                if (f.getLivraisons().contains(livr)) {
+                    f.getLivraisons().remove(livr);
+                }
+            }
+
+
         }else{
 
             System.out.println("PCC est null !!!!");
@@ -264,6 +309,14 @@ public class DemandeLivraisons extends Observable {
             logger.error("Action impossible sur l'entrepot");
             return;
         }
+
+        if(livr1.getSuivante() == livr2){
+            Livraison temp = livr1;
+            livr1 = livr2;
+            livr2 = temp;
+
+        }
+
         //prec et suiv l1
         Livraison livr1PrecTemp = livr1.getPrecedente();
         Livraison livr1SuivTemp = livr1.getSuivante();
@@ -272,58 +325,29 @@ public class DemandeLivraisons extends Observable {
         Livraison livr2PrecTemp = livr2.getPrecedente();
         Livraison livr2SuivTemp = livr2.getSuivante();
 
-        //chemins de l1
-        Chemin cheminl1prec = livr1PrecTemp.getCheminVersSuivante();
-        Chemin cheminl1suiv = livr1.getCheminVersSuivante();
-
-        //chemins de l2
-        Chemin cheminl2prec = livr2PrecTemp.getCheminVersSuivante();
-        Chemin cheminl2suiv = livr2.getCheminVersSuivante();
 
 
-        //pcc 1
-        Chemin cheminl1l2suiv = livr1.calculPCC(livr2.getSuivante());
-        Chemin cheminl2precl1 = livr2PrecTemp.calculPCC(livr1);
+        if(livr1PrecTemp == livr2){ //cas particulier, échange de livraisons consécutives
 
-        //pcc 2
-        Chemin cheminl2l1suiv = livr2.calculPCC(livr1.getSuivante());
-        Chemin cheminl1precl2 = livr1PrecTemp.calculPCC(livr2);
+            //parcourus
+            Chemin cheminl2precl1 = livr2PrecTemp.calculPCC(livr1);
+            Chemin cheminl1l2 = livr1.calculPCC(livr2);
+            Chemin cheminl2l1suiv = livr2.calculPCC(livr1SuivTemp);
 
-        List<Chemin> cheminsNonParcourus = new ArrayList<>();
-        cheminsNonParcourus.add(cheminl1prec);
-        cheminsNonParcourus.add(cheminl1suiv);
-        cheminsNonParcourus.add(cheminl2prec);
-        cheminsNonParcourus.add(cheminl2suiv);
+            //a supprimer
+            Chemin cheminl2precl2 = livr2PrecTemp.getCheminVersSuivante();
+            Chemin cheminl2l1 = livr2.getCheminVersSuivante();
+            Chemin cheminl1l1suiv = livr1.getCheminVersSuivante();
 
-        List<Chemin> cheminsParcourus = new ArrayList<>();
-        cheminsParcourus.add(cheminl1l2suiv);
-        cheminsParcourus.add(cheminl2precl1);
-        cheminsParcourus.add(cheminl2l1suiv);
-        cheminsParcourus.add(cheminl1precl2);
+            List<Chemin> cheminsNonParcourus = new ArrayList<>();
+            cheminsNonParcourus.add(cheminl2precl2 );
+            cheminsNonParcourus.add(cheminl2l1);
+            cheminsNonParcourus.add(cheminl1l1suiv);
 
-        if(cheminl1l2suiv != null && cheminl1precl2 != null && cheminl2l1suiv != null && cheminl2precl1 != null ) {
-
-            int indexASupprimer = 0;
-            for(int i=0; i<itineraire.size(); i++){
-                if(cheminl1prec == itineraire.get(i)){
-                    indexASupprimer = i;
-                }
-            }
-            itineraire.add(indexASupprimer,cheminl2l1suiv);
-            itineraire.add(indexASupprimer,cheminl1precl2);
-            itineraire.remove(cheminl1prec);
-            itineraire.remove(cheminl1suiv);
-
-            for(int i=0; i<itineraire.size(); i++){
-                if(cheminl2prec == itineraire.get(i)){
-                    indexASupprimer = i;
-                }
-            }
-            itineraire.add(indexASupprimer,cheminl1l2suiv);
-            itineraire.add(indexASupprimer,cheminl2precl1);
-            itineraire.remove(cheminl2prec);
-            itineraire.remove(cheminl2suiv);
-
+            List<Chemin> cheminsParcourus = new ArrayList<>();
+            cheminsParcourus.add(cheminl1l2);
+            cheminsParcourus.add(cheminl2precl1);
+            cheminsParcourus.add(cheminl2l1suiv);
 
             //mise a jour des troncons non empruntes
             for(Chemin chemin : cheminsNonParcourus){
@@ -338,52 +362,160 @@ public class DemandeLivraisons extends Observable {
                 }
             }
 
-            //l1 chemins
-            livr1.setPrecedente(livr2PrecTemp);
-            livr1.setCheminVersSuivante(cheminl1l2suiv);
-            livr2SuivTemp.setPrecedente(livr1);
-            livr2PrecTemp.setCheminVersSuivante(cheminl2precl1);
 
-            //l2 chemins
-            livr2.setPrecedente(livr2PrecTemp);
+            //changement itineraire
+            int indexASupprimer = 0;
+            for (int i = 0; i < itineraire.size(); i++) {
+                if (cheminl2precl2 == itineraire.get(i)) {
+                    indexASupprimer = i;
+                }
+            }
+
+            itineraire.add(indexASupprimer, cheminl2l1suiv);
+            itineraire.add(indexASupprimer, cheminl2l1);
+            itineraire.add(indexASupprimer, cheminl2precl1);
+            itineraire.remove(cheminl2precl2);
+            itineraire.remove(cheminl2l1);
+            itineraire.remove(cheminl1l1suiv);
+
+
+            //Mise a jour des livraisons
+            livr2PrecTemp.setCheminVersSuivante(cheminl2precl1);
+            livr1.setPrecedente(livr2PrecTemp);
+            livr1.setCheminVersSuivante(cheminl1l2);
+            livr2.setPrecedente(livr1);
             livr2.setCheminVersSuivante(cheminl2l1suiv);
             livr1SuivTemp.setPrecedente(livr2);
-            livr1PrecTemp.setCheminVersSuivante(cheminl1precl2);
+        }else {
 
 
+            //chemins de l1
+            Chemin cheminl1prec = livr1PrecTemp.getCheminVersSuivante();
+            Chemin cheminl1suiv = livr1.getCheminVersSuivante();
 
-            FenetreLivraison fenetre1 = null, fenetre2 = null;
-            for (FenetreLivraison f : this.fenetres) {
-                if (fenetre1 == null && f.getLivraisons().contains(livr1)) {
-                    fenetre1 = f;
+            //chemins de l2
+            Chemin cheminl2prec = livr2PrecTemp.getCheminVersSuivante();
+            Chemin cheminl2suiv = livr2.getCheminVersSuivante();
+
+
+            //pcc 1
+            Chemin cheminl1l2suiv = livr1.calculPCC(livr2.getSuivante());
+            Chemin cheminl2precl1 = livr2PrecTemp.calculPCC(livr1);
+
+            //pcc 2
+            Chemin cheminl2l1suiv = livr2.calculPCC(livr1.getSuivante());
+            Chemin cheminl1precl2 = livr1PrecTemp.calculPCC(livr2);
+
+            List<Chemin> cheminsNonParcourus = new ArrayList<>();
+            cheminsNonParcourus.add(cheminl1prec);
+            cheminsNonParcourus.add(cheminl1suiv);
+            cheminsNonParcourus.add(cheminl2prec);
+            cheminsNonParcourus.add(cheminl2suiv);
+
+            List<Chemin> cheminsParcourus = new ArrayList<>();
+            cheminsParcourus.add(cheminl1l2suiv);
+            cheminsParcourus.add(cheminl2precl1);
+            cheminsParcourus.add(cheminl2l1suiv);
+            cheminsParcourus.add(cheminl1precl2);
+
+            if (cheminl1l2suiv != null && cheminl1precl2 != null && cheminl2l1suiv != null && cheminl2precl1 != null) {
+
+                int indexASupprimer = 0;
+                for (int i = 0; i < itineraire.size(); i++) {
+                    if (cheminl1prec == itineraire.get(i)) {
+                        indexASupprimer = i;
+                    }
                 }
-                if (fenetre2 == null && f.getLivraisons().contains(livr2)) {
-                    fenetre2 = f;
-                }
-                if (fenetre1 != null && fenetre2 != null) {
-                    break;
-                }
-            }
-            if (fenetre1 != fenetre2) {
-                // Echange des fenetres
-                fenetre1.getLivraisons().remove(livr1);
-                fenetre1.getLivraisons().add(livr2);
-                fenetre2.getLivraisons().remove(livr2);
-                fenetre2.getLivraisons().add(livr1);
-            }
 
 
-            if (livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
-                mettreAJourLesHeuresAPartirDe(livr1);
-            } else {
-                mettreAJourLesHeuresAPartirDe(livr2);
+                itineraire.add(indexASupprimer, cheminl2l1suiv);
+                itineraire.add(indexASupprimer, cheminl1precl2);
+                itineraire.remove(cheminl1prec);
+                itineraire.remove(cheminl1suiv);
+
+                for (int i = 0; i < itineraire.size(); i++) {
+                    if (cheminl2prec == itineraire.get(i)) {
+                        indexASupprimer = i;
+                    }
+                }
+                itineraire.add(indexASupprimer, cheminl1l2suiv);
+                itineraire.add(indexASupprimer, cheminl2precl1);
+                itineraire.remove(cheminl2prec);
+                itineraire.remove(cheminl2suiv);
+
+
+                //mise a jour des troncons non empruntes
+                for (Chemin chemin : cheminsNonParcourus) {
+                    for (Troncon troncon : chemin.getTroncons()) {
+                        troncon.decrementeCompteurPassage();
+                    }
+                }
+                //mise a jour des troncons empruntes
+                for (Chemin chemin : cheminsParcourus) {
+                    for (Troncon troncon : chemin.getTroncons()) {
+                        troncon.incrementeCompteurPassage();
+                    }
+                }
+
+                //l1 chemins
+                livr1.setPrecedente(livr2PrecTemp);
+                livr1.setCheminVersSuivante(cheminl1l2suiv);
+                livr2SuivTemp.setPrecedente(livr1);
+                livr2PrecTemp.setCheminVersSuivante(cheminl2precl1);
+
+                //l2 chemins
+                livr2.setPrecedente(livr1PrecTemp);
+                livr2.setCheminVersSuivante(cheminl2l1suiv);
+                livr1SuivTemp.setPrecedente(livr2);
+                livr1PrecTemp.setCheminVersSuivante(cheminl1precl2);
+
+
+
             }
         }
 
+        //Mise a jour fenetres de livraison
+        FenetreLivraison fenetre1 = trouverFenetreDeLivraison(livr1);
+        FenetreLivraison fenetre2 = trouverFenetreDeLivraison(livr2);
+
+        if (fenetre1 != fenetre2) {
+            // Echange des fenetres
+            fenetre1.getLivraisons().remove(livr1);
+            fenetre1.getLivraisons().add(livr2);
+            livr1.setHeureDebutFenetre(fenetre2.getHeureDebut());
+            livr1.setHeureFinFenetre(fenetre2.getHeureFin());
+            fenetre2.getLivraisons().remove(livr2);
+            fenetre2.getLivraisons().add(livr1);
+            livr2.setHeureDebutFenetre(fenetre1.getHeureDebut());
+            livr2.setHeureFinFenetre(fenetre1.getHeureFin());
+        }
+
+
+        if (livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
+            mettreAJourLesHeuresAPartirDe(livr2);
+        } else {
+            mettreAJourLesHeuresAPartirDe(livr1);
+        }
+        //mettreAJourLesHeuresAPartirDe(entrepot.getSuivante());
         setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
+
+    private void remplacerDansItineraire(Chemin remplacer, List<Chemin> nouveaux){
+
+        int indexASupprimer = 0;
+        for(int i=0; i<itineraire.size(); i++){
+            if(remplacer == itineraire.get(i)){
+                indexASupprimer = i;
+            }
+        }
+        for(int i = nouveaux.size() - 1; i>=0; i--){
+            itineraire.add(indexASupprimer, nouveaux.get(i));
+        }
+        itineraire.remove(remplacer);
+
+    }
     /**
      * réalloue tous les attributs à des attributs vides
      * Supprime tous les liens qu'ont les intersections vers les livraisons existantes
@@ -422,6 +554,24 @@ public class DemandeLivraisons extends Observable {
         }
     }
 
+    /**
+     * Permet de retrouver la FenetreDeLivraison dans laquelle se situe une livraison
+     * @param livraison
+     * @return la FenetreDeLivraison correspondante si la
+     */
+    public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
+        List<FenetreLivraison> fenetres = this.fenetres;
+        for (FenetreLivraison f : fenetres) {
+           for(Livraison livraison1 : f.getLivraisons()){
+               if(livraison1.getIntersection().getAdresse() == livraison.getIntersection().getAdresse() ){
+                   return f;
+               }
+           }
+        }
+        return null;
+
+
+    }
     public List<Chemin> getItineraire() {
         return itineraire;
     }

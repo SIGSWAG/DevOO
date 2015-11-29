@@ -35,7 +35,7 @@ public class DemandeLivraisonsTest {
         final Livraison livraisonAvant = new Livraison(new Intersection(1, 1, 1, null));
         final Livraison livraisonApres = new Livraison(new Intersection(2, 2, 2, null));
 
-        demandeLivraisons.ajouterLivraison(nouvelleIntersection, livraisonAvant);
+        demandeLivraisons.ajouterLivraison(nouvelleIntersection, livraisonAvant,null);
 
         final Livraison nouvelleLivraison = nouvelleIntersection.getLivraison();
 

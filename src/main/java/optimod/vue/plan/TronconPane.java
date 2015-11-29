@@ -64,9 +64,6 @@ public class TronconPane extends Group {
 
         int compteur = troncon.getCompteurPassage() > 0 ? troncon.getCompteurPassage() : 1;
 
-        if(compteur>1){
-            System.out.println("waring");
-        }
         do {
             final Path fleche = new Path();
             QuadCurve quad = new QuadCurve();
