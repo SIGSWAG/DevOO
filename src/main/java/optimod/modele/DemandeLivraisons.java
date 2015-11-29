@@ -136,6 +136,12 @@ public class DemandeLivraisons extends Observable {
      * @param livr la livraison à partir de laquelle on recalcule les heures
      */
     private void mettreAJourLesHeuresAPartirDe(Livraison livr) {
+
+        if(livr.getPrecedente() == entrepot){
+            livr.setHeureLivraison(livr.getHeureDebutFenetre());
+            livr = livr.getSuivante();
+            heureDebutItineraire = entrepot.getCheminVersSuivante().getDuree();
+        }
         while(!livr.equals(entrepot)){
             livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET);
             livr = livr.getSuivante();
@@ -149,9 +155,9 @@ public class DemandeLivraisons extends Observable {
      * @param intersection l'intersection sur laquelle on ajoute la livraison
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
-    public void ajouterLivraison(Intersection intersection, Livraison livr) {
+    public void ajouterLivraison(Intersection intersection, Livraison livr, FenetreLivraison fenetreLivraison) {
         // TODO, insertion de nouvelleLivraison dans une fenetre de livraison ?
-        Livraison nouvelleLivraison = new Livraison(intersection, livr.getHeureDebutFenetre(), livr.getHeureFinFenetre(), -1);
+        Livraison nouvelleLivraison = new Livraison(intersection, fenetreLivraison.getHeureDebut(), fenetreLivraison.getHeureFin(), -1);
         intersection.setLivraison(nouvelleLivraison);
 
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
@@ -192,6 +198,7 @@ public class DemandeLivraisons extends Observable {
                     troncon.incrementeCompteurPassage();
                 }
 
+                fenetreLivraison.getLivraisons().add(nouvelleLivraison);
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
             }else{
                 System.out.println("chemin 2 null");
@@ -250,6 +257,15 @@ public class DemandeLivraisons extends Observable {
             }
             mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
             livr.getIntersection().setLivraison(null);
+
+            //on supprime la livraison de la fenetre
+            for (FenetreLivraison f : this.fenetres) {
+                if (f.getLivraisons().contains(livr)) {
+                    f.getLivraisons().remove(livr);
+                }
+            }
+
+
         }else{
 
             System.out.println("PCC est null !!!!");
@@ -340,7 +356,7 @@ public class DemandeLivraisons extends Observable {
             itineraire.remove(cheminl2l1);
             itineraire.remove(cheminl1l1suiv);
 
-            
+
             //Mise a jour des livraisons
             livr2PrecTemp.setCheminVersSuivante(cheminl2precl1);
             livr1.setPrecedente(livr2PrecTemp);
@@ -437,32 +453,28 @@ public class DemandeLivraisons extends Observable {
         }
 
         //Mise a jour fenetres de livraison
-        FenetreLivraison fenetre1 = null, fenetre2 = null;
-        for (FenetreLivraison f : this.fenetres) {
-            if (fenetre1 == null && f.getLivraisons().contains(livr1)) {
-                fenetre1 = f;
-            }
-            if (fenetre2 == null && f.getLivraisons().contains(livr2)) {
-                fenetre2 = f;
-            }
-            if (fenetre1 != null && fenetre2 != null) {
-                break;
-            }
-        }
+        FenetreLivraison fenetre1 = trouverFenetreDeLivraison(livr1);
+        FenetreLivraison fenetre2 = trouverFenetreDeLivraison(livr2);
+
         if (fenetre1 != fenetre2) {
             // Echange des fenetres
             fenetre1.getLivraisons().remove(livr1);
             fenetre1.getLivraisons().add(livr2);
+            livr1.setHeureDebutFenetre(fenetre2.getHeureDebut());
+            livr1.setHeureFinFenetre(fenetre2.getHeureFin());
             fenetre2.getLivraisons().remove(livr2);
             fenetre2.getLivraisons().add(livr1);
+            livr2.setHeureDebutFenetre(fenetre1.getHeureDebut());
+            livr2.setHeureFinFenetre(fenetre1.getHeureFin());
         }
 
 
         if (livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
-            mettreAJourLesHeuresAPartirDe(livr1);
-        } else {
             mettreAJourLesHeuresAPartirDe(livr2);
+        } else {
+            mettreAJourLesHeuresAPartirDe(livr1);
         }
+        //mettreAJourLesHeuresAPartirDe(entrepot.getSuivante());
         setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
@@ -520,6 +532,24 @@ public class DemandeLivraisons extends Observable {
         }
     }
 
+    /**
+     * Permet de retrouver la FenetreDeLivraison dans laquelle se situe une livraison
+     * @param livraison
+     * @return la FenetreDeLivraison correspondante si la
+     */
+    public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
+        List<FenetreLivraison> fenetres = this.fenetres;
+        for (FenetreLivraison f : fenetres) {
+           for(Livraison livraison1 : f.getLivraisons()){
+               if(livraison1.getIntersection().getAdresse() == livraison.getIntersection().getAdresse() ){
+                   return f;
+               }
+           }
+        }
+        return null;
+
+
+    }
     public List<Chemin> getItineraire() {
         return itineraire;
     }

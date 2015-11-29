@@ -44,7 +44,7 @@ public class OrdonnanceurTest {
         final Livraison livraisonAvant = new Livraison(new Intersection(1, 1, 1, null));
         final Livraison livraisonApres = new Livraison(new Intersection(2, 2, 2, null));
 
-        ordonnanceur.ajouterLivraison(nouvelleIntersection, livraisonAvant);
+        ordonnanceur.ajouterLivraison(nouvelleIntersection, livraisonAvant, ordonnanceur.trouverFenetreDeLivraison(livraisonAvant));
 
         final Livraison nouvelleLivraison = nouvelleIntersection.getLivraison();
 

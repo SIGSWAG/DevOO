@@ -65,8 +65,8 @@ public class Ordonnanceur {
      * @param intersection l'intersection sur laquelle on ajoute la livraison
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
-    public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        demandeLivraisons.ajouterLivraison(intersection, livr);
+    public void ajouterLivraison(Intersection intersection, Livraison livr, FenetreLivraison fenetreLivraison) {
+        demandeLivraisons.ajouterLivraison(intersection, livr, fenetreLivraison);
     }
 
     /**
@@ -104,5 +104,8 @@ public class Ordonnanceur {
 
     public void genererFeuilleDeRoute() throws IOException {
         demandeLivraisons.genererFeuilleDeRoute();
+    }
+    public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
+        return demandeLivraisons.trouverFenetreDeLivraison(livraison);
     }
 }

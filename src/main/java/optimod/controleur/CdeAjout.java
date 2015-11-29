@@ -2,6 +2,8 @@ package optimod.controleur;
 
 import optimod.modele.*;
 
+import java.util.List;
+
 /**
  * Created by (PRO) Loïc Touzard on 23/11/2015.
  */
@@ -23,7 +25,9 @@ public class CdeAjout implements Commande{
     }
 
     public void doCde() {
-        ordonnanceur.ajouterLivraison(intersection, livraison);
+
+        FenetreLivraison fenetre = ordonnanceur.trouverFenetreDeLivraison(livraison);
+        ordonnanceur.ajouterLivraison(intersection, livraison, fenetre);
     }
 
     public void undoCde() {
