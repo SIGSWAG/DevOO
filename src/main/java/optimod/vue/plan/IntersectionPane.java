@@ -131,11 +131,10 @@ public class IntersectionPane extends Group {
 
         if (estEntrepot) {
             label.setText("E");
-            return;
         }
 
         if (aUneLivraison()) {
-            if (intersection.getLivraison().estEnRetard()) {
+            if (intersection.getLivraison().estEnRetard() && !estEntrepot) { // On est jamais en retard à l'entrepôt...
                 label.setTextFill(Color.RED);
                 label.setText("!");
             }
