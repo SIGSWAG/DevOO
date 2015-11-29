@@ -1,11 +1,18 @@
 package optimod.es.xml;
 
+import optimod.modele.Intersection;
 import optimod.modele.Plan;
+import optimod.modele.Troncon;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by (PRO) Loïc Touzard on 25/11/2015.
@@ -16,8 +23,8 @@ public class DeserialiseurXMLTest {
 	* Test de chargement d'un plan avec deux noeuds et deux intersections
 	**/
 	@Test
-	public void testChargerPlanOk() {
-		Plan planAComparer = new Plan();
+    public void testChargerPlanOk() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        Plan planAComparer = new Plan();
 		List<Intersection> intersections = new ArrayList<>();
 		Intersection intersection1 = new Intersection(63, 100, 0);
 		Intersection intersection2 = new Intersection(88, 171, 1);
@@ -60,10 +67,10 @@ public class DeserialiseurXMLTest {
 
     	// Vérification des troncons
 
-    	List<Troncon> tronconsPlan = intersectionPlan1.getTroncons();
-    	Troncon tronconPlan1 = tronconsPlan.get(0);
-    	tronconsPlan = intersectionPlan2.getTroncons();
-    	Troncon tronconPlan2 = tronconsPlan.get(0);
+        List<Troncon> tronconsPlan = intersectionPlan1.getSortants();
+        Troncon tronconPlan1 = tronconsPlan.get(0);
+        tronconsPlan = intersectionPlan2.getSortants();
+        Troncon tronconPlan2 = tronconsPlan.get(0);
 
 		assertEquals(tronconPlan1.getVitesse(), troncon1.getVitesse());
 		assertEquals(tronconPlan1.getLongueur(), troncon1.getLongueur());
@@ -106,8 +113,8 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanPlanNull() {
-    	File xml = new File("src/test/resources/fail/plan-vide.xml");
+    public void testChargerPlanPlanNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = new File("src/test/resources/fail/plan-vide.xml");
         Plan plan = null;
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
@@ -115,8 +122,8 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanXmlNull() {
-    	File xml = null;
+    public void testChargerPlanXmlNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = null;
         Plan plan = new Plan();
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
@@ -124,8 +131,8 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanPlanEtXmlNull() {
-    	File xml = null;
+    public void testChargerPlanPlanEtXmlNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = null;
         Plan plan = null;
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
@@ -133,8 +140,8 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanXmlNonConforme() {
-    	File xml = new File("src/test/resources/fail/plan-xml-invalide.xml");
+    public void testChargerPlanXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = new File("src/test/resources/fail/plan-xml-invalide.xml");
         Plan plan = new Plan();
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
@@ -142,13 +149,15 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanXmlVide() {
-    	File xml = new File("src/test/resources/fail/plan-xml-vide.xml");
+    public void testChargerPlanXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = new File("src/test/resources/fail/plan-xml-vide.xml");
         Plan plan = new Plan();
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
         assertEquals(charge, false);
     }
+
+    // TODO JUnit peut vérifier si une exception est bien lancée, ça pourrait être intéressant, à voir
 
     @Test
     public void testChargerPlanReseauManquant() {
@@ -163,8 +172,8 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanSansTroncon() {
-    	File xml = new File("src/test/resources/fail/plan-troncon-manquant.xml");
+    public void testChargerPlanSansTroncon() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xml = new File("src/test/resources/fail/plan-troncon-manquant.xml");
         Plan plan = new Plan();
         boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 

@@ -1,8 +1,9 @@
 package optimod.modele;
 
-import org.junit.Test;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by jonathan on 18/11/15.
@@ -21,7 +22,7 @@ public class CheminTest {
 			Troncon tronconATester = tronconsATester.get(i);
 			Troncon tronconType = tronconsType.get(i);
 
-			TronconTest.comparerTroncons(tronconsATester, tronconsType);
+			TronconTest.comparerTroncons(tronconATester, tronconType);
 		}
 
 		LivraisonTest.comparerLivraisonsPrimitives(cheminATester.getDepart(), cheminType.getDepart());

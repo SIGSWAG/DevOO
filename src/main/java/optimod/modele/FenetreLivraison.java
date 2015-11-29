@@ -3,7 +3,8 @@ package optimod.modele;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FenetreLivraison {
 
@@ -41,12 +42,12 @@ public class FenetreLivraison {
     }
 
     /**
-     * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fdl
-     * @param fdl : fenêtre de livraison suivante
+     * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fenetreLivraison
+     * @param fenetreLivraison : fenêtre de livraison suivante
      */
-    public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
+    public List<Chemin> calculPCCSuivant(FenetreLivraison fenetreLivraison) {
         List<Chemin> chemins = new ArrayList<>();
-        List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
+        List<Livraison> livraisonsSuivantes = fenetreLivraison.getLivraisons();
         for(Livraison depart : livraisons) {
             for (Livraison arrivee : livraisonsSuivantes) {
                 logger.debug("dep {} arr {}", depart.getIntersection().getAdresse(), arrivee.getIntersection().getAdresse());
@@ -102,6 +103,5 @@ public class FenetreLivraison {
     }
 
     public int getHeureFinSeconde() { return (heureFin % 3600) % 60; }
-
 
 }

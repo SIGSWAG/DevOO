@@ -35,7 +35,6 @@ public class DemandeLivraisons extends Observable {
         this.plan = pl;
         this.itineraire = new ArrayList<>();
         this.fenetres = new ArrayList<>();
-
     }
 
     /**
@@ -117,8 +116,8 @@ public class DemandeLivraisons extends Observable {
             System.out.println("Depart " + chemin.getDepart().getIntersection().getAdresse() + " arrivee " + chemin.getArrivee().getIntersection().getAdresse());
 
         }
-        setChanged();
 
+        setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 

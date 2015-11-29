@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by aurelien on 18/11/15.
@@ -72,7 +73,7 @@ public class LivraisonTest {
     public static void comparerLivraisons(Livraison livraisonATester, Livraison livraisonType) {
         comparerLivraisonsPrimitives(livraisonATester, livraisonType);
 
-        IntersectionTest.comparerIntersections(livraisonATester.getIntersection(), livraisonType.getIntersection);
+        IntersectionTest.comparerIntersections(livraisonATester.getIntersection(), livraisonType.getIntersection());
 
         comparerLivraisonsPrimitives(livraisonATester.getPrecedente(), livraisonType.getPrecedente());        
     }
