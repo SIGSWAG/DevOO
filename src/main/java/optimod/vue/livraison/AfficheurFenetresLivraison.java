@@ -27,6 +27,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
     private FenetreControleur fenetreControleur;
 
     private DemandeLivraisons demandeLivraisons;
+    private boolean ecouteurActive = true;
 
     public AfficheurFenetresLivraison() {
         this.couleurFenetresLivraison = new HashMap<>();
@@ -88,19 +89,21 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 //            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
 //            fenetreControleur.selectionnerLivraisons(fenetreLivraison);
 //        } else {
-        List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
-        for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
-            try {
-                Object o = getSelectionModel().getSelectedItems().get(i).getValue();
-                if (o instanceof Livraison) {
-                    livraisonsSelectionnees.add((Livraison)o);
+        if(ecouteurActive) {
+            List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
+            for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
+                try {
+                    Object o = getSelectionModel().getSelectedItems().get(i).getValue();
+                    if (o instanceof Livraison) {
+                        livraisonsSelectionnees.add((Livraison) o);
+                    }
+                } catch (NullPointerException e) {
+                    //
                 }
-            }catch (NullPointerException e){
-                //
             }
+            fenetreControleur.deselectionnerTout();
+            livraisonsSelectionnees.forEach(l -> fenetreControleur.selectionner(l.getIntersection()));
         }
-        fenetreControleur.deselectionnerTout();
-        livraisonsSelectionnees.forEach(l -> fenetreControleur.selectionner(l.getIntersection()));
 //        }
     }
 
@@ -162,7 +165,10 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
         this.fenetreControleur = fenetreControleur;
     }
 
+    // deselection sans action !
     public void deselectionnerTout() {
+        ecouteurActive = false;
         getSelectionModel().clearSelection();
+        ecouteurActive = true;
     }
 }
