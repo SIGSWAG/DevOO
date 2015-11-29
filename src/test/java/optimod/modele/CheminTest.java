@@ -9,7 +9,8 @@ import static org.junit.Assert.*;
  */
 public class CheminTest {
 
-	public static void comparerChemins(Chemin cheminATester, Chemin cheminType) {
+	@Test
+	public  void comparerChemins(Chemin cheminATester, Chemin cheminType) {
 		comparerCheminsPrimitives(cheminATester, cheminType);
 
 		List<Troncon> tronconsATester = cheminATester.getTroncons();
@@ -28,7 +29,8 @@ public class CheminTest {
 		LivraisonTest.comparerLivraisonsPrimitives(cheminATester.getArrivee(), cheminType.getArrivee());
 	}
 
-	public static void comparerCheminsPrimitives(Chemin cheminATester, Chemin cheminType) {
+	@Test
+	public void comparerCheminsPrimitives(Chemin cheminATester, Chemin cheminType) {
 		assertNotNull(cheminATester);
 		assertNotNull(cheminType);
 

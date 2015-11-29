@@ -2,8 +2,9 @@ package optimod.modele;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by aurelien on 18/11/15.
@@ -22,27 +23,29 @@ public class IntersectionTest {
 
     }
 
+
     public static void comparerIntersections(Intersection intersectionATester, Intersection intersectionType) {
     	comparerIntersectionsPrimitives(intersectionATester, intersectionType);
 
-    	List<Troncon> tronconsATester = intersectionATester.getTroncons();
-    	List<Troncon> tronconsType = intersectionType.getTroncons();
+    	List<Troncon> tronconsATester = intersectionATester.getSortants();
+    	List<Troncon> tronconsType = intersectionType.getSortants();
 
     	assertNotNull(tronconsATester);
     	assertNotNull(tronconsType);
 
-    	assertEquals(tronconATester.size(), tronconType.size());
+    	assertEquals(tronconsATester.size(), tronconsType.size());
 
-    	for(int i = 0; i < tronconATester.size(); i++) {
+    	for(int i = 0; i < tronconsATester.size(); i++) {
     		Troncon tronconATester = tronconsATester.get(i);
     		Troncon tronconType = tronconsType.get(i);
-    		TronconTest.comparerTroncons(tronconATester, tronconsType);
+    		TronconTest.comparerTroncons(tronconATester, tronconType);
     	}
     }
 
-    private static void comparerIntersectionsPrimitives(Intersection intersectionATester, Intersection intersectionType) {
-    	assertNotNull(intersectionATester)
-    	assertNotNull(intersectionType)
+
+    public static void comparerIntersectionsPrimitives(Intersection intersectionATester, Intersection intersectionType) {
+    	assertNotNull(intersectionATester);
+    	assertNotNull(intersectionType);
 
     	assertEquals(intersectionATester.getX(), intersectionType.getX());
     	assertEquals(intersectionATester.getY(), intersectionType.getY());

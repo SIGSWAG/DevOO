@@ -1,8 +1,8 @@
 package optimod.modele;
 
-import org.junit.Test;
 
-import static org.junit.Assert.*
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Created by jonathan on 18/11/15.
@@ -10,6 +10,7 @@ import static org.junit.Assert.*
 public class TronconTest {
 
 
+	@Test
 	public static void comparerTroncons(Troncon tronconATester, Troncon tronconType) {
     	comparerTronconsPrimitives(tronconATester, tronconType);
 
@@ -19,9 +20,10 @@ public class TronconTest {
 		assertNotNull(intersectionArriveeATester);
 		assertNotNull(intersectionArriveeType);
 
-		comparerIntersectionsPrimitives(intersectionArriveeATester, intersectionArriveeType);
+		IntersectionTest.comparerIntersectionsPrimitives(intersectionArriveeATester, intersectionArriveeType);
     }
 
+	@Test
     public static void comparerTronconsPrimitives(Troncon tronconATester, Troncon tronconType) {
     	assertNotNull(tronconATester);
     	assertNotNull(tronconType);
