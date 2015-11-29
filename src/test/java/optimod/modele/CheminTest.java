@@ -2,6 +2,8 @@ package optimod.modele;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -22,7 +24,7 @@ public class CheminTest {
 			Troncon tronconATester = tronconsATester.get(i);
 			Troncon tronconType = tronconsType.get(i);
 
-			TronconTest.comparerTroncons(tronconsATester, tronconsType);
+			TronconTest.comparerTroncons(tronconATester, tronconType);
 		}
 
 		LivraisonTest.comparerLivraisonsPrimitives(cheminATester.getDepart(), cheminType.getDepart());

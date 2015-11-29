@@ -1,9 +1,16 @@
 package optimod.es.xml;
 
+import optimod.modele.Intersection;
 import optimod.modele.Plan;
+import optimod.modele.Troncon;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +47,18 @@ public class DeserialiseurXMLTest {
 
 		File xml = new File("src/test/resources/exemples/plan2x1.xml");
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, true);
 
@@ -60,9 +78,9 @@ public class DeserialiseurXMLTest {
 
     	// Vérification des troncons
 
-    	List<Troncon> tronconsPlan = intersectionPlan1.getTroncons();
+    	List<Troncon> tronconsPlan = intersectionPlan1.getSortants();
     	Troncon tronconPlan1 = tronconsPlan.get(0);
-    	tronconsPlan = intersectionPlan2.getTroncons();
+    	tronconsPlan = intersectionPlan2.getSortants();
     	Troncon tronconPlan2 = tronconsPlan.get(0);
 
 		assertEquals(tronconPlan1.getVitesse(), troncon1.getVitesse());
@@ -109,7 +127,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanPlanNull() {
     	File xml = new File("src/test/resources/fail/plan-vide.xml");
         Plan plan = null;
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
@@ -118,7 +147,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanXmlNull() {
     	File xml = null;
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
@@ -127,7 +167,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanPlanEtXmlNull() {
     	File xml = null;
         Plan plan = null;
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
@@ -136,7 +187,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanXmlNonConforme() {
     	File xml = new File("src/test/resources/fail/plan-xml-invalide.xml");
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
@@ -145,7 +207,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanXmlVide() {
     	File xml = new File("src/test/resources/fail/plan-xml-vide.xml");
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
@@ -166,7 +239,18 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanSansTroncon() {
     	File xml = new File("src/test/resources/fail/plan-troncon-manquant.xml");
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ExceptionXML exceptionXML) {
+            exceptionXML.printStackTrace();
+        }
 
         assertEquals(charge, false);
     }
