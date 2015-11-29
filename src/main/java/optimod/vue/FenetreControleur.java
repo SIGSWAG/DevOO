@@ -87,15 +87,17 @@ public class FenetreControleur implements Observer, Initializable {
     private boolean deselectionsActivees;
 
     private Map<FenetreLivraison, Color> couleursFenetres;
+    private final List<Color> couleursPossibles;
 
     private final Random random;
 
-    public FenetreControleur(Stage fenetre, Controleur controleur) {
+    public FenetreControleur(final Stage fenetre, final Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
         selectionsActivees = false;
         deselectionsActivees = false;
         random = new Random();
+        couleursPossibles = Arrays.asList(Color.RED, Color.BLUE, Color.BROWN, Color.DARKGREEN, Color.PURPLE, Color.BEIGE, Color.TURQUOISE);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -255,13 +257,21 @@ public class FenetreControleur implements Observer, Initializable {
      * @param fenetreLivraison La fenêtre de livraison dont on veut la couleur.
      * @return La couleur associée à la fenêtre de livraison.
      */
-    public Color associerCouleur(FenetreLivraison fenetreLivraison) {
+    public Color associerCouleur(final FenetreLivraison fenetreLivraison) {
         Color couleur = couleursFenetres.get(fenetreLivraison);
         if (couleur == null) {
-            couleur = couleurAleatoire();
+            couleur = obtenirProchaineCouleur();
             couleursFenetres.put(fenetreLivraison, couleur);
         }
         return couleur;
+    }
+
+    private Color obtenirProchaineCouleur() {
+        try {
+            return couleursPossibles.get(couleursFenetres.size());
+        } catch (final IndexOutOfBoundsException e) {
+            return couleurAleatoire();
+        }
     }
 
     private Color couleurAleatoire() {

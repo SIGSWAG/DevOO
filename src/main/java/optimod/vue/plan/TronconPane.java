@@ -62,9 +62,10 @@ public class TronconPane extends Group {
                 final Color couleur = couleurs.get(i);
                 ajouterFleche(pointSource, pointCible, tan, couleur, i);
             }
-        } else
+        } else {
             ajouterFleche(pointSource, pointCible, tan, COULEUR_DEFAUT, 0); // On trace la flèche par défaut
-        toBack(); // Si on dessine la flèche par défaut, il faut la mettre en dessous pour éviter les pollutions visuelles
+            toBack(); // Si on dessine la flèche par défaut, il faut la mettre en dessous pour éviter les pollutions visuelles
+        }
 
     }
 
