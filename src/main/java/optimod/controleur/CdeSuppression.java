@@ -25,13 +25,16 @@ public class CdeSuppression implements Commande{
 
     public void doCde() {
         for (int i = 0; i < livraisons.size(); i++) {
-            ordonnanceur.supprimerLivraison(livraisons.get(i));
+            Intersection inters = ordonnanceur.getPlan().trouverIntersection(livraisons.get(i).getIntersection().getAdresse());
+            ordonnanceur.supprimerLivraison(inters.getLivraison());
         }
     }
 
     public void undoCde() {
         for (int i = livraisons.size()-1; i >= 0; i--) {
-            ordonnanceur.ajouterLivraison(livraisons.get(i).getIntersection(), livraisons.get(i).getSuivante());
+            Intersection inters = ordonnanceur.getPlan().trouverIntersection(livraisons.get(i).getSuivante().getIntersection().getAdresse());
+
+            ordonnanceur.ajouterLivraison(livraisons.get(i).getIntersection(), inters.getLivraison());
         }
     }
 }

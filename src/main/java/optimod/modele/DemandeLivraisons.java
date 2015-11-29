@@ -152,11 +152,14 @@ public class DemandeLivraisons extends Observable {
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
         // TODO, insertion de nouvelleLivraison dans une fenetre de livraison ?
         Livraison nouvelleLivraison = new Livraison(intersection, livr.getHeureDebutFenetre(), livr.getHeureFinFenetre(), -1);
-        nouvelleLivraison.setPrecedente(livr.getPrecedente());
         intersection.setLivraison(nouvelleLivraison);
 
+        nouvelleLivraison.setPrecedente(livr.getPrecedente());
+
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
+        System.out.println("Chemin de "+nouvelleLivraison.getPrecedente().getIntersection().getAdresse()+" a "+nouvelleLivraison.getIntersection().getAdresse());
         if(nouveauPCC1 != null){
+
 
             Chemin ch = livr.getPrecedente().getCheminVersSuivante();
             int indexASupprimer = 0;
@@ -171,7 +174,7 @@ public class DemandeLivraisons extends Observable {
             }
 
             Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-
+            System.out.println("Chemin de "+nouvelleLivraison.getIntersection().getAdresse()+" a "+livr.getIntersection().getAdresse());
             if(nouveauPCC2 != null){
                 livr.setPrecedente(nouvelleLivraison);
                 nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
@@ -190,7 +193,11 @@ public class DemandeLivraisons extends Observable {
                 }
 
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
+            }else{
+                System.out.println("chemin 2 null");
             }
+        }else{
+            System.out.println("Chemin 1 null");
         }
 
         setChanged();
