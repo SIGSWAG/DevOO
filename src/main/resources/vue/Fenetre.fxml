@@ -4,7 +4,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import optimod.vue.livraison.AfficheurFenetresLivraison?>
-<BorderPane prefHeight="461.0" prefWidth="1304.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="700" prefWidth="1300" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <AnchorPane prefHeight="372.0" prefWidth="262.0">
             <children>
