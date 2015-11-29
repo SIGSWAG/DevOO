@@ -18,8 +18,10 @@ public class ListeDeCdes {
      * @param c
      */
     public void ajoute(Commande c){
-        for (int i=indiceCrt+1; i<liste.size(); i++)
+        int i = indiceCrt+1;
+        while(i<liste.size()){
             liste.remove(i);
+        }
         indiceCrt++;
         liste.add(indiceCrt, c);
         c.doCde();
