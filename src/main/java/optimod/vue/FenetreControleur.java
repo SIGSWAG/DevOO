@@ -194,6 +194,7 @@ public class FenetreControleur implements Observer, Initializable {
     @FXML
     protected void deselectionnerToutesIntersections(ActionEvent evenement) {
         deselectionnerTout();
+        afficheurFenetresLivraison.deselectionnerTout();
     }
 
     @FXML
@@ -288,12 +289,10 @@ public class FenetreControleur implements Observer, Initializable {
 
     public void activerAnnulerAjout(boolean estActif) {
         annulerAjoutLivraison.setVisible(estActif);
-        logger.debug("on peut annuler l'ajout pour revenir à l'état principal");
     }
 
     public void activerValiderAjout(boolean estActif) {
         validerAjoutLivraison.setVisible(estActif);
-        logger.debug("on peut valider l'ajout pour revenir à l'état principal");
     }
 
     public void autoriseBoutons(boolean estActif) {
@@ -367,7 +366,8 @@ public class FenetreControleur implements Observer, Initializable {
         if (selectionsActivees) {
             if(this.controleur.selectionnerIntersection(intersection)){
                 this.afficheurPlan.selectionner(intersection);
-                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
+//                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
+                return true;
             }else{
                 return false;
             }
@@ -375,13 +375,13 @@ public class FenetreControleur implements Observer, Initializable {
         return false;
     }
 
-    public boolean deselectionner(Intersection intersection) {
+    public void deselectionner(Intersection intersection) {
         if(deselectionsActivees) {
             if(this.controleur.deselectionnerIntersection(intersection)){
                 afficheurPlan.deselectionner(intersection);
+                afficheurFenetresLivraison.deselectionner(intersection.getLivraison());
             }
         }
-        return false;
     }
 
     public Color colorierLivraisons(FenetreLivraison fenetreLivraison) {

@@ -11,7 +11,9 @@ import optimod.modele.Livraison;
 import optimod.vue.FenetreControleur;
 import optimod.vue.plan.AfficheurPlan;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,44 +59,79 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 //            FenetreLivraison fenetreLivraison = (FenetreLivraison) element;
 //            fenetreControleur.selectionnerLivraisons(fenetreLivraison);
 //        } else {
-        fenetreControleur.deselectionnerTout();
+        List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
         for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
             try {
                 Object o = getSelectionModel().getSelectedItems().get(i).getValue();
                 if (o instanceof Livraison) {
-                    fenetreControleur.selectionner(((Livraison) o).getIntersection());
+                    livraisonsSelectionnees.add((Livraison)o);
                 }
             }catch (NullPointerException e){
-                return;
+                //
             }
         }
+        fenetreControleur.deselectionnerTout();
+        livraisonsSelectionnees.forEach(l -> fenetreControleur.selectionner(l.getIntersection()));
 //        }
     }
 
-    public void selectionner(Livraison l){
-        int item_index = 0;
+    private void expand(){
         for (int i = 0; i < getRoot().getChildren().size(); i++) {
-            Object o = getRoot().getChildren().get(i).getValue();
+            getRoot().getChildren().get(i).setExpanded(true);
+        }
+    }
+
+    public void selectionner(Livraison l){
+        expand();
+        int itemIndex = 0;
+        for (int i = 0; i < getRoot().getChildren().size(); i++) {
+            TreeItem<Object> objectTreeItem = getRoot().getChildren().get(i);
+            Object o = objectTreeItem.getValue();
             if(o instanceof FenetreLivraison){
-                for(int j = 0 ; j < getRoot().getChildren().get(i).getChildren().size() ; j++) {
-                    Object o1 = getRoot().getChildren().get(i).getChildren().get(j).getValue();
+                for(int j = 0 ; j < objectTreeItem.getChildren().size() ; j++) {
+                    Object o1 = objectTreeItem.getChildren().get(j).getValue();
                     if (o1 instanceof Livraison && l == o1) {
-                        if(!getSelectionModel().isSelected(item_index + j + 1))
-                            System.out.println("todo");
-//                            getSelectionModel().select(item_index + j + 1);
+                        if(!getSelectionModel().isSelected(itemIndex + j +1))
+                            getSelectionModel().select(itemIndex + j +1);
                         return;
                     }
                 }
             }
-            item_index += getRoot().getChildren().get(i).getChildren().size() + i;
+            itemIndex += objectTreeItem.getChildren().size() +1;
         }
     }
 
     public void deselectionner(Livraison l){
+        expand();
+        ArrayList<Integer> livrSelectionnees = new ArrayList<Integer>();
+        // on récupère toutes les livraisons selectionnées sauf celle que l'on va enlever
+        int itemIndex = 0;
+        for (int i = 0; i < getRoot().getChildren().size(); i++) {
+            TreeItem<Object> objectTreeItem = getRoot().getChildren().get(i);
+            Object o = objectTreeItem.getValue();
+            if(o instanceof FenetreLivraison){
+                for(int j = 0 ; j < objectTreeItem.getChildren().size() ; j++) {
+                    Object o1 = objectTreeItem.getChildren().get(j).getValue();
+                    if (o1 instanceof Livraison && l != o1) {
+                        if(getSelectionModel().isSelected(itemIndex + j +1))
+                            livrSelectionnees.add(itemIndex+j+1);
+                    }
+                }
+            }
+            itemIndex += objectTreeItem.getChildren().size() +1;
+        }
 
+        getSelectionModel().clearSelection();
+        for(int i : livrSelectionnees){
+            getSelectionModel().select(i);
+        }
     }
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
+    }
+
+    public void deselectionnerTout() {
+        getSelectionModel().clearSelection();
     }
 }

@@ -175,7 +175,6 @@ public final class AfficheurPlan {
 
     public void deselectionner(Intersection i){
         IntersectionPane ip = trouverIntersectionPane(i);
-        logger.debug("deselection");
         if(ip != null) {
             ip.deselectionner();
             intersectionsSelectionnees.remove(ip);
