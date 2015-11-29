@@ -51,10 +51,8 @@ public class ListeDeCdes {
      * Supprime definitivement toutes les commandes de liste
      */
     public void reset(){
-        while (indiceCrt >=0){
-            liste.remove(indiceCrt);
-            indiceCrt--;
-        }
+        indiceCrt = -1;
+        liste.clear();
     }
 
     /**
