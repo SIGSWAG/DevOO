@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
+
 /**
  * Created by aurelien on 18/11/15.
  */
@@ -42,10 +44,12 @@ public class GraphePCCTest {
         /**Intersection 3**/
         Troncon troncon4 = new Troncon(intersection2, 1, 4, "2.2");
         Troncon troncon5 = new Troncon(intersection4, 1, 3, "4.2");
+        Troncon tronconBis = new Troncon(intersection1, 1, 9, "1.1");
 
         List<Troncon> tr3 = new ArrayList<Troncon>();
         tr3.add(troncon4);
         tr3.add(troncon5);
+        tr3.add(tronconBis);
 
         intersection3.setSortants(tr3);
 
@@ -62,7 +66,7 @@ public class GraphePCCTest {
         /**Intersection 5**/
         Troncon troncon7 = new Troncon(intersection3, 1, 1, "3.2");
         Troncon troncon8 = new Troncon(intersection6, 1, 2, "6.1");
-        Troncon troncon9 = new Troncon(intersection1, 1, 4, "6.1");
+        Troncon troncon9 = new Troncon(intersection1, 1, 4, "6.2");
 
 
         List<Troncon> tr5 = new ArrayList<Troncon>();
@@ -86,8 +90,8 @@ public class GraphePCCTest {
         Livraison livraison2 = new Livraison(intersection2);
         intersection2.setLivraison(livraison2);
 
-        Livraison entrepot = new Livraison(intersection6);
-        intersection6.setLivraison(entrepot);
+        Livraison entrepot = new Livraison(intersection4);
+        intersection4.setLivraison(entrepot);
 
 
         List<Intersection> intersections = new ArrayList<Intersection>();
@@ -122,8 +126,22 @@ public class GraphePCCTest {
         chemins.addAll(fenetreLivraison2.calculPCCInterne());
         chemins.addAll(fenetreLivraison2.calculPCCSuivant(fenetreLivraison3));
 
+
         GraphePCC graphe = new GraphePCC(entrepot, chemins);
         List<Chemin> parcours = graphe.calculerItineraire();
+
+        List<Integer> solution = new ArrayList<>();
+        solution.add(4);
+        solution.add(5);
+        solution.add(3);
+        solution.add(1);
+        solution.add(2);
+
+        int i = 0;
+        for(Chemin c : parcours){
+            assertEquals((int)solution.get(i), c.getDepart().getIntersection().getAdresse());
+            i++;
+        }
 
     }
 
