@@ -3,12 +3,15 @@ package optimod.vue.plan;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
@@ -22,7 +25,7 @@ import java.lang.reflect.Field;
  * Représente une intersection à l'écran.
  * Created by Jonathan on 19/11/2015.
  */
-public class IntersectionPane extends Circle {
+public class IntersectionPane extends Group {
 
     private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
 
@@ -33,7 +36,7 @@ public class IntersectionPane extends Circle {
     private Color couleur;
     private static final Color COULEUR_DEFAUT = Color.BLACK;
     private static final Color COULEUR_ENTREPOT = Color.GREEN;
-    private static final Color COULEUR_LIVRAISON = Color.BLUE;
+
     private final FenetreControleur fenetreControleur;
 
     private final Intersection intersection;
@@ -41,11 +44,11 @@ public class IntersectionPane extends Circle {
     private boolean survol;
     private boolean selectionne;
 
+    private final Circle cercle;
+    private final Label label;
     private final Tooltip infobulle;
 
     public IntersectionPane(final Intersection intersection, final FenetreControleur fenetreControleur) {
-        super(intersection.getX(), intersection.getY(), TAILLE);
-
         this.intersection = intersection;
         this.fenetreControleur = fenetreControleur;
 
@@ -56,11 +59,20 @@ public class IntersectionPane extends Circle {
         setOnMouseExited(evenement -> quitteSurvol());
         setOnMouseClicked(evenement -> click());
 
+        cercle = new Circle(intersection.getX(), intersection.getY(), TAILLE);
+        label = new Label();
+        label.setLayoutX(intersection.getX() + TAILLE / 2);
+        label.setLayoutY(intersection.getY() + TAILLE / 2);
+        label.setFont(Font.font(null, FontWeight.BOLD, 12));
+
+        getChildren().addAll(cercle, label);
+
         reinitialiser();
     }
 
     public void reinitialiser() {
         couleur = COULEUR_DEFAUT;
+        label.setText("");
 
         estEntrepot = false;
         survol = false;
@@ -116,18 +128,23 @@ public class IntersectionPane extends Circle {
     }
 
     private void colorier() {
+        cercle.setFill(couleur);
+        label.setTextFill(couleur);
+
         if (estEntrepot) {
-            setFill(COULEUR_ENTREPOT);
-            final InnerShadow ombre = new InnerShadow(10, Color.WHITE);
-            setEffect(ombre);
+            label.setText("E");
             return;
         }
 
-        if (survol && aUneLivraison()) {
-            setCursor(Cursor.HAND);
+        if (aUneLivraison()) {
+            if (intersection.getLivraison().estEnRetard()) {
+                label.setTextFill(Color.RED);
+                label.setText("!");
+            }
+            if (survol) {
+                setCursor(Cursor.HAND);
+            }
         }
-
-        setFill(couleur);
 
         if (selectionne) {
             final DropShadow ombre = new DropShadow(10, couleur);
@@ -157,6 +174,8 @@ public class IntersectionPane extends Circle {
                 if (livraison.initeraireCalcule()) {
                     final String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
                     texte += "\nHeure de livraison prévue : " + heureLivraison;
+                    if (livraison.estEnRetard())
+                        texte += " (EN RETARD)";
                 }
             }
         }
@@ -165,8 +184,12 @@ public class IntersectionPane extends Circle {
     }
 
     private void genererTexteInfobulle() {
-        String texte = genererTexteIntersection(intersection);
+        final String texte = genererTexteIntersection(intersection);
         infobulle.setText(texte);
+    }
+
+    public String getText() {
+        return label.getText();
     }
 
     public Intersection getIntersection() {
@@ -185,7 +208,7 @@ public class IntersectionPane extends Circle {
         return couleur;
     }
 
-    public void setCouleur(Color couleur) {
+    public void setCouleur(final Color couleur) {
         this.couleur = couleur;
     }
 
@@ -197,7 +220,7 @@ public class IntersectionPane extends Circle {
      * @param tooltip L'infobulle à modifier.
      * @param duree   La durée d'apparition
      */
-    private static void dureeApparition(Tooltip tooltip, int duree) {
+    private static void dureeApparition(final Tooltip tooltip, final int duree) {
         try {
             Field comportementChamp = tooltip.getClass().getDeclaredField("BEHAVIOR");
             comportementChamp.setAccessible(true);

@@ -78,6 +78,7 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
         calculCouleursTroncons(itineraire);
         getTronconsPane().forEach(TronconPane::mettreAJour);
+        getIntersectionsPane().stream().filter(i -> i.getText() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
     }
 
     private void calculCouleursTroncons(List<Chemin> itineraire) {
