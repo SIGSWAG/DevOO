@@ -164,7 +164,6 @@ public class DemandeLivraisons extends Observable {
         System.out.println("Chemin de "+nouvelleLivraison.getPrecedente().getIntersection().getAdresse()+" a "+nouvelleLivraison.getIntersection().getAdresse());
         if(nouveauPCC1 != null){
 
-
             Chemin ch = livr.getPrecedente().getCheminVersSuivante();
             int indexASupprimer = 0;
             for(int i=0; i<itineraire.size(); i++){
@@ -238,6 +237,17 @@ public class DemandeLivraisons extends Observable {
             entrepot.setPrecedente(entrepot);
             entrepot.setCheminVersSuivante(cheminVide);
             itineraire.clear();
+
+            for (FenetreLivraison f : this.fenetres) {
+                if (f.getLivraisons().contains(livr)) {
+                    f.getLivraisons().remove(livr);
+                }
+            }
+
+            setChanged();
+            notifyObservers(Evenement.SUPPRESSION_LIVRAISON);
+
+            return;
 
         }
 
