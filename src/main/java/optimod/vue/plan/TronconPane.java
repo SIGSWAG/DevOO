@@ -20,8 +20,7 @@ public class TronconPane extends Group {
 
     public static final float TAILLE_FLECHE = 5;
 
-    public static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
-    public static final Color COULEUR_EMPRUNTEE = Color.RED;
+    private static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
 
     private IntersectionPane source;
     private Troncon troncon;
@@ -88,7 +87,7 @@ public class TronconPane extends Group {
 
         Color couleur = COULEUR_DEFAUT;
         if (troncon.estEmprunte()) {
-            couleur = COULEUR_EMPRUNTEE;
+            couleur = Color.ALICEBLUE;
             toFront(); // On met la flèche dessus pour être sûr qu'elle soit visible
         }
         for (Node noeud : getChildren()) {

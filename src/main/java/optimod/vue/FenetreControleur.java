@@ -23,9 +23,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Contrôleur interne utilisé par la vue (JavaFX) afin d'appeler le Contrôleur général avec les bons paramètres
@@ -88,11 +86,16 @@ public class FenetreControleur implements Observer, Initializable {
 
     private boolean deselectionsActivees;
 
+    private Map<FenetreLivraison, Color> couleursFenetres;
+
+    private Random random;
+
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
         selectionsActivees = false;
         deselectionsActivees = false;
+        random = new Random();
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,8 +107,7 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     /**
-     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter les changements de visiblité
-     * et ainsi mettre à jour la vue en conséquence
+     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter les changements de visiblité et ainsi mettre à jour la vue en conséquence
      */
     private void associerVisibiliteBoutons() {
         Class fenetreControleurClass = getClass();
@@ -227,19 +229,44 @@ public class FenetreControleur implements Observer, Initializable {
                 afficheurPlan.chargerPlan(plan);
             } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEE)) {
                 DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+
+                couleursFenetres = new HashMap<>();
+
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
             } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
+                //DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire();
             } else {
                 // TODO
-                logger.warn("PROBLEM !");
+                logger.warn("Événement invalide.");
             }
 
+        } else {
+            // TODO
+            logger.warn("Événement nul.");
         }
     }
 
+    /**
+     * Associe une couleur à une fenêtre de livraison. Si celle-ci n'a aucune couleur déjà associée, une nouvelle couleur lui est alors affecté.
+     *
+     * @param fenetreLivraison La fenêtre de livraison dont on veut la couleur.
+     * @return La couleur associée à la fenêtre de livraison.
+     */
+    public Color associerCouleur(FenetreLivraison fenetreLivraison) {
+        Color couleur = couleursFenetres.get(fenetreLivraison);
+        if (couleur == null) {
+            couleur = couleurAleatoire();
+            couleursFenetres.put(fenetreLivraison, couleur);
+        }
+        return couleur;
+    }
+
+    private Color couleurAleatoire() {
+        return new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
+    }
 
     public void activerChargerPlan(boolean estActif) {
         chargerPlan.setDisable(!estActif);
@@ -366,11 +393,11 @@ public class FenetreControleur implements Observer, Initializable {
 
     public boolean selectionner(Intersection intersection) {
         if (selectionsActivees) {
-            if(this.controleur.selectionnerIntersection(intersection)){
+            if (this.controleur.selectionnerIntersection(intersection)) {
                 this.afficheurPlan.selectionner(intersection);
 //                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
@@ -378,16 +405,12 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void deselectionner(Intersection intersection) {
-        if(deselectionsActivees) {
-            if(this.controleur.deselectionnerIntersection(intersection)){
+        if (deselectionsActivees) {
+            if (this.controleur.deselectionnerIntersection(intersection)) {
                 afficheurPlan.deselectionner(intersection);
                 afficheurFenetresLivraison.deselectionner(intersection.getLivraison());
             }
         }
-    }
-
-    public Color colorierLivraisons(FenetreLivraison fenetreLivraison) {
-        return afficheurPlan.colorierLivraisons(fenetreLivraison);
     }
 
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
@@ -396,7 +419,7 @@ public class FenetreControleur implements Observer, Initializable {
 
 
     public void deselectionnerTout() {
-        if(deselectionsActivees) {
+        if (deselectionsActivees) {
             controleur.deselectionnerToutesIntersections();
             afficheurPlan.deselectionnerToutesIntersections();
         }

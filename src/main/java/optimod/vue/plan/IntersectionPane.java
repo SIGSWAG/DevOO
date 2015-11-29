@@ -29,9 +29,10 @@ public class IntersectionPane extends Circle {
 
     private static final String FORMAT_HEURE = "%02d:%02d:%02d";
 
-    public static final Color COULEUR_DEFAUT = Color.BLACK;
-    public static final Color COULEUR_ENTREPOT = Color.GREEN;
-    public static final Color COULEUR_LIVRAISON = Color.BLUE;
+    private Color couleur;
+    private static final Color COULEUR_DEFAUT = Color.BLACK;
+    private static final Color COULEUR_ENTREPOT = Color.GREEN;
+    private static final Color COULEUR_LIVRAISON = Color.BLUE;
     private FenetreControleur fenetreControleur;
 
     private Intersection intersection;
@@ -46,6 +47,8 @@ public class IntersectionPane extends Circle {
 
         this.intersection = intersection;
         this.fenetreControleur = fenetreControleur;
+
+        couleur = COULEUR_DEFAUT;
 
         estEntrepot = false;
         survol = false;
@@ -109,13 +112,14 @@ public class IntersectionPane extends Circle {
     private void colorier() {
         if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
-        } else if (survol && aUneLivraison()) {
-            setCursor(Cursor.HAND);
-        } else if (aUneLivraison()) {
-            // On laisse la couleur
-        } else {
-            setFill(COULEUR_DEFAUT);
+            return;
         }
+
+        if (survol && aUneLivraison()) {
+            setCursor(Cursor.HAND);
+        }
+
+        setFill(couleur);
 
         if (selectionne) {
             DropShadow dropShadow = new DropShadow(10, Color.BLUE);
@@ -165,6 +169,14 @@ public class IntersectionPane extends Circle {
 
     public int getY() {
         return intersection.getY();
+    }
+
+    public Color getCouleur() {
+        return couleur;
+    }
+
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
     }
 
     /**
