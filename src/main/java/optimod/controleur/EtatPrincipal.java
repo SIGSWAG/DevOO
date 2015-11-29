@@ -32,7 +32,7 @@ public class EtatPrincipal extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if(ordonnanceur.chargerDemandeLivraison())
-                Controleur.setEtatCourant(Controleur.etatPrincipal);
+                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
         } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
