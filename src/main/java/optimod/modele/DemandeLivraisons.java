@@ -151,6 +151,7 @@ public class DemandeLivraisons extends Observable {
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
         Livraison nouvelleLivraison = new Livraison(intersection);
+        intersection.setLivraison(nouvelleLivraison);
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
 
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
