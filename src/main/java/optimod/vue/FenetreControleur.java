@@ -379,7 +379,7 @@ public class FenetreControleur implements Observer, Initializable {
         if (selectionsActivees) {
             if(this.controleur.selectionnerIntersection(intersection)){
                 this.afficheurPlan.selectionner(intersection);
-//                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
+                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
                 return true;
             }else{
                 return false;
