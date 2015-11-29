@@ -40,6 +40,10 @@ public class Livraison {
      */
     public Chemin calculPCC(Livraison destination) {
 
+        if(destination == this){
+            return null;
+        }
+
         Hashtable<Integer, Integer> distances = new Hashtable<Integer, Integer>(); //intersection, distance
         Hashtable<Integer, Intersection> parents = new Hashtable<Integer, Intersection>(); //parents
         PriorityQueue<DijkstraIntersection> tasBinaire = new PriorityQueue<DijkstraIntersection>();//distance, intersection
