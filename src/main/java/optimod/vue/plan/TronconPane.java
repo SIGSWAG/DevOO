@@ -26,11 +26,9 @@ public class TronconPane extends Group {
     private Troncon troncon;
 
     public TronconPane(IntersectionPane source, Troncon troncon) {
-        super();
         this.source = source;
         this.troncon = troncon;
 
-        dessinerFleche();
         mettreAJour();
     }
 
@@ -67,9 +65,9 @@ public class TronconPane extends Group {
             quad.setEndX(pointCible.getX());
             quad.setEndY(pointCible.getY());
             quad.setStrokeWidth(1);
-            quad.setFill(Color.TRANSPARENT);
+            quad.setFill(null);
 
-            double courbe = 5 * Math.pow(compteur, 2);
+            double courbe = 5 * compteur * compteur;
             Point2D pass = calculePointPassage(pointCible, pointSource, courbe);
 
             quad.setControlX(pass.getX());
@@ -87,7 +85,7 @@ public class TronconPane extends Group {
 
         Color couleur = COULEUR_DEFAUT;
         if (troncon.estEmprunte()) {
-            couleur = Color.ALICEBLUE;
+            couleur = Color.RED;
             toFront(); // On met la flèche dessus pour être sûr qu'elle soit visible
         }
         for (Node noeud : getChildren()) {

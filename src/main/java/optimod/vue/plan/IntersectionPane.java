@@ -48,18 +48,22 @@ public class IntersectionPane extends Circle {
         this.intersection = intersection;
         this.fenetreControleur = fenetreControleur;
 
-        couleur = COULEUR_DEFAUT;
-
-        estEntrepot = false;
-        survol = false;
-        selectionne = false;
-
         infobulle = new Tooltip();
         dureeApparition(infobulle, 1);
 
         setOnMouseEntered(evenement -> survol());
         setOnMouseExited(evenement -> quitteSurvol());
         setOnMouseClicked(evenement -> click());
+
+        reinitialiser();
+    }
+
+    public void reinitialiser() {
+        couleur = COULEUR_DEFAUT;
+
+        estEntrepot = false;
+        survol = false;
+        selectionne = false;
     }
 
     private void click() {

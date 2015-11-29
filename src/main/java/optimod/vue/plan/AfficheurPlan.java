@@ -56,6 +56,7 @@ public final class AfficheurPlan {
      */
     public void chargerDemandeLivraisons(DemandeLivraisons demandeLivraisons) throws NullPointerException {
         reinitialiserLivraisons();
+
         Livraison entrepot = demandeLivraisons.getEntrepot();
         IntersectionPane intersectionPane = trouverIntersectionPane(entrepot.getIntersection());
         intersectionPane.setEstEntrepot(true);
@@ -97,7 +98,7 @@ public final class AfficheurPlan {
      */
     private void reinitialiserLivraisons() {
         for (IntersectionPane intersectionPane : getIntersectionsPane()) {
-            intersectionPane.setEstEntrepot(false);
+            intersectionPane.reinitialiser();
         }
     }
 
