@@ -61,5 +61,42 @@ public class IntersectionTest {
         }
     }
 
+    public static boolean comparerIntersectionsBool(Intersection intersectionATester, Intersection intersectionType) {
+        if (!comparerIntersectionsPrimitivesBool(intersectionATester, intersectionType)){
+            return false;
+        }
+
+
+        List<Troncon> tronconsATester = intersectionATester.getSortants();
+        List<Troncon> tronconsType = intersectionType.getSortants();
+
+
+        if (!(tronconsATester!=null && tronconsType!=null && tronconsATester.size()==tronconsType.size())){
+            return false;
+        }
+
+        boolean mêmeTroncons;
+
+        for(int i = 0; i < tronconsATester.size(); i++) {
+            Troncon tronconATester = tronconsATester.get(i);
+            Troncon tronconType = tronconsType.get(i);
+            if(!TronconTest.comparerTronconsBool(tronconATester, tronconType)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public static boolean comparerIntersectionsPrimitivesBool(Intersection intersectionATester, Intersection intersectionType) {
+
+        List<Troncon> tronconsATester = intersectionATester.getSortants();
+        List<Troncon> tronconsType = intersectionType.getSortants();
+
+        return(tronconsATester.size() == tronconsType.size() && intersectionType!=null && intersectionATester!=null);
+
+
+    }
+
 
 }

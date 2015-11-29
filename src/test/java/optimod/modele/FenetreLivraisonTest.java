@@ -1,9 +1,13 @@
 package optimod.modele;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by aurelien on 18/11/15.
@@ -11,7 +15,7 @@ import java.util.List;
 public class FenetreLivraisonTest {
 
 
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
 
@@ -109,6 +113,34 @@ public class FenetreLivraisonTest {
         FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
 
         List<Chemin> chemins = fenetreLivraison1.calculPCCInterne();
+
+        List<Chemin> chemins2 = new ArrayList<>();
+        for(Livraison depart : f1) {
+            for (Livraison arrivee : f1) {
+                if (!depart.equals(arrivee)) {
+                    Chemin chemin = depart.calculPCC(arrivee);
+                    if(chemin != null) {
+                        chemins2.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
+                    }
+                }
+            }
+        }
+
+        boolean sameLists = true;
+        for (Chemin c : chemins){
+            boolean exist = false;
+            for(Chemin c2 : chemins2){
+                if(CheminTest.comparerCheminsBool(c,c2)){
+                    exist = true;
+                    break;
+                }
+            }
+            if(!exist){
+                sameLists = false;
+                break;
+            }
+        }
+        assertTrue(sameLists);
 
     }
 
