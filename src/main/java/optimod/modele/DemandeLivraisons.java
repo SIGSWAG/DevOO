@@ -238,6 +238,7 @@ public class DemandeLivraisons extends Observable {
             cheminVide.setTroncons(new ArrayList<>());
             entrepot.setPrecedente(entrepot);
             entrepot.setCheminVersSuivante(cheminVide);
+            itineraire.clear();
 
         }
 
@@ -249,6 +250,7 @@ public class DemandeLivraisons extends Observable {
             System.out.println("suppression de "+livr.getIntersection().getAdresse()+" pcc de "+
             nouveauPCC.getDepart().getIntersection().getAdresse()+" vers "+nouveauPCC.getArrivee().getIntersection().getAdresse()+" longueur chemin "+nouveauPCC.getTroncons().size());
             Chemin cheminASupprimer = livr.getPrecedente().getCheminVersSuivante();
+            Chemin cheminASupprimer2 = livr.getCheminVersSuivante();
 
             int indexASupprimer = 0; //index de suppression
             for(int i=0; i<itineraire.size(); i++){
@@ -259,6 +261,7 @@ public class DemandeLivraisons extends Observable {
 
             itineraire.add(indexASupprimer, nouveauPCC); //mise a jour itineraire
             itineraire.remove(cheminASupprimer);
+            itineraire.remove(cheminASupprimer2);
 
             for(Troncon tr : livr.getPrecedente().getCheminVersSuivante().getTroncons()){
                 tr.decrementeCompteurPassage();
