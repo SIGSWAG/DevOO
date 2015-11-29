@@ -19,11 +19,11 @@ public final class AfficheurPlan {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private FenetreControleur fenetreControleur;
+    private final FenetreControleur fenetreControleur;
 
-    private Group group;
+    private final Group group;
 
-    private List<IntersectionPane> intersectionsSelectionnees;
+    private final List<IntersectionPane> intersectionsSelectionnees;
 
     public AfficheurPlan(Group group, FenetreControleur fenetreControleur) {
         this.group = group;
@@ -74,8 +74,33 @@ public final class AfficheurPlan {
     /**
      * Affiche un itinéraire sur le plan.
      */
-    public void chargerItineraire() {
-        mettreAJour();
+    public void chargerItineraire(final List<Chemin> itineraire) {
+        getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
+        calculCouleursTroncons(itineraire);
+        getTronconsPane().forEach(TronconPane::mettreAJour);
+    }
+
+    private void calculCouleursTroncons(List<Chemin> itineraire) {
+        itineraire.forEach(chemin -> {
+            final List<Troncon> troncons = chemin.getTroncons();
+            final Color couleurSource = trouverIntersectionPane(chemin.getDepart().getIntersection()).getCouleur();
+            final Color couleurCible = trouverIntersectionPane(chemin.getArrivee().getIntersection()).getCouleur();
+            final int ratio = troncons.size();
+
+            for (int i = 1; i <= troncons.size(); i++) {
+                final Troncon troncon = troncons.get(i - 1);
+                final TronconPane tronconPane = trouverTronconPane(troncon);
+                final Color couleur = calculerCouleurIntermediaire(couleurSource, couleurCible, ratio, i);
+                tronconPane.ajouterPassage(couleur);
+            }
+        });
+    }
+
+    private Color calculerCouleurIntermediaire(final Color couleurSource, final Color couleurCible, final int ratio, final int i) {
+        final double r = couleurSource.getRed() + ((couleurCible.getRed() - couleurSource.getRed()) / ratio) * i;
+        final double g = couleurSource.getGreen() + ((couleurCible.getGreen() - couleurSource.getGreen()) / ratio) * i;
+        final double b = couleurSource.getBlue() + ((couleurCible.getBlue() - couleurSource.getBlue()) / ratio) * i;
+        return new Color(r, g, b, 1);
     }
 
     /**
@@ -110,6 +135,14 @@ public final class AfficheurPlan {
         return null;
     }
 
+    private TronconPane trouverTronconPane(Troncon troncon) {
+        for (TronconPane tronconPane : getTronconsPane()) {
+            if (tronconPane.getTroncon().equals(troncon))
+                return tronconPane;
+        }
+        return null;
+    }
+
     public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
@@ -122,9 +155,9 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
-    public void deselectionner(Intersection i){
+    public void deselectionner(Intersection i) {
         IntersectionPane ip = trouverIntersectionPane(i);
-        if(ip != null) {
+        if (ip != null) {
             ip.deselectionner();
             intersectionsSelectionnees.remove(ip);
         }
@@ -132,7 +165,7 @@ public final class AfficheurPlan {
 
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
         deselectionnerIntersections();
-        for(Livraison livraison : fenetreLivraison.getLivraisons()) {
+        for (Livraison livraison : fenetreLivraison.getLivraisons()) {
             selectionner(livraison.getIntersection());
         }
     }

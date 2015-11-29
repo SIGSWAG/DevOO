@@ -34,9 +34,9 @@ public class FenetreControleur implements Observer, Initializable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private Stage fenetre;
+    private final Stage fenetre;
 
-    private Controleur controleur;
+    private final Controleur controleur;
 
     @FXML
     private Group planGroup;
@@ -88,7 +88,7 @@ public class FenetreControleur implements Observer, Initializable {
 
     private Map<FenetreLivraison, Color> couleursFenetres;
 
-    private Random random;
+    private final Random random;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -219,25 +219,25 @@ public class FenetreControleur implements Observer, Initializable {
 
     @Override
     public void update(Observable o, Object arg) {
-        Evenement evenement = (Evenement) arg;
+        final Evenement evenement = (Evenement) arg;
         if (evenement != null) {
 
             // Si la mise à jour vient du plan, on redessine le plan
             if (evenement.equals(Evenement.PLAN_CHARGE)) {
-                Plan plan = (Plan) o;
+                final Plan plan = (Plan) o;
                 afficheurFenetresLivraison.reinitialiser();
                 afficheurPlan.chargerPlan(plan);
             } else if (evenement.equals(Evenement.DEMANDE_LIVRAISONS_CHARGEE)) {
-                DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
 
                 couleursFenetres = new HashMap<>();
 
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
             } else if (evenement.equals(Evenement.ITINERAIRE_CALCULE)) {
-                //DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
+                final DemandeLivraisons demandeLivraisons = (DemandeLivraisons) o;
                 afficheurFenetresLivraison.mettreAJour();
-                afficheurPlan.chargerItineraire();
+                afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
             } else {
                 // TODO
                 logger.warn("Événement invalide.");

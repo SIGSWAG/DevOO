@@ -33,16 +33,16 @@ public class IntersectionPane extends Circle {
     private static final Color COULEUR_DEFAUT = Color.BLACK;
     private static final Color COULEUR_ENTREPOT = Color.GREEN;
     private static final Color COULEUR_LIVRAISON = Color.BLUE;
-    private FenetreControleur fenetreControleur;
+    private final FenetreControleur fenetreControleur;
 
-    private Intersection intersection;
+    private final Intersection intersection;
     private boolean estEntrepot;
     private boolean survol;
     private boolean selectionne;
 
-    private Tooltip infobulle;
+    private final Tooltip infobulle;
 
-    public IntersectionPane(Intersection intersection, FenetreControleur fenetreControleur) {
+    public IntersectionPane(final Intersection intersection, final FenetreControleur fenetreControleur) {
         super(intersection.getX(), intersection.getY(), TAILLE);
 
         this.intersection = intersection;
@@ -86,8 +86,9 @@ public class IntersectionPane extends Circle {
         colorier();
     }
 
-    public void setEstEntrepot(boolean estEntrepot) {
+    public void setEstEntrepot(final boolean estEntrepot) {
         this.estEntrepot = estEntrepot;
+        couleur = COULEUR_ENTREPOT;
         mettreAJour();
     }
 
@@ -116,6 +117,9 @@ public class IntersectionPane extends Circle {
     private void colorier() {
         if (estEntrepot) {
             setFill(COULEUR_ENTREPOT);
+            final DropShadow ombre = new DropShadow(20, COULEUR_ENTREPOT);
+            ombre.setBlurType(BlurType.GAUSSIAN);
+            setEffect(ombre);
             return;
         }
 
@@ -126,32 +130,34 @@ public class IntersectionPane extends Circle {
         setFill(couleur);
 
         if (selectionne) {
-            DropShadow dropShadow = new DropShadow(10, Color.BLUE);
-            dropShadow.setBlurType(BlurType.GAUSSIAN);
-            setEffect(dropShadow);
+            final DropShadow ombre = new DropShadow(10, couleur);
+            ombre.setBlurType(BlurType.GAUSSIAN);
+            setEffect(ombre);
         } else {
             setEffect(null);
         }
 
     }
 
-    public String genererTexteIntersection(Intersection intersection) {
+    public String genererTexteIntersection(final Intersection intersection) {
         String texte = String.format("(%s;%s)",
                 intersection.getX(),
                 intersection.getY());
         texte += "\nAdresse : " + intersection.getAdresse();
         if (estEntrepot)
             texte += "\nENTREPÔT";
-        else if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
-            Livraison livraison = intersection.getLivraison();
-            String heureDebut = String.format(FORMAT_HEURE, livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
-            String heureFin = String.format(FORMAT_HEURE, livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
-            texte += String.format("\nFenêtre de livraison : %s - %s",
-                    heureDebut,
-                    heureFin);
-            if (livraison.initeraireCalcule()) {
-                String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
-                texte += "\nHeure de livraison prévue : " + heureLivraison;
+        else {
+            if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
+                final Livraison livraison = intersection.getLivraison();
+                final String heureDebut = String.format(FORMAT_HEURE, livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
+                final String heureFin = String.format(FORMAT_HEURE, livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
+                texte += String.format("\nFenêtre de livraison : %s - %s",
+                        heureDebut,
+                        heureFin);
+                if (livraison.initeraireCalcule()) {
+                    final String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
+                    texte += "\nHeure de livraison prévue : " + heureLivraison;
+                }
             }
         }
 
