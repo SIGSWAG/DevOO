@@ -97,21 +97,17 @@ public class Controleur {
     }
 
     public boolean selectionnerIntersection(Intersection intersection) {
-        boolean res = false;
-        if (intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
-            res = etatCourant.selectionnerIntersection(
+        boolean res = etatCourant.selectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
-            );
+        );
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }
 
     public boolean deselectionnerIntersection(Intersection intersection) {
-        boolean res = false;
-        if (intersection.getLivraison() != ordonnanceur.getDemandeLivraisons().getEntrepot())
-            res = etatCourant.deselectionnerIntersection(
+        boolean res = etatCourant.deselectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
-            );
+        );
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }

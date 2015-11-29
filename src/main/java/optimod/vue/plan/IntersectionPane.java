@@ -60,8 +60,6 @@ public class IntersectionPane extends Circle {
     }
 
     private void click() {
-        if (estEntrepot)
-            return;
         if (selectionne) {
             fenetreControleur.deselectionner(intersection);
         } else {

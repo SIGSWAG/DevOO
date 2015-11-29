@@ -42,8 +42,8 @@ public class EtatPrincipal extends EtatDefaut {
     public void ajouterLivraison(FenetreControleur fenetreControleur){
         fenetreControleur.autoriseBoutons(false);
         fenetreControleur.afficheMessage("Vous passez en mode ajout d'une livraison.\n\n" +
-                "Pour ajouter une livraison vous devez sélectionner l'intersection concernée (il ne doit pas y avoir de livraison sur l'intersection sélectionnée.\n" +
-                "Ensuite vous devez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
+                "Pour ajouter une livraison vous devez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
+                "Ensuite vous devez sélectionner une intersection (il ne doit pas y avoir de livraison sur l'intersection sélectionnée.\n" +
                 "Enfin vous devrez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
                 "NB: A tout moment vous pouvez sortir du mode d'ajout grâce au bouton associé dans la barre de menu.",
                 "Ajout d'une livraison : Mode d'emploi",
@@ -78,12 +78,11 @@ public class EtatPrincipal extends EtatDefaut {
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
             return true;
         }else{
-            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
     }

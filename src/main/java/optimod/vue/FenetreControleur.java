@@ -87,6 +87,8 @@ public class FenetreControleur implements Observer, Initializable {
     private boolean selectionsActivees;
 
     private boolean deselectionsActivees;
+    private boolean entrepotSelectionnable = false;
+    private boolean entrepotDeselectionnable = false;
 
     public FenetreControleur(Stage fenetre, Controleur controleur) {
         this.fenetre = fenetre;
@@ -210,6 +212,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     @FXML
     protected void annulerAjoutLivraison(ActionEvent evenement) {
+        afficheurPlan.deselectionnerToutesIntersections();
+        afficheurFenetresLivraison.deselectionnerTout();
         controleur.annulerAjoutLivraison();
     }
 
@@ -308,6 +312,14 @@ public class FenetreControleur implements Observer, Initializable {
         validerAjoutLivraison.setVisible(estActif);
     }
 
+    public void activerDeselectionsEntrepot(boolean b) {
+        entrepotDeselectionnable = b;
+    }
+
+    public void activerSelectionsEntrepot(boolean b) {
+        entrepotSelectionnable = b;
+    }
+
     public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
@@ -323,6 +335,8 @@ public class FenetreControleur implements Observer, Initializable {
         activerDeselections(estActif);
         activerAnnulerAjout(estActif);
         activerValiderAjout(estActif);
+        activerSelectionsEntrepot(estActif);
+        activerDeselectionsEntrepot(estActif);
     }
 
     public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
@@ -405,12 +419,10 @@ public class FenetreControleur implements Observer, Initializable {
         afficheurPlan.selectionnerLivraisons(fenetreLivraison);
     }
 
-
     public void deselectionnerTout() {
         if(deselectionsActivees) {
             controleur.deselectionnerToutesIntersections();
             afficheurPlan.deselectionnerToutesIntersections();
         }
     }
-
 }

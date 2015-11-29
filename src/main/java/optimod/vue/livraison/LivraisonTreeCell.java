@@ -13,8 +13,6 @@ class LivraisonTreeCell extends TreeCell<Object> {
 
     private static final String FORMAT_HEURE = "%02d:%02d:%02d";
 
-    private IntersectionPane intersectionPane;
-
     private AfficheurFenetresLivraison afficheurFenetresLivraison;
 
     public LivraisonTreeCell(AfficheurFenetresLivraison afficheurFenetresLivraison) {
