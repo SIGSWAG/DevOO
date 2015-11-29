@@ -150,9 +150,10 @@ public class DemandeLivraisons extends Observable {
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
     public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        Livraison nouvelleLivraison = new Livraison(intersection);
-        intersection.setLivraison(nouvelleLivraison);
+        // TODO, insertion dasn une fenetre de livraison ?
+        Livraison nouvelleLivraison = new Livraison(intersection, livr.getHeureDebutFenetre(), livr.getHeureFinFenetre(), -1);
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
+        intersection.setLivraison(nouvelleLivraison);
 
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
         if(nouveauPCC1 != null){
@@ -189,13 +190,8 @@ public class DemandeLivraisons extends Observable {
                 }
 
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
-
             }
-
-
-
         }
-
 
         setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
