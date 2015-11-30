@@ -41,11 +41,11 @@ public class EtatPrincipal extends EtatDefaut {
     @Override
     public void ajouterLivraison(FenetreControleur fenetreControleur){
         fenetreControleur.autoriseBoutons(false);
-        fenetreControleur.afficheMessage("Vous passez en mode ajout d'une livraison.\n\n" +
-                "Pour ajouter une livraison vous devez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
-                "Ensuite vous devez sélectionner une intersection (il ne doit pas y avoir de livraison sur l'intersection sélectionnée.\n" +
-                "Enfin vous devrez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
-                "NB: A tout moment vous pouvez sortir du mode d'ajout grâce au bouton associé dans la barre de menu.",
+        fenetreControleur.afficheMessage("Vous passez en mode ajout de livraison.\n\n" +
+                "Pour ajouter une livraison, veuillez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
+                "Veuillez ensuite sélectionner une intersection (il ne doit pas y avoir de livraison sur l'intersection sélectionnée).\n" +
+                "Finalement, veuillez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
+                "NB: Vous pouvez sortir du mode d'ajout à tout moment grâce au bouton associé dans la barre de menu.",
                 "Ajout d'une livraison : Mode d'emploi",
                 Alert.AlertType.INFORMATION
         );
