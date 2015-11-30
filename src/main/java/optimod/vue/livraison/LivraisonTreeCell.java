@@ -50,9 +50,16 @@ class LivraisonTreeCell extends TreeCell {
                     }
                     minute += livraison.getMinute();
 
-                    heure += livraison.getHeure() + ":" + minute;
+                    heure +=" à "+ livraison.getHeure() + "h" + minute;
                 }
-                setText("Client " + livraison.getIdClient() + " au " + livraison.getIntersection().getAdresse() + " " + heure + retard);
+                String client ="";
+                if(livraison.getIdClient() == -1){
+                    client+="Nouveau client";
+                }else {
+                    client+=livraison.getIdClient();
+                }
+
+                setText("Client " + client + "\nAdresse " + livraison.getIntersection().getAdresse() + heure + retard);
                 setTextFill(Color.BLACK);
 
             }
