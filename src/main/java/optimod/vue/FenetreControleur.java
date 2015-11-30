@@ -99,7 +99,7 @@ public class FenetreControleur implements Observer, Initializable {
         selectionsActivees = false;
         deselectionsActivees = false;
         random = new Random();
-        couleursPossibles = Arrays.asList(Color.RED, Color.BLUE, Color.BROWN, Color.DARKGREEN, Color.PURPLE, Color.BEIGE, Color.TURQUOISE);
+        couleursPossibles = Arrays.asList(Color.BLUE, Color.BROWN, Color.DARKGREEN, Color.PURPLE, Color.BEIGE, Color.TURQUOISE);
     }
 
     public void initialize(URL location, ResourceBundle resources) {

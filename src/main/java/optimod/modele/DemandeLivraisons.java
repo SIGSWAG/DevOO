@@ -612,6 +612,6 @@ public class DemandeLivraisons extends Observable {
     }
 
     public boolean genererFeuilleDeRoute() throws IOException {
-        return GenerateurDeFeuilleDeRoute.INSTANCE.genererFeuilleDeRoute(entrepot, heureDebutItineraire, itineraire);
+        return GenerateurDeFeuilleDeRoute.INSTANCE.genererFeuilleDeRoute(entrepot, heureDebutItineraire, itineraire, TEMPS_ARRET);
     }
 }
