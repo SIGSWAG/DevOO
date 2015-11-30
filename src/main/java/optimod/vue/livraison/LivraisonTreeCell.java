@@ -1,6 +1,7 @@
 package optimod.vue.livraison;
 
 import javafx.scene.control.TreeCell;
+import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;

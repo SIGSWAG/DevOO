@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -108,6 +110,17 @@ public class FenetreControleur implements Observer, Initializable {
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
+        setBoutonsImages();
+    }
+
+    public void setBoutonsImages() {
+        ajouterLivraison.setStyle("-fx-graphic: url('/img/add.png');");
+        validerAjoutLivraison.setStyle("-fx-graphic: url('/img/check.png');");
+        annulerAjoutLivraison.setStyle("-fx-graphic: url('/img/cancel.png');");
+        echangerLivraisons.setStyle("-fx-graphic: url('/img/exchange.png');");
+        rejouerAction.setStyle("-fx-graphic: url('/img/redo.png');");
+        annulerAction.setStyle("-fx-graphic: url('/img/undo.png');");
+        supprimerLivraison.setStyle("-fx-graphic: url('/img/trash.png');");
     }
 
     /**
