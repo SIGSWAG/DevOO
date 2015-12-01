@@ -141,7 +141,11 @@ public class DemandeLivraisons extends Observable {
             heureDebutItineraire = entrepot.getCheminVersSuivante().getDuree();
         }
         while(!livr.equals(entrepot)){
-            livr.setHeureLivraison(livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET);
+            int heurePrevue = livr.getPrecedente().getHeureLivraison() + livr.getPrecedente().getCheminVersSuivante().getDuree() + TEMPS_ARRET;
+
+            int heureFinale =  heurePrevue > livr.getHeureDebutFenetre() ? heurePrevue : livr.getHeureDebutFenetre();
+
+            livr.setHeureLivraison(heureFinale);
             livr = livr.getSuivante();
         }
         entrepot.setHeureLivraison(entrepot.getPrecedente().getHeureLivraison()+entrepot.getPrecedente().getCheminVersSuivante().getDuree()+TEMPS_ARRET);

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
+
 <?import optimod.vue.livraison.AfficheurFenetresLivraison?>
 <BorderPane prefHeight="700" prefWidth="1300" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
     <left>
@@ -27,15 +28,15 @@
                 <Button fx:id="chargerPlan" mnemonicParsing="false" onAction="#chargerPlan" text="Charger plan" />
                 <Button fx:id="chargerLivraisons" mnemonicParsing="false" onAction="#chargerDemandeLivraisons" text="Charger livraisons" />
                 <Button fx:id="calculerItineraire" mnemonicParsing="false" onAction="#calculerItineraire" text="Calculer l'itinéraire" />
-                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#deselectionnerToutesIntersections" text="Tout désélec" />
+                <Button fx:id="toutDeselectionner" disable="true" mnemonicParsing="false" onAction="#deselectionnerToutesIntersections" text="Tout désélectionner" />
                 <Button fx:id="genererFeuilleRoute" disable="true" mnemonicParsing="false" onAction="#genererFeuilleDeRoute" text="Générer feuille de route" />
-                <Button fx:id="annulerAction" mnemonicParsing="false" onAction="#annulerDerniereAction" text="Annuler" />
-                <Button fx:id="rejouerAction" mnemonicParsing="false" onAction="#rejouerDerniereAction" text="Rejouer" />
-                <Button fx:id="ajouterLivraison" mnemonicParsing="false" onAction="#ajouterLivraison" text="+" />
-                <Button fx:id="supprimerLivraison" mnemonicParsing="false" onAction="#supprimerLivraison" text="Supprimer" />
-                <Button fx:id="echangerLivraisons" mnemonicParsing="false" onAction="#echangerLivraisons" text="Echanger" />
-                <Button fx:id="validerAjoutLivraison" mnemonicParsing="false" onAction="#validerAjoutLivraison" text="Valider ajout" />
-                <Button fx:id="annulerAjoutLivraison" mnemonicParsing="false" onAction="#annulerAjoutLivraison" text="Annuler ajout" />
+                <Button fx:id="annulerAction" mnemonicParsing="false" onAction="#annulerDerniereAction"  />
+                <Button fx:id="rejouerAction" mnemonicParsing="false" onAction="#rejouerDerniereAction"  />
+                <Button fx:id="ajouterLivraison" mnemonicParsing="false" onAction="#ajouterLivraison"  />
+                <Button fx:id="supprimerLivraison" mnemonicParsing="false" onAction="#supprimerLivraison"  />
+                <Button fx:id="echangerLivraisons" mnemonicParsing="false" onAction="#echangerLivraisons"  />
+                <Button fx:id="validerAjoutLivraison" mnemonicParsing="false" onAction="#validerAjoutLivraison"  />
+                <Button fx:id="annulerAjoutLivraison" mnemonicParsing="false" onAction="#annulerAjoutLivraison"  />
             </items>
         </ToolBar>
     </top>
