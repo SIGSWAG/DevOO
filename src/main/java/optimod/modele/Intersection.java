@@ -15,7 +15,11 @@ public class Intersection {
     private Livraison livraison;
 
     /**
-     * Default constructor
+     * 
+     * @param x
+     * @param y
+     * @param adresse
+     * @param sortants
      */
     public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
         this.x = x;
