@@ -56,13 +56,6 @@ public class IntersectionTest {
         List<Troncon> tronconsATester = intersectionATester.getSortants();
         List<Troncon> tronconsType = intersectionType.getSortants();
         assertEquals(tronconsATester.size(), tronconsType.size());
-
-        // TODO vérifier ce code ! Pourquoi faire des traitements après le dernier assert ?
-        for (int i = 0; i < tronconsATester.size(); i++) {
-            Troncon tronconATester = tronconsATester.get(i);
-            Troncon tronconType = tronconsType.get(i);
-            TronconTest.comparerTroncons(tronconATester, tronconType);
-        }
     }
 
     public static boolean comparerIntersectionsBool(Intersection intersectionATester, Intersection intersectionType) {
