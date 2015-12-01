@@ -28,10 +28,16 @@ public class CdeAjout implements Commande{
         this.nouvelleLivraison = new Livraison(intersection, this.fenetreDeNouvelleLivraison.getHeureDebut(), this.fenetreDeNouvelleLivraison.getHeureFin(), -1);
     }
 
+    /**
+     * Execute la commande
+     */
     public void doCde() {
         ordonnanceur.ajouterLivraison(nouvelleLivraison, livraison, fenetreDeNouvelleLivraison);
     }
 
+    /**
+     * Annule la commande
+     */
     public void undoCde() {
         ordonnanceur.supprimerLivraison(intersection.getLivraison());
     }

@@ -15,7 +15,11 @@ public class Intersection {
     private Livraison livraison;
 
     /**
-     * Default constructor
+     * Constructeur d'Intersection
+     * @param x coordonnee X de l'intersection en m
+     * @param y coordonnee Y de l'intersection en m
+     * @param adresse adresse de l'intersection
+     * @param sortants liste des Troncons partant de l'intersection
      */
     public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
         this.x = x;
@@ -25,6 +29,12 @@ public class Intersection {
 
     }
 
+    /**
+     * Constructeur d'Intersection
+     * @param x coordonnee X de l'intersection en m
+     * @param y coordonnee Y de l'intersection en m
+     * @param adresse adresse de l'intersection
+     */
     public Intersection(int x, int y, int adresse) {
         this.x = x;
         this.y = y;
@@ -82,6 +92,12 @@ public class Intersection {
         this.livraison = livraison;
     }
 
+    /**
+     * Permet de trouver un Troncon partant de l'intersecion courante
+     * et arrivant à l'Intsersection spécifiée en paramètre.
+     * @param intersection l'Intersection d'arrivée.
+     * @return le Troncon concerné ou null, s'il n'existe pas de tel Troncon.
+     */
     public Troncon getTronconVers(Intersection intersection){
 
 

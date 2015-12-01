@@ -16,7 +16,7 @@ public class Chemin {
     private Livraison arrivee;
 
     /**
-     * Default constructor
+     * Constructeur par défaut
      */
     public Chemin() {
     }

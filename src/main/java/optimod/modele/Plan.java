@@ -18,13 +18,21 @@ public class Plan extends Observable {
     private ObservableList<Intersection> intersectionsObservables;
 
     /**
-     * Default constructor
+     * Constructeur par défaut de Plan
      */
     public Plan() {
         this.intersections = new ArrayList<Intersection>();
         this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 
+    /**
+     * Permet de charger un plan valide au format XML
+     * @return true si le plan s'est chargé correctement, false sinon.
+     * @throws ParserConfigurationException
+     * @throws ExceptionXML
+     * @throws SAXException
+     * @throws IOException
+     */
     public boolean chargerPlan() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         boolean planCharge = DeserialiseurXML.INSTANCE.chargerPlan(this);
         if(planCharge){

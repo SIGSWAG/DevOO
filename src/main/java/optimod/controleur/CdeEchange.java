@@ -24,10 +24,16 @@ public class CdeEchange implements Commande{
         this.livraison2 = l2;
     }
 
+    /**
+     * Execute la commande
+     */
     public void doCde() {
         ordonnanceur.echangerLivraison(livraison1, livraison2);
     }
 
+    /**
+     * Annule la commande
+     */
     public void undoCde() {
         ordonnanceur.echangerLivraison(livraison2, livraison1);
     }

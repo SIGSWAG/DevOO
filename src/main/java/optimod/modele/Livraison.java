@@ -18,10 +18,21 @@ public class Livraison {
 
     private int idClient;
 
+    /**
+     * Constructeur de Livraison
+     * @param intersection l'Intersection sur laquelle se situe la Livraison.
+     */
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
 
+    /**
+     * Constructeur Livraison
+     * @param intersection l'Intersection sur laquelle se situe la Livraison.
+     * @param heureDebutFenetre l'heure de début de la Fenetre de Livraison dans laquelle se situe la Livraison.
+     * @param heureFinFenetre l'heure de fin de la Fenetre de Livraison dans laquelle se situe la Livraison.
+     * @param idClient l'identifiant du client à livrer.
+     */
     public Livraison(Intersection intersection, int heureDebutFenetre, int heureFinFenetre, int idClient) {
         this.intersection = intersection;
         this.heureDebutFenetre = heureDebutFenetre;

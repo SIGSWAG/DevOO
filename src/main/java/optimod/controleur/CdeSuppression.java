@@ -33,12 +33,18 @@ public class CdeSuppression implements Commande{
         }
     }
 
+    /**
+     * Execute la commande
+     */
     public void doCde() {
         for (int i = 0; i < livraisonsASupprimer.size(); i++) {
             ordonnanceur.supprimerLivraison(livraisonsASupprimer.get(i));
         }
     }
 
+    /**
+     * Annule la commande
+     */
     public void undoCde() {
         for (int i = livraisonsASupprimer.size()-1; i >= 0; i--) {
             ordonnanceur.ajouterLivraison(livraisonsASupprimer.get(i), livraisonsASupprimer.get(i).getSuivante() , fenetresLivraisons.get(livraisonsASupprimer.get(i).getIntersection().getAdresse()));
