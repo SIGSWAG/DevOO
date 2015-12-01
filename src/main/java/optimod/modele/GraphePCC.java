@@ -23,14 +23,16 @@ public class GraphePCC implements Graphe {
     private List<Chemin> chemins = new ArrayList<Chemin>();
 
     /**
-     * Default constructor
+     * Constructeur par défaut de GraphePCC
      */
     public GraphePCC() {
         this.tsp = new TSP3();
     }
 
     /**
-     * @param chemins les chemins à définissants le graphe
+     * Constructeur de GraphePCC
+     * @param chemins les chemins à définissants le graphe, entrepot la livraison sur laquelle se situe l'entrepot (point de
+     *                départ du graphe)
      */
     public GraphePCC(Livraison entrepot, List<Chemin> chemins) {
         this();
@@ -41,6 +43,10 @@ public class GraphePCC implements Graphe {
     }
 
 
+    /**
+     * Permet de Calculer un itinéraire sur le graphe courant.
+     * @return la liste des chemins constituant l'itinéraire
+     */
     public List<Chemin> calculerItineraire() {
         List<Chemin> plusCourtParcours = new ArrayList<>();
 
@@ -66,9 +72,7 @@ public class GraphePCC implements Graphe {
         return plusCourtParcours;
     }
 
-    /**
-     *
-     */
+
     private void convertirLivraisonsEnSommets() {
         if(chemins!=null) {
 
@@ -109,9 +113,7 @@ public class GraphePCC implements Graphe {
         }
     }
 
-    /**
-     *
-     */
+
     private void construireGraphe(){
         if(cheminsParLivraison!=null) {
 
@@ -158,13 +160,8 @@ public class GraphePCC implements Graphe {
 
     }
 
-    /**
-     * @param  n ???
-     */
-    private void retrouverItinéraire(List<Integer> n) {
-        // TODO implement here
-    }
 
+    @Override
     public int getCout(int i, int j) {
 
 
@@ -174,7 +171,7 @@ public class GraphePCC implements Graphe {
 
         return graphe[i][j] == null ? -1 : graphe[i][j].getDuree();
     }
-
+    @Override
     public boolean estArc(int i, int j) {
 
         if(i<0 || i>=graphe.length || j<0 || j>=graphe.length){
@@ -183,7 +180,7 @@ public class GraphePCC implements Graphe {
 
         return graphe[i][j] != null;
     }
-
+    @Override
     public int getNbSommets() {
         return graphe.length;
     }

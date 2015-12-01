@@ -13,7 +13,7 @@ public class Ordonnanceur {
     private Plan plan;
 
     /**
-     * Default constructor
+     * Constructeur d'Ordonnanceur par défaut.
      */
     public Ordonnanceur() {
         plan = new Plan();
@@ -21,13 +21,19 @@ public class Ordonnanceur {
     }
 
     /**
-     *
+     * Permet de charger un plan. La méthode prend en charge la demande à l'utilisateur d'un fichier.
+     * @return true si le plan se charge correctement, false sinon.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws ExceptionXML
+     * @throws IOException
      */
     public boolean chargerPlan() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
         return plan.chargerPlan();
     }
 
     /**
+     * Permet de trouver une Intersection dans le plan grâce à son adresse.
      * @param adresse l'identifiant de l'adresse à trouver
      * @return l'intersection correspondant à l'adresse
      */
@@ -47,14 +53,20 @@ public class Ordonnanceur {
     }
 
     /**
-     *
+     * Permet de charger une demande de Livraison. La méthode prend en charge la demande à l'utilisateur d'un fichier.
+     * @return true si la demande de livraison se charge correctement, false sinon.
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws ExceptionXML
+     * @throws IOException
      */
     public boolean chargerDemandeLivraison() throws SAXException, ParserConfigurationException, ExceptionXML, IOException {
         return demandeLivraisons.chargerDemandeLivraison();
     }
 
     /**
-     * 
+     * Permet de demander le calcul d'un itinéraire.
+     * La fin du calcul est notifiée par un notify() dans les Observables concernés.
      */
     public void calculerItineraire() {
         demandeLivraisons.calculerItineraire();
@@ -86,6 +98,7 @@ public class Ordonnanceur {
         demandeLivraisons.echangerLivraison(livr1, livr2);
     }
 
+
     public DemandeLivraisons getDemandeLivraisons() {
         return demandeLivraisons;
     }
@@ -102,9 +115,20 @@ public class Ordonnanceur {
         this.plan = plan;
     }
 
+    /**
+     * Permet de générer une feuille de route au format HTML.
+     * @throws IOException
+     */
     public void genererFeuilleDeRoute() throws IOException {
         demandeLivraisons.genererFeuilleDeRoute();
     }
+
+    /**
+     * Permet de trouver une Fenetre de Livraison correspondant à une Livraison
+     * @param livraison la Livraison pour laquelle on veut trouver une fenêtre, false si la Livraison n'a
+     * pas de fenêtre
+     * @return La FenetreLivraison concernée.
+     */
     public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
         return demandeLivraisons.trouverFenetreDeLivraison(livraison);
     }
