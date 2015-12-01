@@ -62,7 +62,6 @@ class LivraisonTreeCell extends TreeCell {
 
                 setText("Client " + client + "\nAdresse " + livraison.getIntersection().getAdresse() + heure + retard);
                 setTextFill(Color.BLACK);
-
             }
 
         }

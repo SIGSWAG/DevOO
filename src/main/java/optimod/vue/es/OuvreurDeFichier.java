@@ -18,7 +18,6 @@ import java.util.prefs.Preferences;
 public enum OuvreurDeFichier { // Singleton
     INSTANCE;
 
-    // TODO enum pour les modes ?
     public static final boolean MODE_LECTURE = true;
     public static final boolean MODE_ECRITURE = false;
 
@@ -33,16 +32,10 @@ public enum OuvreurDeFichier { // Singleton
 
     /**
      * Propose à l'utilisateur de sélectionner un fichier à charger
-     * @param fenetreCourante La fenêtre à laquelle l'explorateur de fichiers sera rattaché
+     * @param fenetreCourante La fenêtre à laquelle l'explorateur de fichiers sera rattachée
      * @return Le fichier en tant que File, ou null si aucun fichier n'a été sélectionné
      */
     public File ouvre(Stage fenetreCourante){
-        //explorateurFichier.setTitle(TITRE_OUVREUR_DE_FICHIER);
-        // Filtre sur les extensions : filtre XML par défaut, et choix d'afficher tous les fichiers
-        //explorateurFichier.getExtensionFilters().addAll(
-        //          new FileChooser.ExtensionFilter("eXtensible Markup Language (*.xml)", "*.xml"),
-        //          new FileChooser.ExtensionFilter("Toute extension (*.*)", "*.*"));
-
         // Récupérer le dernier fichier ouvert (s'il existe)
         File dernierFichierOuvert = getDernierFichierOuvert();
         if(dernierFichierOuvert != null) {
@@ -114,7 +107,6 @@ public enum OuvreurDeFichier { // Singleton
     }
 
 
-    // TODO Utiliser des setters ? ou des parametres à la methode ouvre ? Pour les extensions, le mode, le titre. Penser au problème apporté par le multithreading sur ce cas.
     /**
      * Définit les extensions disponibles lors de l'ouverture de l'explorateur de fichier.
      * @param extensions

@@ -21,7 +21,7 @@ import java.util.*;
  */
 public enum DeserialiseurXML { // Singleton
     INSTANCE;
-    private List<FileChooser.ExtensionFilter> extensions = new ArrayList<FileChooser.ExtensionFilter>();
+    private List<FileChooser.ExtensionFilter> extensions = new ArrayList<>();
 
     DeserialiseurXML(){
         extensions.add(new FileChooser.ExtensionFilter("eXtensible Markup Language (*.xml)", "*.xml"));

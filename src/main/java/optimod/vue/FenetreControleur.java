@@ -36,6 +36,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private static final String MESSAGE_ERREUR_EXCEPTION = "Voici l'exception levée par le système :";
+
     private final Stage fenetre;
 
     private final Controleur controleur;
@@ -87,10 +89,13 @@ public class FenetreControleur implements Observer, Initializable {
     private boolean selectionsActivees;
 
     private boolean deselectionsActivees;
-    private boolean entrepotSelectionnable = false;
-    private boolean entrepotDeselectionnable = false;
+
+    private boolean entrepotSelectionnable;
+
+    private boolean entrepotDeselectionnable;
 
     private Map<FenetreLivraison, Color> couleursFenetres;
+
     private final List<Color> couleursPossibles;
 
     private final Random random;
@@ -100,27 +105,19 @@ public class FenetreControleur implements Observer, Initializable {
         this.controleur = controleur;
         selectionsActivees = false;
         deselectionsActivees = false;
+        entrepotSelectionnable = false;
+        entrepotDeselectionnable = false;
         random = new Random();
         couleursPossibles = Arrays.asList(Color.BLUE, Color.BROWN, Color.DARKGREEN, Color.PURPLE, Color.BEIGE, Color.TURQUOISE);
     }
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison.setFenetreControleur(this);
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
-        setBoutonsImages();
-    }
-
-    public void setBoutonsImages() {
-        ajouterLivraison.setStyle("-fx-graphic: url('/img/add.png');");
-        validerAjoutLivraison.setStyle("-fx-graphic: url('/img/check.png');");
-        annulerAjoutLivraison.setStyle("-fx-graphic: url('/img/cancel.png');");
-        echangerLivraisons.setStyle("-fx-graphic: url('/img/exchange.png');");
-        rejouerAction.setStyle("-fx-graphic: url('/img/redo.png');");
-        annulerAction.setStyle("-fx-graphic: url('/img/undo.png');");
-        supprimerLivraison.setStyle("-fx-graphic: url('/img/trash.png');");
     }
 
     /**
@@ -268,16 +265,15 @@ public class FenetreControleur implements Observer, Initializable {
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
 
+                // TODO Voir si nécessaire, déjà dans chargerFenetresLivraison
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
 
             } else {
-                // TODO
                 logger.warn("Événement invalide.");
             }
 
         } else {
-            // TODO
             logger.warn("Événement nul.");
         }
     }
@@ -365,12 +361,12 @@ public class FenetreControleur implements Observer, Initializable {
         validerAjoutLivraison.setVisible(estActif);
     }
 
-    public void activerDeselectionsEntrepot(boolean b) {
-        entrepotDeselectionnable = b;
+    public void activerDeselectionsEntrepot(boolean entrepotDeselectionnable) {
+        this.entrepotDeselectionnable = entrepotDeselectionnable;
     }
 
-    public void activerSelectionsEntrepot(boolean b) {
-        entrepotSelectionnable = b;
+    public void activerSelectionsEntrepot(boolean entrepotSelectionnable) {
+        this.entrepotSelectionnable = entrepotSelectionnable;
     }
 
     public void autoriseBoutons(boolean estActif) {
@@ -416,7 +412,7 @@ public class FenetreControleur implements Observer, Initializable {
         ex.printStackTrace(pw);
         String exceptionText = sw.toString();
 
-        Label label = new Label("Voici l'exception levée par le système :");
+        Label label = new Label(MESSAGE_ERREUR_EXCEPTION);
 
         TextArea textArea = new TextArea(exceptionText);
         textArea.setEditable(false);
