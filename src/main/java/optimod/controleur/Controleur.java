@@ -30,72 +30,117 @@ public class Controleur {
     protected static final EtatAjoutLivrValidable etatAjoutLivrValidable = new EtatAjoutLivrValidable();
 
 
+    /**
+     * Constructeur de Controleur
+     * @param ordonnanceur l'Ordonnanceur qui pilote le Controleur
+     */
     public Controleur(Ordonnanceur ordonnanceur) {
         this.ordonnanceur = ordonnanceur;
         etatCourant = etatInit;
         listeDeCdes = new ListeDeCdes();
     }
 
+    /**
+     * Demande à la vue de se mettre à jour
+     */
     public void updateVue() {
         fenetreControleur.autoriseBoutons(false);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de charger un plan de ville.
+     */
     public void chargerPlan() {
         etatCourant.chargerPlan(fenetreControleur, ordonnanceur);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de charger une demande de livraison.
+     */
     public void chargerDemandeLivraisons() {
         etatCourant.chargerDemandeLivraisons(fenetreControleur, ordonnanceur);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de calculer un itinéraire
+     */
     public void calculerItineraire() {
         etatCourant.calculerItineraire(fenetreControleur, ordonnanceur);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet d'annuler la dernière commande
+     */
     public void undo() {
         etatCourant.undo(fenetreControleur, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de rejouer la dernière commande
+     */
     public void redo() {
         etatCourant.redo(fenetreControleur, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet d'ajouter une livraison à l'itinéraire
+     */
     public void ajouterLivraison() {
         etatCourant.ajouterLivraison(fenetreControleur);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de valider l'ajout d'une livraison
+     */
     public void validerAjoutLivraison() {
         etatCourant.validerAjout(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet d'annuler l'ajout d'une livraison
+     */
     public void annulerAjoutLivraison() {
         etatCourant.annulerAjout(fenetreControleur, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet d'échanger deux livraisons
+     */
     public void echangerLivraisons() {
         etatCourant.echangeesLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de supprimer un ensemble de livraisons
+     */
     public void supprimerLivraison() {
         etatCourant.supprimerLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de générer une feuille de route
+     */
     public void genererFeuilleDeRoute() {
         etatCourant.genererFeuilleDeRoute(fenetreControleur, ordonnanceur);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
+    /**
+     * Permet de sélectionner une intersection
+     * @param intersection
+     * @return
+     */
     public boolean selectionnerIntersection(Intersection intersection) {
         boolean res = etatCourant.selectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
@@ -104,6 +149,11 @@ public class Controleur {
         return res;
     }
 
+    /**
+     * Permet de désélectionner une intersection
+     * @param intersection l'Intersection à désélectionner
+     * @return
+     */
     public boolean deselectionnerIntersection(Intersection intersection) {
         boolean res = etatCourant.deselectionnerIntersection(
                     fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
@@ -112,10 +162,14 @@ public class Controleur {
         return res;
     }
 
+    /**
+     * Permet de désélectionner toutes les livraisons
+     */
     public void deselectionnerToutesIntersections() {
         etatCourant.deselectionnerToutesIntersections(fenetreControleur, ordonnanceur, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
+
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
