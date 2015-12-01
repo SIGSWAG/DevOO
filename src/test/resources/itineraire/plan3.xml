@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    0 ? 1
+     \ /
+      2
+-->
+<Reseau>
+    <Noeud id="0" x="100" y="100">
+        <LeTronconSortant nomRue="r1" vitesse="1" longueur="1" idNoeudDestination="1"/>
+        <LeTronconSortant nomRue="r3" vitesse="1" longueur="1" idNoeudDestination="2"/>
+    </Noeud>
+    <Noeud id="1" x="100" y="200">
+        <LeTronconSortant nomRue="r1" vitesse="1" longueur="1" idNoeudDestination="0"/>
+        <LeTronconSortant nomRue="r2" vitesse="1" longueur="1" idNoeudDestination="2"/>
+    </Noeud>
+    <Noeud id="2" x="200" y="150">
+        <LeTronconSortant nomRue="r2" vitesse="1" longueur="1" idNoeudDestination="1"/>
+        <LeTronconSortant nomRue="r3" vitesse="1" longueur="1" idNoeudDestination="0"/>
+    </Noeud>
+</Reseau>

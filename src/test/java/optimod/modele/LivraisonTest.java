@@ -5,7 +5,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 /**
  * Created by aurelien on 18/11/15.
@@ -62,10 +65,50 @@ public class LivraisonTest {
 
         Chemin chemin = livraison.calculPCC(livraison4);
 
-        assertEquals(chemin.getArrivee(), livraison4);
-        assertEquals(chemin.getDepart(), livraison);
+        comparerLivraisons(chemin.getArrivee(), livraison4);
+        comparerLivraisons(chemin.getDepart(), livraison);
         assertEquals(chemin.getTroncons().size(), 2);
-        assertEquals(chemin.getTroncons().get(0).getArrivee(), intersection2);
+        IntersectionTest.comparerIntersections(chemin.getTroncons().get(0).getArrivee(), intersection2);
+
+    }
+
+    public static void comparerLivraisons(Livraison livraisonATester, Livraison livraisonType) {
+        comparerLivraisonsPrimitives(livraisonATester, livraisonType);
+
+        IntersectionTest.comparerIntersections(livraisonATester.getIntersection(), livraisonType.getIntersection());
+
+        comparerLivraisonsPrimitives(livraisonATester.getPrecedente(), livraisonType.getPrecedente());        
+    }
+
+    public static void comparerLivraisonsPrimitives(Livraison livraisonATester, Livraison livraisonType) {
+        assertNotNull(livraisonATester);
+        assertNotNull(livraisonType);
+
+        assertEquals(livraisonATester.getHeureLivraison(), livraisonType.getHeureLivraison());
+        assertEquals(livraisonATester.getHeureDebutFenetre(), livraisonType.getHeureDebutFenetre());
+        assertEquals(livraisonATester.getHeureFinFenetre(), livraisonType.getHeureFinFenetre());
+        assertEquals(livraisonATester.getIdClient(), livraisonType.getIdClient());
+    }
+
+
+
+    public static boolean comparerLivraisonsBool(Livraison livraisonATester, Livraison livraisonType) {
+        return (
+
+            comparerLivraisonsPrimitivesBool(livraisonATester, livraisonType)
+            &&
+            IntersectionTest.comparerIntersectionsBool(livraisonATester.getIntersection(), livraisonType.getIntersection())
+            &&
+            comparerLivraisonsPrimitivesBool(livraisonATester.getPrecedente(), livraisonType.getPrecedente())
+        );
+    }
+
+    public static boolean comparerLivraisonsPrimitivesBool(Livraison livraisonATester, Livraison livraisonType) {
+
+        return(livraisonATester!=null && livraisonType!=null && livraisonATester.getHeureLivraison() == livraisonType.getHeureLivraison()
+        && livraisonATester.getHeureDebutFenetre() == livraisonType.getHeureDebutFenetre()
+        && livraisonATester.getHeureFinFenetre() == livraisonType.getHeureFinFenetre()
+        && livraisonATester.getIdClient() == livraisonType.getIdClient());
 
     }
 

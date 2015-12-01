@@ -16,7 +16,7 @@ public class Troncon {
 
     public Troncon(Intersection intersection, double vitesse, double longueur, String nom) {
         this.duree = (int) (longueur / vitesse);
-        this.arrivee = intersection;
+        this.arrivee = arrivee;
         this.nom = nom;
         this.longueur = longueur;
         this.vitesse = vitesse;

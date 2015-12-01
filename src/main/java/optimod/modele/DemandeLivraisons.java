@@ -122,10 +122,10 @@ public class DemandeLivraisons extends Observable {
 
     private void mettreAJourTronconsEmpruntes(Chemin chemin){
 
-       for(Troncon troncon : chemin.getTroncons()){
+        for(Troncon troncon : chemin.getTroncons()){
 
-           troncon.incrementeCompteurPassage();
-       }
+            troncon.incrementeCompteurPassage();
+        }
 
     }
 
@@ -259,7 +259,7 @@ public class DemandeLivraisons extends Observable {
         if(nouveauPCC != null){
 
             System.out.println("suppression de "+livr.getIntersection().getAdresse()+" pcc de "+
-            nouveauPCC.getDepart().getIntersection().getAdresse()+" vers "+nouveauPCC.getArrivee().getIntersection().getAdresse()+" longueur chemin "+nouveauPCC.getTroncons().size());
+                    nouveauPCC.getDepart().getIntersection().getAdresse()+" vers "+nouveauPCC.getArrivee().getIntersection().getAdresse()+" longueur chemin "+nouveauPCC.getTroncons().size());
             Chemin cheminASupprimer = livr.getPrecedente().getCheminVersSuivante();
             Chemin cheminASupprimer2 = livr.getCheminVersSuivante();
 
@@ -572,11 +572,11 @@ public class DemandeLivraisons extends Observable {
     public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
         List<FenetreLivraison> fenetres = this.fenetres;
         for (FenetreLivraison f : fenetres) {
-           for(Livraison livraison1 : f.getLivraisons()){
-               if(livraison1.getIntersection().getAdresse() == livraison.getIntersection().getAdresse() ){
-                   return f;
-               }
-           }
+            for(Livraison livraison1 : f.getLivraisons()){
+                if(livraison1.getIntersection().getAdresse() == livraison.getIntersection().getAdresse() ){
+                    return f;
+                }
+            }
         }
         if(livraison == entrepot)
             return fenetres.get(fenetres.size()-1); // on renvoie la derniere fenetre de livraison pour pouvoir ajouter une livraison en dernière position
