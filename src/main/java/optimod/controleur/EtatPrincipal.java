@@ -32,7 +32,7 @@ public class EtatPrincipal extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if(ordonnanceur.chargerDemandeLivraison())
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
         } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
@@ -41,11 +41,11 @@ public class EtatPrincipal extends EtatDefaut {
     @Override
     public void ajouterLivraison(FenetreControleur fenetreControleur){
         fenetreControleur.autoriseBoutons(false);
-        fenetreControleur.afficheMessage("Vous passez en mode ajout d'une livraison.\n\n" +
-                "Pour ajouter une livraison vous devez sélectionner l'intersection concernée (il ne doit pas y avoir de livraison sur l'intersection sélectionnée.\n" +
-                "Ensuite vous devez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
-                "Enfin vous devrez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
-                "NB: A tout moment vous pouvez sortir du mode d'ajout grâce au bouton associé dans la barre de menu.",
+        fenetreControleur.afficheMessage("Vous passez en mode ajout de livraison.\n\n" +
+                "Pour ajouter une livraison, veuillez sélectionner une livraison avant laquelle votre livraison sera créée.\n" +
+                "Veuillez ensuite sélectionner une intersection (il ne doit pas y avoir de livraison sur l'intersection sélectionnée).\n" +
+                "Finalement, veuillez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
+                "NB: Vous pouvez sortir du mode d'ajout à tout moment grâce au bouton associé dans la barre de menu.",
                 "Ajout d'une livraison : Mode d'emploi",
                 Alert.AlertType.INFORMATION
         );
@@ -55,7 +55,11 @@ public class EtatPrincipal extends EtatDefaut {
     @Override
     public void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur){
         fenetreControleur.autoriseBoutons(false);
-        ordonnanceur.genererFeuilleDeRoute();
+        try {
+            ordonnanceur.genererFeuilleDeRoute();
+        } catch (IOException e) {
+            fenetreControleur.afficheException("Erreur lors de l'écriture de la feuille de route.", "Erreur E/S", Alert.AlertType.ERROR, e);
+        }
     }
 
     @Override
@@ -74,12 +78,11 @@ public class EtatPrincipal extends EtatDefaut {
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
             return true;
         }else{
-            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
     }

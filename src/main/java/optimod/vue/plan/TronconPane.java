@@ -2,14 +2,15 @@ package optimod.vue.plan;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurve;
 import optimod.modele.Intersection;
 import optimod.modele.Troncon;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,85 +23,86 @@ public class TronconPane extends Group {
 
     public static final float TAILLE_FLECHE = 5;
 
-    public static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
-    public static final Color COULEUR_EMPRUNTEE = Color.RED;
+    private static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
+    private List<Color> couleurs;
 
-    private IntersectionPane source;
-    private Troncon troncon;
+    private final IntersectionPane source;
+    private final Troncon troncon;
 
-    public TronconPane(IntersectionPane source, Troncon troncon) {
-        super();
+    public TronconPane(final IntersectionPane source, final Troncon troncon) {
         this.source = source;
         this.troncon = troncon;
 
-        dessinerFleche();
+        reinitialiser();
         mettreAJour();
     }
 
+    public void reinitialiser() {
+        couleurs = new ArrayList<>();
+    }
+
     public void mettreAJour() {
-
-
-        //getChildren().removeAll();
         getChildren().clear();
-        dessinerFleche();
+        dessinerFleches();
     }
 
-    public Troncon getTroncon() {
-        return troncon;
-    }
-
-    private void dessinerFleche() {
+    private void dessinerFleches() {
         final Intersection cible = troncon.getArrivee();
 
         // Calcul d'où "part" et "arrive" la flèche pour éviter qu'elle ne passe sur les intersections
         final Point2D pointSource = intersectionCercleLigne(cible.getX(), cible.getY(), source.getX(), source.getY()).get(0);
         final Point2D pointCible = intersectionCercleLigne(source.getX(), source.getY(), cible.getX(), cible.getY()).get(0);
 
-        final Line ligne = new Line(pointSource.getX(), pointSource.getY(), pointCible.getX(), pointCible.getY());
+        //final Line ligne = new Line(pointSource.getX(), pointSource.getY(), pointCible.getX(), pointCible.getY());
 
         final Point2D tan = new Point2D(pointCible.getX() - pointSource.getX(), pointCible.getY() - pointSource.getY()).normalize();
 
-
-
-        int compteur = troncon.getCompteurPassage() > 0 ? troncon.getCompteurPassage() : 1;
-
-        if(compteur>1){
-            System.out.println("waring");
-        }
-        do {
-            final Path fleche = new Path();
-            QuadCurve quad = new QuadCurve();
-            quad.setStartX(pointSource.getX());
-            quad.setStartY(pointSource.getY());
-            quad.setEndX(pointCible.getX());
-            quad.setEndY(pointCible.getY());
-            quad.setStrokeWidth(1);
-            quad.setFill(Color.TRANSPARENT);
-
-            double curve = 10*compteur;
-            Point2D pass = calculePointPassage(pointCible, pointSource, curve);
-
-            quad.setControlX(pass.getX());
-            quad.setControlY(pass.getY());
-
-            fleche.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
-            fleche.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
-            fleche.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
-
-
-            getChildren().add(quad);
-            getChildren().add(fleche);
-            compteur--;
-
-        }while(compteur >0 );
-        Color couleur = COULEUR_DEFAUT;
         if (troncon.estEmprunte()) {
-            couleur = COULEUR_EMPRUNTEE;
-            toFront(); // On met la flèche dessus pour être sûr qu'elle soit visible
+            for (int i = 0; i < couleurs.size(); i++) { // Une flèche pour chaque passage
+                final Color couleur = couleurs.get(i);
+                ajouterFleche(pointSource, pointCible, tan, couleur, i);
+            }
+        } else {
+            ajouterFleche(pointSource, pointCible, tan, COULEUR_DEFAUT, 0); // On trace la flèche par défaut
+            toBack(); // Si on dessine la flèche par défaut, il faut la mettre en dessous pour éviter les pollutions visuelles
         }
-        for (Node noeud : getChildren()) {
-            ((Shape) noeud).setStroke(couleur); // La flèche n'est composée que de Shapes, on peut donc convertir
-        }
+
+    }
+
+    private void ajouterFleche(final Point2D pointSource, final Point2D pointCible, final Point2D tan, final Color couleur, final int ratioCourbe) {
+
+        final Path fleche = new Path();
+
+        final QuadCurve quad = new QuadCurve();
+
+        quad.setStartX(pointSource.getX());
+        quad.setStartY(pointSource.getY());
+        quad.setEndX(pointCible.getX());
+        quad.setEndY(pointCible.getY());
+        quad.setStrokeWidth(1);
+        quad.setFill(null);
+
+        final double courbe = 10 * ratioCourbe;
+        final Point2D pass = calculePointPassage(pointCible, pointSource, courbe);
+
+        quad.setControlX(pass.getX());
+        quad.setControlY(pass.getY());
+
+        fleche.getElements().add(new MoveTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() - TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() + TAILLE_FLECHE * tan.getX()));
+        fleche.getElements().add(new LineTo(pointCible.getX(), pointCible.getY()));
+        fleche.getElements().add(new LineTo(pointCible.getX() - TAILLE_FLECHE * tan.getX() + TAILLE_FLECHE * tan.getY(), pointCible.getY() - TAILLE_FLECHE * tan.getY() - TAILLE_FLECHE * tan.getX()));
+
+        quad.setStroke(couleur);
+        fleche.setStroke(couleur);
+        fleche.setFill(couleur);
+
+        getChildren().add(quad);
+        getChildren().add(fleche);
+
+    }
+
+    public void ajouterPassage(final Color couleur) {
+        couleurs.add(couleur);
     }
 
     private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {
@@ -135,9 +137,10 @@ public class TronconPane extends Group {
     }
 
     /**
-     * Resolution de système
+     * Résolution de système :
      * Calcule le point correspondant situé à une distance distance de la droite
      * passant par p1 et p2, dont la projection sur (p1p2) est le milieu du segment [p1p2]
+     *
      * @param p1
      * @param p2
      * @param distance
@@ -145,10 +148,6 @@ public class TronconPane extends Group {
      */
     public Point2D calculePointPassage(Point2D p1, Point2D p2, double distance) {
 
-
-        //
-        // aX + bY = d-c
-        // bX - aY = j
         double a = p2.getY() - p1.getY();
         double b = p1.getX() - p2.getX();
         double c = -(a * p1.getX() + b * p1.getY());
@@ -161,13 +160,15 @@ public class TronconPane extends Group {
         double Y = 0;
         double det = a * a + b * b;
 
-
         X = 1 / det * (j * b + d * a);
-        Y = 1 / det * ( b * d - j*a);
-
+        Y = 1 / det * (b * d - j * a);
 
         return new Point2D(X, Y);
 
-
     }
+
+    public Troncon getTroncon() {
+        return troncon;
+    }
+
 }

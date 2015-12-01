@@ -132,14 +132,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);
@@ -152,14 +146,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);
@@ -172,14 +160,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);
@@ -192,14 +174,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);
@@ -212,14 +188,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);
@@ -233,9 +203,9 @@ public class DeserialiseurXMLTest {
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } 
-        catch(Exception e) {
-        	assertEquals(e.getMessage(), "Document non conforme");
+        }
+        catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
     }
 
@@ -246,14 +216,8 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "");
         }
 
         assertEquals(charge, false);

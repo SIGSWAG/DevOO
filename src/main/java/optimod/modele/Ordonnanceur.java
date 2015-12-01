@@ -62,11 +62,11 @@ public class Ordonnanceur {
 
     /**
      * Contrat : ajoute la livraison sur l'intersection donnée en paramètre et AVANT la livraison donnée en paramètre
-     * @param intersection l'intersection sur laquelle on ajoute la livraison
+     * @param nouvelleLivraison la livraison à ajouter
      * @param livr la Livraison avant laquelle on ajoute la nouvelle Livraison
      */
-    public void ajouterLivraison(Intersection intersection, Livraison livr) {
-        demandeLivraisons.ajouterLivraison(intersection, livr);
+    public void ajouterLivraison(Livraison nouvelleLivraison, Livraison livr, FenetreLivraison fenetreLivraison) {
+        demandeLivraisons.ajouterLivraison(nouvelleLivraison, livr, fenetreLivraison);
     }
 
     /**
@@ -102,7 +102,10 @@ public class Ordonnanceur {
         this.plan = plan;
     }
 
-    public void genererFeuilleDeRoute(){
+    public void genererFeuilleDeRoute() throws IOException {
         demandeLivraisons.genererFeuilleDeRoute();
+    }
+    public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison){
+        return demandeLivraisons.trouverFenetreDeLivraison(livraison);
     }
 }

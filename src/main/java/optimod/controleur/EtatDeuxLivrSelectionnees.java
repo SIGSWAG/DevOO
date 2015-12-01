@@ -6,6 +6,7 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +17,11 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatPlusDeDeuxLivrSelectionnees);
             return true;
         }else{
-            fenetreControleur.afficheMessage("Vous ne pouvez pas sélectionner cette intersection car elle ne possède aucune livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
     }
@@ -30,7 +30,7 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     public boolean deselectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
-        if(livraisonSelectionnee != null){
+        if(livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()){
             intersectionsSelectionnees.remove(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
             return true;
@@ -48,11 +48,13 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
     @Override
     public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCdes listeDeCdes){
         fenetreControleur.autoriseBoutons(false);
+        List<Livraison> lesLivraisonsASupp = new ArrayList<Livraison>();
         for(Intersection inter: intersectionsSelectionnees){
             Livraison l =inter.getLivraison();
             if(l != null)
-                ordonnanceur.supprimerLivraison(l);
+                lesLivraisonsASupp.add(l);
         }
+        listeDeCdes.ajoute(new CdeSuppression(ordonnanceur,lesLivraisonsASupp));
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatPrincipal);
     }
@@ -62,7 +64,6 @@ public class EtatDeuxLivrSelectionnees extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         Livraison l1 = intersectionsSelectionnees.get(0).getLivraison();
         Livraison l2 = intersectionsSelectionnees.get(1).getLivraison();
-        ordonnanceur.echangerLivraison(l1, l2);
         listeDeCdes.ajoute(new CdeEchange(ordonnanceur, l1, l2));
         intersectionsSelectionnees.clear();
         Controleur.setEtatCourant(Controleur.etatPrincipal);
