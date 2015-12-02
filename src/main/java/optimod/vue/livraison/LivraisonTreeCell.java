@@ -1,7 +1,6 @@
 package optimod.vue.livraison;
 
 import javafx.scene.control.TreeCell;
-import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
@@ -20,6 +19,12 @@ class LivraisonTreeCell extends TreeCell {
         this.afficheurFenetresLivraison = afficheurFenetresLivraison;
     }
 
+    /**
+     * Met à jour la cellule avec l'élément passé en paramètre
+     *
+     * @param element Un objet de type FenetreLivraison ou Livraison
+     * @param vide
+     */
     @Override
     public void updateItem(Object element, boolean vide) {
         super.updateItem(element, vide);
@@ -52,13 +57,13 @@ class LivraisonTreeCell extends TreeCell {
                     }
                     minute += livraison.getMinute();
 
-                    heure +=" à "+ livraison.getHeure() + "h" + minute;
+                    heure += " à " + livraison.getHeure() + "h" + minute;
                 }
-                String client ="";
-                if(livraison.getIdClient() == -1){
-                    client+="Nouveau client";
-                }else {
-                    client+=livraison.getIdClient();
+                String client = "";
+                if (livraison.getIdClient() == -1) {
+                    client += "Nouveau client";
+                } else {
+                    client += livraison.getIdClient();
                 }
 
                 setText("Client " + client + "\nAdresse " + livraison.getIntersection().getAdresse() + heure + retard);

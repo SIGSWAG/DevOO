@@ -5,8 +5,6 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import optimod.modele.*;
 import optimod.vue.FenetreControleur;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +74,7 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
         calculCouleursTroncons(itineraire);
         getTronconsPane().forEach(TronconPane::mettreAJour);
-        getIntersectionsPane().stream().filter(i -> i.getText() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
+        getIntersectionsPane().stream().filter(i -> i.getTexte() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
     }
 
     private void calculCouleursTroncons(List<Chemin> itineraire) {
@@ -128,22 +126,25 @@ public final class AfficheurPlan {
 
     private IntersectionPane trouverIntersectionPane(Intersection intersection) {
         for (IntersectionPane intersectionPane : getIntersectionsPane()) {
-            if (intersectionPane.getIntersection().equals(intersection))
+            if (intersectionPane.getIntersection().equals(intersection)) {
                 return intersectionPane;
+            }
         }
         return null;
     }
 
     private TronconPane trouverTronconPane(Troncon troncon) {
         for (TronconPane tronconPane : getTronconsPane()) {
-            if (tronconPane.getTroncon().equals(troncon))
+            if (tronconPane.getTroncon().equals(troncon)) {
                 return tronconPane;
+            }
         }
         return null;
     }
 
     /**
      * Sélectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     *
      * @param intersection Intersection à sélectionner
      */
     public void selectionner(Intersection intersection) {
@@ -163,6 +164,7 @@ public final class AfficheurPlan {
 
     /**
      * Déselectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     *
      * @param intersection Intersection à déselectionner
      */
     public void deselectionner(Intersection intersection) {
@@ -176,6 +178,7 @@ public final class AfficheurPlan {
     /**
      * Sélectionner toutes les intersections qui sont des livraisons sur le plan pour la fenêtre de livraison passée en
      * paramètre (si elle existe)
+     *
      * @param fenetreLivraison La fenêtre de livraison contenant les livraisons à sélectionner
      */
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {

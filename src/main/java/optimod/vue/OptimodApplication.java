@@ -23,7 +23,7 @@ public class OptimodApplication extends Application {
     private static final String FENETRE_XML = "/vue/Fenetre.fxml";
     private static final String TITRE_FENETRE = "Optimod - Editeur de livraisons";
     private static final String STYLE_CSS = "/css/style.css";
-    private static final String OPTIMOD_ICONE = "/img/truck.png";
+    private static final String OPTIMOD_ICONE = "/img/icone.png";
 
     public static void main(String[] args) {
         launch(args);
@@ -66,6 +66,7 @@ public class OptimodApplication extends Application {
 
     /**
      * Création d'une instance du chargeur de FXML utilisé pour l'IHM
+     *
      * @param localisation Localisation du fichier FXML correspondant
      * @return
      */

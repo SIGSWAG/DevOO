@@ -31,71 +31,47 @@ import java.util.*;
  */
 public class FenetreControleur implements Observer, Initializable {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private static final String MESSAGE_ERREUR_EXCEPTION = "Voici l'exception levée par le système :";
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Stage fenetre;
 
     private final Controleur controleur;
-
+    private final List<Color> couleursPossibles;
+    private final Random random;
     @FXML
     private Group planGroup;
-
     @FXML
     private Button chargerPlan;
-
     @FXML
     private Button chargerLivraisons;
-
     @FXML
     private Button calculerItineraire;
-
     @FXML
     private Button toutDeselectionner;
-
     @FXML
     private Button genererFeuilleRoute;
-
     @FXML
     private Button annulerAction;
-
     @FXML
     private Button rejouerAction;
-
     @FXML
     private Button ajouterLivraison;
-
     @FXML
     private Button supprimerLivraison;
-
     @FXML
     private Button echangerLivraisons;
-
     @FXML
     private Button validerAjoutLivraison;
-
     @FXML
     private Button annulerAjoutLivraison;
-
     @FXML
     private AfficheurFenetresLivraison afficheurFenetresLivraison;
-
     private AfficheurPlan afficheurPlan;
-
     private boolean selectionsActivees;
-
     private boolean deselectionsActivees;
-
     private boolean entrepotSelectionnable;
-
     private boolean entrepotDeselectionnable;
-
     private Map<FenetreLivraison, Color> couleursFenetres;
-
-    private final List<Color> couleursPossibles;
-
-    private final Random random;
 
     public FenetreControleur(final Stage fenetre, final Controleur controleur) {
         this.fenetre = fenetre;
@@ -128,8 +104,7 @@ public class FenetreControleur implements Observer, Initializable {
             try {
                 champObj = champ.get(this);
             } catch (IllegalAccessException e) {
-                afficheException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur",
-                        Alert.AlertType.ERROR, e);
+                afficherException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
             }
             if (champObj instanceof Button) {
                 Button bouton = (Button) champObj;
@@ -217,6 +192,7 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton de validation d'un ajout de livraison
+     *
      * @param evenement
      */
     @FXML
@@ -228,6 +204,7 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton d'annulation d'un ajout de livraison
+     *
      * @param evenement
      */
     @FXML
@@ -285,7 +262,8 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     /**
-     * Associe une couleur à une fenêtre de livraison. Si celle-ci n'a aucune couleur déjà associée, une nouvelle couleur lui est alors affecté.
+     * Associe une couleur à une fenêtre de livraison. Si celle-ci n'a aucune couleur déjà associée,
+     * une nouvelle couleur lui est alors affecté.
      *
      * @param fenetreLivraison La fenêtre de livraison dont on veut la couleur.
      * @return La couleur associée à la fenêtre de livraison.
@@ -377,6 +355,7 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Permet d'activer ou de désactiver tous les boutons de l'IHM
+     *
      * @param estActif
      */
     public void autoriseBoutons(boolean estActif) {
@@ -400,11 +379,12 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Affiche un message avec un titre et un type d'alerte sur l'écran
+     *
      * @param message
      * @param titre
      * @param alertType
      */
-    public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
+    public void afficherMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -418,13 +398,14 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Affiche une expcetion avec un titre, une alerte, et le message de l'exception sur l'IHM
+     *
      * @param message
      * @param titre
      * @param alertType
      * @param ex
      */
-    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex) {
-        if(!message.isEmpty()) {
+    public void afficherException(String message, String titre, Alert.AlertType alertType, Exception ex) {
+        if (!message.isEmpty()) {
             logger.error(message, ex);
         }
 
@@ -461,12 +442,9 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    private void updateVue() {
-        this.controleur.updateVue();
-    }
-
     /**
      * Sélectionne l'intersection passée en paramètre sur l'IHM (plan + liste fenêtres livraison)
+     *
      * @param intersection L'intersection à sélectionner
      * @return
      */
@@ -481,6 +459,7 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Déselectionner l'intersection passée en paramètre sur l'IHM (plan + liste fenêtres livraison)
+     *
      * @param intersection L'intersection à sélectionner
      */
     public void deselectionner(Intersection intersection) {

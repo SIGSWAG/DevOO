@@ -1,16 +1,21 @@
 package optimod.modele;
 
-import optimod.tsp.*;
+import optimod.tsp.Graphe;
+import optimod.tsp.TSP;
+import optimod.tsp.TSP3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 public class GraphePCC implements Graphe {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private Hashtable<Integer,List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
+    private Hashtable<Integer, List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 
     private Hashtable<Integer, Integer> vus = new Hashtable<Integer, Integer>();//reel --> calcule
 
@@ -31,6 +36,7 @@ public class GraphePCC implements Graphe {
 
     /**
      * Constructeur de GraphePCC
+     *
      * @param chemins les chemins à définissants le graphe, entrepot la livraison sur laquelle se situe l'entrepot (point de
      *                départ du graphe)
      */
@@ -45,6 +51,7 @@ public class GraphePCC implements Graphe {
 
     /**
      * Permet de Calculer un itinéraire sur le graphe courant.
+     *
      * @return la liste des chemins constituant l'itinéraire
      */
     public List<Chemin> calculerItineraire() {
@@ -55,26 +62,26 @@ public class GraphePCC implements Graphe {
         System.out.println("fin du calcul");
 
 
-        for(int i=0;i<graphe.length-1;i++){
-            if(tsp == null) {
+        for (int i = 0; i < graphe.length - 1; i++) {
+            if (tsp == null) {
                 logger.error("TSP nul {}", i);
                 return null;
             }
             int livraison = tsp.getSolution(i);
-            int livraisonSuivante = tsp.getSolution(i+1);
+            int livraisonSuivante = tsp.getSolution(i + 1);
 
 
             plusCourtParcours.add(graphe[livraison][livraisonSuivante]);
 
         }
-        plusCourtParcours.add(graphe[tsp.getSolution(graphe.length-1)][0]);//retour a l'entrepot
+        plusCourtParcours.add(graphe[tsp.getSolution(graphe.length - 1)][0]);//retour a l'entrepot
 
         return plusCourtParcours;
     }
 
 
     private void convertirLivraisonsEnSommets() {
-        if(chemins!=null) {
+        if (chemins != null) {
 
 
             cheminsParLivraison = new Hashtable<>();
@@ -114,8 +121,8 @@ public class GraphePCC implements Graphe {
     }
 
 
-    private void construireGraphe(){
-        if(cheminsParLivraison!=null) {
+    private void construireGraphe() {
+        if (cheminsParLivraison != null) {
 
 
             int tailleGraphe = cheminsParLivraison.size();
@@ -123,34 +130,34 @@ public class GraphePCC implements Graphe {
 
             graphe = new Chemin[tailleGraphe][tailleGraphe];
             logger.info("Taille du graphe {}", graphe.length);
-            for(int i=0;i<tailleGraphe;i++){
-                for(int j=0;j<tailleGraphe;j++){
-                    graphe[i][j]=null;
+            for (int i = 0; i < tailleGraphe; i++) {
+                for (int j = 0; j < tailleGraphe; j++) {
+                    graphe[i][j] = null;
                 }
             }
 
-            for(int i=0;i < cheminsParLivraison.size(); i++){
+            for (int i = 0; i < cheminsParLivraison.size(); i++) {
                 List<Chemin> cheminsCourants = cheminsParLivraison.get(i);
 
                 Iterator<Chemin> it = cheminsCourants.iterator();
 
-                while(it.hasNext()){
+                while (it.hasNext()) {
                     Chemin chemin = it.next();
                     int depart = i;
                     int arrivee = vus.get(chemin.getArrivee().getIntersection().getAdresse());
 
-                    graphe[depart][arrivee]=chemin;
+                    graphe[depart][arrivee] = chemin;
 
                 }
 
             }
 
-            for(int i=0;i<tailleGraphe;i++){
-                for(int j=0;j<tailleGraphe;j++){
-                    if( graphe[i][j]==null){
+            for (int i = 0; i < tailleGraphe; i++) {
+                for (int j = 0; j < tailleGraphe; j++) {
+                    if (graphe[i][j] == null) {
                         System.out.print("N, ");
-                    }else {
-                        System.out.print(graphe[i][j].getDuree()+", ");
+                    } else {
+                        System.out.print(graphe[i][j].getDuree() + ", ");
                     }
                 }
                 System.out.println("");
@@ -165,21 +172,23 @@ public class GraphePCC implements Graphe {
     public int getCout(int i, int j) {
 
 
-        if(i<0 || i>=graphe.length || j<0 || j>=graphe.length){
+        if (i < 0 || i >= graphe.length || j < 0 || j >= graphe.length) {
             return -1;
         }
 
         return graphe[i][j] == null ? -1 : graphe[i][j].getDuree();
     }
+
     @Override
     public boolean estArc(int i, int j) {
 
-        if(i<0 || i>=graphe.length || j<0 || j>=graphe.length){
+        if (i < 0 || i >= graphe.length || j < 0 || j >= graphe.length) {
             return false;
         }
 
         return graphe[i][j] != null;
     }
+
     @Override
     public int getNbSommets() {
         return graphe.length;

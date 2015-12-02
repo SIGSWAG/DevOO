@@ -1,25 +1,27 @@
 package optimod.controleur;
 
 import java.util.LinkedList;
+
 /**
  * Created by (PRO) Loïc Touzard on 23/11/2015.
  */
-public class ListeDeCdes {
+public class ListeDeCommandes {
     private LinkedList<Commande> liste;
     private int indiceCrt;
 
-    public ListeDeCdes(){
+    public ListeDeCommandes() {
         indiceCrt = -1;
         liste = new LinkedList<Commande>();
     }
 
     /**
      * Ajout de la commande c a la liste this
+     *
      * @param c
      */
-    public void ajoute(Commande c){
-        int i = indiceCrt+1;
-        while(i<liste.size()){
+    public void ajoute(Commande c) {
+        int i = indiceCrt + 1;
+        while (i < liste.size()) {
             liste.remove(i);
         }
         indiceCrt++;
@@ -30,8 +32,8 @@ public class ListeDeCdes {
     /**
      * Annule temporairement la derniere commande ajoutee (cette commande pourra etre remise dans la liste avec redo)
      */
-    public void undo(){
-        if (onPeutAnnuler()){
+    public void undo() {
+        if (onPeutAnnuler()) {
             Commande cde = liste.get(indiceCrt);
             indiceCrt--;
             cde.undoCde();
@@ -41,8 +43,8 @@ public class ListeDeCdes {
     /**
      * Remet dans la liste la derniere commande annulee avec undo
      */
-    public void redo(){
-        if (onPeutRejouer()){
+    public void redo() {
+        if (onPeutRejouer()) {
             indiceCrt++;
             Commande cde = liste.get(indiceCrt);
             cde.doCde();
@@ -52,7 +54,7 @@ public class ListeDeCdes {
     /**
      * Supprime definitivement toutes les commandes de liste
      */
-    public void reset(){
+    public void reset() {
         indiceCrt = -1;
         liste.clear();
     }
@@ -60,14 +62,14 @@ public class ListeDeCdes {
     /**
      * @return true si on peut annuler une commande, false sinon
      */
-    public boolean onPeutAnnuler(){
+    public boolean onPeutAnnuler() {
         return indiceCrt >= 0;
     }
 
     /**
      * @return true si on peut rejouer une commande, false sinon
      */
-    public boolean onPeutRejouer(){
-        return indiceCrt < liste.size()-1;
+    public boolean onPeutRejouer() {
+        return indiceCrt < liste.size() - 1;
     }
 }

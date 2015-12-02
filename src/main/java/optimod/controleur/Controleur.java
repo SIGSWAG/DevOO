@@ -12,32 +12,41 @@ import java.util.List;
  */
 public class Controleur {
 
-    private Ordonnanceur ordonnanceur;
-    private FenetreControleur fenetreControleur;
-    private ListeDeCdes listeDeCdes;
-    private List<Intersection> intersectionsSelectionnees = new ArrayList<Intersection>();
-
-    private static Etat etatCourant;
     // Instances associees a chaque etat possible du controleur
     protected static final EtatInit etatInit = new EtatInit();
-    protected static final EtatAttenteDemandeLivr etatAttenteDemandeLivr = new EtatAttenteDemandeLivr();
-    protected static final EtatVisualisationDemandesLivr etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivr();
+    protected static final EtatAttenteDemandeLivraison etatAttenteDemandeLivr = new EtatAttenteDemandeLivraison();
+    protected static final EtatVisualisationDemandesLivraison etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivraison();
     protected static final EtatPrincipal etatPrincipal = new EtatPrincipal();
-    protected static final EtatUneLivrSelectionnee etatUneLivrSelectionnee = new EtatUneLivrSelectionnee();
-    protected static final EtatDeuxLivrSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivrSelectionnees();
-    protected static final EtatPlusDeDeuxLivrSelectionnees etatPlusDeDeuxLivrSelectionnees = new EtatPlusDeDeuxLivrSelectionnees();
+    protected static final EtatUneLivraisonSelectionnee etatUneLivrSelectionnee = new EtatUneLivraisonSelectionnee();
+    protected static final EtatDeuxLivraisonsSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivraisonsSelectionnees();
+    protected static final EtatPlusDeDeuxLivraisonsSelectionnees etatPlusDeDeuxLivrSelectionnees = new EtatPlusDeDeuxLivraisonsSelectionnees();
     protected static final EtatAjoutInit etatAjoutInit = new EtatAjoutInit();
-    protected static final EtatAjoutLivrValidable etatAjoutLivrValidable = new EtatAjoutLivrValidable();
+    protected static final EtatAjoutLivraisonValidable etatAjoutLivraisonValidable = new EtatAjoutLivraisonValidable();
+    private static Etat etatCourant;
+    private Ordonnanceur ordonnanceur;
+    private FenetreControleur fenetreControleur;
+    private ListeDeCommandes listeDeCdes;
+    private List<Intersection> intersectionsSelectionnees = new ArrayList<Intersection>();
 
 
     /**
      * Constructeur de Controleur
+     *
      * @param ordonnanceur l'Ordonnanceur qui pilote le Controleur
      */
     public Controleur(Ordonnanceur ordonnanceur) {
         this.ordonnanceur = ordonnanceur;
         etatCourant = etatInit;
-        listeDeCdes = new ListeDeCdes();
+        listeDeCdes = new ListeDeCommandes();
+    }
+
+    /**
+     * Change l'etat courant du controleur
+     *
+     * @param etat le nouvel etat courant
+     */
+    protected static void setEtatCourant(Etat etat) {
+        etatCourant = etat;
     }
 
     /**
@@ -138,26 +147,24 @@ public class Controleur {
 
     /**
      * Permet de sélectionner une intersection
+     *
      * @param intersection
      * @return
      */
     public boolean selectionnerIntersection(Intersection intersection) {
-        boolean res = etatCourant.selectionnerIntersection(
-                    fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
-        );
+        boolean res = etatCourant.selectionnerIntersection(fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }
 
     /**
      * Permet de désélectionner une intersection
+     *
      * @param intersection l'Intersection à désélectionner
      * @return
      */
     public boolean deselectionnerIntersection(Intersection intersection) {
-        boolean res = etatCourant.deselectionnerIntersection(
-                    fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees
-        );
+        boolean res = etatCourant.deselectionnerIntersection(fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
         return res;
     }
@@ -170,17 +177,7 @@ public class Controleur {
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
-
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
-    }
-
-    /**
-     * Change l'etat courant du controleur
-     *
-     * @param etat le nouvel etat courant
-     */
-    protected static void setEtatCourant(Etat etat) {
-        etatCourant = etat;
     }
 }

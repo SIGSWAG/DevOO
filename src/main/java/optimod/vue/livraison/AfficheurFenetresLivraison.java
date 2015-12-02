@@ -45,6 +45,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
     /**
      * Charge la demande de livraisons
+     *
      * @param demandeLivraisons
      */
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
@@ -84,10 +85,10 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
     }
 
     /**
-     *  Permet de notifier au controlleur interne de la fenêtre de sélectionner la livraison sélectionnée dans la TreeView
+     * Permet de notifier au controlleur interne de la fenêtre de sélectionner la livraison sélectionnée dans la TreeView
      */
     private void clicElementListe() {
-        if(ecouteurActive) {
+        if (ecouteurActive) {
             List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
             for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
                 try {
@@ -115,6 +116,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
     /**
      * Sélectionne la livraison visuellement (surbrillance bleue) dans la TreeView
+     *
      * @param livraison La livraison à sélectionner
      */
     public void selectionner(Livraison livraison) {
@@ -127,7 +129,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                 for (int j = 0; j < objectTreeItem.getChildren().size(); j++) {
                     Object o1 = objectTreeItem.getChildren().get(j).getValue();
                     if (o1 instanceof Livraison && livraison == o1) {
-                        if(!getSelectionModel().isSelected(itemIndex + j + 1)) {
+                        if (!getSelectionModel().isSelected(itemIndex + j + 1)) {
                             getSelectionModel().select(itemIndex + j + 1);
                         }
                         return;
@@ -140,6 +142,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
     /**
      * Déselectionne la livraison dans la TreeView
+     *
      * @param livraison La livraison à déselectionner
      */
     public void deselectionner(Livraison livraison) {
@@ -154,7 +157,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                 for (int j = 0; j < objectTreeItem.getChildren().size(); j++) {
                     Object o1 = objectTreeItem.getChildren().get(j).getValue();
                     if (o1 instanceof Livraison && livraison != o1) {
-                        if(getSelectionModel().isSelected(itemIndex + j + 1)) {
+                        if (getSelectionModel().isSelected(itemIndex + j + 1)) {
                             livrSelectionnees.add(itemIndex + j + 1);
                         }
                     }
