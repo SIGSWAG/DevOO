@@ -59,7 +59,7 @@ public class GraphePCC implements Graphe {
 
         tsp.chercheSolution(60000, this);
 
-        System.out.println("fin du calcul");
+        logger.debug("fin du calcul");
 
 
         for (int i = 0; i < graphe.length - 1; i++) {
@@ -155,12 +155,11 @@ public class GraphePCC implements Graphe {
             for (int i = 0; i < tailleGraphe; i++) {
                 for (int j = 0; j < tailleGraphe; j++) {
                     if (graphe[i][j] == null) {
-                        System.out.print("N, ");
+                        logger.debug("N, ");
                     } else {
-                        System.out.print(graphe[i][j].getDuree() + ", ");
+                        logger.debug("{}, ", graphe[i][j].getDuree());
                     }
                 }
-                System.out.println("");
             }
         }
 

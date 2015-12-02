@@ -6,12 +6,13 @@ import java.util.LinkedList;
  * Created by (PRO) Loïc Touzard on 23/11/2015.
  */
 public class ListeDeCommandes {
+
     private LinkedList<Commande> liste;
-    private int indiceCrt;
+    private int indiceCourant;
 
     public ListeDeCommandes() {
-        indiceCrt = -1;
-        liste = new LinkedList<Commande>();
+        indiceCourant = -1;
+        liste = new LinkedList<>();
     }
 
     /**
@@ -20,12 +21,12 @@ public class ListeDeCommandes {
      * @param c
      */
     public void ajoute(Commande c) {
-        int i = indiceCrt + 1;
+        int i = indiceCourant + 1;
         while (i < liste.size()) {
             liste.remove(i);
         }
-        indiceCrt++;
-        liste.add(indiceCrt, c);
+        indiceCourant++;
+        liste.add(indiceCourant, c);
         c.doCde();
     }
 
@@ -34,8 +35,8 @@ public class ListeDeCommandes {
      */
     public void undo() {
         if (onPeutAnnuler()) {
-            Commande cde = liste.get(indiceCrt);
-            indiceCrt--;
+            Commande cde = liste.get(indiceCourant);
+            indiceCourant--;
             cde.undoCde();
         }
     }
@@ -45,8 +46,8 @@ public class ListeDeCommandes {
      */
     public void redo() {
         if (onPeutRejouer()) {
-            indiceCrt++;
-            Commande cde = liste.get(indiceCrt);
+            indiceCourant++;
+            Commande cde = liste.get(indiceCourant);
             cde.doCde();
         }
     }
@@ -55,7 +56,7 @@ public class ListeDeCommandes {
      * Supprime definitivement toutes les commandes de liste
      */
     public void reset() {
-        indiceCrt = -1;
+        indiceCourant = -1;
         liste.clear();
     }
 
@@ -63,13 +64,13 @@ public class ListeDeCommandes {
      * @return true si on peut annuler une commande, false sinon
      */
     public boolean onPeutAnnuler() {
-        return indiceCrt >= 0;
+        return indiceCourant >= 0;
     }
 
     /**
      * @return true si on peut rejouer une commande, false sinon
      */
     public boolean onPeutRejouer() {
-        return indiceCrt < liste.size() - 1;
+        return indiceCourant < liste.size() - 1;
     }
 }

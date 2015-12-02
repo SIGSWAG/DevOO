@@ -55,7 +55,7 @@ public class DemandeLivraisons extends Observable {
      */
     public void calculerItineraire() {
 
-        System.out.println("Calcul lancé");
+        logger.debug("Calcul lancé");
         List<Chemin> graphe = new ArrayList<>();
 
         List<Livraison> listeEntrepot = new ArrayList<>();
@@ -108,7 +108,7 @@ public class DemandeLivraisons extends Observable {
         }
 
         for (Chemin chemin : itineraire) {
-            System.out.println("Depart " + chemin.getDepart().getIntersection().getAdresse() + " arrivee " + chemin.getArrivee().getIntersection().getAdresse());
+            logger.debug("Depart {} arrivee {}", chemin.getDepart().getIntersection().getAdresse(), chemin.getArrivee().getIntersection().getAdresse());
 
         }
         setChanged();
@@ -162,7 +162,7 @@ public class DemandeLivraisons extends Observable {
         nouvelleLivraison.setPrecedente(livr.getPrecedente());
 
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
-        System.out.println("Chemin de " + nouvelleLivraison.getPrecedente().getIntersection().getAdresse() + " a " + nouvelleLivraison.getIntersection().getAdresse());
+        logger.debug("Chemin de {} a {}", nouvelleLivraison.getPrecedente().getIntersection().getAdresse(), nouvelleLivraison.getIntersection().getAdresse());
         if (nouveauPCC1 != null) {
 
             Chemin ch = livr.getPrecedente().getCheminVersSuivante();
@@ -178,7 +178,7 @@ public class DemandeLivraisons extends Observable {
             }
 
             Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-            System.out.println("Chemin de " + nouvelleLivraison.getIntersection().getAdresse() + " a " + livr.getIntersection().getAdresse());
+            logger.debug("Chemin de {} a {}", nouvelleLivraison.getIntersection().getAdresse(), livr.getIntersection().getAdresse());
             if (nouveauPCC2 != null) {
                 livr.setPrecedente(nouvelleLivraison);
                 nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
@@ -199,10 +199,10 @@ public class DemandeLivraisons extends Observable {
                 fenetreLivraison.getLivraisons().add(nouvelleLivraison);
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
             } else {
-                System.out.println("chemin 2 null");
+                logger.debug("chemin 2 null");
             }
         } else {
-            System.out.println("Chemin 1 null");
+            logger.debug("Chemin 1 null");
         }
 
         setChanged();
@@ -258,8 +258,9 @@ public class DemandeLivraisons extends Observable {
 
         if (nouveauPCC != null) {
 
-            System.out.println("suppression de " + livr.getIntersection().getAdresse() + " pcc de " +
-                    nouveauPCC.getDepart().getIntersection().getAdresse() + " vers " + nouveauPCC.getArrivee().getIntersection().getAdresse() + " longueur chemin " + nouveauPCC.getTroncons().size());
+            logger.debug("suppression de {}  pcc de {} vers {} longueur chemin {}",
+                    livr.getIntersection().getAdresse(), nouveauPCC.getDepart().getIntersection().getAdresse(),
+                    nouveauPCC.getArrivee().getIntersection().getAdresse(), nouveauPCC.getTroncons().size());
             Chemin cheminASupprimer = livr.getPrecedente().getCheminVersSuivante();
             Chemin cheminASupprimer2 = livr.getCheminVersSuivante();
 
@@ -301,7 +302,7 @@ public class DemandeLivraisons extends Observable {
 
         } else {
 
-            System.out.println("PCC est null !!!!");
+            logger.debug("PCC est null !!!!");
         }
 
         setChanged();

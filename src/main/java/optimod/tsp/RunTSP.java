@@ -13,7 +13,6 @@ public class RunTSP {
             for (int i = 0; i < nbSommets; i++) {
                 System.out.print(tsp.getSolution(i) + " ");
             }
-            System.out.println();
         }
     }
 }
