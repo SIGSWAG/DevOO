@@ -13,11 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by aurelien on 23/11/15.
+ * Affiche le plan (une fois chargé) avec toutes les intersections et les tronçons
  */
 public final class AfficheurPlan {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final FenetreControleur fenetreControleur;
 
@@ -144,6 +142,10 @@ public final class AfficheurPlan {
         return null;
     }
 
+    /**
+     * Sélectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     * @param intersection Intersection à sélectionner
+     */
     public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
@@ -152,18 +154,30 @@ public final class AfficheurPlan {
         }
     }
 
+    /**
+     * Déselectionne toutes les intersections sur le plan
+     */
     public void deselectionnerToutesIntersections() {
         getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
-    public void deselectionner(Intersection i) {
-        IntersectionPane ip = trouverIntersectionPane(i);
+    /**
+     * Déselectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     * @param intersection Intersection à déselectionner
+     */
+    public void deselectionner(Intersection intersection) {
+        IntersectionPane ip = trouverIntersectionPane(intersection);
         if (ip != null) {
             ip.deselectionner();
             intersectionsSelectionnees.remove(ip);
         }
     }
 
+    /**
+     * Sélectionner toutes les intersections qui sont des livraisons sur le plan pour la fenêtre de livraison passée en
+     * paramètre (si elle existe)
+     * @param fenetreLivraison La fenêtre de livraison contenant les livraisons à sélectionner
+     */
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
         deselectionnerIntersections();
         for (Livraison livraison : fenetreLivraison.getLivraisons()) {

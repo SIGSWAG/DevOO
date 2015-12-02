@@ -1,6 +1,4 @@
-package optimod.vue;/**
- * Created by Jonathan on 18/11/2015.
- */
+package optimod.vue;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +15,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+/**
+ * Point d'entrée de l'application, permettant de lancer l'IHM de l'application Optimod en initialisant tous les composants
+ */
 public class OptimodApplication extends Application {
 
     private static final String FENETRE_XML = "/vue/Fenetre.fxml";

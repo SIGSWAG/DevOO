@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 /**
- * Created by Jonathan on 18/11/2015.
+ * Ouvreur de fichier afin de charger un fichier ou d'écrire dans un fichier (Singleton)
+ *
  * Voir http://stackoverflow.com/questions/70689/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java pour
  * la raison de l'implémentation en enum
  */
-public enum OuvreurDeFichier { // Singleton
+public enum OuvreurDeFichier {
     INSTANCE;
 
     public static final boolean MODE_LECTURE = true;
@@ -24,7 +25,9 @@ public enum OuvreurDeFichier { // Singleton
     private static final String CLE_REGISTRE_FICHIER_CHOISI_LECTURE = "cheminFichierLecture";
     private static final String CLE_REGISTRE_FICHIER_CHOISI_ECRITURE = "cheminFichierEcriture";
     private static String TITRE_OUVREUR_DE_FICHIER = "Sélectionner le fichier à charger";
+
     private static List<FileChooser.ExtensionFilter> EXTENSIONS = new ArrayList<FileChooser.ExtensionFilter>();
+
     private static boolean MODE = MODE_LECTURE;
 
     private FileChooser explorateurFichier = new FileChooser();

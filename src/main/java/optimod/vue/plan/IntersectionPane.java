@@ -22,8 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 
 /**
- * Représente une intersection à l'écran.
- * Created by Jonathan on 19/11/2015.
+ * Représente une intersection sur le plan
  */
 public class IntersectionPane extends Group {
 
@@ -70,6 +69,9 @@ public class IntersectionPane extends Group {
         reinitialiser();
     }
 
+    /**
+     * Réinitialise les informations concernant une intersection (visible ou non à l'écran)
+     */
     public void reinitialiser() {
         couleur = COULEUR_DEFAUT;
         label.setText("");
@@ -87,11 +89,17 @@ public class IntersectionPane extends Group {
         }
     }
 
+    /**
+     * Sélectionne l'intersection et la colorie avec la couleur adéquate (livraison, entrepôt, etc.)
+     */
     public void selectionner() {
         selectionne = true;
         colorier();
     }
 
+    /**
+     * Déselectionne une intersection et la colorie avec la couleur adéquate (livraison, entrepôt, etc.)
+     */
     public void deselectionner() {
         selectionne = false;
         colorier();
@@ -103,6 +111,10 @@ public class IntersectionPane extends Group {
         mettreAJour();
     }
 
+    /**
+     * Permet de savoir si cette intersection est une livraison
+     * @return True si l'intersection est une livraison, False sinon
+     */
     public boolean aUneLivraison() {
         return intersection.getLivraison() != null;
     }
@@ -120,6 +132,9 @@ public class IntersectionPane extends Group {
         colorier();
     }
 
+    /**
+     * Met à jour l'intersection en la recoloriant et en générant le texte de l'info bulle associée
+     */
     public void mettreAJour() {
         colorier();
         genererTexteInfobulle();
@@ -153,7 +168,7 @@ public class IntersectionPane extends Group {
 
     }
 
-    public String genererTexteIntersection(final Intersection intersection) {
+    private String genererTexteIntersection(final Intersection intersection) {
         String texte = String.format("(%s;%s)",
                 intersection.getX(),
                 intersection.getY());

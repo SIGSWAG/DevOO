@@ -7,7 +7,8 @@ import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
 
 /**
- * Created by Jonathan on 24/11/2015.
+ * Cellule customisée de AfficheurFenetresLivraison qui permet d'afficher des informations sur une fenêtre de livraison
+ * ou sur une livraison
  */
 class LivraisonTreeCell extends TreeCell {
 
@@ -63,7 +64,6 @@ class LivraisonTreeCell extends TreeCell {
                 setText("Client " + client + "\nAdresse " + livraison.getIntersection().getAdresse() + heure + retard);
                 setTextFill(Color.BLACK);
             }
-
         }
 
     }

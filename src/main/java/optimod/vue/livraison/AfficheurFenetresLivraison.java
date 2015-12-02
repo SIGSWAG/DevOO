@@ -17,7 +17,6 @@ import java.util.List;
 
 /**
  * TreeView customisée permettant d'afficher les livraisons et fenêtres de livraison sous la forme d'une TreeView
- * Created by Jonathan on 24/11/2015.
  */
 public final class AfficheurFenetresLivraison extends TreeView<Object> {
 
@@ -100,7 +99,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
                     logger.error("Problème au clic : ", e);
                 }
             }
-            fenetreControleur.deselectionnerTout();
+            fenetreControleur.deselectionnerToutesIntersections();
             livraisonsSelectionnees.forEach(livraison -> fenetreControleur.selectionner(livraison.getIntersection()));
         }
     }
