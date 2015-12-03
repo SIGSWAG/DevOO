@@ -7,9 +7,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
-/**
- * Créé par aurelien le 18/11/15.
- */
+
 public class GraphePCCTest {
 
     @Test

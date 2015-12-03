@@ -8,9 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Créé par aurelien le 18/11/15.
- */
+
 public class DemandeLivraisonsTest {
 
     @Test
@@ -135,7 +133,21 @@ public class DemandeLivraisonsTest {
     }
 
     @Test
-    public void testSupprnouvelleLivraisonimerLivraison() throws Exception {
+    public void testSupprimerLivraisonEntrepot() {
+        Plan plan = new Plan();
+        final Intersection intersection1 = new Intersection(0, 0, 0, null);
+
+        final Livraison livraisonASupprimer = new Livraison(intersection1);
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        demandeLivraisons.setEntrepot(livraisonASupprimer);
+
+        boolean supprime = demandeLivraisons.supprimerLivraison(livraisonASupprimer);
+
+        assertEquals(supprime, false);
+    }
+
+    @Test
+    public void testSupprimerNouvelleLivraison() throws Exception {
 
         final File xmlPlan = new File("src/test/resources/modification/plan-test.xml");
         final Plan plan = new Plan();
@@ -192,5 +204,7 @@ public class DemandeLivraisonsTest {
         }
 
     }
+
+
 
 }

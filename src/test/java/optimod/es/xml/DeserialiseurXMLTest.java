@@ -13,9 +13,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Créé par (PRO) Loïc Touzard le 25/11/2015.
- */
+
 public class DeserialiseurXMLTest {
 
     @Rule

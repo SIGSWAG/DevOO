@@ -10,9 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-/**
- * Créé par aurelien le 18/11/15.
- */
+
 public class LivraisonTest {
 
     @Test

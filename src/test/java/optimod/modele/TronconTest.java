@@ -7,13 +7,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-/**
- * Créé par jonathan le 18/11/15.
- */
+
 public class TronconTest {
 
     private static final double EPSILON = 1e-15;
-
 
     @Test
     public void testTroncon() {
@@ -26,7 +23,6 @@ public class TronconTest {
         assertEquals(new Troncon(null, 0, 5, "").getDuree(), (int) Double.MAX_VALUE, EPSILON);
     }
 
-    // TODO vérifier à quoi cela sert ?..
     public static void comparerTroncons(Troncon tronconATester, Troncon tronconType) {
 
     	comparerTronconsPrimitives(tronconATester, tronconType);

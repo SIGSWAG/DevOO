@@ -1,6 +1,5 @@
 package optimod.modele;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,9 +9,7 @@ import java.util.List;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
-/**
- * Créé par aurelien le 18/11/15.
- */
+
 public class PlanTest {
 
     private Plan plan;
