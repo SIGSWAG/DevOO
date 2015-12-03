@@ -154,18 +154,19 @@ public class DemandeLivraisons extends Observable {
      * Contrat : ajoute la livraison sur l'intersection donnée en paramètre et AVANT la livraison donnée en paramètre
      *
      * @param nouvelleLivraison la livraison à ajouter
-     * @param livr              la Livraison avant laquelle on ajoute la nouvelle Livraison
+     * @param livraisonApres    la Livraison avant laquelle on ajoute la nouvelle Livraison
+     * @param fenetreLivraison  la fenêtre de livraison dans laquelle ajouter la livraison
      */
-    public void ajouterLivraison(Livraison nouvelleLivraison, Livraison livr, FenetreLivraison fenetreLivraison) {
+    public void ajouterLivraison(final Livraison nouvelleLivraison, Livraison livraisonApres, FenetreLivraison fenetreLivraison) {
 
         nouvelleLivraison.getIntersection().setLivraison(nouvelleLivraison);
-        nouvelleLivraison.setPrecedente(livr.getPrecedente());
+        nouvelleLivraison.setPrecedente(livraisonApres.getPrecedente());
 
         Chemin nouveauPCC1 = nouvelleLivraison.getPrecedente().calculPCC(nouvelleLivraison);
         logger.debug("Chemin de {} a {}", nouvelleLivraison.getPrecedente().getIntersection().getAdresse(), nouvelleLivraison.getIntersection().getAdresse());
         if (nouveauPCC1 != null) {
 
-            Chemin ch = livr.getPrecedente().getCheminVersSuivante();
+            Chemin ch = livraisonApres.getPrecedente().getCheminVersSuivante();
             int indexASupprimer = 0;
             for (int i = 0; i < itineraire.size(); i++) {
                 if (ch == itineraire.get(i)) {
@@ -177,10 +178,10 @@ public class DemandeLivraisons extends Observable {
                 troncon.decrementeCompteurPassage();
             }
 
-            Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livr);
-            logger.debug("Chemin de {} a {}", nouvelleLivraison.getIntersection().getAdresse(), livr.getIntersection().getAdresse());
+            Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livraisonApres);
+            logger.debug("Chemin de {} a {}", nouvelleLivraison.getIntersection().getAdresse(), livraisonApres.getIntersection().getAdresse());
             if (nouveauPCC2 != null) {
-                livr.setPrecedente(nouvelleLivraison);
+                livraisonApres.setPrecedente(nouvelleLivraison);
                 nouvelleLivraison.getPrecedente().setCheminVersSuivante(nouveauPCC1);
                 nouvelleLivraison.setCheminVersSuivante(nouveauPCC2);
 
@@ -211,19 +212,19 @@ public class DemandeLivraisons extends Observable {
     }
 
     /**
-     * supprime la livraison en parametre et recalcule l'itinéraire, nottament les horaires prévues d'arrivées
+     * Supprime la livraison en parametre et recalcule l'itinéraire, nottament les horaires prévues d'arrivées
      *
-     * @param livr la livraison à supprimer
+     * @param livraison la livraison à supprimer
      */
-    public void supprimerLivraison(Livraison livr) {
-        if (livr == entrepot) {
+    public void supprimerLivraison(Livraison livraison) {
+        if (livraison == entrepot) {
             logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
             return;
-        } else if (livr.getPrecedente() == livr.getSuivante()) { //il ne reste qu'une livraison
+        } else if (livraison.getPrecedente() == livraison.getSuivante()) { //il ne reste qu'une livraison
 
-            livr.getIntersection().setLivraison(null);
+            livraison.getIntersection().setLivraison(null);
             Chemin aller = entrepot.getCheminVersSuivante();
-            Chemin retour = livr.getCheminVersSuivante();
+            Chemin retour = livraison.getCheminVersSuivante();
 
             for (Troncon tr : aller.getTroncons()) {
                 tr.decrementeCompteurPassage();
@@ -241,8 +242,8 @@ public class DemandeLivraisons extends Observable {
             itineraire.clear();
 
             for (FenetreLivraison f : this.fenetres) {
-                if (f.getLivraisons().contains(livr)) {
-                    f.getLivraisons().remove(livr);
+                if (f.getLivraisons().contains(livraison)) {
+                    f.getLivraisons().remove(livraison);
                 }
             }
 
@@ -253,16 +254,16 @@ public class DemandeLivraisons extends Observable {
 
         }
 
-        Chemin nouveauPCC = livr.getPrecedente().calculPCC(livr.getSuivante());
+        Chemin nouveauPCC = livraison.getPrecedente().calculPCC(livraison.getSuivante());
 
 
         if (nouveauPCC != null) {
 
             logger.debug("suppression de {}  pcc de {} vers {} longueur chemin {}",
-                    livr.getIntersection().getAdresse(), nouveauPCC.getDepart().getIntersection().getAdresse(),
+                    livraison.getIntersection().getAdresse(), nouveauPCC.getDepart().getIntersection().getAdresse(),
                     nouveauPCC.getArrivee().getIntersection().getAdresse(), nouveauPCC.getTroncons().size());
-            Chemin cheminASupprimer = livr.getPrecedente().getCheminVersSuivante();
-            Chemin cheminASupprimer2 = livr.getCheminVersSuivante();
+            Chemin cheminASupprimer = livraison.getPrecedente().getCheminVersSuivante();
+            Chemin cheminASupprimer2 = livraison.getCheminVersSuivante();
 
             int indexASupprimer = 0; //index de suppression
             for (int i = 0; i < itineraire.size(); i++) {
@@ -275,27 +276,27 @@ public class DemandeLivraisons extends Observable {
             itineraire.remove(cheminASupprimer);
             itineraire.remove(cheminASupprimer2);
 
-            for (Troncon tr : livr.getPrecedente().getCheminVersSuivante().getTroncons()) {
+            for (Troncon tr : livraison.getPrecedente().getCheminVersSuivante().getTroncons()) {
                 tr.decrementeCompteurPassage();
             }
 
-            for (Troncon tr : livr.getCheminVersSuivante().getTroncons()) {
+            for (Troncon tr : livraison.getCheminVersSuivante().getTroncons()) {
                 tr.decrementeCompteurPassage();
             }
 
-            livr.getPrecedente().setCheminVersSuivante(nouveauPCC);
-            livr.getSuivante().setPrecedente(livr.getPrecedente());
+            livraison.getPrecedente().setCheminVersSuivante(nouveauPCC);
+            livraison.getSuivante().setPrecedente(livraison.getPrecedente());
 
             for (Troncon tr : nouveauPCC.getTroncons()) {
                 tr.incrementeCompteurPassage();
             }
-            mettreAJourLesHeuresAPartirDe(livr.getPrecedente());
-            livr.getIntersection().setLivraison(null);
+            mettreAJourLesHeuresAPartirDe(livraison.getPrecedente());
+            livraison.getIntersection().setLivraison(null);
 
             //on supprime la livraison de la fenetre
             for (FenetreLivraison f : this.fenetres) {
-                if (f.getLivraisons().contains(livr)) {
-                    f.getLivraisons().remove(livr);
+                if (f.getLivraisons().contains(livraison)) {
+                    f.getLivraisons().remove(livraison);
                 }
             }
 
