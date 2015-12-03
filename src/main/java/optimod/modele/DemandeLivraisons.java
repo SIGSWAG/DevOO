@@ -216,10 +216,10 @@ public class DemandeLivraisons extends Observable {
      *
      * @param livraison la livraison à supprimer
      */
-    public void supprimerLivraison(Livraison livraison) {
+    public boolean supprimerLivraison(Livraison livraison) {
         if (livraison == entrepot) {
-            logger.error("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
-            return;
+            logger.warn("Tentative de suppresion de l'entrepôt, action impossible sur l'entrepot");
+            return false;
         } else if (livraison.getPrecedente() == livraison.getSuivante()) { //il ne reste qu'une livraison
 
             livraison.getIntersection().setLivraison(null);
@@ -250,7 +250,7 @@ public class DemandeLivraisons extends Observable {
             setChanged();
             notifyObservers(Evenement.ITINERAIRE_CALCULE);
 
-            return;
+            return true;
 
         }
 
@@ -308,6 +308,8 @@ public class DemandeLivraisons extends Observable {
 
         setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
+
+        return true;
     }
 
     /**
