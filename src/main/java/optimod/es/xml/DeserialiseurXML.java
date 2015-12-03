@@ -54,7 +54,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerPlan(Plan plan, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if (xml == null) {
+        if(xml == null || plan == null) {
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -79,39 +79,10 @@ public enum DeserialiseurXML { // Singleton
         for (int i = 0; i < listeNoeuds.getLength(); i++) {
             Element noeud = (Element) listeNoeuds.item(i);
 
-            // Validation des attributs
-            String attributAdresse = noeud.getAttribute("id");
-            if (attributAdresse.isEmpty()) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être défini");
-            }
-
-            int adresse = parseInt(attributAdresse);
-            if (adresse < 0) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être positif");
-            }
-            if (intersections.containsKey(adresse)) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'ID d'un Noeud doit être unique");
-            }
-            String attributX = noeud.getAttribute("x");
-            if (attributX.isEmpty()) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être définie");
-            }
-            int x = parseInt(attributX);
-            if (x <= 0) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être positive");
-            }
-            String attributY = noeud.getAttribute("y");
-            if (attributY.isEmpty()) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être définie");
-            }
-            int y = parseInt(attributY);
-            if (y <= 0) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être positive");
-            }
-
             // Création de l'intersection
-            intersections.put(adresse, new Intersection(x, y, adresse));
-            noeudsListe.put(adresse, noeud);
+            Intersection intersect = this.creerIntersection(noeud, intersections);
+            intersections.put(intersect.getAdresse(), intersect);
+            noeudsListe.put(intersect.getAdresse(), noeud);
         }
 
         // Pour chaque intersection on créée ses tronçonsSortants
@@ -126,42 +97,8 @@ public enum DeserialiseurXML { // Singleton
             for (int j = 0; j < listeTroncons.getLength(); j++) {
                 Element leTronconSortant = (Element) listeTroncons.item(j);
 
-                // Validation des attributs
-                String nomRue = leTronconSortant.getAttribute("nomRue");
-                if (nomRue.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné");
-                }
-                String attributVitesse = leTronconSortant.getAttribute("vitesse");
-                if (attributVitesse.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être définie");
-                }
-                double vitesse = parseDouble(attributVitesse.replaceAll(",", "."));
-                if (vitesse <= 0) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être positive");
-                }
-                String attributLongueur = leTronconSortant.getAttribute("longueur");
-                if (attributLongueur.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être définie");
-                }
-                double longueur = parseDouble(attributLongueur.replaceAll(",", "."));
-                if (longueur <= 0) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être positive");
-                }
-                String attributIdNoeudDestination = leTronconSortant.getAttribute("idNoeudDestination");
-                if (attributIdNoeudDestination.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : L'idNoeudDestination d'un leTronconSortant doit être défini");
-                }
-                int idNoeudDestination = parseInt(attributIdNoeudDestination);
-                Intersection intersectionDestination = intersections.get(idNoeudDestination);
-                if (intersectionDestination == null) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Un leTronconSortant possède un NoeudDestination inconnu");
-                }
-                if (intersectionDestination == intersectionDepart) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Un leTronconSortant ne peut pas avoir le même Noeud entrant et sortant");
-                }
-
                 // Création du troncon
-                Troncon troncon = new Troncon(intersectionDestination, vitesse, longueur, nomRue);
+                Troncon troncon = this.creerTroncon(leTronconSortant, intersectionDepart, intersections);
                 tronconSortants.add(troncon);
             }
 
@@ -172,6 +109,79 @@ public enum DeserialiseurXML { // Singleton
         // s'il n'y a eu aucunes erreur, on peut inserer ces Intersections dans le plan
         plan.reinitialiser();
         plan.setIntersections(new ArrayList<Intersection>(intersections.values()));
+    }
+
+    private Troncon creerTroncon(Element leTronconSortant, Intersection intersectionDepart, Map<Integer, Intersection> intersections) throws ExceptionXML {
+
+        // Validation des attributs
+        String nomRue = leTronconSortant.getAttribute("nomRue");
+        if (nomRue.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné");
+        }
+        String attributVitesse = leTronconSortant.getAttribute("vitesse");
+        if (attributVitesse.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être définie");
+        }
+        double vitesse = parseDouble(attributVitesse.replaceAll(",", "."));
+        if (vitesse <= 0) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être positive");
+        }
+        String attributLongueur = leTronconSortant.getAttribute("longueur");
+        if (attributLongueur.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être définie");
+        }
+        double longueur = parseDouble(attributLongueur.replaceAll(",", "."));
+        if (longueur <= 0) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être positive");
+        }
+        String attributIdNoeudDestination = leTronconSortant.getAttribute("idNoeudDestination");
+        if (attributIdNoeudDestination.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'idNoeudDestination d'un leTronconSortant doit être défini");
+        }
+        int idNoeudDestination = parseInt(attributIdNoeudDestination);
+        Intersection intersectionDestination = intersections.get(idNoeudDestination);
+        if (intersectionDestination == null) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un leTronconSortant possède un NoeudDestination inconnu");
+        }
+        if (intersectionDestination == intersectionDepart) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un leTronconSortant ne peut pas avoir le même Noeud entrant et sortant");
+        }
+
+        return new Troncon(intersectionDestination,vitesse,longueur,nomRue);
+    }
+
+    private Intersection creerIntersection(Element noeud, Map<Integer, Intersection> intersections) throws ExceptionXML {
+        // Validation des attributs
+        String attributAdresse = noeud.getAttribute("id");
+        if (attributAdresse.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être défini");
+        }
+
+        int adresse = parseInt(attributAdresse);
+        if (adresse < 0) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être positif");
+        }
+        if (intersections.containsKey(adresse)) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'ID d'un Noeud doit être unique");
+        }
+        String attributX = noeud.getAttribute("x");
+        if (attributX.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être définie");
+        }
+        int x = parseInt(attributX);
+        if (x <= 0) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être positive");
+        }
+        String attributY = noeud.getAttribute("y");
+        if (attributY.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être définie");
+        }
+        int y = parseInt(attributY);
+        if (y <= 0) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être positive");
+        }
+
+        return new Intersection(x, y, adresse);
     }
 
     /**
@@ -199,7 +209,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if (xml == null) {
+        if(xml == null || demandeLivraisons == null) {
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -229,20 +239,10 @@ public enum DeserialiseurXML { // Singleton
         if (listeEntrepots.getLength() != 1) {
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Une JourneeType doit avoir un (seul) Entrepot");
         }
-        Element elementEntrepot = (Element) listeEntrepots.item(0);
-        String attributAdresseEntrepot = elementEntrepot.getAttribute("adresse");
-        if (attributAdresseEntrepot.isEmpty()) {
-            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit avoir une adresse");
-        }
-        int adresseEntrepot = parseInt(attributAdresseEntrepot);
-        Intersection intersectionEntrepot = demandeLivraisons.getPlan().trouverIntersection(adresseEntrepot);
-        if (intersectionEntrepot == null) {
-            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
-        }
 
-        intersectionsUtilisees.add(intersectionEntrepot);
-        entrepot = new Livraison(intersectionEntrepot);
-
+        Element elementEntrepot = (Element)listeEntrepots.item(0);
+        entrepot = this.creerEntrepot(elementEntrepot, demandeLivraisons);
+        intersectionsUtilisees.add(entrepot.getIntersection());
 
         // Parcours de toutes les PlagesHoraires (FenetreLivraison)
         NodeList listePlagesHoraires = noeudDOMRacine.getElementsByTagName("PlagesHoraires");
@@ -295,11 +295,6 @@ public enum DeserialiseurXML { // Singleton
             if (tempsDeb > tempsFi) {
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
-            /*
-            if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() < tempsDeb){
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut supérieure ou égale à l'heureFin de la Plage précédente");
-            }
-            */
             for (FenetreLivraison fl : fenetres) {
                 if ((tempsDeb < fl.getHeureFin() && tempsDeb > fl.getHeureDebut()) || tempsFi < fl.getHeureFin() && tempsFi > fl.getHeureDebut()) {
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Deux Plages doivent être distinctes");
@@ -374,6 +369,20 @@ public enum DeserialiseurXML { // Singleton
                 l.getIntersection().setLivraison(l);
             }
         }
+    }
+
+    private Livraison creerEntrepot(Element elementEntrepot, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
+        String attributAdresseEntrepot = elementEntrepot.getAttribute("adresse");
+        if(attributAdresseEntrepot.isEmpty()){
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit avoir une adresse");
+        }
+        int adresseEntrepot = parseInt(attributAdresseEntrepot);
+        Intersection intersectionEntrepot = demandeLivraisons.getPlan().trouverIntersection(adresseEntrepot);
+        if (intersectionEntrepot == null) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
+        }
+
+        return new Livraison(intersectionEntrepot);
     }
 
     public void setFenetre(Stage fenetre) {
