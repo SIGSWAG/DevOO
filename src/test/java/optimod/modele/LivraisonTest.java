@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by aurelien on 18/11/15.
+ * Créé par aurelien le 18/11/15.
  */
 public class LivraisonTest {
 
@@ -30,7 +30,7 @@ public class LivraisonTest {
         Troncon troncon1 = new Troncon(intersection2, 1, 1, "2.1");
         Troncon troncon2 = new Troncon(intersection3, 1, 2, "3.1");
 
-        List<Troncon> tr1 = new ArrayList<Troncon>();
+        List<Troncon> tr1 = new ArrayList<>();
         tr1.add(troncon1);
         tr1.add(troncon2);
 
@@ -40,7 +40,7 @@ public class LivraisonTest {
         Troncon troncon3 = new Troncon(intersection4, 1, 2, "4.1");
 
 
-        List<Troncon> tr2 = new ArrayList<Troncon>();
+        List<Troncon> tr2 = new ArrayList<>();
         tr2.add(troncon3);
 
 
@@ -50,7 +50,7 @@ public class LivraisonTest {
         Troncon troncon4 = new Troncon(intersection2, 1, 4, "2.2");
         Troncon troncon5 = new Troncon(intersection4, 1, 3, "4.2");
 
-        List<Troncon> tr3 = new ArrayList<Troncon>();
+        List<Troncon> tr3 = new ArrayList<>();
         tr3.add(troncon4);
         tr3.add(troncon5);
 

@@ -28,7 +28,7 @@ public class Controleur {
     private Ordonnanceur ordonnanceur;
     private FenetreControleur fenetreControleur;
     private ListeDeCommandes listeDeCdes;
-    private List<Intersection> intersectionsSelectionnees = new ArrayList<Intersection>();
+    private List<Intersection> intersectionsSelectionnees = new ArrayList<>();
 
 
     /**
@@ -150,8 +150,8 @@ public class Controleur {
     /**
      * Permet de sélectionner une intersection
      *
-     * @param intersection
-     * @return
+     * @param intersection L'Intersection à sélectionner
+     * @return true si l'Intersection a été selectionnée, false sinon
      */
     public boolean selectionnerIntersection(Intersection intersection) {
         boolean res = etatCourant.selectionnerIntersection(fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees);
@@ -163,7 +163,7 @@ public class Controleur {
      * Permet de désélectionner une intersection
      *
      * @param intersection l'Intersection à désélectionner
-     * @return
+     * @return true si l'Intersection a été déselectionnée, false sinon
      */
     public boolean deselectionnerIntersection(Intersection intersection) {
         boolean res = etatCourant.deselectionnerIntersection(fenetreControleur, ordonnanceur, intersection, intersectionsSelectionnees);

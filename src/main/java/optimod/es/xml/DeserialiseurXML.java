@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Loïc Touzard on 18/11/2015.
+ * Créé par Loïc Touzard le 18/11/2015.
  */
 public enum DeserialiseurXML { // Singleton
     INSTANCE;
@@ -112,8 +112,8 @@ public enum DeserialiseurXML { // Singleton
     private void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML {
         // Parcours de tous les Noeud (Intersections)
         NodeList listeNoeuds = noeudDOMRacine.getElementsByTagName("Noeud");
-        Map<Integer, Intersection> intersections = new HashMap<Integer, Intersection>();
-        Map<Integer, Element> noeudsListe = new HashMap<Integer, Element>();
+        Map<Integer, Intersection> intersections = new HashMap<>();
+        Map<Integer, Element> noeudsListe = new HashMap<>();
 
         // Récupération de toutes les intersections
         for (int i = 0; i < listeNoeuds.getLength(); i++) {
@@ -129,7 +129,7 @@ public enum DeserialiseurXML { // Singleton
         for (Map.Entry<Integer, Intersection> paire : intersections.entrySet()) {
             Intersection intersectionDepart = paire.getValue();
 
-            List<Troncon> tronconSortants = new ArrayList<Troncon>();
+            List<Troncon> tronconSortants = new ArrayList<>();
             NodeList listeTroncons = noeudsListe.get(paire.getKey()).getElementsByTagName("LeTronconSortant");
             if (listeTroncons.getLength() < 1) {
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud doit avoir au moins un élément leTronconSortant");
@@ -148,7 +148,7 @@ public enum DeserialiseurXML { // Singleton
 
         // s'il n'y a eu aucunes erreur, on peut inserer ces Intersections dans le plan
         plan.reinitialiser();
-        plan.setIntersections(new ArrayList<Intersection>(intersections.values()));
+        plan.setIntersections(new ArrayList<>(intersections.values()));
     }
 
     private Troncon creerTroncon(Element leTronconSortant, Intersection intersectionDepart, Map<Integer, Intersection> intersections) throws ExceptionXML {
@@ -226,9 +226,9 @@ public enum DeserialiseurXML { // Singleton
 
     private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
         // intersectionsUtilisees permet de vérifier que l'on ne va pas ajouter une Livraison dans une intersection utilisée par ce fichier
-        List<Intersection> intersectionsUtilisees = new ArrayList<Intersection>();
+        List<Intersection> intersectionsUtilisees = new ArrayList<>();
         // fenetres représentes les fenêtres de livraison de la nouvelle demande de livraison
-        List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
+        List<FenetreLivraison> fenetres = new ArrayList<>();
         // entrepot est la livraison représentant le point de départ de la demande de livraison
         Livraison entrepot;
 
@@ -278,7 +278,7 @@ public enum DeserialiseurXML { // Singleton
             Element livraisons = (Element) listeLivraisons.item(0);
 
             // liste de livraisons de la fenetre courante
-            List<Livraison> livraisonsCourantes = new ArrayList<Livraison>();
+            List<Livraison> livraisonsCourantes = new ArrayList<>();
 
             NodeList listeLivraisonsCourantes = livraisons.getElementsByTagName("Livraison");
             if (listeLivraisonsCourantes.getLength() < 1) {

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by aurelien on 18/11/15.
+ * Créé par aurelien le 18/11/15.
  */
 public class IntersectionTest {
 

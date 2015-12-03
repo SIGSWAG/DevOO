@@ -8,7 +8,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Created by aurelien on 18/11/15.
+ * Créé par aurelien le 18/11/15.
  */
 public class GraphePCCTest {
 
@@ -25,7 +25,7 @@ public class GraphePCCTest {
         Troncon troncon1 = new Troncon(intersection2, 1, 1, "2.1");
         Troncon troncon2 = new Troncon(intersection3, 1, 2, "3.1");
 
-        List<Troncon> tr1 = new ArrayList<Troncon>();
+        List<Troncon> tr1 = new ArrayList<>();
         tr1.add(troncon1);
         tr1.add(troncon2);
 
@@ -35,7 +35,7 @@ public class GraphePCCTest {
         Troncon troncon3 = new Troncon(intersection4, 1, 2, "4.1");
 
 
-        List<Troncon> tr2 = new ArrayList<Troncon>();
+        List<Troncon> tr2 = new ArrayList<>();
         tr2.add(troncon3);
 
 
@@ -46,7 +46,7 @@ public class GraphePCCTest {
         Troncon troncon5 = new Troncon(intersection4, 1, 3, "4.2");
         Troncon tronconBis = new Troncon(intersection1, 1, 9, "1.1");
 
-        List<Troncon> tr3 = new ArrayList<Troncon>();
+        List<Troncon> tr3 = new ArrayList<>();
         tr3.add(troncon4);
         tr3.add(troncon5);
         tr3.add(tronconBis);
@@ -57,7 +57,7 @@ public class GraphePCCTest {
         Troncon troncon6 = new Troncon(intersection5, 1, 3, "5.1");
 
 
-        List<Troncon> tr4 = new ArrayList<Troncon>();
+        List<Troncon> tr4 = new ArrayList<>();
         tr4.add(troncon6);
 
 
@@ -69,7 +69,7 @@ public class GraphePCCTest {
         Troncon troncon9 = new Troncon(intersection1, 1, 4, "6.2");
 
 
-        List<Troncon> tr5 = new ArrayList<Troncon>();
+        List<Troncon> tr5 = new ArrayList<>();
         tr5.add(troncon7);
         tr5.add(troncon8);
         tr5.add(troncon9);
@@ -93,26 +93,15 @@ public class GraphePCCTest {
         Livraison entrepot = new Livraison(intersection4);
         intersection4.setLivraison(entrepot);
 
-
-        List<Intersection> intersections = new ArrayList<Intersection>();
-        intersections.add(intersection1);
-        intersections.add(intersection2);
-        intersections.add(intersection3);
-        intersections.add(intersection4);
-        intersections.add(intersection5);
-        intersections.add(intersection6);
-
-        List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
-
-        List<Livraison> f0 = new ArrayList<Livraison>();
+        List<Livraison> f0 = new ArrayList<>();
         f0.add(entrepot);
-        List<Livraison> f1 = new ArrayList<Livraison>();
+        List<Livraison> f1 = new ArrayList<>();
         f1.add(livraison3);
         f1.add(livraison5);
-        List<Livraison> f2 = new ArrayList<Livraison>();
+        List<Livraison> f2 = new ArrayList<>();
         f2.add(livraison);
         f2.add(livraison2);
-        List<Livraison> f3 = new ArrayList<Livraison>();
+        List<Livraison> f3 = new ArrayList<>();
         f3.add(entrepot);
 
         FenetreLivraison fenetreLivraison0 = new FenetreLivraison(f0, 0, 8);

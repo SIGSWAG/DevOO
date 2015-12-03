@@ -20,11 +20,11 @@ public abstract class TemplateTSP implements TSP {
         this.tpsLimite = tpsLimite;
         this.g = g;
         meilleureSolution = new Integer[g.getNbSommets()];
-        Collection<Integer> nonVus = new ArrayList<Integer>(g.getNbSommets() - 1);
+        Collection<Integer> nonVus = new ArrayList<>(g.getNbSommets() - 1);
         for (int i = 1; i < g.getNbSommets(); i++) {
             nonVus.add(i);
         }
-        Collection<Integer> vus = new ArrayList<Integer>(g.getNbSommets());
+        Collection<Integer> vus = new ArrayList<>(g.getNbSommets());
         vus.add(0); // le premier sommet visite est 0
         coutMeilleureSolution = Integer.MAX_VALUE;
         branchAndBound(0, nonVus, vus, 0);

@@ -57,9 +57,9 @@ public class Livraison {
             return null;
         }
 
-        Hashtable<Integer, Integer> distances = new Hashtable<Integer, Integer>(); //intersection, distance
-        Hashtable<Integer, Intersection> parents = new Hashtable<Integer, Intersection>(); //parents
-        PriorityQueue<DijkstraIntersection> tasBinaire = new PriorityQueue<DijkstraIntersection>();//distance, intersection
+        Hashtable<Integer, Integer> distances = new Hashtable<>(); //intersection, distance
+        Hashtable<Integer, Intersection> parents = new Hashtable<>(); //parents
+        PriorityQueue<DijkstraIntersection> tasBinaire = new PriorityQueue<>();//distance, intersection
 
         boolean destinationTrouvee = false;
 

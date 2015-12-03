@@ -18,9 +18,9 @@ public class ListeDeCommandes {
     }
 
     /**
-     * Ajout de la commande c a la liste this
+     * Ajoute la commande c a la liste this et l'execute
      *
-     * @param c
+     * @param c La Commande à ajouter et executer
      */
     public void ajoute(Commande c) {
         int i = indiceCourant + 1;

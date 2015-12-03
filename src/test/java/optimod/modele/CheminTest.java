@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by jonathan on 18/11/15.
+ * Créé par jonathan le 18/11/15.
  */
 public class CheminTest {
 
@@ -64,12 +64,9 @@ public class CheminTest {
 			}
 		}
 
-		if (!LivraisonTest.comparerLivraisonsPrimitivesBool(cheminATester.getDepart(), cheminType.getDepart()) ||
-				!LivraisonTest.comparerLivraisonsPrimitivesBool(cheminATester.getArrivee(), cheminType.getArrivee())) {
-			return false;
-		}
+		return !(!LivraisonTest.comparerLivraisonsPrimitivesBool(cheminATester.getDepart(), cheminType.getDepart()) ||
+				!LivraisonTest.comparerLivraisonsPrimitivesBool(cheminATester.getArrivee(), cheminType.getArrivee()));
 
-		return true;
 	}
 
 

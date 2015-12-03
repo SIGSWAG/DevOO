@@ -46,7 +46,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
     /**
      * Charge la demande de livraisons
      *
-     * @param demandeLivraisons
+     * @param demandeLivraisons la demande de livraison contenant les fenetre à charger
      */
     public void chargerFenetresLivraison(DemandeLivraisons demandeLivraisons) {
         this.demandeLivraisons = demandeLivraisons;
@@ -89,7 +89,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
      */
     private void clicElementListe() {
         if (ecouteurActive) {
-            List<Livraison> livraisonsSelectionnees = new ArrayList<Livraison>();
+            List<Livraison> livraisonsSelectionnees = new ArrayList<>();
             for (int i = 0; i < getSelectionModel().getSelectedItems().size(); i++) {
                 try {
                     Object o = getSelectionModel().getSelectedItems().get(i).getValue();
@@ -147,7 +147,7 @@ public final class AfficheurFenetresLivraison extends TreeView<Object> {
      */
     public void deselectionner(Livraison livraison) {
         etendre();
-        ArrayList<Integer> livrSelectionnees = new ArrayList<Integer>();
+        ArrayList<Integer> livrSelectionnees = new ArrayList<>();
         // on récupère toutes les livraisons selectionnées sauf celle que l'on va enlever
         int itemIndex = 0;
         for (int i = 0; i < getRoot().getChildren().size(); i++) {

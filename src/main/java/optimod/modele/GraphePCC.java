@@ -17,7 +17,7 @@ public class GraphePCC implements Graphe {
 
     private Hashtable<Integer, List<Chemin>> cheminsParLivraison;//calculatedIndex-->chemins
 
-    private Hashtable<Integer, Integer> vus = new Hashtable<Integer, Integer>();//reel --> calcule
+    private Hashtable<Integer, Integer> vus = new Hashtable<>();//reel --> calcule
 
     private Chemin[][] graphe;
 
@@ -25,7 +25,7 @@ public class GraphePCC implements Graphe {
 
     private TSP tsp;
 
-    private List<Chemin> chemins = new ArrayList<Chemin>();
+    private List<Chemin> chemins = new ArrayList<>();
 
     /**
      * Constructeur par défaut de GraphePCC
@@ -103,7 +103,7 @@ public class GraphePCC implements Graphe {
                         }
 
 
-                        cheminsCourants = new ArrayList<Chemin>();
+                        cheminsCourants = new ArrayList<>();
                         vus.put(adresse, index);
                         cheminsParLivraison.put(index, cheminsCourants);
                         if (index != 0) {
@@ -143,10 +143,9 @@ public class GraphePCC implements Graphe {
 
                 while (it.hasNext()) {
                     Chemin chemin = it.next();
-                    int depart = i;
                     int arrivee = vus.get(chemin.getArrivee().getIntersection().getAdresse());
 
-                    graphe[depart][arrivee] = chemin;
+                    graphe[i][arrivee] = chemin;
 
                 }
 
@@ -184,7 +183,6 @@ public class GraphePCC implements Graphe {
         if (i < 0 || i >= graphe.length || j < 0 || j >= graphe.length) {
             return false;
         }
-
         return graphe[i][j] != null;
     }
 

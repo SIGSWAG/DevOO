@@ -52,7 +52,7 @@ public class EtatDeuxLivraisonsSelectionnees extends EtatDefaut {
     @Override
     public void supprimerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
-        List<Livraison> lesLivraisonsASupp = new ArrayList<Livraison>();
+        List<Livraison> lesLivraisonsASupp = new ArrayList<>();
         for (Intersection inter : intersectionsSelectionnees) {
             Livraison l = inter.getLivraison();
             if (l != null) {

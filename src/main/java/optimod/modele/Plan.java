@@ -21,7 +21,7 @@ public class Plan extends Observable {
      * Constructeur par défaut de Plan
      */
     public Plan() {
-        this.intersections = new ArrayList<Intersection>();
+        this.intersections = new ArrayList<>();
         this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 

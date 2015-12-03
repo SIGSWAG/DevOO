@@ -48,7 +48,7 @@ public final class AfficheurPlan {
     /**
      * Affiche une demande de livraison sur le plan.
      *
-     * @param demandeLivraisons
+     * @param demandeLivraisons la demande de livraison à charger
      */
     public void chargerDemandeLivraisons(final DemandeLivraisons demandeLivraisons) throws NullPointerException {
         reinitialiser();
@@ -74,7 +74,7 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
         calculCouleursTroncons(itineraire);
         getTronconsPane().forEach(TronconPane::mettreAJour);
-        getIntersectionsPane().stream().filter(i -> i.getTexte() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
+        getIntersectionsPane().stream().filter(i -> !i.getTexte().equals("")).forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
     }
 
     private void calculCouleursTroncons(List<Chemin> itineraire) {
@@ -195,7 +195,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<IntersectionPane> getIntersectionsPane() {
-        List<IntersectionPane> intersectionsCercle = new ArrayList<IntersectionPane>();
+        List<IntersectionPane> intersectionsCercle = new ArrayList<>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof IntersectionPane) {
                 intersectionsCercle.add((IntersectionPane) noeud);
@@ -205,7 +205,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<TronconPane> getTronconsPane() {
-        List<TronconPane> tronconsLigne = new ArrayList<TronconPane>();
+        List<TronconPane> tronconsLigne = new ArrayList<>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {
                 tronconsLigne.add((TronconPane) noeud);
@@ -215,7 +215,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<Intersection> getIntersections() {
-        ArrayList<Intersection> intersections = new ArrayList<Intersection>();
+        ArrayList<Intersection> intersections = new ArrayList<>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof IntersectionPane) {
                 intersections.add(((IntersectionPane) noeud).getIntersection());
@@ -225,7 +225,7 @@ public final class AfficheurPlan {
     }
 
     private Collection<Troncon> getTroncons() {
-        List<Troncon> troncons = new ArrayList<Troncon>();
+        List<Troncon> troncons = new ArrayList<>();
         for (Node noeud : group.getChildren()) {
             if (noeud instanceof TronconPane) {
                 troncons.add(((TronconPane) noeud).getTroncon());

@@ -11,7 +11,7 @@ public class Intersection {
 
     private int y;
 
-    private List<Troncon> sortants = new ArrayList<Troncon>();
+    private List<Troncon> sortants = new ArrayList<>();
 
     private Livraison livraison;
 
@@ -120,9 +120,6 @@ public class Intersection {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Intersection)) {
-            return false;
-        }
-        return this.adresse == ((Intersection) obj).adresse;
+        return obj instanceof Intersection && this.adresse == ((Intersection) obj).adresse;
     }
 }

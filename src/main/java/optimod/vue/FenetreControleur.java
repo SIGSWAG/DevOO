@@ -115,6 +115,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Charger plan" dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void chargerPlan(ActionEvent evenement) {
@@ -123,6 +125,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Charger livraisons" dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void chargerDemandeLivraisons(ActionEvent evenement) {
@@ -131,6 +135,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Calculer l'itinéraire" dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void calculerItineraire(ActionEvent evenement) {
@@ -139,6 +145,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton annuler dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void annulerDerniereAction(ActionEvent evenement) {
@@ -147,6 +155,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton rejouer dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void rejouerDerniereAction(ActionEvent evenement) {
@@ -163,6 +173,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton pour échanger des livraisons dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void echangerLivraisons(ActionEvent evenement) {
@@ -173,6 +185,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton pour supprimer une livraison dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void supprimerLivraison(ActionEvent evenement) {
@@ -183,6 +197,8 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Tout déselectionner" dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void deselectionnerToutesIntersections(ActionEvent evenement) {
@@ -193,7 +209,7 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton de validation d'un ajout de livraison
      *
-     * @param evenement
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void validerAjoutLivraison(ActionEvent evenement) {
@@ -205,7 +221,7 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton d'annulation d'un ajout de livraison
      *
-     * @param evenement
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void annulerAjoutLivraison(ActionEvent evenement) {
@@ -216,12 +232,20 @@ public class FenetreControleur implements Observer, Initializable {
 
     /**
      * Appelée lorsque l'utilisateur clique sur le bouton "Générer feuille de route" dans l'interface
+     *
+     * @param evenement ActionEvent correspondant à l'évènement utilisateur
      */
     @FXML
     protected void genererFeuilleDeRoute(ActionEvent evenement) {
         controleur.genererFeuilleDeRoute();
     }
 
+    /**
+     * Effectue la mise à jour de la vue
+     *
+     * @param o   Objet observé
+     * @param arg Evenement définissant l'action qui s'est exécutée
+     */
     @Override
     public void update(final Observable o, final Object arg) {
         final Evenement evenement = (Evenement) arg;
@@ -289,66 +313,146 @@ public class FenetreControleur implements Observer, Initializable {
         return new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
     }
 
+    /**
+     * Active/desactive le bouton ChargerPlan
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerChargerPlan(boolean estActif) {
         chargerPlan.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton ChargerLivraisons
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerChargerLivraisons(boolean estActif) {
         chargerLivraisons.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton ToutDeselectionner
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerToutDeselectionner(boolean estActif) {
         toutDeselectionner.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton GenererFeuilleRoute
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerGenererFeuilleRoute(boolean estActif) {
         genererFeuilleRoute.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton Annuler
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerAnnuler(boolean estActif) {
         annulerAction.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton Rejouer
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerRejouer(boolean estActif) {
         rejouerAction.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton Ajouter
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerAjouter(boolean estActif) {
         ajouterLivraison.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton Supprimer
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerSupprimer(boolean estActif) {
         supprimerLivraison.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton Echanger
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerEchanger(boolean estActif) {
         echangerLivraisons.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive le bouton CalculerItineraire
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerCalculerItineraire(boolean estActif) {
         calculerItineraire.setDisable(!estActif);
     }
 
+    /**
+     * Active/desactive les Selections
+     *
+     * @param estActif true pour activer les Selections, false pour les desactiver
+     */
     public void activerSelections(boolean estActif) {
         selectionsActivees = estActif;
     }
 
+    /**
+     * Active/desactive les Déselections
+     *
+     * @param estActif true pour activer les Déselections, false pour les desactiver
+     */
     public void activerDeselections(boolean estActif) {
         deselectionsActivees = estActif;
     }
 
+    /**
+     * Active/desactive le bouton AnnulerAjout
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerAnnulerAjout(boolean estActif) {
         annulerAjoutLivraison.setVisible(estActif);
     }
 
+    /**
+     * Active/desactive le bouton ValiderAjout
+     *
+     * @param estActif true pour activer le bouton, false pour le desactiver
+     */
     public void activerValiderAjout(boolean estActif) {
         validerAjoutLivraison.setVisible(estActif);
     }
 
+    /**
+     * Active/desactive la deselection de l'entrepot
+     *
+     * @param entrepotDeselectionnable true pour activer la deselection de l'entrepot, false pour la desactiver
+     */
     public void activerDeselectionsEntrepot(boolean entrepotDeselectionnable) {
         this.entrepotDeselectionnable = entrepotDeselectionnable;
     }
 
+    /**
+     * Active/desactive la selection de l'entrepot
+     *
+     * @param entrepotSelectionnable true pour activer la selection de l'entrepot, false pour la desactiver
+     */
     public void activerSelectionsEntrepot(boolean entrepotSelectionnable) {
         this.entrepotSelectionnable = entrepotSelectionnable;
     }
@@ -356,7 +460,7 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Permet d'activer ou de désactiver tous les boutons de l'IHM
      *
-     * @param estActif
+     * @param estActif true pour activer, false pour desactiver
      */
     public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
@@ -380,9 +484,9 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Affiche un message avec un titre et un type d'alerte sur l'écran
      *
-     * @param message
-     * @param titre
-     * @param alertType
+     * @param message   Le message à afficher
+     * @param titre     Le titre de la fenetre
+     * @param alertType Le type d'alerte du message
      */
     public void afficherMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -399,10 +503,10 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Affiche une expcetion avec un titre, une alerte, et le message de l'exception sur l'IHM
      *
-     * @param message
-     * @param titre
-     * @param alertType
-     * @param ex
+     * @param message le message à logger
+     * @param titre le titre de la fenetre
+     * @param alertType Le type d'alerte de l'exception
+     * @param ex L'exception à afficher
      */
     public void afficherException(String message, String titre, Alert.AlertType alertType, Exception ex) {
         if (!message.isEmpty()) {
@@ -446,7 +550,6 @@ public class FenetreControleur implements Observer, Initializable {
      * Sélectionne l'intersection passée en paramètre sur l'IHM (plan + liste fenêtres livraison)
      *
      * @param intersection L'intersection à sélectionner
-     * @return
      */
     public void selectionner(Intersection intersection) {
         if (selectionsActivees) {

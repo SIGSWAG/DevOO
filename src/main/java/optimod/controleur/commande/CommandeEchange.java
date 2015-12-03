@@ -14,9 +14,9 @@ public class CommandeEchange implements Commande {
     /**
      * Cree la commande qui ajoute une Intersection i avant la Livraison l à la DemandeLivraison
      *
-     * @param o
-     * @param l1
-     * @param l2
+     * @param o Ordonnanceur du système
+     * @param l1 Première Livraison à échanger
+     * @param l2 Deuxième Livraison à échanger
      */
     public CommandeEchange(Ordonnanceur o, Livraison l1, Livraison l2) {
         this.ordonnanceur = o;

@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Loïc Touzard on 18/11/2015.
+ * Créé par Loïc Touzard le 18/11/2015.
  */
 public enum GenerateurDeFeuilleDeRoute { // Singleton
     INSTANCE;
-    private List<FileChooser.ExtensionFilter> extensions = new ArrayList<FileChooser.ExtensionFilter>();
+    private List<FileChooser.ExtensionFilter> extensions = new ArrayList<>();
     private Stage fenetre;
 
     GenerateurDeFeuilleDeRoute() {
@@ -44,7 +44,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
 
         int etape = 1;
         int distanceTotale = 0;
-        int dureeChemin = 0;
+        int dureeChemin;
         int heureDerniereLivraison = heureDebutItineraire;
         fluxFichier.println("<html>\n" +
                 "<head>\n" +

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by jonathan on 18/11/15.
+ * Créé par jonathan le 18/11/15.
  */
 public class TronconTest {
 
@@ -68,7 +68,7 @@ public class TronconTest {
     public static boolean comparerTronconsPrimitivesBool(Troncon tronconATester, Troncon tronconType) {
 
         return (tronconATester!=null && tronconType != null && Math.abs(tronconATester.getVitesse() - tronconType.getVitesse()) < EPSILON
-                && Math.abs(tronconATester.getLongueur() - tronconType.getLongueur()) < EPSILON && tronconATester.getNom() == tronconType.getNom());
+                && Math.abs(tronconATester.getLongueur() - tronconType.getLongueur()) < EPSILON && tronconATester.getNom().equals(tronconType.getNom()));
 
     }
 

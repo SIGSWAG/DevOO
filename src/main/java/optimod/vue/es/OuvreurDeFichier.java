@@ -25,7 +25,7 @@ public enum OuvreurDeFichier {
     private static final String CLE_REGISTRE_FICHIER_CHOISI_ECRITURE = "cheminFichierEcriture";
     private static String TITRE_OUVREUR_DE_FICHIER = "Sélectionner le fichier à charger";
 
-    private static List<FileChooser.ExtensionFilter> EXTENSIONS = new ArrayList<FileChooser.ExtensionFilter>();
+    private static List<FileChooser.ExtensionFilter> EXTENSIONS = new ArrayList<>();
 
     private static boolean MODE = MODE_LECTURE;
 
@@ -112,7 +112,7 @@ public enum OuvreurDeFichier {
     /**
      * Définit les extensions disponibles lors de l'ouverture de l'explorateur de fichier.
      *
-     * @param extensions
+     * @param extensions Liste des extensions à autoriser
      * @return
      */
     public OuvreurDeFichier setExtensions(List<FileChooser.ExtensionFilter> extensions) {
@@ -124,7 +124,7 @@ public enum OuvreurDeFichier {
     /**
      * Définit le mode d'ouverture : OuvreurDeFichier.MODE_LECTURE ou OuvreurDeFichier.MODE_ECRITURE, pour le fichier qui sera retourné.
      *
-     * @param mode
+     * @param mode soit MODE_LECTURE, soit MODE_ECRITURE
      * @return
      */
     public OuvreurDeFichier setMode(boolean mode) {
@@ -135,7 +135,7 @@ public enum OuvreurDeFichier {
     /**
      * Définit le titre de la boite de dialogue qui sera affichée.
      *
-     * @param titre
+     * @param titre de la fenetre de dialogue
      * @return
      */
     public OuvreurDeFichier setTitre(String titre) {

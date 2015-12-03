@@ -68,7 +68,7 @@ public class OptimodApplication extends Application {
      * Création d'une instance du chargeur de FXML utilisé pour l'IHM
      *
      * @param localisation Localisation du fichier FXML correspondant
-     * @return
+     * @return Le loader FXML
      */
     private FXMLLoader creerFXMLLoader(URL localisation) {
         return new FXMLLoader(localisation, null, new JavaFXBuilderFactory(), null, Charset.forName(FXMLLoader.DEFAULT_CHARSET_NAME));

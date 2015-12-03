@@ -9,15 +9,12 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by (PRO) Loïc Touzard on 25/11/2015.
+ * Créé par (PRO) Loïc Touzard le 25/11/2015.
  */
 public class DeserialiseurXMLTest {
 
@@ -37,9 +34,9 @@ public class DeserialiseurXMLTest {
 		Troncon troncon1 = new Troncon(intersection2, 3.9, 602.1, "v0");
 		Troncon troncon2 = new Troncon(intersection1, 4.1, 602.1, "v0");
 
-		intersection1.setSortants(Arrays.asList(troncon1));
+		intersection1.setSortants(Collections.singletonList(troncon1));
 
-		intersection2.setSortants(Arrays.asList(troncon2));
+		intersection2.setSortants(Collections.singletonList(troncon2));
 
 		intersections.add(intersection1);
 		intersections.add(intersection2);
@@ -95,7 +92,7 @@ public class DeserialiseurXMLTest {
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         } catch (Exception e) {
-
+            fail();
         }
 
         assertEquals(charge, true);
@@ -106,7 +103,7 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanPlanNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xml = new File("src/test/resources/invalide/plan-vide.xml");
         Plan plan = null;
-        boolean charge = false;
+        boolean charge;
         charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         assertEquals(charge, false);
     }
@@ -140,7 +137,7 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xml = new File("src/test/resources/invalide/plan-xml-invalide.xml");
         Plan plan = new Plan();
-        boolean charge = false;
+        boolean charge;
 
         exception.expect(SAXException.class);
         charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -152,10 +149,9 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xml = new File("src/test/resources/invalide/xml-vide.xml");
         Plan plan = new Plan();
-        boolean charge = false;
 
         exception.expect(SAXException.class);
-        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
     }
 
@@ -174,10 +170,9 @@ public class DeserialiseurXMLTest {
     public void testChargerPlanSansTroncon() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xml = new File("src/test/resources/invalide/plan-troncon-manquant.xml");
         Plan plan = new Plan();
-        boolean charge = false;
         exception.expect(ExceptionXML.class);
         exception.expectMessage("Erreur lors de la lecture du fichier : Un Noeud doit avoir au moins un élément leTronconSortant");
-        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
     }
 
     @Test
@@ -389,26 +384,24 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerDemandeLivraisonDLVide() {
+    public void testChargerDemandeLivraisonDLVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison-vide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-vide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
-            charge &= DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
-        } catch (Exception e) {
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
 
-        }
-        assertEquals(charge, true);
-        assertEquals(demandeLivraisons.getFenetres().size(), 0);
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : L'élément Livraisons doit être composé d'au moins une Livraison");
+        charge &= DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        assertEquals(charge, false);
     }
 
     @Test
     public void testChargerDemandeLivraisonDLNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison-vide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison10x10-test-1.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = null;
         boolean charge = false;
@@ -416,7 +409,7 @@ public class DeserialiseurXMLTest {
             DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
             charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
         } catch (Exception e) {
-
+            fail();
         }
         assertEquals(charge, false);
     }
@@ -432,7 +425,7 @@ public class DeserialiseurXMLTest {
             DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
             charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
         } catch (Exception e) {
-
+            fail();
         }
         assertEquals(charge, false);
     }
@@ -443,7 +436,7 @@ public class DeserialiseurXMLTest {
         File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-xml-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
-        boolean charge = false;
+        boolean charge;
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
         exception.expect(SAXException.class);
         charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
@@ -456,10 +449,9 @@ public class DeserialiseurXMLTest {
         File xmlDemandeLivraison= new File("src/test/resources/invalide/xml-vide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
-        boolean charge = false;
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
         exception.expect(SAXException.class);
-        charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
     }
 
     @Test

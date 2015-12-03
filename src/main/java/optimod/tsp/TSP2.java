@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Created by Thibault on 28/11/2015.
+ * Créé par Thibault le 28/11/2015.
  */
 public class TSP2 extends TSP1 {
 

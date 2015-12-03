@@ -173,8 +173,8 @@ public class TronconPane extends Group {
 
         double d = distance * Math.sqrt(a * a + b * b) - c;
 
-        double X = 0;
-        double Y = 0;
+        double X;
+        double Y;
         double det = a * a + b * b;
 
         X = 1 / det * (j * b + d * a);

@@ -1,7 +1,7 @@
 package optimod.modele;
 
 /**
- * Created by Jonathan on 25/11/2015.
+ * Créé par Jonathan le 25/11/2015.
  */
 public enum Evenement {
     PLAN_CHARGE,

@@ -18,9 +18,9 @@ public class CommandeAjout implements Commande {
     /**
      * Cree la commande qui ajoute une Livraison sur l'Intersection i avant la Livraison l à la DemandeLivraison
      *
-     * @param o
-     * @param l
-     * @param i
+     * @param o Ordonnanceur du système
+     * @param l Livraison avant laquelle on va insérer
+     * @param i Intersection où ajouter la nouvelle Livraison
      */
     public CommandeAjout(Ordonnanceur o, Livraison l, Intersection i) {
         this.ordonnanceur = o;

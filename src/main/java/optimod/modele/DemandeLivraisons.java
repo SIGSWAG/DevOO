@@ -33,8 +33,8 @@ public class DemandeLivraisons extends Observable {
      */
     public DemandeLivraisons(Plan pl) {
         this.plan = pl;
-        this.itineraire = new ArrayList<Chemin>();
-        this.fenetres = new ArrayList<FenetreLivraison>();
+        this.itineraire = new ArrayList<>();
+        this.fenetres = new ArrayList<>();
 
     }
 
@@ -78,13 +78,9 @@ public class DemandeLivraisons extends Observable {
         this.itineraire = leGrapheAResoudre.calculerItineraire(); //calcul de l'itinéraire
 
         //il faut maintenant mettre à jour les livraisons (suivantes et précédentes)
-        int heureDepartItineraire = 0;
-        int duree = 0;
-        int fenetreCouranteDebut = 0; //heure de début de fenetre de la livraison courante
         Chemin premierChemin = itineraire.get(0);
         Livraison premiereLivraison = premierChemin.getArrivee();
         premiereLivraison.setHeureLivraison(premiereLivraison.getHeureDebutFenetre()); //la première livraison arrive
-        fenetreCouranteDebut = premiereLivraison.getHeureDebutFenetre();
         //à l'heure de sa fenetre
         heureDebutItineraire = premiereLivraison.getHeureDebutFenetre() - premierChemin.getDuree(); //on part de l'entrepot
 
@@ -543,7 +539,7 @@ public class DemandeLivraisons extends Observable {
         }
 
 
-        itineraire = new ArrayList<Chemin>();
+        itineraire = new ArrayList<>();
 
 
         // suppression de tous les liens Intersection -> Livraison
@@ -553,7 +549,7 @@ public class DemandeLivraisons extends Observable {
             }
         }
 
-        fenetres = new ArrayList<FenetreLivraison>();
+        fenetres = new ArrayList<>();
 
         if (entrepot != null) {
             entrepot.getIntersection().setLivraison(null);
@@ -564,8 +560,8 @@ public class DemandeLivraisons extends Observable {
     /**
      * Permet de retrouver la FenetreDeLivraison dans laquelle se situe une livraison
      *
-     * @param livraison
-     * @return la FenetreDeLivraison correspondante si la
+     * @param livraison La Livraison à rechercher
+     * @return la FenetreDeLivraison correspondante si la Livraison est présente dans une FenetreDeLivraison, null sinon
      */
     public FenetreLivraison trouverFenetreDeLivraison(Livraison livraison) {
         List<FenetreLivraison> fenetres = this.fenetres;

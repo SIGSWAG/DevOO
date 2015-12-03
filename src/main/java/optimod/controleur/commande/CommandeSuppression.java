@@ -18,8 +18,8 @@ public class CommandeSuppression implements Commande {
     /**
      * Cree la commande qui supprime une liste de Livraisons l de la DemandeLivraison
      *
-     * @param o
-     * @param l
+     * @param o Ordonnanceur du système
+     * @param l Livraison à supprimer
      */
     public CommandeSuppression(Ordonnanceur o, List<Livraison> l) {
         this.ordonnanceur = o;
