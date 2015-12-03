@@ -42,6 +42,46 @@ public class Controleur {
         listeDeCdes = new ListeDeCommandes();
     }
 
+    public static EtatInit getEtatInit() {
+        return etatInit;
+    }
+
+    public static EtatAttenteDemandeLivraison getEtatAttenteDemandeLivr() {
+        return etatAttenteDemandeLivr;
+    }
+
+    public static EtatVisualisationDemandeLivraisons getEtatVisualisationDemandesLivr() {
+        return etatVisualisationDemandesLivr;
+    }
+
+    public static EtatPrincipal getEtatPrincipal() {
+        return etatPrincipal;
+    }
+
+    public static EtatUneLivraisonSelectionnee getEtatUneLivrSelectionnee() {
+        return etatUneLivrSelectionnee;
+    }
+
+    public static EtatDeuxLivraisonsSelectionnees getEtatDeuxLivrSelectionnees() {
+        return etatDeuxLivrSelectionnees;
+    }
+
+    public static EtatPlusDeDeuxLivraisonsSelectionnees getEtatPlusDeDeuxLivrSelectionnees() {
+        return etatPlusDeDeuxLivrSelectionnees;
+    }
+
+    public static EtatAjoutInit getEtatAjoutInit() {
+        return etatAjoutInit;
+    }
+
+    public static EtatAjoutLivraisonValidable getEtatAjoutLivraisonValidable() {
+        return etatAjoutLivraisonValidable;
+    }
+
+    public static Etat getEtatCourant() {
+        return etatCourant;
+    }
+
     /**
      * Change l'etat courant du controleur
      *
@@ -181,45 +221,5 @@ public class Controleur {
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
-    }
-
-    public static EtatInit getEtatInit() {
-        return etatInit;
-    }
-
-    public static EtatAttenteDemandeLivraison getEtatAttenteDemandeLivr() {
-        return etatAttenteDemandeLivr;
-    }
-
-    public static EtatVisualisationDemandeLivraisons getEtatVisualisationDemandesLivr() {
-        return etatVisualisationDemandesLivr;
-    }
-
-    public static EtatPrincipal getEtatPrincipal() {
-        return etatPrincipal;
-    }
-
-    public static EtatUneLivraisonSelectionnee getEtatUneLivrSelectionnee() {
-        return etatUneLivrSelectionnee;
-    }
-
-    public static EtatDeuxLivraisonsSelectionnees getEtatDeuxLivrSelectionnees() {
-        return etatDeuxLivrSelectionnees;
-    }
-
-    public static EtatPlusDeDeuxLivraisonsSelectionnees getEtatPlusDeDeuxLivrSelectionnees() {
-        return etatPlusDeDeuxLivrSelectionnees;
-    }
-
-    public static EtatAjoutInit getEtatAjoutInit() {
-        return etatAjoutInit;
-    }
-
-    public static EtatAjoutLivraisonValidable getEtatAjoutLivraisonValidable() {
-        return etatAjoutLivraisonValidable;
-    }
-
-    public static Etat getEtatCourant() {
-        return etatCourant;
     }
 }

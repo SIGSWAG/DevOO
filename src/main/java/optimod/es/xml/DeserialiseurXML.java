@@ -14,7 +14,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Permet de déserialiser un fichier XML pour instancier les objets du modèle correspondants
@@ -231,7 +234,6 @@ public enum DeserialiseurXML { // Singleton
         List<FenetreLivraison> fenetres = new ArrayList<>();
         // entrepot est la livraison représentant le point de départ de la demande de livraison
         Livraison entrepot;
-
 
         // Récupération de l'entrepot
         NodeList listeEntrepots = noeudDOMRacine.getElementsByTagName("Entrepot");

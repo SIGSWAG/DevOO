@@ -182,7 +182,6 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
             }
         }
 
-
         int dureeTotale = heureDerniereLivraison - heureDebutItineraire;
         fluxFichier.println("</ul>\n" + "<br><div class='well'><h2>La demande de livraison a dure " +
                 tempsEnHeures(dureeTotale) + "h" +

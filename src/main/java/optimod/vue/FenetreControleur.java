@@ -518,7 +518,6 @@ public class FenetreControleur implements Observer, Initializable {
         alert.setHeaderText(null);
         alert.setContentText(ex.getMessage());
 
-
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         ex.printStackTrace(pw);

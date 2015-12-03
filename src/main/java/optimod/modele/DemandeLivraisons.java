@@ -65,9 +65,7 @@ public class DemandeLivraisons extends Observable {
         listeEntrepot.add(entrepot);
         FenetreLivraison fenEntrepot = new FenetreLivraison(listeEntrepot, 0, 1);
 
-
         graphe.addAll(fenEntrepot.calculPCCSuivant(fenetres.get(0)));//on calcule les plus courts chemins de l'entrepot a la premiere fenetre
-
 
         // toutes les fenetres sauf la derniere
         for (int i = 0; i < fenetres.size() - 1; i++) {
@@ -188,7 +186,6 @@ public class DemandeLivraisons extends Observable {
                 itineraire.add(indexASupprimer, nouveauPCC1); //mise a jour itineraire
                 itineraire.remove(ch);
 
-
                 for (Troncon troncon : nouveauPCC1.getTroncons()) {
                     troncon.incrementeCompteurPassage();
                 }
@@ -255,12 +252,9 @@ public class DemandeLivraisons extends Observable {
 
         Chemin nouveauPCC = livraison.getPrecedente().calculPCC(livraison.getSuivante());
 
-
         if (nouveauPCC != null) {
 
-            logger.debug("suppression de {}  pcc de {} vers {} longueur chemin {}",
-                    livraison.getIntersection().getAdresse(), nouveauPCC.getDepart().getIntersection().getAdresse(),
-                    nouveauPCC.getArrivee().getIntersection().getAdresse(), nouveauPCC.getTroncons().size());
+            logger.debug("suppression de {}  pcc de {} vers {} longueur chemin {}", livraison.getIntersection().getAdresse(), nouveauPCC.getDepart().getIntersection().getAdresse(), nouveauPCC.getArrivee().getIntersection().getAdresse(), nouveauPCC.getTroncons().size());
             Chemin cheminASupprimer = livraison.getPrecedente().getCheminVersSuivante();
             Chemin cheminASupprimer2 = livraison.getCheminVersSuivante();
 
@@ -339,7 +333,6 @@ public class DemandeLivraisons extends Observable {
         Livraison livr2PrecTemp = livr2.getPrecedente();
         Livraison livr2SuivTemp = livr2.getSuivante();
 
-
         if (livr1PrecTemp == livr2) { //cas particulier, échange de livraisons consécutives
 
             //parcourus
@@ -375,7 +368,6 @@ public class DemandeLivraisons extends Observable {
                 }
             }
 
-
             //changement itineraire
             int indexASupprimer = 0;
             for (int i = 0; i < itineraire.size(); i++) {
@@ -391,7 +383,6 @@ public class DemandeLivraisons extends Observable {
             itineraire.remove(cheminl2l1);
             itineraire.remove(cheminl1l1suiv);
 
-
             //Mise a jour des livraisons
             livr2PrecTemp.setCheminVersSuivante(cheminl2precl1);
             livr1.setPrecedente(livr2PrecTemp);
@@ -401,7 +392,6 @@ public class DemandeLivraisons extends Observable {
             livr1SuivTemp.setPrecedente(livr2);
         } else {
 
-
             //chemins de l1
             Chemin cheminl1prec = livr1PrecTemp.getCheminVersSuivante();
             Chemin cheminl1suiv = livr1.getCheminVersSuivante();
@@ -409,7 +399,6 @@ public class DemandeLivraisons extends Observable {
             //chemins de l2
             Chemin cheminl2prec = livr2PrecTemp.getCheminVersSuivante();
             Chemin cheminl2suiv = livr2.getCheminVersSuivante();
-
 
             //pcc 1
             Chemin cheminl1l2suiv = livr1.calculPCC(livr2.getSuivante());
@@ -440,7 +429,6 @@ public class DemandeLivraisons extends Observable {
                     }
                 }
 
-
                 itineraire.add(indexASupprimer, cheminl2l1suiv);
                 itineraire.add(indexASupprimer, cheminl1precl2);
                 itineraire.remove(cheminl1prec);
@@ -455,7 +443,6 @@ public class DemandeLivraisons extends Observable {
                 itineraire.add(indexASupprimer, cheminl2precl1);
                 itineraire.remove(cheminl2prec);
                 itineraire.remove(cheminl2suiv);
-
 
                 //mise a jour des troncons non empruntes
                 for (Chemin chemin : cheminsNonParcourus) {
@@ -502,7 +489,6 @@ public class DemandeLivraisons extends Observable {
             livr2.setHeureFinFenetre(fenetre1.getHeureFin());
         }
 
-
         if (livr1.getHeureLivraison() < livr2.getHeureLivraison()) {
             mettreAJourLesHeuresAPartirDe(livr2);
         } else {
@@ -535,7 +521,6 @@ public class DemandeLivraisons extends Observable {
      */
     public void reset() {
 
-
         for (Chemin chemin : itineraire) {
 
             for (Troncon tr : chemin.getTroncons()) {
@@ -543,9 +528,7 @@ public class DemandeLivraisons extends Observable {
             }
         }
 
-
         itineraire = new ArrayList<>();
-
 
         // suppression de tous les liens Intersection -> Livraison
         for (FenetreLivraison f : fenetres) {

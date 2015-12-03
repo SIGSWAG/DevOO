@@ -64,7 +64,6 @@ public class GraphePCC implements Graphe {
 
         logger.debug("fin du calcul");
 
-
         for (int i = 0; i < graphe.length - 1; i++) {
             if (tsp == null) {
                 logger.error("TSP nul {}", i);
@@ -72,7 +71,6 @@ public class GraphePCC implements Graphe {
             }
             int livraison = tsp.getSolution(i);
             int livraisonSuivante = tsp.getSolution(i + 1);
-
 
             plusCourtParcours.add(graphe[livraison][livraisonSuivante]);
 
@@ -85,7 +83,6 @@ public class GraphePCC implements Graphe {
 
     private void convertirLivraisonsEnSommets() {
         if (chemins != null) {
-
 
             cheminsParLivraison = new Hashtable<>();
             Iterator<Chemin> it = chemins.iterator();
@@ -104,7 +101,6 @@ public class GraphePCC implements Graphe {
                         if (adresse == entrepot.getIntersection().getAdresse()) { //cas de l'entrepot, toujours à zero
                             index = 0;
                         }
-
 
                         cheminsCourants = new ArrayList<>();
                         vus.put(adresse, index);
@@ -127,9 +123,7 @@ public class GraphePCC implements Graphe {
     private void construireGraphe() {
         if (cheminsParLivraison != null) {
 
-
             int tailleGraphe = cheminsParLivraison.size();
-
 
             graphe = new Chemin[tailleGraphe][tailleGraphe];
             logger.info("Taille du graphe {}", graphe.length);
@@ -171,7 +165,6 @@ public class GraphePCC implements Graphe {
 
     @Override
     public int getCout(int i, int j) {
-
 
         if (i < 0 || i >= graphe.length || j < 0 || j >= graphe.length) {
             return -1;

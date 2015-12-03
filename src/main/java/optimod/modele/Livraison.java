@@ -74,20 +74,16 @@ public class Livraison {
 
             DijkstraIntersection currDi = tasBinaire.poll(); // on prend l'intersection a la plus petite distance
 
-
             int currDist = currDi.getDistance();
             Intersection currIntersection = currDi.getIntersection();
-
 
             if (currIntersection.getAdresse() == destination.intersection.getAdresse()) {
 
                 destinationTrouvee = true;
             } else {
 
-
                 if (currIntersection.getSortants() != null) {
                     Iterator<Troncon> it = currIntersection.getSortants().iterator();
-
 
                     while (it.hasNext()) {
 
@@ -105,7 +101,6 @@ public class Livraison {
                                 DijkstraIntersection di = new DijkstraIntersection(dist, intersection);
                                 tasBinaire.remove(di);
                             }
-
 
                             tasBinaire.add(new DijkstraIntersection(w + currDist, intersection));//mise a jour tas binaire
                             distances.put(next, w + currDist); // mise a jour distances
@@ -130,9 +125,7 @@ public class Livraison {
 
             List<Troncon> troncons = new ArrayList<>();
 
-
             Intersection currIntersection = destination.intersection;
-
 
             while (!depart) {
                 Intersection parent = parents.get(currIntersection.getAdresse());
@@ -152,7 +145,6 @@ public class Livraison {
             Collections.reverse(troncons);
             chemin.setTroncons(troncons);
         }
-
 
         return chemin;
     }

@@ -107,7 +107,6 @@ public class Intersection {
      */
     public Troncon getTronconVers(Intersection intersection) {
 
-
         if (sortants == null || sortants.size() == 0) {
             return null;
         }

@@ -40,7 +40,6 @@ public class OptimodApplication extends Application {
         // Création du contrôleur
         Controleur controleur = new Controleur(ordonnanceur);
 
-
         // Mise en place du controleur qui réagit aux évenements utilisateurs côté vue
         FenetreControleur fenetreControleur = new FenetreControleur(fenetre, controleur);
         loader.setController(fenetreControleur);
