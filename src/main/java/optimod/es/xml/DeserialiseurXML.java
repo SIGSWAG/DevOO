@@ -216,7 +216,6 @@ public enum DeserialiseurXML { // Singleton
         Document document = docBuilder.parse(xml);
         Element racine = document.getDocumentElement();
 
-        // TODO vérifications dtd xsl
         if (racine.getNodeName().equals("JourneeType")) {
             construireDemandeLivraisonAPartirDeDOMXML(racine, demandeLivraisons);
         } else {
@@ -357,11 +356,7 @@ public enum DeserialiseurXML { // Singleton
         entrepot.getIntersection().setLivraison(entrepot);
         // affectations des fenêtres de livraison
 
-        fenetres.sort(new Comparator<FenetreLivraison>() {
-            public int compare(FenetreLivraison o1, FenetreLivraison o2) {
-                return o1.getHeureDebut() - o2.getHeureDebut();
-            }
-        });
+        fenetres.sort((o1, o2) -> o1.getHeureDebut() - o2.getHeureDebut());
         demandeLivraisons.setFenetres(fenetres);
         // retour de visibilité Intersection / Livraison
         for (FenetreLivraison f : fenetres) {
