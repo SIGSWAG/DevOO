@@ -1,9 +1,11 @@
 package optimod.controleur;
 
+import optimod.controleur.commande.Commande;
+
 import java.util.LinkedList;
 
 /**
- * Created by (PRO) Loïc Touzard on 23/11/2015.
+ *
  */
 public class ListeDeCommandes {
 

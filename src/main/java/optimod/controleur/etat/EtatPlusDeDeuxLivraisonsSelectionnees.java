@@ -1,5 +1,8 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
+import optimod.controleur.Controleur;
+import optimod.controleur.ListeDeCommandes;
+import optimod.controleur.commande.CommandeSuppression;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
@@ -9,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat représentant plus de deux livraisons sélectionnées
  */
-public class EtatUneLivraisonSelectionnee extends EtatDefaut {
+public class EtatPlusDeDeuxLivraisonsSelectionnees extends EtatDefaut {
+
     @Override
     public boolean selectionnerIntersection(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, Intersection intersectionSelectionnee, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if (livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()) {
             intersectionsSelectionnees.add(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatDeuxLivrSelectionnees);
             return true;
         } else {
             return false;
@@ -31,7 +34,11 @@ public class EtatUneLivraisonSelectionnee extends EtatDefaut {
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if (livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()) {
             intersectionsSelectionnees.remove(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatPrincipal);
+            if (intersectionsSelectionnees.size() > 2) {
+                Controleur.setEtatCourant(Controleur.getEtatPlusDeDeuxLivrSelectionnees());
+            } else {
+                Controleur.setEtatCourant(Controleur.getEtatDeuxLivrSelectionnees());
+            }
             return true;
         }
         return false;
@@ -41,7 +48,7 @@ public class EtatUneLivraisonSelectionnee extends EtatDefaut {
     public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatPrincipal);
+        Controleur.setEtatCourant(Controleur.getEtatPrincipal());
     }
 
     @Override
@@ -56,7 +63,7 @@ public class EtatUneLivraisonSelectionnee extends EtatDefaut {
         }
         listeDeCdes.ajoute(new CommandeSuppression(ordonnanceur, lesLivraisonsASupp));
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatPrincipal);
+        Controleur.setEtatCourant(Controleur.getEtatPrincipal());
     }
 
     @Override

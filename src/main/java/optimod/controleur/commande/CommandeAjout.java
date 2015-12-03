@@ -1,4 +1,4 @@
-package optimod.controleur;
+package optimod.controleur.commande;
 
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Intersection;
@@ -6,7 +6,7 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 
 /**
- * Created by (PRO) Loïc Touzard on 23/11/2015.
+ *
  */
 public class CommandeAjout implements Commande {
     private Ordonnanceur ordonnanceur;

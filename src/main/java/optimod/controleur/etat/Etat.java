@@ -1,5 +1,6 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
+import optimod.controleur.ListeDeCommandes;
 import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -7,7 +8,7 @@ import optimod.vue.FenetreControleur;
 import java.util.List;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat
  */
 
 public interface Etat {

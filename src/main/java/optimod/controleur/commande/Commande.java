@@ -1,7 +1,7 @@
-package optimod.controleur;
+package optimod.controleur.commande;
 
 /**
- * Created by (PRO) Loïc Touzard on 23/11/2015.
+ *
  */
 public interface Commande {
 

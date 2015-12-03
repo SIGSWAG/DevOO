@@ -1,14 +1,19 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
 
 import javafx.scene.control.Alert.AlertType;
+import optimod.controleur.ListeDeCommandes;
 import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
 
 import java.util.List;
 
+/**
+ * Etat par défaut, définissait le comportement par défaut de toutes les méthodes de l'interface Etat
+ */
 public abstract class EtatDefaut implements Etat {
+
     // Definition des comportements par defaut des methodes
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);

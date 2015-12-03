@@ -1,5 +1,8 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
+import optimod.controleur.Controleur;
+import optimod.controleur.ListeDeCommandes;
+import optimod.controleur.commande.CommandeAjout;
 import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -7,9 +10,10 @@ import optimod.vue.FenetreControleur;
 import java.util.List;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat associé à l'ajout d'une livraison validable
  */
 public class EtatAjoutLivraisonValidable extends EtatDefaut {
+
     @Override
     public void validerAjout(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
@@ -21,7 +25,7 @@ public class EtatAjoutLivraisonValidable extends EtatDefaut {
             listeDeCdes.ajoute(new CommandeAjout(ordonnanceur, i2.getLivraison(), i1));
         }
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatPrincipal);
+        Controleur.setEtatCourant(Controleur.getEtatPrincipal());
     }
 
     @Override
@@ -29,7 +33,7 @@ public class EtatAjoutLivraisonValidable extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         if (intersectionSelectionnee != null) {
             intersectionsSelectionnees.remove(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatAjoutInit);
+            Controleur.setEtatCourant(Controleur.getEtatAjoutInit());
             return true;
         }
         return false;
@@ -39,14 +43,14 @@ public class EtatAjoutLivraisonValidable extends EtatDefaut {
     public void annulerAjout(FenetreControleur fenetreControleur, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatPrincipal);
+        Controleur.setEtatCourant(Controleur.getEtatPrincipal());
     }
 
     @Override
     public void deselectionnerToutesIntersections(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees) {
         fenetreControleur.autoriseBoutons(false);
         intersectionsSelectionnees.clear();
-        Controleur.setEtatCourant(Controleur.etatAjoutInit);
+        Controleur.setEtatCourant(Controleur.getEtatAjoutInit());
     }
 
     @Override

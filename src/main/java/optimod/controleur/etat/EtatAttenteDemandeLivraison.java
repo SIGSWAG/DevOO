@@ -1,6 +1,8 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
 import javafx.scene.control.Alert;
+import optimod.controleur.Controleur;
+import optimod.controleur.ListeDeCommandes;
 import optimod.es.xml.ExceptionXML;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -10,15 +12,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat associé à l'attente d'une demande de livraison
  */
 public class EtatAttenteDemandeLivraison extends EtatDefaut {
+
     @Override
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerPlan()) {
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+                Controleur.setEtatCourant(Controleur.getEtatAttenteDemandeLivr());
             }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
@@ -30,7 +33,7 @@ public class EtatAttenteDemandeLivraison extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerDemandeLivraison()) {
-                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
+                Controleur.setEtatCourant(Controleur.getEtatVisualisationDemandesLivr());
             }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);

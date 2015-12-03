@@ -18,7 +18,7 @@ public class TSP2 extends TSP1 {
 
             sumBound += getMinCoutSortant(i, nonVus);
         }
-        
+
         return sumBound;
     }
 

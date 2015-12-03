@@ -1,5 +1,6 @@
 package optimod.controleur;
 
+import optimod.controleur.etat.*;
 import optimod.modele.Intersection;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -8,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jonathan on 18/11/2015.
+ * Controleur général de l'application permettant de faire le lien entre la vue et le modèle
  */
 public class Controleur {
 
     // Instances associees a chaque etat possible du controleur
     protected static final EtatInit etatInit = new EtatInit();
     protected static final EtatAttenteDemandeLivraison etatAttenteDemandeLivr = new EtatAttenteDemandeLivraison();
-    protected static final EtatVisualisationDemandesLivraison etatVisualisationDemandesLivr = new EtatVisualisationDemandesLivraison();
+    protected static final EtatVisualisationDemandeLivraisons etatVisualisationDemandesLivr = new EtatVisualisationDemandeLivraisons();
     protected static final EtatPrincipal etatPrincipal = new EtatPrincipal();
     protected static final EtatUneLivraisonSelectionnee etatUneLivrSelectionnee = new EtatUneLivraisonSelectionnee();
     protected static final EtatDeuxLivraisonsSelectionnees etatDeuxLivrSelectionnees = new EtatDeuxLivraisonsSelectionnees();
@@ -23,6 +24,7 @@ public class Controleur {
     protected static final EtatAjoutInit etatAjoutInit = new EtatAjoutInit();
     protected static final EtatAjoutLivraisonValidable etatAjoutLivraisonValidable = new EtatAjoutLivraisonValidable();
     private static Etat etatCourant;
+
     private Ordonnanceur ordonnanceur;
     private FenetreControleur fenetreControleur;
     private ListeDeCommandes listeDeCdes;
@@ -45,7 +47,7 @@ public class Controleur {
      *
      * @param etat le nouvel etat courant
      */
-    protected static void setEtatCourant(Etat etat) {
+    public static void setEtatCourant(Etat etat) {
         etatCourant = etat;
     }
 
@@ -179,5 +181,45 @@ public class Controleur {
 
     public void setFenetreControleur(FenetreControleur fenetreControleur) {
         this.fenetreControleur = fenetreControleur;
+    }
+
+    public static EtatInit getEtatInit() {
+        return etatInit;
+    }
+
+    public static EtatAttenteDemandeLivraison getEtatAttenteDemandeLivr() {
+        return etatAttenteDemandeLivr;
+    }
+
+    public static EtatVisualisationDemandeLivraisons getEtatVisualisationDemandesLivr() {
+        return etatVisualisationDemandesLivr;
+    }
+
+    public static EtatPrincipal getEtatPrincipal() {
+        return etatPrincipal;
+    }
+
+    public static EtatUneLivraisonSelectionnee getEtatUneLivrSelectionnee() {
+        return etatUneLivrSelectionnee;
+    }
+
+    public static EtatDeuxLivraisonsSelectionnees getEtatDeuxLivrSelectionnees() {
+        return etatDeuxLivrSelectionnees;
+    }
+
+    public static EtatPlusDeDeuxLivraisonsSelectionnees getEtatPlusDeDeuxLivrSelectionnees() {
+        return etatPlusDeDeuxLivrSelectionnees;
+    }
+
+    public static EtatAjoutInit getEtatAjoutInit() {
+        return etatAjoutInit;
+    }
+
+    public static EtatAjoutLivraisonValidable getEtatAjoutLivraisonValidable() {
+        return etatAjoutLivraisonValidable;
+    }
+
+    public static Etat getEtatCourant() {
+        return etatCourant;
     }
 }

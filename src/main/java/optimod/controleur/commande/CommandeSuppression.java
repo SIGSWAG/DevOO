@@ -1,4 +1,4 @@
-package optimod.controleur;
+package optimod.controleur.commande;
 
 import optimod.modele.FenetreLivraison;
 import optimod.modele.Livraison;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by (PRO) Loïc Touzard on 23/11/2015.
+ *
  */
 public class CommandeSuppression implements Commande {
     private Ordonnanceur ordonnanceur;

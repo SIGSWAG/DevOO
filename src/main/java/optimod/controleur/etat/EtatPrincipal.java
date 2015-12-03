@@ -1,6 +1,8 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
 import javafx.scene.control.Alert;
+import optimod.controleur.Controleur;
+import optimod.controleur.ListeDeCommandes;
 import optimod.es.xml.ExceptionXML;
 import optimod.modele.Intersection;
 import optimod.modele.Livraison;
@@ -13,15 +15,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat principal
  */
 public class EtatPrincipal extends EtatDefaut {
+
     @Override
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerPlan()) {
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+                Controleur.setEtatCourant(Controleur.getEtatAttenteDemandeLivr());
             }
         } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
@@ -33,7 +36,7 @@ public class EtatPrincipal extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerDemandeLivraison()) {
-                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
+                Controleur.setEtatCourant(Controleur.getEtatVisualisationDemandesLivr());
             }
         } catch (SAXException | ParserConfigurationException | ExceptionXML | IOException e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
@@ -48,7 +51,7 @@ public class EtatPrincipal extends EtatDefaut {
                 "Veuillez ensuite sélectionner une intersection (il ne doit pas y avoir de livraison sur l'intersection sélectionnée).\n" +
                 "Finalement, veuillez valider l'ajout grâce au bouton associé dans la barre de menu.\n\n" +
                 "NB: Vous pouvez sortir du mode d'ajout à tout moment grâce au bouton associé dans la barre de menu.", "Ajout d'une livraison : Mode d'emploi", Alert.AlertType.INFORMATION);
-        Controleur.setEtatCourant(Controleur.etatAjoutInit);
+        Controleur.setEtatCourant(Controleur.getEtatAjoutInit());
     }
 
     @Override
@@ -79,7 +82,7 @@ public class EtatPrincipal extends EtatDefaut {
         Livraison livraisonSelectionnee = intersectionSelectionnee.getLivraison();
         if (livraisonSelectionnee != null && livraisonSelectionnee != ordonnanceur.getDemandeLivraisons().getEntrepot()) {
             intersectionsSelectionnees.add(intersectionSelectionnee);
-            Controleur.setEtatCourant(Controleur.etatUneLivrSelectionnee);
+            Controleur.setEtatCourant(Controleur.getEtatUneLivrSelectionnee());
             return true;
         } else {
             return false;

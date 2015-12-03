@@ -1,10 +1,10 @@
-package optimod.controleur;
+package optimod.controleur.commande;
 
 import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 
 /**
- * Created by (PRO) Loïc Touzard on 23/11/2015.
+ *
  */
 public class CommandeEchange implements Commande {
     private Ordonnanceur ordonnanceur;

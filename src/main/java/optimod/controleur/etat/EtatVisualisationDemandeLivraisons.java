@@ -1,6 +1,8 @@
-package optimod.controleur;
+package optimod.controleur.etat;
 
 import javafx.scene.control.Alert;
+import optimod.controleur.Controleur;
+import optimod.controleur.ListeDeCommandes;
 import optimod.es.xml.ExceptionXML;
 import optimod.modele.Ordonnanceur;
 import optimod.vue.FenetreControleur;
@@ -10,15 +12,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
- * Created by hdelval on 11/23/15.
+ * Etat associé à la visualisation de la demande de livraisons
  */
-public class EtatVisualisationDemandesLivraison extends EtatDefaut {
+public class EtatVisualisationDemandeLivraisons extends EtatDefaut {
+
     @Override
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerPlan()) {
-                Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+                Controleur.setEtatCourant(Controleur.getEtatAttenteDemandeLivr());
             }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
@@ -30,7 +33,7 @@ public class EtatVisualisationDemandesLivraison extends EtatDefaut {
         fenetreControleur.autoriseBoutons(false);
         try {
             if (ordonnanceur.chargerDemandeLivraison()) {
-                Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
+                Controleur.setEtatCourant(Controleur.getEtatVisualisationDemandesLivr());
             }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
             fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
@@ -41,7 +44,7 @@ public class EtatVisualisationDemandesLivraison extends EtatDefaut {
     public void calculerItineraire(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         ordonnanceur.calculerItineraire();
-        Controleur.setEtatCourant(Controleur.etatPrincipal);
+        Controleur.setEtatCourant(Controleur.getEtatPrincipal());
     }
 
     @Override
