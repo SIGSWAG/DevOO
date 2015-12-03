@@ -11,7 +11,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Created by aurelien on 18/11/15.
+ *
  */
 public class PlanTest {
 

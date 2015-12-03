@@ -11,14 +11,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by aurelien on 18/11/15.
+ *
  */
 public class FenetreLivraisonTest {
-
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-
 
     @Test
     public void testCalculPCCInterne() throws Exception {
@@ -104,8 +99,6 @@ public class FenetreLivraisonTest {
         intersections.add(intersection4);
         intersections.add(intersection5);
         intersections.add(intersection6);
-
-        List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
 
         List<Livraison> f1 = new ArrayList<Livraison>();
         f1.add(livraison3);

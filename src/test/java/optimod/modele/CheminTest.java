@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by jonathan on 18/11/15.
+ *
  */
 public class CheminTest {
 

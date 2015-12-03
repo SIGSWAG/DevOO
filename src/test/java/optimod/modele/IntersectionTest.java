@@ -12,7 +12,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by aurelien on 18/11/15.
+ *
  */
 public class IntersectionTest {
 
@@ -47,6 +47,44 @@ public class IntersectionTest {
     		Troncon tronconType = tronconsType.get(i);
     		TronconTest.comparerTroncons(tronconATester, tronconType);
     	}
+    }
+
+    @Test
+    public void testGetTronconVers() throws Exception{
+        Intersection i1 = new Intersection(0,0,1);
+        Intersection i2 = new Intersection(5,5,2);
+        Intersection i3 = new Intersection(5,5,2);
+        Troncon i1i2 = new Troncon(i2, 5, 5, "troncon i1 vers i2");
+        Troncon i1i3 = new Troncon(i3, 5, 5, "troncon i1 vers i3");
+        List<Troncon> tronconsSortantsI1 = new ArrayList<>();
+        tronconsSortantsI1.add(i1i2);
+        tronconsSortantsI1.add(i1i3);
+        i1.setSortants(tronconsSortantsI1);
+
+        assertEquals(TronconTest.comparerTronconsBool(i1i2, i1.getTronconVers(i2)), true);
+        assertEquals(TronconTest.comparerTronconsBool(i1i3, i1.getTronconVers(i3)), true);
+    }
+
+    @Test
+    public void testGetTronconFail() {
+        Intersection i1 = new Intersection(0,0,1);
+        Intersection i2 = new Intersection(5,5,2);
+        Intersection i3 = new Intersection(5,5,2);
+        Troncon i1i2 = new Troncon(i2, 5, 5, "troncon i1 vers i2");
+        Troncon i1i3 = new Troncon(i3, 5, 5, "troncon i1 vers i3");
+        List<Troncon> tronconsSortantsI1 = new ArrayList<>();
+        tronconsSortantsI1.add(i1i2);
+        tronconsSortantsI1.add(i1i3);
+        i1.setSortants(tronconsSortantsI1);
+
+        Intersection i4 = new Intersection(10,10,3);
+        Troncon troncon4 = new Troncon(i4, 2, 2, "troncon");
+        List<Troncon> tronconsSortants4 = new ArrayList<>();
+        tronconsSortants4.add(troncon4);
+        i4.setSortants(tronconsSortants4);
+
+        assertEquals(TronconTest.comparerTronconsBool(i1i2, i4.getTronconVers(i2)), false);
+        assertEquals(TronconTest.comparerTronconsBool(troncon4, i1.getTronconVers(i4)), false);
     }
 
 
@@ -99,22 +137,6 @@ public class IntersectionTest {
         assertTrue(i1.equals(i2));
         assertFalse(i1.equals(i3));
         assertFalse(i2.equals(i3));
-    }
-
-    @Test
-    public void testGetTronconVers() throws Exception{
-        Intersection i1 = new Intersection(0,0,1);
-        Intersection i2 = new Intersection(5,5,2);
-        Intersection i3 = new Intersection(5,5,2);
-        Troncon i1i2 = new Troncon(i2, 5, 5, "troncon i1 vers i2");
-        Troncon i1i3 = new Troncon(i3, 5, 5, "troncon i1 vers i3");
-        List<Troncon> tronconsSortantsI1 = new ArrayList<>();
-        tronconsSortantsI1.add(i1i2);
-        tronconsSortantsI1.add(i1i3);
-        i1.setSortants(tronconsSortantsI1);
-
-        assertEquals(i1.getTronconVers(i2), i1i2);
-        assertEquals(i1.getTronconVers(i3), i1i3);
     }
 
 }

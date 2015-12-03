@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by aurelien on 18/11/15.
+ *
  */
 public class LivraisonTest {
 
