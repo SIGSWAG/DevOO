@@ -65,11 +65,9 @@ public class LivraisonTest {
 
         Chemin chemin = livraison.calculPCC(livraison4);
 
-        comparerLivraisons(chemin.getArrivee(), livraison4);
-        comparerLivraisons(chemin.getDepart(), livraison);
         assertEquals(chemin.getTroncons().size(), 2);
-        IntersectionTest.comparerIntersections(chemin.getTroncons().get(0).getArrivee(), intersection2);
-
+        assertEquals(chemin.getTroncons().get(0).getArrivee(), intersection2);
+       
     }
 
     public static void comparerLivraisons(Livraison livraisonATester, Livraison livraisonType) {
