@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Reseau>
+    <Noeud id="0" x="100" y="100">
+        <LeTronconSortant nomRue="r0-1" vitesse="1" longueur="1" idNoeudDestination="1"/>
+        <LeTronconSortant nomRue="r0-3" vitesse="1" longueur="1" idNoeudDestination="3"/>
+    </Noeud>
+    <Noeud id="1" x="200" y="200">
+        <LeTronconSortant nomRue="r0-1" vitesse="1" longueur="1" idNoeudDestination="0"/>
+        <LeTronconSortant nomRue="r1-2" vitesse="1" longueur="1" idNoeudDestination="2"/>
+        <LeTronconSortant nomRue="r1-99" vitesse="1" longueur="1" idNoeudDestination="99"/>
+    </Noeud>
+    <Noeud id="99" x="250" y="250">
+        <LeTronconSortant nomRue="r1-99" vitesse="1" longueur="1" idNoeudDestination="1"/>
+        <LeTronconSortant nomRue="r2-99" vitesse="1" longueur="1" idNoeudDestination="2"/>
+    </Noeud>
+    <Noeud id="2" x="200" y="300">
+        <LeTronconSortant nomRue="r1-2" vitesse="1" longueur="1" idNoeudDestination="1"/>
+        <LeTronconSortant nomRue="r2-3" vitesse="1" longueur="1" idNoeudDestination="3"/>
+        <LeTronconSortant nomRue="r2-99" vitesse="1" longueur="1" idNoeudDestination="99"/>
+    </Noeud>
+    <Noeud id="3" x="100" y="400">
+        <LeTronconSortant nomRue="r2-3" vitesse="1" longueur="1" idNoeudDestination="2"/>
+        <LeTronconSortant nomRue="r0-3" vitesse="1" longueur="1" idNoeudDestination="0"/>
+    </Noeud>
+</Reseau>

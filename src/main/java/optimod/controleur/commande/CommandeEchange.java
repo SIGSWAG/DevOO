@@ -27,14 +27,14 @@ public class CommandeEchange implements Commande {
     /**
      * Execute la commande
      */
-    public void executerCommande() {
+    public void executer() {
         ordonnanceur.echangerLivraison(livraison1, livraison2);
     }
 
     /**
      * Annule la commande
      */
-    public void annulerCommande() {
+    public void annuler() {
         ordonnanceur.echangerLivraison(livraison2, livraison1);
     }
 }

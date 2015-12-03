@@ -1,7 +1,6 @@
 package optimod.modele;
 
 import optimod.es.xml.DeserialiseurXML;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,31 +9,23 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by aurelien on 18/11/15.
+ * Créé par aurelien le 18/11/15.
  */
 public class DemandeLivraisonsTest {
-
-    private static DemandeLivraisons demandeLivraisons;
-
-    @BeforeClass
-    public static void oneTimeSetUp() {
-        Plan plan = new Plan();
-        demandeLivraisons = new DemandeLivraisons(plan);
-    }
 
     @Test
     public void testCalculerItineraire() throws Exception {
 
-        File xmlPlan1 = new File("src/test/resources/itineraire/plan1.xml");
-        Plan plan1 = new Plan();
+        final File xmlPlan1 = new File("src/test/resources/itineraire/plan1.xml");
+        final Plan plan1 = new Plan();
         DeserialiseurXML.INSTANCE.chargerPlan(plan1, xmlPlan1);
 
-        File xmlLivraison1 = new File("src/test/resources/itineraire/livraison1.xml");
-        DemandeLivraisons demandeLivraisons1 = new DemandeLivraisons(plan1);
+        final File xmlLivraison1 = new File("src/test/resources/itineraire/livraison1.xml");
+        final DemandeLivraisons demandeLivraisons1 = new DemandeLivraisons(plan1);
         DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons1, xmlLivraison1);
 
         demandeLivraisons1.calculerItineraire();
-        List<Chemin> chemins1 = demandeLivraisons1.getItineraire();
+        final List<Chemin> chemins1 = demandeLivraisons1.getItineraire();
 
         assertEquals(chemins1.size(), 2);
         assertEquals(chemins1.get(0).getDuree(), 1);
@@ -46,16 +37,16 @@ public class DemandeLivraisonsTest {
 
         // ------------------------------------------------------------------------------
 
-        File xmlPlan2 = new File("src/test/resources/itineraire/plan2.xml");
-        Plan plan2 = new Plan();
+        final File xmlPlan2 = new File("src/test/resources/itineraire/plan2.xml");
+        final Plan plan2 = new Plan();
         DeserialiseurXML.INSTANCE.chargerPlan(plan2, xmlPlan2);
 
-        File xmlLivraison2 = new File("src/test/resources/itineraire/livraison2.xml");
-        DemandeLivraisons demandeLivraisons2 = new DemandeLivraisons(plan2);
+        final File xmlLivraison2 = new File("src/test/resources/itineraire/livraison2.xml");
+        final DemandeLivraisons demandeLivraisons2 = new DemandeLivraisons(plan2);
         DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons2, xmlLivraison2);
 
         demandeLivraisons2.calculerItineraire();
-        List<Chemin> chemins2 = demandeLivraisons2.getItineraire();
+        final List<Chemin> chemins2 = demandeLivraisons2.getItineraire();
 
         assertEquals(chemins2.size(), 2);
         assertEquals(chemins2.get(0).getDuree(), 2);
@@ -67,16 +58,16 @@ public class DemandeLivraisonsTest {
 
         // ------------------------------------------------------------------------------
 
-        File xmlPlan3 = new File("src/test/resources/itineraire/plan3.xml");
-        Plan plan3 = new Plan();
+        final File xmlPlan3 = new File("src/test/resources/itineraire/plan3.xml");
+        final Plan plan3 = new Plan();
         DeserialiseurXML.INSTANCE.chargerPlan(plan3, xmlPlan3);
 
-        File xmlLivraison3 = new File("src/test/resources/itineraire/livraison3.xml");
-        DemandeLivraisons demandeLivraisons3 = new DemandeLivraisons(plan3);
+        final File xmlLivraison3 = new File("src/test/resources/itineraire/livraison3.xml");
+        final DemandeLivraisons demandeLivraisons3 = new DemandeLivraisons(plan3);
         DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons3, xmlLivraison3);
 
         demandeLivraisons3.calculerItineraire();
-        List<Chemin> chemins3 = demandeLivraisons3.getItineraire();
+        final List<Chemin> chemins3 = demandeLivraisons3.getItineraire();
 
         assertEquals(chemins3.size(), 3);
         assertEquals(chemins3.get(0).getDuree(), 1);
@@ -88,16 +79,16 @@ public class DemandeLivraisonsTest {
 
         // ------------------------------------------------------------------------------
 
-        File xmlPlan4 = new File("src/test/resources/itineraire/plan4.xml");
-        Plan plan4 = new Plan();
+        final File xmlPlan4 = new File("src/test/resources/itineraire/plan4.xml");
+        final Plan plan4 = new Plan();
         DeserialiseurXML.INSTANCE.chargerPlan(plan4, xmlPlan4);
 
-        File xmlLivraison4 = new File("src/test/resources/itineraire/livraison4.xml");
-        DemandeLivraisons demandeLivraisons4 = new DemandeLivraisons(plan4);
+        final File xmlLivraison4 = new File("src/test/resources/itineraire/livraison4.xml");
+        final DemandeLivraisons demandeLivraisons4 = new DemandeLivraisons(plan4);
         DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons4, xmlLivraison4);
 
         demandeLivraisons4.calculerItineraire();
-        List<Chemin> chemins4 = demandeLivraisons4.getItineraire();
+        final List<Chemin> chemins4 = demandeLivraisons4.getItineraire();
 
         assertEquals(chemins4.size(), 3);
         assertEquals(chemins4.get(0).getDuree(), 1);
@@ -109,41 +100,96 @@ public class DemandeLivraisonsTest {
 
         // ------------------------------------------------------------------------------
 
-        // TODO pleins d'autres cas à tester...
+        // TODO encore d'autres cas à tester... en vrai c'est sans fin
 
     }
 
     @Test
     public void testAjouterLivraison() throws Exception {
 
-        //TODO tester les fenetres de livraisons
-        final Intersection nouvelleIntersection = new Intersection(0, 0, 0, null);
-        final Livraison livraisonAvant = new Livraison(new Intersection(1, 1, 1, null));
-        final Livraison livraisonApres = new Livraison(new Intersection(2, 2, 2, null));
+        final File xmlPlan = new File("src/test/resources/modification/plan-test.xml");
+        final Plan plan = new Plan();
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
 
-        Livraison nouvelleLivraison = new Livraison(nouvelleIntersection);
-        demandeLivraisons.ajouterLivraison(nouvelleLivraison, livraisonAvant,null);
+        final File xmlLivraison = new File("src/test/resources/modification/livraison-test-ajout.xml");
+        final DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlLivraison);
 
-        assertNotNull(nouvelleLivraison);
-        LivraisonTest.comparerLivraisons(nouvelleLivraison.getPrecedente(), livraisonAvant);
+        final List<Intersection> intersections = plan.getIntersections();
 
-        LivraisonTest.comparerLivraisons(livraisonApres.getPrecedente(), nouvelleLivraison);
+        // ! Cette portion peut jeter des NoSuchElementExceptions ! Normalement il n'y a pas de problème car le plan est correct, mais il faut faire très attention en utilisant Optional.get().
+        final Intersection intersectionNouvelleLivraison = intersections.stream().filter(i -> i.getAdresse() == 99).findFirst().get(); // Retrouve l'intersection sans livraison (la numéro 99)
+        final Intersection intersectionApres = intersections.stream().filter(i -> i.getAdresse() == 2).findFirst().get();
+
+        final Livraison nouvelleLivraison = new Livraison(intersectionNouvelleLivraison);
+        final FenetreLivraison fenetreLivraison = demandeLivraisons.getFenetres().get(0); // La seule fenêtre...
+
+        demandeLivraisons.calculerItineraire();
+        demandeLivraisons.ajouterLivraison(nouvelleLivraison, intersectionApres.getLivraison(), fenetreLivraison);
+
+        assertTrue(fenetreLivraison.getLivraisons().contains(nouvelleLivraison));
+        assertTrue(nouvelleLivraison.initeraireCalcule());
+        assertEquals(nouvelleLivraison.getIntersection(), intersectionNouvelleLivraison);
+        assertEquals(intersectionApres.getLivraison().getPrecedente(), nouvelleLivraison);
+
     }
 
     @Test
-    public void testSupprimerLivraison() throws Exception {
+    public void testSupprnouvelleLivraisonimerLivraison() throws Exception {
 
-        final Intersection intersection = new Intersection(0, 0, 0, null);
-        final Livraison livraisonASupprimer = new Livraison(intersection);
+        final File xmlPlan = new File("src/test/resources/modification/plan-test.xml");
+        final Plan plan = new Plan();
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
 
+        final File xmlLivraison = new File("src/test/resources/modification/livraison-test-suppression.xml");
+        final DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlLivraison);
+
+        final List<Intersection> intersections = plan.getIntersections();
+
+        // ! Cette portion peut jeter des NoSuchElementExceptions ! Normalement il n'y a pas de problème car le plan est correct, mais il faut faire très attention en utilisant Optional.get().
+        final Intersection intersectionAvant = intersections.stream().filter(i -> i.getAdresse() == 1).findFirst().get();
+        final Intersection intersectionSupprimerLivraison = intersections.stream().filter(i -> i.getAdresse() == 99).findFirst().get(); // Retrouve l'intersection sans livraison (la numéro 99)
+        final Intersection intersectionApres = intersections.stream().filter(i -> i.getAdresse() == 2).findFirst().get();
+
+        final Livraison livraisonASupprimer = intersectionSupprimerLivraison.getLivraison();
+        final FenetreLivraison fenetreLivraison = demandeLivraisons.getFenetres().get(0); // La seule fenêtre...
+
+        demandeLivraisons.calculerItineraire();
         demandeLivraisons.supprimerLivraison(livraisonASupprimer);
 
-        assertNull(intersection.getLivraison());
+        assertFalse(fenetreLivraison.getLivraisons().contains(livraisonASupprimer));
+        assertNull(intersectionSupprimerLivraison.getLivraison());
+        assertTrue(intersectionApres.getLivraison().getPrecedente().equals(intersectionAvant.getLivraison()) || intersectionAvant.getLivraison().getPrecedente().equals(intersectionApres.getLivraison())); // En fonction du sens de l'itinéraire calculé
 
     }
 
     @Test
     public void testEchangerLivraison() throws Exception {
+
+        final File xmlPlan = new File("src/test/resources/modification/plan-test.xml");
+        final Plan plan = new Plan();
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        final File xmlLivraison = new File("src/test/resources/modification/livraison-test-ajout.xml");
+        final DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlLivraison);
+
+        final List<Intersection> intersections = plan.getIntersections();
+
+        // ! Cette portion peut jeter des NoSuchElementExceptions ! Normalement il n'y a pas de problème car le plan est correct, mais il faut faire très attention en utilisant Optional.get().
+        final Intersection intersection1 = intersections.stream().filter(i -> i.getAdresse() == 1).findFirst().get();
+        final Intersection intersection2 = intersections.stream().filter(i -> i.getAdresse() == 2).findFirst().get();
+
+        demandeLivraisons.calculerItineraire();
+        final boolean _1Avant2 = intersection2.getLivraison().getPrecedente().equals(intersection1.getLivraison());
+        demandeLivraisons.echangerLivraison(intersection1.getLivraison(), intersection2.getLivraison());
+
+        if (_1Avant2) {
+            assertEquals(intersection1.getLivraison().getPrecedente(), intersection2.getLivraison());
+        } else {
+            assertEquals(intersection2.getLivraison().getPrecedente(), intersection1.getLivraison());
+        }
 
     }
 

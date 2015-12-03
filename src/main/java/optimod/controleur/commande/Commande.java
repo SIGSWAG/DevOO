@@ -8,10 +8,10 @@ public interface Commande {
     /**
      * Execute la commande
      */
-    void executerCommande();
+    void executer();
 
     /**
      * Execute la commande inverse
      */
-    void annulerCommande();
+    void annuler();
 }
