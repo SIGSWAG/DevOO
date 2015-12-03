@@ -39,10 +39,6 @@ public class Troncon {
         return arrivee;
     }
 
-    public void setArrivee(Intersection arrivee) {
-        this.arrivee = arrivee;
-    }
-
     public String getNom() {
         return nom;
     }
@@ -57,10 +53,6 @@ public class Troncon {
 
     public boolean estEmprunte() {
         return compteurPassage > 0;
-    }
-
-    public int getCompteurPassage() {
-        return compteurPassage;
     }
 
     public void incrementeCompteurPassage() {

@@ -245,10 +245,6 @@ public class Livraison {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
-
     public boolean initeraireCalcule() {
         return heureLivraison >= 0;
     }
@@ -280,10 +276,6 @@ public class Livraison {
 
         public int getDistance() {
             return distance;
-        }
-
-        public void setDistance(int distance) {
-            this.distance = distance;
         }
 
         public Intersection getIntersection() {

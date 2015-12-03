@@ -186,12 +186,4 @@ public class GraphePCC implements Graphe {
     public int getNbSommets() {
         return graphe.length;
     }
-
-    public List<Chemin> getChemins() {
-        return chemins;
-    }
-
-    public void setChemins(List<Chemin> chemins) {
-        this.chemins = chemins;
-    }
 }

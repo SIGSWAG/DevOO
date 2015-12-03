@@ -566,10 +566,6 @@ public class DemandeLivraisons extends Observable {
         return itineraire;
     }
 
-    public void setItineraire(List<Chemin> itineraire) {
-        this.itineraire = itineraire;
-    }
-
     public Plan getPlan() {
         return plan;
     }

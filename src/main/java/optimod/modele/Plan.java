@@ -18,14 +18,12 @@ import java.util.Observable;
 public class Plan extends Observable {
 
     private List<Intersection> intersections;
-    private ObservableList<Intersection> intersectionsObservables;
 
     /**
      * Constructeur par défaut de Plan
      */
     public Plan() {
         this.intersections = new ArrayList<>();
-        this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 
     /**
@@ -95,10 +93,5 @@ public class Plan extends Observable {
 
     public void setIntersections(List<Intersection> intersections) {
         this.intersections = intersections;
-        this.intersectionsObservables = FXCollections.observableList(intersections);
-    }
-
-    public ObservableList<Intersection> getIntersectionsObservables() {
-        return this.intersectionsObservables;
     }
 }
