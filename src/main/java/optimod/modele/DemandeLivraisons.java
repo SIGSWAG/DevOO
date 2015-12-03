@@ -110,12 +110,7 @@ public class DemandeLivraisons extends Observable {
 
 
     private void mettreAJourTronconsEmpruntes(Chemin chemin) {
-
-        for (Troncon troncon : chemin.getTroncons()) {
-
-            troncon.incrementeCompteurPassage();
-        }
-
+        chemin.getTroncons().forEach(Troncon::incrementeCompteurPassage);
     }
 
     /**
@@ -166,9 +161,7 @@ public class DemandeLivraisons extends Observable {
                 }
             }
 
-            for (Troncon troncon : ch.getTroncons()) {
-                troncon.decrementeCompteurPassage();
-            }
+            ch.getTroncons().forEach(Troncon::decrementeCompteurPassage);
 
             Chemin nouveauPCC2 = nouvelleLivraison.calculPCC(livraisonApres);
             logger.debug("Chemin de {} a {}", nouvelleLivraison.getIntersection().getAdresse(), livraisonApres.getIntersection().getAdresse());
@@ -181,12 +174,8 @@ public class DemandeLivraisons extends Observable {
                 itineraire.add(indexASupprimer, nouveauPCC1); //mise a jour itineraire
                 itineraire.remove(ch);
 
-                for (Troncon troncon : nouveauPCC1.getTroncons()) {
-                    troncon.incrementeCompteurPassage();
-                }
-                for (Troncon troncon : nouveauPCC2.getTroncons()) {
-                    troncon.incrementeCompteurPassage();
-                }
+                nouveauPCC1.getTroncons().forEach(Troncon::incrementeCompteurPassage);
+                nouveauPCC2.getTroncons().forEach(Troncon::incrementeCompteurPassage);
 
                 fenetreLivraison.getLivraisons().add(nouvelleLivraison);
                 mettreAJourLesHeuresAPartirDe(nouvelleLivraison);
@@ -217,12 +206,8 @@ public class DemandeLivraisons extends Observable {
             Chemin aller = entrepot.getCheminVersSuivante();
             Chemin retour = livraison.getCheminVersSuivante();
 
-            for (Troncon tr : aller.getTroncons()) {
-                tr.decrementeCompteurPassage();
-            }
-            for (Troncon tr : retour.getTroncons()) {
-                tr.decrementeCompteurPassage();
-            }
+            aller.getTroncons().forEach(Troncon::decrementeCompteurPassage);
+            retour.getTroncons().forEach(Troncon::decrementeCompteurPassage);
             Chemin cheminVide = new Chemin();
             cheminVide.setArrivee(entrepot);
             cheminVide.setDepart(entrepot);
@@ -232,7 +217,7 @@ public class DemandeLivraisons extends Observable {
             entrepot.setCheminVersSuivante(cheminVide);
             itineraire.clear();
 
-            for (FenetreLivraison f : this.fenetres) {
+            for (FenetreLivraison f : fenetres) {
                 if (f.getLivraisons().contains(livraison)) {
                     f.getLivraisons().remove(livraison);
                 }
@@ -264,25 +249,20 @@ public class DemandeLivraisons extends Observable {
             itineraire.remove(cheminASupprimer);
             itineraire.remove(cheminASupprimer2);
 
-            for (Troncon tr : livraison.getPrecedente().getCheminVersSuivante().getTroncons()) {
-                tr.decrementeCompteurPassage();
-            }
+            livraison.getPrecedente().getCheminVersSuivante().getTroncons().forEach(Troncon::decrementeCompteurPassage);
 
-            for (Troncon tr : livraison.getCheminVersSuivante().getTroncons()) {
-                tr.decrementeCompteurPassage();
-            }
+            livraison.getCheminVersSuivante().getTroncons().forEach(Troncon::decrementeCompteurPassage);
 
             livraison.getPrecedente().setCheminVersSuivante(nouveauPCC);
             livraison.getSuivante().setPrecedente(livraison.getPrecedente());
 
-            for (Troncon tr : nouveauPCC.getTroncons()) {
-                tr.incrementeCompteurPassage();
-            }
+            nouveauPCC.getTroncons().forEach(Troncon::incrementeCompteurPassage);
+
             mettreAJourLesHeuresAPartirDe(livraison.getPrecedente());
             livraison.getIntersection().setLivraison(null);
 
             //on supprime la livraison de la fenetre
-            for (FenetreLivraison f : this.fenetres) {
+            for (FenetreLivraison f : fenetres) {
                 if (f.getLivraisons().contains(livraison)) {
                     f.getLivraisons().remove(livraison);
                 }
@@ -307,7 +287,6 @@ public class DemandeLivraisons extends Observable {
      * @param livr2 la 2nde livraison à échanger
      */
     public void echangerLivraison(Livraison livr1, Livraison livr2) {
-        // TODO Faire attention aux fenetres !
         if (livr1 == entrepot || livr2 == entrepot) {
             logger.error("Action impossible sur l'entrepot");
             return;
@@ -352,15 +331,11 @@ public class DemandeLivraisons extends Observable {
 
             //mise a jour des troncons non empruntes
             for (Chemin chemin : cheminsNonParcourus) {
-                for (Troncon troncon : chemin.getTroncons()) {
-                    troncon.decrementeCompteurPassage();
-                }
+                chemin.getTroncons().forEach(Troncon::decrementeCompteurPassage);
             }
             //mise a jour des troncons empruntes
             for (Chemin chemin : cheminsParcourus) {
-                for (Troncon troncon : chemin.getTroncons()) {
-                    troncon.incrementeCompteurPassage();
-                }
+                chemin.getTroncons().forEach(Troncon::incrementeCompteurPassage);
             }
 
             //changement itineraire
@@ -441,15 +416,11 @@ public class DemandeLivraisons extends Observable {
 
                 //mise a jour des troncons non empruntes
                 for (Chemin chemin : cheminsNonParcourus) {
-                    for (Troncon troncon : chemin.getTroncons()) {
-                        troncon.decrementeCompteurPassage();
-                    }
+                    chemin.getTroncons().forEach(Troncon::decrementeCompteurPassage);
                 }
                 //mise a jour des troncons empruntes
                 for (Chemin chemin : cheminsParcourus) {
-                    for (Troncon troncon : chemin.getTroncons()) {
-                        troncon.incrementeCompteurPassage();
-                    }
+                    chemin.getTroncons().forEach(Troncon::incrementeCompteurPassage);
                 }
 
                 //l1 chemins
@@ -494,21 +465,6 @@ public class DemandeLivraisons extends Observable {
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
-
-    private void remplacerDansItineraire(Chemin remplacer, List<Chemin> nouveaux) {
-
-        int indexASupprimer = 0;
-        for (int i = 0; i < itineraire.size(); i++) {
-            if (remplacer == itineraire.get(i)) {
-                indexASupprimer = i;
-            }
-        }
-        for (int i = nouveaux.size() - 1; i >= 0; i--) {
-            itineraire.add(indexASupprimer, nouveaux.get(i));
-        }
-        itineraire.remove(remplacer);
-
-    }
 
     /**
      * réalloue tous les attributs à des attributs vides

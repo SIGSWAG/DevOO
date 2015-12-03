@@ -42,10 +42,6 @@ public class Controleur {
         listeDeCdes = new ListeDeCommandes();
     }
 
-    public static EtatInit getEtatInit() {
-        return etatInit;
-    }
-
     public static EtatAttenteDemandeLivraison getEtatAttenteDemandeLivr() {
         return etatAttenteDemandeLivr;
     }
@@ -78,9 +74,6 @@ public class Controleur {
         return etatAjoutLivraisonValidable;
     }
 
-    public static Etat getEtatCourant() {
-        return etatCourant;
-    }
 
     /**
      * Change l'etat courant du controleur

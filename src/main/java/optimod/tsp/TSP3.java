@@ -3,9 +3,6 @@ package optimod.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
-/**
- * Créé par Thibault le 28/11/2015.
- */
 public class TSP3 extends TSP2 {
 
 

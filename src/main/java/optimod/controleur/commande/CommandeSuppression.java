@@ -34,8 +34,8 @@ public class CommandeSuppression implements Commande {
      * Execute la commande
      */
     public void executer() {
-        for (int i = 0; i < livraisonsASupprimer.size(); i++) {
-            ordonnanceur.supprimerLivraison(livraisonsASupprimer.get(i));
+        for (Livraison aLivraisonsASupprimer : livraisonsASupprimer) {
+            ordonnanceur.supprimerLivraison(aLivraisonsASupprimer);
         }
     }
 

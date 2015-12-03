@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import optimod.controleur.Controleur;
+import optimod.es.txt.GenerateurDeFeuilleDeRoute;
 import optimod.es.xml.DeserialiseurXML;
 import optimod.modele.Ordonnanceur;
 
@@ -53,6 +54,7 @@ public class OptimodApplication extends Application {
         Parent root = loader.load(location.openStream());
 
         DeserialiseurXML.INSTANCE.setFenetre(fenetre);
+        GenerateurDeFeuilleDeRoute.INSTANCE.setFenetre(fenetre);
         fenetre.getIcons().add(new Image(OPTIMOD_ICONE));
         fenetre.setTitle(TITRE_FENETRE);
 

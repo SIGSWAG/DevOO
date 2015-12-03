@@ -74,7 +74,7 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
         calculCouleursTroncons(itineraire);
         getTronconsPane().forEach(TronconPane::mettreAJour);
-        getIntersectionsPane().stream().filter(i -> !i.getTexte().equals("")).forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
+        getIntersectionsPane().stream().filter(i -> !i.getTexte().equals("")).forEach(Node::toFront); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
     }
 
     private void calculCouleursTroncons(List<Chemin> itineraire) {
@@ -119,8 +119,8 @@ public final class AfficheurPlan {
      * Réinitialise toutes les livraisons dessinées.
      */
     private void reinitialiser() {
-        getIntersectionsPane().forEach(intersectionPane -> intersectionPane.reinitialiser());
-        getTronconsPane().forEach(tronconPane -> tronconPane.reinitialiser());
+        getIntersectionsPane().forEach(IntersectionPane::reinitialiser);
+        getTronconsPane().forEach(TronconPane::reinitialiser);
 
     }
 
@@ -212,26 +212,6 @@ public final class AfficheurPlan {
             }
         }
         return tronconsLigne;
-    }
-
-    private Collection<Intersection> getIntersections() {
-        ArrayList<Intersection> intersections = new ArrayList<>();
-        for (Node noeud : group.getChildren()) {
-            if (noeud instanceof IntersectionPane) {
-                intersections.add(((IntersectionPane) noeud).getIntersection());
-            }
-        }
-        return intersections;
-    }
-
-    private Collection<Troncon> getTroncons() {
-        List<Troncon> troncons = new ArrayList<>();
-        for (Node noeud : group.getChildren()) {
-            if (noeud instanceof TronconPane) {
-                troncons.add(((TronconPane) noeud).getTroncon());
-            }
-        }
-        return troncons;
     }
 
 }

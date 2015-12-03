@@ -105,13 +105,8 @@ public class Ordonnanceur {
         demandeLivraisons.echangerLivraison(livr1, livr2);
     }
 
-
     public DemandeLivraisons getDemandeLivraisons() {
         return demandeLivraisons;
-    }
-
-    public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
-        this.demandeLivraisons = demandeLivraisons;
     }
 
     public Plan getPlan() {

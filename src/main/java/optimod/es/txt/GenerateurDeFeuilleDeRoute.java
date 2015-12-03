@@ -65,7 +65,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                 "          <div class='timeline-panel'>\n" +
                 "            <div class='timeline-heading'>\n" +
                 "              <h4 class='timeline-title'>Depart de l'entrepot</h4>\n" +
-                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDebutItineraire) + "</small></p>\n" +
+                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(heureDebutItineraire) + "</small></p>\n" +
                 "            </div>\n" +
                 "            <div class='timeline-body'>\n" +
                 "              <p> Depart de l'Entrepot : (" + entrepot.getIntersection().getAdresse() + ")" + "</p>\n" +
@@ -88,7 +88,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                             "          <div class='timeline-panel'>\n" +
                             "            <div class='timeline-heading'>\n" +
                             "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
                             "            </div>\n" +
                             "            <div class='timeline-body'>\n" +
                             "              <p> Prendre la rue " + rueCourante.getNom() + " et continuer sur " + (int) distanceRue + "m" + "</p>\n" +
@@ -108,7 +108,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                     "          <div class='timeline-panel'>\n" +
                     "            <div class='timeline-heading'>\n" +
                     "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
+                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
                     "            </div>\n" +
                     "            <div class='timeline-body'>\n" +
                     "              <p> Prendre la rue " + rueCourante.getNom() + " et continuer sur " + (int) distanceRue + "m" + "</p>\n" +
@@ -123,7 +123,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                         "          <div class='timeline-panel'>\n" +
                         "            <div class='timeline-heading'>\n" +
                         "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
                         "            </div>\n" +
                         "            <div class='timeline-body'>\n" +
                         "              <p> Retour a l'Entrepot en " + chemin.getArrivee().getIntersection().getAdresse() + "</p>\n" +
@@ -139,7 +139,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                             "          <div class='timeline-panel'>\n" +
                             "            <div class='timeline-heading'>\n" +
                             "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
                             "            </div>\n" +
                             "            <div class='timeline-body'>\n" +
                             "              <p> " + "Patienter en " + chemin.getArrivee().getIntersection().getAdresse() + " pendant " +
@@ -154,7 +154,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                         "          <div class='timeline-panel'>\n" +
                         "            <div class='timeline-heading'>\n" +
                         "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
                         "            </div>\n" +
                         "            <div class='timeline-body'>\n" +
                         "              <p> Effectuer la livraison en " + chemin.getArrivee().getIntersection().getAdresse() + "</p>\n" +
@@ -168,7 +168,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                             "          <div class='timeline-panel'>\n" +
                             "            <div class='timeline-heading'>\n" +
                             "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
-                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
                             "            </div>\n" +
                             "            <div class='timeline-body'>\n" +
                             "              <p> Cette livraison a un retard de " + tempsEnHeures(retard) + "h" + (tempsEnMinutes(retard) < 10 ? "0" : "") + tempsEnMinutes(retard) + "m !!" + "</p>\n" +
@@ -393,11 +393,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
         return (temps % 3600) / 60;
     }
 
-    private int tempsEnSecondes(int temps) {
-        return (temps % 3600) % 60;
-    }
-
-    private String horodateur(int etape, int temps) {
+    private String horodateur(int temps) {
         return tempsEnHeures(temps) + "h" + (tempsEnMinutes(temps) < 10 ? "0" : "") + tempsEnMinutes(temps) + "m";
     }
 }

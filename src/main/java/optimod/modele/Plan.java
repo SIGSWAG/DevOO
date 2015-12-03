@@ -1,7 +1,5 @@
 package optimod.modele;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import optimod.es.xml.DeserialiseurXML;
 import optimod.es.xml.ExceptionXML;
 import org.xml.sax.SAXException;
