@@ -56,7 +56,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerPlan(Plan plan, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null){
+        if(xml == null || plan == null){
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -205,7 +205,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null){
+        if(xml == null || demandeLivraisons == null){
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -236,18 +236,8 @@ public enum DeserialiseurXML { // Singleton
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Une JourneeType doit avoir un (seul) Entrepot");
         }
         Element elementEntrepot = (Element)listeEntrepots.item(0);
-        String attributAdresseEntrepot = elementEntrepot.getAttribute("adresse");
-        if(attributAdresseEntrepot.isEmpty()){
-            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit avoir une adresse");
-        }
-        int adresseEntrepot = parseInt(attributAdresseEntrepot);
-        Intersection intersectionEntrepot = demandeLivraisons.getPlan().trouverIntersection(adresseEntrepot);
-        if (intersectionEntrepot == null) {
-            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
-        }
-
-        intersectionsUtilisees.add(intersectionEntrepot);
-        entrepot = new Livraison(intersectionEntrepot);
+        entrepot = this.creerEntrepot(elementEntrepot, demandeLivraisons);
+        intersectionsUtilisees.add(entrepot.getIntersection());
 
 
         // Parcours de toutes les PlagesHoraires (FenetreLivraison)
@@ -296,11 +286,6 @@ public enum DeserialiseurXML { // Singleton
             if(tempsDeb > tempsFi){
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
-            /*
-            if(fenetres.size() > 0 && fenetres.get(fenetres.size()-1).getHeureFin() < tempsDeb){
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage en suivant une autre doit avoir son heureDebut supérieure ou égale à l'heureFin de la Plage précédente");
-            }
-            */
             for (FenetreLivraison fl : fenetres) {
                 if ((tempsDeb < fl.getHeureFin() && tempsDeb > fl.getHeureDebut()) ||
                         tempsFi < fl.getHeureFin() && tempsFi > fl.getHeureDebut()){
@@ -374,6 +359,20 @@ public enum DeserialiseurXML { // Singleton
                 l.getIntersection().setLivraison(l);
             }
         }
+    }
+
+    private Livraison creerEntrepot(Element elementEntrepot, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
+        String attributAdresseEntrepot = elementEntrepot.getAttribute("adresse");
+        if(attributAdresseEntrepot.isEmpty()){
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit avoir une adresse");
+        }
+        int adresseEntrepot = parseInt(attributAdresseEntrepot);
+        Intersection intersectionEntrepot = demandeLivraisons.getPlan().trouverIntersection(adresseEntrepot);
+        if (intersectionEntrepot == null) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
+        }
+
+        return new Livraison(intersectionEntrepot);
     }
 
     public void setFenetre(Stage fenetre) {
