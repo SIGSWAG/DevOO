@@ -150,7 +150,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xml = new File("src/test/resources/fail/plan-xml-vide.xml");
+        File xml = new File("src/test/resources/fail/xml-vide.xml");
         Plan plan = new Plan();
         boolean charge = false;
 
@@ -388,4 +388,142 @@ public class DeserialiseurXMLTest {
 
     }
 
+    @Test
+    public void testChargerDemandeLivraisonDLVide() {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison-vide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+            charge &= DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        } catch (Exception e) {
+
+        }
+        assertEquals(charge, true);
+        assertEquals(demandeLivraisons.getFenetres().size(), 0);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonDLNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison-vide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = null;
+        boolean charge = false;
+        try {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+            charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        } catch (Exception e) {
+
+        }
+        assertEquals(charge, false);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonXmlNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = null;
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        boolean charge = false;
+        try {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+            charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        } catch (Exception e) {
+
+        }
+        assertEquals(charge, false);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-xml-invalide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        boolean charge = false;
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+        exception.expect(SAXException.class);
+        charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+        assertEquals(charge, false);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/xml-vide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        boolean charge = false;
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+        exception.expect(SAXException.class);
+        charge = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonJourneeTypeManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-journee-type-manquant.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Document non conforme la racine du document doit être une JourneeType");
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonSansLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-livraison-manquante.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : L'élément Livraisons doit être composé d'au moins une Livraison");
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonIdNoeudDestinationInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-adresse-invalide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonFenetreChevauche() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-fenetre-chevauche.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : Deux Plages doivent être distinctes");
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
+
+    @Test
+    public void testChargerDemandeLivraisonEntrepotInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-entrepot-invalide.xml");
+        Plan plan = new Plan();
+        DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : Un Entrepot doit être un Noeud existant");
+        DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisons, xmlDemandeLivraison);
+    }
 }
