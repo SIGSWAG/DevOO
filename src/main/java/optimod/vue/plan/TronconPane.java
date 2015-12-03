@@ -16,18 +16,16 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Représente un tronçon à l'écran.
- * Created by aurelien on 23/11/15.
+ * Représente un tronçon à l'écran
  */
 public class TronconPane extends Group {
 
     public static final float TAILLE_FLECHE = 5;
 
     private static final Color COULEUR_DEFAUT = Color.LIGHTGRAY;
-    private List<Color> couleurs;
-
     private final IntersectionPane source;
     private final Troncon troncon;
+    private List<Color> couleurs;
 
     public TronconPane(final IntersectionPane source, final Troncon troncon) {
         this.source = source;
@@ -37,10 +35,55 @@ public class TronconPane extends Group {
         mettreAJour();
     }
 
+    /**
+     * Voir http://stackoverflow.com/a/26705532
+     *
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {
+        double baX = x2 - x1;
+        double baY = y2 - y1;
+        double caX = x2 - x1;
+        double caY = y2 - y1;
+
+        double a = baX * baX + baY * baY;
+        double bBy2 = baX * caX + baY * caY;
+        double c = caX * caX + caY * caY - IntersectionPane.TAILLE * IntersectionPane.TAILLE;
+
+        double pBy2 = bBy2 / a;
+        double q = c / a;
+
+        double disc = pBy2 * pBy2 - q;
+        if (disc < 0) {
+            return Collections.emptyList();
+        }
+        // if disc == 0 ... dealt with later
+        double tmpSqrt = Math.sqrt(disc);
+        double abScalingFactor1 = -pBy2 + tmpSqrt;
+        double abScalingFactor2 = -pBy2 - tmpSqrt;
+
+        Point2D p1 = new Point2D(x1 - baX * abScalingFactor1, y1 - baY * abScalingFactor1);
+        if (disc == 0) { // abScalingFactor1 == abScalingFactor2
+            return Collections.singletonList(p1);
+        }
+        Point2D p2 = new Point2D(x1 - baX * abScalingFactor2, y1 - baY * abScalingFactor2);
+        return Arrays.asList(p1, p2);
+    }
+
+    /**
+     * Réinitialise le tronçon, en recréant une liste vide de couleurs
+     */
     public void reinitialiser() {
         couleurs = new ArrayList<>();
     }
 
+    /**
+     * Met à jour le troncon, en redessinant les flèches
+     */
     public void mettreAJour() {
         getChildren().clear();
         dessinerFleches();
@@ -101,39 +144,13 @@ public class TronconPane extends Group {
 
     }
 
+    /**
+     * Ajoute une couleur à la liste des couleurs du tronçon
+     *
+     * @param couleur
+     */
     public void ajouterPassage(final Color couleur) {
         couleurs.add(couleur);
-    }
-
-    private static List<Point2D> intersectionCercleLigne(int x1, int y1, int x2, int y2) {
-        // http://stackoverflow.com/a/26705532
-        double baX = x2 - x1;
-        double baY = y2 - y1;
-        double caX = x2 - x1;
-        double caY = y2 - y1;
-
-        double a = baX * baX + baY * baY;
-        double bBy2 = baX * caX + baY * caY;
-        double c = caX * caX + caY * caY - IntersectionPane.TAILLE * IntersectionPane.TAILLE;
-
-        double pBy2 = bBy2 / a;
-        double q = c / a;
-
-        double disc = pBy2 * pBy2 - q;
-        if (disc < 0) {
-            return Collections.emptyList();
-        }
-        // if disc == 0 ... dealt with later
-        double tmpSqrt = Math.sqrt(disc);
-        double abScalingFactor1 = -pBy2 + tmpSqrt;
-        double abScalingFactor2 = -pBy2 - tmpSqrt;
-
-        Point2D p1 = new Point2D(x1 - baX * abScalingFactor1, y1 - baY * abScalingFactor1);
-        if (disc == 0) { // abScalingFactor1 == abScalingFactor2
-            return Collections.singletonList(p1);
-        }
-        Point2D p2 = new Point2D(x1 - baX * abScalingFactor2, y1 - baY * abScalingFactor2);
-        return Arrays.asList(p1, p2);
     }
 
     /**
@@ -170,5 +187,4 @@ public class TronconPane extends Group {
     public Troncon getTroncon() {
         return troncon;
     }
-
 }

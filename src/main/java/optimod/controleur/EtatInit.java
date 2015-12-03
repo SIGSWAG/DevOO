@@ -19,15 +19,16 @@ public class EtatInit extends EtatDefaut {
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
-            if(ordonnanceur.chargerPlan())
+            if (ordonnanceur.chargerPlan()) {
                 Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+            }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
+            fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
 
     @Override
-    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.activerChargerPlan(true);
     }
 

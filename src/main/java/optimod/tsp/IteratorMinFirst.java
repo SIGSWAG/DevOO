@@ -10,11 +10,12 @@ public class IteratorMinFirst implements Iterator<Integer> {
     /**
      * Cree un iterateur pour iterer sur l'ensemble des sommets de nonVus qui sont successeurs de sommetCrt dans le graphe g,
      * dans l'odre d'apparition dans <code>nonVus</code>
+     *
      * @param nonVus
      * @param sommetCrt
      * @param g
      */
-    public IteratorMinFirst(Collection<Integer> nonVus, int sommetCrt, Graphe g){
+    public IteratorMinFirst(Collection<Integer> nonVus, int sommetCrt, Graphe g) {
         this.candidats = new ArrayList<>();
         Iterator<Integer> it = nonVus.iterator();
         while (it.hasNext()) {
@@ -38,10 +39,11 @@ public class IteratorMinFirst implements Iterator<Integer> {
     }
 
 
-    public void remove() {}
+    public void remove() {
+    }
 
 
-    private class ArcCout implements Comparable<ArcCout>{
+    private class ArcCout implements Comparable<ArcCout> {
 
         int noeud;
         int cout;
@@ -53,7 +55,7 @@ public class IteratorMinFirst implements Iterator<Integer> {
 
         @Override
         public int compareTo(ArcCout arc) {
-            if(arc.cout >= cout){
+            if (arc.cout >= cout) {
                 return -1;
             }
             return 1;

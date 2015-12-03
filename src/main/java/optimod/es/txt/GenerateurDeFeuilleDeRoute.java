@@ -2,20 +2,16 @@ package optimod.es.txt;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import optimod.es.xml.ExceptionXML;
-import optimod.modele.*;
+import optimod.modele.Chemin;
+import optimod.modele.Livraison;
+import optimod.modele.Troncon;
 import optimod.vue.es.OuvreurDeFichier;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamResult;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Loïc Touzard on 18/11/2015.
@@ -23,28 +19,25 @@ import java.util.*;
 public enum GenerateurDeFeuilleDeRoute { // Singleton
     INSTANCE;
     private List<FileChooser.ExtensionFilter> extensions = new ArrayList<FileChooser.ExtensionFilter>();
+    private Stage fenetre;
 
-    GenerateurDeFeuilleDeRoute(){
+    GenerateurDeFeuilleDeRoute() {
         extensions.add(new FileChooser.ExtensionFilter("HTML (*.html)", "*.html"));
         extensions.add(new FileChooser.ExtensionFilter("Toute extension (*.*)", "*.*"));
     }
 
-    private Stage fenetre;
-
     /**
      * Genere la feuille de route dasn un fichier HTML
-     * @param entrepot L'entrepot de depart et d'arrivee de la demande de livraison
+     *
+     * @param entrepot             L'entrepot de depart et d'arrivee de la demande de livraison
      * @param heureDebutItineraire l'heure de debut de l'itineraire, au depart de l'entrepot
-     * @param itineraire la liste des chemins à suivre pour effectuer la demande de livraison
-     * @param tempsArret le temps d'attente à une livraison
+     * @param itineraire           la liste des chemins à suivre pour effectuer la demande de livraison
+     * @param tempsArret           le temps d'attente à une livraison
      * @return true si le fichier à bien ete mis à jour, false sinon.
      */
     public boolean genererFeuilleDeRoute(Livraison entrepot, int heureDebutItineraire, List<Chemin> itineraire, int tempsArret) throws IOException {
-        File fichier = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions)
-                .setMode(OuvreurDeFichier.MODE_ECRITURE)
-                .setTitre("Selectionner le fichier où sauvegarder la feuille de route")
-                .ouvre(fenetre);
-        if(fichier == null){
+        File fichier = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions).setMode(OuvreurDeFichier.MODE_ECRITURE).setTitre("Selectionner le fichier où sauvegarder la feuille de route").ouvre(fenetre);
+        if (fichier == null) {
             return false;
         }
         PrintStream fluxFichier = new PrintStream(fichier);
@@ -58,7 +51,7 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                 "<title>\n" +
                 "Feuille de route\n" +
                 "</title>\n" +
-                "<style>"+recupererCSS()+"</style>" +
+                "<style>" + recupererCSS() + "</style>" +
                 "<link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>\n" +
                 "</head>\n" +
                 "<body>\n" +
@@ -72,131 +65,129 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
                 "          <div class='timeline-panel'>\n" +
                 "            <div class='timeline-heading'>\n" +
                 "              <h4 class='timeline-title'>Depart de l'entrepot</h4>\n" +
-                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape++, heureDebutItineraire)+"</small></p>\n" +
+                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDebutItineraire) + "</small></p>\n" +
                 "            </div>\n" +
                 "            <div class='timeline-body'>\n" +
-                "              <p> Depart de l'Entrepot : ("+entrepot.getIntersection().getAdresse()+")" +"</p>\n" +
+                "              <p> Depart de l'Entrepot : (" + entrepot.getIntersection().getAdresse() + ")" + "</p>\n" +
                 "            </div>\n" +
                 "          </div>\n" +
                 "        </li>");
-        for(Chemin chemin : itineraire) {
+        for (Chemin chemin : itineraire) {
             dureeChemin = 0;
-            Troncon rueCourante=chemin.getTroncons().get(0);
+            Troncon rueCourante = chemin.getTroncons().get(0);
 
-            double distanceRue=0;
+            double distanceRue = 0;
             int dureeRue = 0;
-            for(Troncon troncon : chemin.getTroncons()){
-                if(troncon.getNom().equals(rueCourante.getNom() )){
+            for (Troncon troncon : chemin.getTroncons()) {
+                if (troncon.getNom().equals(rueCourante.getNom())) {
                     distanceRue += troncon.getLongueur();
                     dureeRue += troncon.getDuree();
-                }else{
+                } else {
                     fluxFichier.println("<li>\n" +
-                                    "          <div class='timeline-badge success'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
-                                    "          <div class='timeline-panel'>\n" +
-                                    "            <div class='timeline-heading'>\n" +
-                                    "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape++, heureDerniereLivraison+dureeChemin)+" </small></p>\n" +
-                                    "            </div>\n" +
-                                    "            <div class='timeline-body'>\n" +
-                                    "              <p> Prendre la rue "+rueCourante.getNom()+" et continuer sur "+  (int)distanceRue+"m"+"</p>\n" +
-                                    "            </div>\n" +
-                                    "          </div>\n" +
-                                    "        </li>");
+                            "          <div class='timeline-badge success'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                            "          <div class='timeline-panel'>\n" +
+                            "            <div class='timeline-heading'>\n" +
+                            "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
+                            "            </div>\n" +
+                            "            <div class='timeline-body'>\n" +
+                            "              <p> Prendre la rue " + rueCourante.getNom() + " et continuer sur " + (int) distanceRue + "m" + "</p>\n" +
+                            "            </div>\n" +
+                            "          </div>\n" +
+                            "        </li>");
                     distanceTotale += distanceRue;
                     dureeChemin += dureeRue;
                     dureeRue = troncon.getDuree();
                     distanceRue = troncon.getLongueur();
-                    rueCourante=troncon;
+                    rueCourante = troncon;
                 }
             }
 
             fluxFichier.println("<li>\n" +
-                            "          <div class='timeline-badge success'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                    "          <div class='timeline-badge success'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                    "          <div class='timeline-panel'>\n" +
+                    "            <div class='timeline-heading'>\n" +
+                    "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
+                    "            </div>\n" +
+                    "            <div class='timeline-body'>\n" +
+                    "              <p> Prendre la rue " + rueCourante.getNom() + " et continuer sur " + (int) distanceRue + "m" + "</p>\n" +
+                    "            </div>\n" +
+                    "          </div>\n" +
+                    "        </li>");
+            distanceTotale += distanceRue;
+            dureeChemin += dureeRue;
+            if (entrepot == chemin.getArrivee()) {
+                fluxFichier.println("<li class='timeline-inverted'>\n" +
+                        "          <div class='timeline-badge warning'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                        "          <div class='timeline-panel'>\n" +
+                        "            <div class='timeline-heading'>\n" +
+                        "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape++, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                        "            </div>\n" +
+                        "            <div class='timeline-body'>\n" +
+                        "              <p> Retour a l'Entrepot en " + chemin.getArrivee().getIntersection().getAdresse() + "</p>\n" +
+                        "            </div>\n" +
+                        "          </div>\n" +
+                        "        </li>");
+                heureDerniereLivraison = chemin.getArrivee().getHeureLivraison() + tempsArret;
+            } else {
+                int attente = chemin.getArrivee().getHeureLivraison() - (heureDerniereLivraison + dureeChemin);
+                if (attente > 0) {
+                    fluxFichier.println("<li class='timeline-inverted'>\n" +
+                            "          <div class='timeline-badge primary'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
                             "          <div class='timeline-panel'>\n" +
                             "            <div class='timeline-heading'>\n" +
-                            "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape++, heureDerniereLivraison+dureeChemin)+" </small></p>\n" +
+                            "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, heureDerniereLivraison + dureeChemin) + " </small></p>\n" +
                             "            </div>\n" +
                             "            <div class='timeline-body'>\n" +
-                            "              <p> Prendre la rue "+rueCourante.getNom()+" et continuer sur "+  (int)distanceRue+"m"+"</p>\n" +
+                            "              <p> " + "Patienter en " + chemin.getArrivee().getIntersection().getAdresse() + " pendant " +
+                            tempsEnHeures(attente) + "h" +
+                            (tempsEnMinutes(attente) < 10 ? "0" : "") + tempsEnMinutes(attente) + "m" + "</p>\n" +
                             "            </div>\n" +
                             "          </div>\n" +
                             "        </li>");
-            distanceTotale += distanceRue;
-            dureeChemin += dureeRue;
-            if(entrepot == chemin.getArrivee()){
-                fluxFichier.println("<li class='timeline-inverted'>\n" +
-                                "          <div class='timeline-badge warning'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
-                                "          <div class='timeline-panel'>\n" +
-                                "            <div class='timeline-heading'>\n" +
-                                "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape++, chemin.getArrivee().getHeureLivraison())+" </small></p>\n" +
-                                "            </div>\n" +
-                                "            <div class='timeline-body'>\n" +
-                                "              <p> Retour a l'Entrepot en "+chemin.getArrivee().getIntersection().getAdresse()+"</p>\n" +
-                                "            </div>\n" +
-                                "          </div>\n" +
-                                "        </li>");
-                heureDerniereLivraison = chemin.getArrivee().getHeureLivraison()+tempsArret;
-            }
-            else{
-                int attente = chemin.getArrivee().getHeureLivraison() - (heureDerniereLivraison+dureeChemin);
-                if(attente > 0){
-                    fluxFichier.println("<li class='timeline-inverted'>\n" +
-                                    "          <div class='timeline-badge primary'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
-                                    "          <div class='timeline-panel'>\n" +
-                                    "            <div class='timeline-heading'>\n" +
-                                    "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape, heureDerniereLivraison+dureeChemin)+" </small></p>\n" +
-                                    "            </div>\n" +
-                                    "            <div class='timeline-body'>\n" +
-                                    "              <p> "+ "Patienter en "+chemin.getArrivee().getIntersection().getAdresse()+" pendant "+
-                                    tempsEnHeures(attente) + "h" +
-                                    (tempsEnMinutes(attente)<10?"0":"")+tempsEnMinutes(attente)+ "m" +"</p>\n" +
-                                    "            </div>\n" +
-                                    "          </div>\n" +
-                                    "        </li>");
                 }
                 fluxFichier.println("<li class='timeline-inverted'>\n" +
-                                "          <div class='timeline-badge warning'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
-                                "          <div class='timeline-panel'>\n" +
-                                "            <div class='timeline-heading'>\n" +
-                                "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                                "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape, chemin.getArrivee().getHeureLivraison())+" </small></p>\n" +
-                                "            </div>\n" +
-                                "            <div class='timeline-body'>\n" +
-                                "              <p> Effectuer la livraison en "+chemin.getArrivee().getIntersection().getAdresse()+"</p>\n" +
-                                "            </div>\n" +
-                                "          </div>\n" +
-                                "        </li>");
-                if(chemin.getArrivee().estEnRetard()){
+                        "          <div class='timeline-badge warning'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                        "          <div class='timeline-panel'>\n" +
+                        "            <div class='timeline-heading'>\n" +
+                        "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                        "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                        "            </div>\n" +
+                        "            <div class='timeline-body'>\n" +
+                        "              <p> Effectuer la livraison en " + chemin.getArrivee().getIntersection().getAdresse() + "</p>\n" +
+                        "            </div>\n" +
+                        "          </div>\n" +
+                        "        </li>");
+                if (chemin.getArrivee().estEnRetard()) {
                     int retard = chemin.getArrivee().getHeureLivraison() - chemin.getArrivee().getHeureFinFenetre();
                     fluxFichier.println("<li class='timeline-inverted'>\n" +
-                                    "          <div class='timeline-badge danger'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
-                                    "          <div class='timeline-panel'>\n" +
-                                    "            <div class='timeline-heading'>\n" +
-                                    "              <h4 class='timeline-title'>Etape : "+ etape +"</h4>\n" +
-                                    "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>"+horodateur(etape, chemin.getArrivee().getHeureLivraison())+" </small></p>\n" +
-                                    "            </div>\n" +
-                                    "            <div class='timeline-body'>\n" +
-                                    "              <p> Cette livraison a un retard de " + tempsEnHeures(retard) + "h" + (tempsEnMinutes(retard)<10?"0":"")+tempsEnMinutes(retard)+ "m !!" + "</p>\n" +
-                                    "            </div>\n" +
-                                    "          </div>\n" +
-                                    "        </li>");
+                            "          <div class='timeline-badge danger'><i class='glyphicon glyphicon-credit-card' style='padding-top:15px'></i></div>\n" +
+                            "          <div class='timeline-panel'>\n" +
+                            "            <div class='timeline-heading'>\n" +
+                            "              <h4 class='timeline-title'>Etape : " + etape + "</h4>\n" +
+                            "              <p><small class='text-muted'><i class='glyphicon glyphicon-time'></i>" + horodateur(etape, chemin.getArrivee().getHeureLivraison()) + " </small></p>\n" +
+                            "            </div>\n" +
+                            "            <div class='timeline-body'>\n" +
+                            "              <p> Cette livraison a un retard de " + tempsEnHeures(retard) + "h" + (tempsEnMinutes(retard) < 10 ? "0" : "") + tempsEnMinutes(retard) + "m !!" + "</p>\n" +
+                            "            </div>\n" +
+                            "          </div>\n" +
+                            "        </li>");
                 }
                 etape++;
                 fluxFichier.println();
-                heureDerniereLivraison = chemin.getArrivee().getHeureLivraison()+tempsArret;
+                heureDerniereLivraison = chemin.getArrivee().getHeureLivraison() + tempsArret;
             }
         }
 
 
-
-        int dureeTotale = heureDerniereLivraison-heureDebutItineraire;
-        fluxFichier.println("</ul>\n" +"<br><div class='well'><h2>La demande de livraison a dure "+
+        int dureeTotale = heureDerniereLivraison - heureDebutItineraire;
+        fluxFichier.println("</ul>\n" + "<br><div class='well'><h2>La demande de livraison a dure " +
                 tempsEnHeures(dureeTotale) + "h" +
-                (tempsEnMinutes(dureeTotale)<10?"0":"")+tempsEnMinutes(dureeTotale)+ "m"+
-                " pour une distance totale de "+ distanceTotale/1000 +"."+distanceTotale%1000+"km</div></div>" +
+                (tempsEnMinutes(dureeTotale) < 10 ? "0" : "") + tempsEnMinutes(dureeTotale) + "m" +
+                " pour une distance totale de " + distanceTotale / 1000 + "." + distanceTotale % 1000 + "km</div></div>" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>\n");
@@ -399,14 +390,15 @@ public enum GenerateurDeFeuilleDeRoute { // Singleton
         return temps / 3600;
     }
 
-    private int tempsEnMinutes(int temps){
+    private int tempsEnMinutes(int temps) {
         return (temps % 3600) / 60;
     }
 
-    private int tempsEnSecondes(int temps){
+    private int tempsEnSecondes(int temps) {
         return (temps % 3600) % 60;
     }
-    private String horodateur(int etape, int temps){
-        return tempsEnHeures(temps) + "h" + (tempsEnMinutes(temps)<10?"0":"")+tempsEnMinutes(temps)+ "m";
+
+    private String horodateur(int etape, int temps) {
+        return tempsEnHeures(temps) + "h" + (tempsEnMinutes(temps) < 10 ? "0" : "") + tempsEnMinutes(temps) + "m";
     }
 }

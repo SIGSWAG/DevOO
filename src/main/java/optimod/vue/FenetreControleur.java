@@ -8,8 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -30,101 +28,74 @@ import java.util.*;
 /**
  * Contrôleur interne utilisé par la vue (JavaFX) afin d'appeler le Contrôleur général avec les bons paramètres
  * Permet que le Contrôleur soit indépendant de l'implémentation choisie pour la vue, et de passer les paramètres nécessaires
- * Created by Jonathan on 19/11/2015.
  */
 public class FenetreControleur implements Observer, Initializable {
 
+    private static final String MESSAGE_ERREUR_EXCEPTION = "Voici l'exception levée par le système :";
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private final Stage fenetre;
 
     private final Controleur controleur;
-
+    private final List<Color> couleursPossibles;
+    private final Random random;
     @FXML
     private Group planGroup;
-
     @FXML
     private Button chargerPlan;
-
     @FXML
     private Button chargerLivraisons;
-
     @FXML
     private Button calculerItineraire;
-
     @FXML
     private Button toutDeselectionner;
-
     @FXML
     private Button genererFeuilleRoute;
-
     @FXML
     private Button annulerAction;
-
     @FXML
     private Button rejouerAction;
-
     @FXML
     private Button ajouterLivraison;
-
     @FXML
     private Button supprimerLivraison;
-
     @FXML
     private Button echangerLivraisons;
-
     @FXML
     private Button validerAjoutLivraison;
-
     @FXML
     private Button annulerAjoutLivraison;
-
     @FXML
     private AfficheurFenetresLivraison afficheurFenetresLivraison;
-
     private AfficheurPlan afficheurPlan;
-
     private boolean selectionsActivees;
-
     private boolean deselectionsActivees;
-    private boolean entrepotSelectionnable = false;
-    private boolean entrepotDeselectionnable = false;
-
+    private boolean entrepotSelectionnable;
+    private boolean entrepotDeselectionnable;
     private Map<FenetreLivraison, Color> couleursFenetres;
-    private final List<Color> couleursPossibles;
-
-    private final Random random;
 
     public FenetreControleur(final Stage fenetre, final Controleur controleur) {
         this.fenetre = fenetre;
         this.controleur = controleur;
         selectionsActivees = false;
         deselectionsActivees = false;
+        entrepotSelectionnable = false;
+        entrepotDeselectionnable = false;
         random = new Random();
         couleursPossibles = Arrays.asList(Color.BLUE, Color.BROWN, Color.DARKGREEN, Color.PURPLE, Color.BEIGE, Color.TURQUOISE);
     }
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         afficheurPlan = new AfficheurPlan(planGroup, this);
         afficheurFenetresLivraison.setFenetreControleur(this);
         associerVisibiliteBoutons();
         validerAjoutLivraison.setVisible(false);
         annulerAjoutLivraison.setVisible(false);
-        setBoutonsImages();
-    }
-
-    public void setBoutonsImages() {
-        ajouterLivraison.setStyle("-fx-graphic: url('/img/add.png');");
-        validerAjoutLivraison.setStyle("-fx-graphic: url('/img/check.png');");
-        annulerAjoutLivraison.setStyle("-fx-graphic: url('/img/cancel.png');");
-        echangerLivraisons.setStyle("-fx-graphic: url('/img/exchange.png');");
-        rejouerAction.setStyle("-fx-graphic: url('/img/redo.png');");
-        annulerAction.setStyle("-fx-graphic: url('/img/undo.png');");
-        supprimerLivraison.setStyle("-fx-graphic: url('/img/trash.png');");
     }
 
     /**
-     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter les changements de visiblité et ainsi mettre à jour la vue en conséquence
+     * Associe pour chaque bouton de l'IHM déclaré dans FenetreControleur une propriété "managée" permettant d'écouter
+     * les changements de visiblité et ainsi mettre à jour la vue en conséquence
      */
     private void associerVisibiliteBoutons() {
         Class fenetreControleurClass = getClass();
@@ -133,8 +104,7 @@ public class FenetreControleur implements Observer, Initializable {
             try {
                 champObj = champ.get(this);
             } catch (IllegalAccessException e) {
-                logger.error("Impossible d'associer les boutons à leurs controleurs", e);
-                afficheException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
+                afficherException("Impossible d'associer les boutons à leurs controleurs", "Initialisation application - Erreur", Alert.AlertType.ERROR, e);
             }
             if (champObj instanceof Button) {
                 Button bouton = (Button) champObj;
@@ -216,10 +186,15 @@ public class FenetreControleur implements Observer, Initializable {
      */
     @FXML
     protected void deselectionnerToutesIntersections(ActionEvent evenement) {
-        deselectionnerTout();
+        deselectionnerToutesIntersections();
         afficheurFenetresLivraison.deselectionnerTout();
     }
 
+    /**
+     * Appelée lorsque l'utilisateur clique sur le bouton de validation d'un ajout de livraison
+     *
+     * @param evenement
+     */
     @FXML
     protected void validerAjoutLivraison(ActionEvent evenement) {
         afficheurPlan.deselectionnerToutesIntersections();
@@ -227,6 +202,11 @@ public class FenetreControleur implements Observer, Initializable {
         controleur.validerAjoutLivraison();
     }
 
+    /**
+     * Appelée lorsque l'utilisateur clique sur le bouton d'annulation d'un ajout de livraison
+     *
+     * @param evenement
+     */
     @FXML
     protected void annulerAjoutLivraison(ActionEvent evenement) {
         afficheurPlan.deselectionnerToutesIntersections();
@@ -268,22 +248,22 @@ public class FenetreControleur implements Observer, Initializable {
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
 
+                // TODO Voir si nécessaire, déjà dans chargerFenetresLivraison
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
 
             } else {
-                // TODO
                 logger.warn("Événement invalide.");
             }
 
         } else {
-            // TODO
             logger.warn("Événement nul.");
         }
     }
 
     /**
-     * Associe une couleur à une fenêtre de livraison. Si celle-ci n'a aucune couleur déjà associée, une nouvelle couleur lui est alors affecté.
+     * Associe une couleur à une fenêtre de livraison. Si celle-ci n'a aucune couleur déjà associée,
+     * une nouvelle couleur lui est alors affecté.
      *
      * @param fenetreLivraison La fenêtre de livraison dont on veut la couleur.
      * @return La couleur associée à la fenêtre de livraison.
@@ -350,11 +330,11 @@ public class FenetreControleur implements Observer, Initializable {
     }
 
     public void activerSelections(boolean estActif) {
-        this.selectionsActivees = estActif;
+        selectionsActivees = estActif;
     }
 
     public void activerDeselections(boolean estActif) {
-        this.deselectionsActivees = estActif;
+        deselectionsActivees = estActif;
     }
 
     public void activerAnnulerAjout(boolean estActif) {
@@ -365,14 +345,19 @@ public class FenetreControleur implements Observer, Initializable {
         validerAjoutLivraison.setVisible(estActif);
     }
 
-    public void activerDeselectionsEntrepot(boolean b) {
-        entrepotDeselectionnable = b;
+    public void activerDeselectionsEntrepot(boolean entrepotDeselectionnable) {
+        this.entrepotDeselectionnable = entrepotDeselectionnable;
     }
 
-    public void activerSelectionsEntrepot(boolean b) {
-        entrepotSelectionnable = b;
+    public void activerSelectionsEntrepot(boolean entrepotSelectionnable) {
+        this.entrepotSelectionnable = entrepotSelectionnable;
     }
 
+    /**
+     * Permet d'activer ou de désactiver tous les boutons de l'IHM
+     *
+     * @param estActif
+     */
     public void autoriseBoutons(boolean estActif) {
         activerChargerPlan(estActif);
         activerChargerLivraisons(estActif);
@@ -392,7 +377,14 @@ public class FenetreControleur implements Observer, Initializable {
         activerDeselectionsEntrepot(estActif);
     }
 
-    public void afficheMessage(String message, String titre, Alert.AlertType alertType) {
+    /**
+     * Affiche un message avec un titre et un type d'alerte sur l'écran
+     *
+     * @param message
+     * @param titre
+     * @param alertType
+     */
+    public void afficherMessage(String message, String titre, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -404,7 +396,19 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    public void afficheException(String message, String titre, Alert.AlertType alertType, Exception ex) {
+    /**
+     * Affiche une expcetion avec un titre, une alerte, et le message de l'exception sur l'IHM
+     *
+     * @param message
+     * @param titre
+     * @param alertType
+     * @param ex
+     */
+    public void afficherException(String message, String titre, Alert.AlertType alertType, Exception ex) {
+        if (!message.isEmpty()) {
+            logger.error(message, ex);
+        }
+
         Alert alert = new Alert(alertType);
         alert.setTitle(titre);
         alert.setHeaderText(null);
@@ -416,7 +420,7 @@ public class FenetreControleur implements Observer, Initializable {
         ex.printStackTrace(pw);
         String exceptionText = sw.toString();
 
-        Label label = new Label("Voici l'exception levée par le système :");
+        Label label = new Label(MESSAGE_ERREUR_EXCEPTION);
 
         TextArea textArea = new TextArea(exceptionText);
         textArea.setEditable(false);
@@ -438,37 +442,39 @@ public class FenetreControleur implements Observer, Initializable {
         alert.showAndWait();
     }
 
-    private void updateVue() {
-        this.controleur.updateVue();
-    }
-
-    public boolean selectionner(Intersection intersection) {
+    /**
+     * Sélectionne l'intersection passée en paramètre sur l'IHM (plan + liste fenêtres livraison)
+     *
+     * @param intersection L'intersection à sélectionner
+     * @return
+     */
+    public void selectionner(Intersection intersection) {
         if (selectionsActivees) {
-            if (this.controleur.selectionnerIntersection(intersection)) {
-                this.afficheurPlan.selectionner(intersection);
-                this.afficheurFenetresLivraison.selectionner(intersection.getLivraison());
-                return true;
-            } else {
-                return false;
+            if (controleur.selectionnerIntersection(intersection)) {
+                afficheurPlan.selectionner(intersection);
+                afficheurFenetresLivraison.selectionner(intersection.getLivraison());
             }
         }
-        return false;
     }
 
+    /**
+     * Déselectionner l'intersection passée en paramètre sur l'IHM (plan + liste fenêtres livraison)
+     *
+     * @param intersection L'intersection à sélectionner
+     */
     public void deselectionner(Intersection intersection) {
         if (deselectionsActivees) {
-            if (this.controleur.deselectionnerIntersection(intersection)) {
+            if (controleur.deselectionnerIntersection(intersection)) {
                 afficheurPlan.deselectionner(intersection);
                 afficheurFenetresLivraison.deselectionner(intersection.getLivraison());
             }
         }
     }
 
-    public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
-        afficheurPlan.selectionnerLivraisons(fenetreLivraison);
-    }
-
-    public void deselectionnerTout() {
+    /**
+     * Déselectionne toutes les intersections séelectionnées sur l'IHM (plan + liste fenêtres livraison)
+     */
+    public void deselectionnerToutesIntersections() {
         if (deselectionsActivees) {
             controleur.deselectionnerToutesIntersections();
             afficheurPlan.deselectionnerToutesIntersections();

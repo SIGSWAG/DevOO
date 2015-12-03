@@ -1,13 +1,7 @@
 package optimod.modele;
 
-import javafx.geometry.Point2D;
-import javafx.util.Pair;
-import optimod.tsp.Graphe;
-import optimod.tsp.GrapheComplet;
-import optimod.tsp.TSP;
-import optimod.tsp.TSP1;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Thibault on 19/11/2015.
@@ -37,20 +31,15 @@ public class MainTest {
          */
 
         /**Point2D source = new Point2D(152.64532447121232,447.9676831903636);
-        Point2D arr = new Point2D(241.35467552878768,416.0323168096364);
-        double d = 10;
-        Point2D pass = calculePointPassage(source,arr,d);
-        System.out.println("Point "+pass.getX()+" : "+pass.getY());
-        pass = calculePointPassage(arr,source,d);
-        System.out.println("Point "+pass.getX()+" : "+pass.getY());*/
-
-     
-
+         Point2D arr = new Point2D(241.35467552878768,416.0323168096364);
+         double d = 10;
+         Point2D pass = calculePointPassage(source,arr,d);
+         System.out.println("Point "+pass.getX()+" : "+pass.getY());
+         pass = calculePointPassage(arr,source,d);
+         System.out.println("Point "+pass.getX()+" : "+pass.getY());*/
 
 
     }
-
-
 
 
     public static void initGraphe() {
@@ -191,8 +180,7 @@ public class MainTest {
     }
 
 
-
-    }
+}
 
 
 

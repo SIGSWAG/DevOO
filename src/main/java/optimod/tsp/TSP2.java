@@ -6,21 +6,20 @@ import java.util.Iterator;
 /**
  * Created by Thibault on 28/11/2015.
  */
-public class TSP2 extends TSP1{
+public class TSP2 extends TSP1 {
 
     @Override
     protected int bound(Integer sommetCourant, Collection<Integer> nonVus) {
 
         int sumBound = getMinCoutSortant(sommetCourant, nonVus);
 
-        for(Integer i : nonVus){
+        for (Integer i : nonVus) {
 
 
-
-            sumBound+= getMinCoutSortant(i, nonVus);
+            sumBound += getMinCoutSortant(i, nonVus);
         }
-        //System.out.println("bound"+sumBound);
-        return sumBound ;
+        
+        return sumBound;
     }
 
     @Override
@@ -29,17 +28,17 @@ public class TSP2 extends TSP1{
     }
 
 
-    private int getMinCoutSortant(int sommetCourant, Collection<Integer> nonVus){
+    private int getMinCoutSortant(int sommetCourant, Collection<Integer> nonVus) {
         int minArcCourant = 100000;
-        if(g.estArc(sommetCourant,0)){
+        if (g.estArc(sommetCourant, 0)) {
             minArcCourant = g.getCout(sommetCourant, 0);
         }
-        for(Integer i : nonVus) {
+        for (Integer i : nonVus) {
             if (g.estArc(sommetCourant, i) && g.getCout(sommetCourant, i) < minArcCourant) {
                 minArcCourant = g.getCout(sommetCourant, i);
             }
         }
-        return  minArcCourant;
+        return minArcCourant;
     }
 
 }

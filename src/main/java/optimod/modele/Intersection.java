@@ -1,6 +1,7 @@
 package optimod.modele;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Intersection {
 
@@ -15,7 +16,12 @@ public class Intersection {
     private Livraison livraison;
 
     /**
-     * Default constructor
+     * Constructeur d'Intersection
+     *
+     * @param x        coordonnee X de l'intersection en m
+     * @param y        coordonnee Y de l'intersection en m
+     * @param adresse  adresse de l'intersection
+     * @param sortants liste des Troncons partant de l'intersection
      */
     public Intersection(int x, int y, int adresse, List<Troncon> sortants) {
         this.x = x;
@@ -25,6 +31,13 @@ public class Intersection {
 
     }
 
+    /**
+     * Constructeur d'Intersection
+     *
+     * @param x       coordonnee X de l'intersection en m
+     * @param y       coordonnee Y de l'intersection en m
+     * @param adresse adresse de l'intersection
+     */
     public Intersection(int x, int y, int adresse) {
         this.x = x;
         this.y = y;
@@ -33,8 +46,8 @@ public class Intersection {
 
 
     /**
-     * @param x la coordonnée x du cercle dans lequel trouver l'intersection
-     * @param y la coordonnée y du cercle dans lequel trouver l'intersection
+     * @param x     la coordonnée x du cercle dans lequel trouver l'intersection
+     * @param y     la coordonnée y du cercle dans lequel trouver l'intersection
      * @param rayon le rayon du cercle dans lequel trouver l'intersection
      * @return vrai si l'intersection se trouve dans le cercle, faux sinon
      */
@@ -82,14 +95,21 @@ public class Intersection {
         this.livraison = livraison;
     }
 
-    public Troncon getTronconVers(Intersection intersection){
+    /**
+     * Permet de trouver un Troncon partant de l'intersecion courante
+     * et arrivant à l'Intsersection spécifiée en paramètre.
+     *
+     * @param intersection l'Intersection d'arrivée.
+     * @return le Troncon concerné ou null, s'il n'existe pas de tel Troncon.
+     */
+    public Troncon getTronconVers(Intersection intersection) {
 
 
-        if(sortants == null || sortants.size() == 0){
+        if (sortants == null || sortants.size() == 0) {
             return null;
         }
-        for(Troncon troncon : sortants){
-            if(troncon.getArrivee() == intersection){
+        for (Troncon troncon : sortants) {
+            if (troncon.getArrivee() == intersection) {
                 return troncon;
             }
 
@@ -100,7 +120,7 @@ public class Intersection {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Intersection)) {
+        if (!(obj instanceof Intersection)) {
             return false;
         }
         return this.adresse == ((Intersection) obj).adresse;

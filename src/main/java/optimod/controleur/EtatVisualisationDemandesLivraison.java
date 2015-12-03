@@ -12,15 +12,16 @@ import java.io.IOException;
 /**
  * Created by hdelval on 11/23/15.
  */
-public class EtatAttenteDemandeLivr extends EtatDefaut {
+public class EtatVisualisationDemandesLivraison extends EtatDefaut {
     @Override
     public void chargerPlan(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
-            if(ordonnanceur.chargerPlan())
+            if (ordonnanceur.chargerPlan()) {
                 Controleur.setEtatCourant(Controleur.etatAttenteDemandeLivr);
+            }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
+            fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
 
@@ -28,16 +29,26 @@ public class EtatAttenteDemandeLivr extends EtatDefaut {
     public void chargerDemandeLivraisons(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
         fenetreControleur.autoriseBoutons(false);
         try {
-            if(ordonnanceur.chargerDemandeLivraison())
+            if (ordonnanceur.chargerDemandeLivraison()) {
                 Controleur.setEtatCourant(Controleur.etatVisualisationDemandesLivr);
+            }
         } catch (SAXException | ParserConfigurationException | IOException | ExceptionXML e) {
-            fenetreControleur.afficheException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
+            fenetreControleur.afficherException("Erreur lors du chargement XML.", "Erreur XML", Alert.AlertType.ERROR, e);
         }
     }
 
     @Override
-    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCdes listeDeCdes){
+    public void calculerItineraire(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur) {
+        fenetreControleur.autoriseBoutons(false);
+        ordonnanceur.calculerItineraire();
+        Controleur.setEtatCourant(Controleur.etatPrincipal);
+    }
+
+    @Override
+    public void mettreAJourVue(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.activerChargerLivraisons(true);
         fenetreControleur.activerChargerPlan(true);
+        fenetreControleur.activerCalculerItineraire(true);
+        listeDeCdes.reset();
     }
 }

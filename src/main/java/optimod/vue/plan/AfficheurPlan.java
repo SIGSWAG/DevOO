@@ -5,19 +5,15 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import optimod.modele.*;
 import optimod.vue.FenetreControleur;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by aurelien on 23/11/15.
+ * Affiche le plan (une fois chargé) avec toutes les intersections et les tronçons
  */
 public final class AfficheurPlan {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final FenetreControleur fenetreControleur;
 
@@ -78,7 +74,7 @@ public final class AfficheurPlan {
         getIntersectionsPane().forEach(IntersectionPane::mettreAJour);
         calculCouleursTroncons(itineraire);
         getTronconsPane().forEach(TronconPane::mettreAJour);
-        getIntersectionsPane().stream().filter(i -> i.getText() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
+        getIntersectionsPane().stream().filter(i -> i.getTexte() != "").forEach(i -> i.toFront()); // On met à jour les intersections ayant des labels pour éviter que le texte se retrouve au fond
     }
 
     private void calculCouleursTroncons(List<Chemin> itineraire) {
@@ -130,20 +126,27 @@ public final class AfficheurPlan {
 
     private IntersectionPane trouverIntersectionPane(Intersection intersection) {
         for (IntersectionPane intersectionPane : getIntersectionsPane()) {
-            if (intersectionPane.getIntersection().equals(intersection))
+            if (intersectionPane.getIntersection().equals(intersection)) {
                 return intersectionPane;
+            }
         }
         return null;
     }
 
     private TronconPane trouverTronconPane(Troncon troncon) {
         for (TronconPane tronconPane : getTronconsPane()) {
-            if (tronconPane.getTroncon().equals(troncon))
+            if (tronconPane.getTroncon().equals(troncon)) {
                 return tronconPane;
+            }
         }
         return null;
     }
 
+    /**
+     * Sélectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     *
+     * @param intersection Intersection à sélectionner
+     */
     public void selectionner(Intersection intersection) {
         IntersectionPane intersectionPane = trouverIntersectionPane(intersection);
         if (intersectionPane != null) {
@@ -152,18 +155,32 @@ public final class AfficheurPlan {
         }
     }
 
+    /**
+     * Déselectionne toutes les intersections sur le plan
+     */
     public void deselectionnerToutesIntersections() {
         getIntersectionsPane().forEach(IntersectionPane::deselectionner);
     }
 
-    public void deselectionner(Intersection i) {
-        IntersectionPane ip = trouverIntersectionPane(i);
+    /**
+     * Déselectionne l'intersection passée en paramètre sur le plan (si elle existe)
+     *
+     * @param intersection Intersection à déselectionner
+     */
+    public void deselectionner(Intersection intersection) {
+        IntersectionPane ip = trouverIntersectionPane(intersection);
         if (ip != null) {
             ip.deselectionner();
             intersectionsSelectionnees.remove(ip);
         }
     }
 
+    /**
+     * Sélectionner toutes les intersections qui sont des livraisons sur le plan pour la fenêtre de livraison passée en
+     * paramètre (si elle existe)
+     *
+     * @param fenetreLivraison La fenêtre de livraison contenant les livraisons à sélectionner
+     */
     public void selectionnerLivraisons(FenetreLivraison fenetreLivraison) {
         deselectionnerIntersections();
         for (Livraison livraison : fenetreLivraison.getLivraisons()) {

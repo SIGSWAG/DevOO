@@ -22,31 +22,24 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 
 /**
- * Représente une intersection à l'écran.
- * Created by Jonathan on 19/11/2015.
+ * Représente une intersection sur le plan
  */
 public class IntersectionPane extends Group {
 
-    private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
-
     public static final int TAILLE = 6;
-
+    private static final Logger logger = LoggerFactory.getLogger(IntersectionPane.class);
     private static final String FORMAT_HEURE = "%02d:%02d:%02d";
-
-    private Color couleur;
     private static final Color COULEUR_DEFAUT = Color.BLACK;
     private static final Color COULEUR_ENTREPOT = Color.GREEN;
-
     private final FenetreControleur fenetreControleur;
-
     private final Intersection intersection;
-    private boolean estEntrepot;
-    private boolean survol;
-    private boolean selectionne;
-
     private final Circle cercle;
     private final Label label;
     private final Tooltip infobulle;
+    private Color couleur;
+    private boolean estEntrepot;
+    private boolean survol;
+    private boolean selectionne;
 
     public IntersectionPane(final Intersection intersection, final FenetreControleur fenetreControleur) {
         this.intersection = intersection;
@@ -70,6 +63,34 @@ public class IntersectionPane extends Group {
         reinitialiser();
     }
 
+    /**
+     * Permet de personnaliser la durée d'apparition des infobulles.
+     * <p>
+     * Source : http://stackoverflow.com/a/27739605
+     *
+     * @param tooltip L'infobulle à modifier.
+     * @param duree   La durée d'apparition
+     */
+    private static void dureeApparition(final Tooltip tooltip, final int duree) {
+        try {
+            Field comportementChamp = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            comportementChamp.setAccessible(true);
+            Object comportementObjet = comportementChamp.get(tooltip);
+
+            Field timerChamp = comportementObjet.getClass().getDeclaredField("activationTimer");
+            timerChamp.setAccessible(true);
+            Timeline objTimer = (Timeline) timerChamp.get(comportementObjet);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(duree)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            logger.error("Problème dans la mise en place de la durée d'apparition de l'infobulle", e);
+        }
+    }
+
+    /**
+     * Réinitialise les informations concernant une intersection (visible ou non à l'écran)
+     */
     public void reinitialiser() {
         couleur = COULEUR_DEFAUT;
         label.setText("");
@@ -87,11 +108,17 @@ public class IntersectionPane extends Group {
         }
     }
 
+    /**
+     * Sélectionne l'intersection et la colorie avec la couleur adéquate (livraison, entrepôt, etc.)
+     */
     public void selectionner() {
         selectionne = true;
         colorier();
     }
 
+    /**
+     * Déselectionne une intersection et la colorie avec la couleur adéquate (livraison, entrepôt, etc.)
+     */
     public void deselectionner() {
         selectionne = false;
         colorier();
@@ -103,14 +130,20 @@ public class IntersectionPane extends Group {
         mettreAJour();
     }
 
+    /**
+     * Permet de savoir si cette intersection est une livraison
+     *
+     * @return True si l'intersection est une livraison, False sinon
+     */
     public boolean aUneLivraison() {
         return intersection.getLivraison() != null;
     }
 
     private void survol() {
         survol = true;
-        if (!infobulle.getText().isEmpty())
+        if (!infobulle.getText().isEmpty()) {
             Tooltip.install(this, infobulle);
+        }
         colorier();
     }
 
@@ -120,6 +153,9 @@ public class IntersectionPane extends Group {
         colorier();
     }
 
+    /**
+     * Met à jour l'intersection en la recoloriant et en générant le texte de l'info bulle associée
+     */
     public void mettreAJour() {
         colorier();
         genererTexteInfobulle();
@@ -153,26 +189,23 @@ public class IntersectionPane extends Group {
 
     }
 
-    public String genererTexteIntersection(final Intersection intersection) {
-        String texte = String.format("(%s;%s)",
-                intersection.getX(),
-                intersection.getY());
+    private String genererTexteIntersection(final Intersection intersection) {
+        String texte = String.format("(%s;%s)", intersection.getX(), intersection.getY());
         texte += "\nAdresse : " + intersection.getAdresse();
-        if (estEntrepot)
+        if (estEntrepot) {
             texte += "\nENTREPÔT";
-        else {
+        } else {
             if (aUneLivraison()) { // Si l'intersection est l'entrepôt, on ne veut pas afficher sa fenêtre de livraison...
                 final Livraison livraison = intersection.getLivraison();
                 final String heureDebut = String.format(FORMAT_HEURE, livraison.getHeureDebutFenetreHeure(), livraison.getHeureDebutFenetreMinute(), livraison.getHeureDebutFentreSeconde());
                 final String heureFin = String.format(FORMAT_HEURE, livraison.getHeureFinFenetreHeure(), livraison.getHeureFinFenetreMinute(), livraison.getHeureFinFentreSeconde());
-                texte += String.format("\nFenêtre de livraison : %s - %s",
-                        heureDebut,
-                        heureFin);
+                texte += String.format("\nFenêtre de livraison : %s - %s", heureDebut, heureFin);
                 if (livraison.initeraireCalcule()) {
                     final String heureLivraison = String.format(FORMAT_HEURE, livraison.getHeure(), livraison.getMinute(), livraison.getSeconde());
                     texte += "\nHeure de livraison prévue : " + heureLivraison;
-                    if (livraison.estEnRetard())
+                    if (livraison.estEnRetard()) {
                         texte += " (EN RETARD)";
+                    }
                 }
             }
         }
@@ -185,7 +218,7 @@ public class IntersectionPane extends Group {
         infobulle.setText(texte);
     }
 
-    public String getText() {
+    public String getTexte() {
         return label.getText();
     }
 
@@ -207,31 +240,6 @@ public class IntersectionPane extends Group {
 
     public void setCouleur(final Color couleur) {
         this.couleur = couleur;
-    }
-
-    /**
-     * Permet de personnaliser la durée d'apparition des infobulles.
-     * <p>
-     * Source : http://stackoverflow.com/a/27739605
-     *
-     * @param tooltip L'infobulle à modifier.
-     * @param duree   La durée d'apparition
-     */
-    private static void dureeApparition(final Tooltip tooltip, final int duree) {
-        try {
-            Field comportementChamp = tooltip.getClass().getDeclaredField("BEHAVIOR");
-            comportementChamp.setAccessible(true);
-            Object comportementObjet = comportementChamp.get(tooltip);
-
-            Field timerChamp = comportementObjet.getClass().getDeclaredField("activationTimer");
-            timerChamp.setAccessible(true);
-            Timeline objTimer = (Timeline) timerChamp.get(comportementObjet);
-
-            objTimer.getKeyFrames().clear();
-            objTimer.getKeyFrames().add(new KeyFrame(new Duration(duree)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            logger.error("Problème dans la mise en place de la durée d'apparition de l'infobulle", e);
-        }
     }
 
 }

@@ -1,6 +1,4 @@
-package optimod.vue;/**
- * Created by Jonathan on 18/11/2015.
- */
+package optimod.vue;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +15,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+/**
+ * Point d'entrée de l'application, permettant de lancer l'IHM de l'application Optimod en initialisant tous les composants
+ */
 public class OptimodApplication extends Application {
 
-    protected static final String FENETRE_XML = "/vue/Fenetre.fxml";
-    protected static final String TITRE_FENETRE = "Optimod - Editeur de livraisons";
+    private static final String FENETRE_XML = "/vue/Fenetre.fxml";
+    private static final String TITRE_FENETRE = "Optimod - Editeur de livraisons";
+    private static final String STYLE_CSS = "/css/style.css";
+    private static final String OPTIMOD_ICONE = "/img/icone.png";
 
     public static void main(String[] args) {
         launch(args);
@@ -31,6 +34,7 @@ public class OptimodApplication extends Application {
         URL location = getClass().getResource(FENETRE_XML);
         FXMLLoader loader = creerFXMLLoader(location);
 
+        // Mise en place de l'ordonnanceur
         Ordonnanceur ordonnanceur = new Ordonnanceur();
 
         // Création du contrôleur
@@ -42,25 +46,27 @@ public class OptimodApplication extends Application {
         loader.setController(fenetreControleur);
         controleur.setFenetreControleur(fenetreControleur);
 
+        // Mise en place des observateurs
         ordonnanceur.getPlan().addObserver(fenetreControleur);
         ordonnanceur.getDemandeLivraisons().addObserver(fenetreControleur);
 
         // Récupération de l'objet root
         Parent root = loader.load(location.openStream());
 
-        //Parent root = FXMLLoader.load(getClass().getResource(FENETRE_XML));
-
         DeserialiseurXML.INSTANCE.setFenetre(fenetre);
-        fenetre.getIcons().add(new Image("/img/truck.png"));
+        fenetre.getIcons().add(new Image(OPTIMOD_ICONE));
         fenetre.setTitle(TITRE_FENETRE);
-        fenetre.setScene(new Scene(root));
-        //fenetre.setFullScreen(true);
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(STYLE_CSS);
+        fenetre.setScene(scene);
         fenetre.show();
         controleur.updateVue();
     }
 
     /**
      * Création d'une instance du chargeur de FXML utilisé pour l'IHM
+     *
      * @param localisation Localisation du fichier FXML correspondant
      * @return
      */

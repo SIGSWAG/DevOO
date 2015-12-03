@@ -1,0 +1,27 @@
+#ajouterLivraison {
+    -fx-graphic: url('/img/ajouter.png');
+}
+
+#validerAjoutLivraison {
+    -fx-graphic: url('/img/validerAjout.png');
+}
+
+#annulerAjoutLivraison {
+    -fx-graphic: url('/img/annulerAjout.png');
+}
+
+#echangerLivraisons {
+    -fx-graphic: url('/img/echanger.png');
+}
+
+#rejouerAction {
+    -fx-graphic: url('/img/rejouer.png');
+}
+
+#annulerAction {
+    -fx-graphic: url('/img/annuler.png');
+}
+
+#supprimerLivraison {
+    -fx-graphic: url('/img/supprimer.png');
+}

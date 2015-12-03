@@ -7,13 +7,18 @@ public class Troncon {
     private final double vitesse;
 
     private final int duree;
-
+    private final String nom;
     private int compteurPassage;
-
     private Intersection arrivee;
 
-    private final String nom;
-
+    /**
+     * Constructeur de Troncon
+     *
+     * @param intersection l'Intersection d'arrivée du Troncon
+     * @param vitesse      la vitesse moyenne en m/s sur le Troncon
+     * @param longueur     la longueur en m du Troncon
+     * @param nom          le nom de la rue correspondant au Troncon
+     */
     public Troncon(Intersection intersection, double vitesse, double longueur, String nom) {
         this.duree = (int) (longueur / vitesse);
         this.arrivee = intersection;

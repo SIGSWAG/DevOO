@@ -27,12 +27,12 @@ public class FenetreLivraison implements Comparable<FenetreLivraison> {
      */
     public List<Chemin> calculPCCInterne() {
         List<Chemin> chemins = new ArrayList<>();
-        for(Livraison depart : livraisons) {
+        for (Livraison depart : livraisons) {
             for (Livraison arrivee : livraisons) {
                 if (!depart.equals(arrivee)) {
                     logger.debug("dep {} arr {}", depart.getIntersection().getAdresse(), arrivee.getIntersection().getAdresse());
                     Chemin chemin = depart.calculPCC(arrivee);
-                    if(chemin != null) {
+                    if (chemin != null) {
                         chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
                     }
                 }
@@ -43,16 +43,17 @@ public class FenetreLivraison implements Comparable<FenetreLivraison> {
 
     /**
      * Contrat : Calcule les plus courts chemins depuis chaque livraison de la fenêtre actuelle vers toutes les livraisons de la fenêtre fdl
+     *
      * @param fdl : fenêtre de livraison suivante
      */
     public List<Chemin> calculPCCSuivant(FenetreLivraison fdl) {
         List<Chemin> chemins = new ArrayList<>();
         List<Livraison> livraisonsSuivantes = fdl.getLivraisons();
-        for(Livraison depart : livraisons) {
+        for (Livraison depart : livraisons) {
             for (Livraison arrivee : livraisonsSuivantes) {
                 logger.debug("dep {} arr {}", depart.getIntersection().getAdresse(), arrivee.getIntersection().getAdresse());
                 Chemin chemin = depart.calculPCC(arrivee);
-                if(chemin != null) {
+                if (chemin != null) {
                     chemins.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
                 }
             }
@@ -92,7 +93,9 @@ public class FenetreLivraison implements Comparable<FenetreLivraison> {
         return (heureDebut % 3600) / 60;
     }
 
-    public int getHeureDebutSeconde() { return (heureDebut % 3600) % 60; }
+    public int getHeureDebutSeconde() {
+        return (heureDebut % 3600) % 60;
+    }
 
     public int getHeureFinHeure() {
         return heureFin / 3600;
@@ -102,14 +105,18 @@ public class FenetreLivraison implements Comparable<FenetreLivraison> {
         return (heureFin % 3600) / 60;
     }
 
-    public int getHeureFinSeconde() { return (heureFin % 3600) % 60; }
+    public int getHeureFinSeconde() {
+        return (heureFin % 3600) % 60;
+    }
 
     @Override
     public int compareTo(FenetreLivraison autre) {
-        if (heureDebut < autre.heureDebut && heureFin < autre.heureFin)
+        if (heureDebut < autre.heureDebut && heureFin < autre.heureFin) {
             return -1;
-        if (heureDebut > autre.heureDebut && heureFin > autre.heureFin)
+        }
+        if (heureDebut > autre.heureDebut && heureFin > autre.heureFin) {
             return 1;
+        }
 
         // Ne devrait pas arriver... Les fenêtres de livraisons ne peuvent normalement pas se chevaucher.
         return 0;

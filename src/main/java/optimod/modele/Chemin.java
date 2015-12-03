@@ -1,9 +1,10 @@
 package optimod.modele;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 
+ *
  */
 public class Chemin {
 
@@ -16,7 +17,7 @@ public class Chemin {
     private Livraison arrivee;
 
     /**
-     * Default constructor
+     * Constructeur par défaut
      */
     public Chemin() {
     }

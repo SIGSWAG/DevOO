@@ -18,10 +18,23 @@ public class Livraison {
 
     private int idClient;
 
+    /**
+     * Constructeur de Livraison
+     *
+     * @param intersection l'Intersection sur laquelle se situe la Livraison.
+     */
     public Livraison(Intersection intersection) {
         this.intersection = intersection;
     }
 
+    /**
+     * Constructeur Livraison
+     *
+     * @param intersection      l'Intersection sur laquelle se situe la Livraison.
+     * @param heureDebutFenetre l'heure de début de la Fenetre de Livraison dans laquelle se situe la Livraison.
+     * @param heureFinFenetre   l'heure de fin de la Fenetre de Livraison dans laquelle se situe la Livraison.
+     * @param idClient          l'identifiant du client à livrer.
+     */
     public Livraison(Intersection intersection, int heureDebutFenetre, int heureFinFenetre, int idClient) {
         this.intersection = intersection;
         this.heureDebutFenetre = heureDebutFenetre;
@@ -40,7 +53,7 @@ public class Livraison {
      */
     public Chemin calculPCC(Livraison destination) {
 
-        if(destination == this){
+        if (destination == this) {
             return null;
         }
 
@@ -181,6 +194,10 @@ public class Livraison {
         return heureDebutFenetre;
     }
 
+    public void setHeureDebutFenetre(int heureDebutFenetre) {
+        this.heureDebutFenetre = heureDebutFenetre;
+    }
+
     public int getHeureDebutFenetreHeure() {
         return heureDebutFenetre / 3600;
     }
@@ -193,12 +210,12 @@ public class Livraison {
         return (heureDebutFenetre % 3600) % 60;
     }
 
-    public void setHeureDebutFenetre(int heureDebutFenetre) {
-        this.heureDebutFenetre = heureDebutFenetre;
-    }
-
     public int getHeureFinFenetre() {
         return heureFinFenetre;
+    }
+
+    public void setHeureFinFenetre(int heureFinFenetre) {
+        this.heureFinFenetre = heureFinFenetre;
     }
 
     public int getHeureFinFenetreHeure() {
@@ -211,10 +228,6 @@ public class Livraison {
 
     public int getHeureFinFentreSeconde() {
         return (heureFinFenetre % 3600) % 60;
-    }
-
-    public void setHeureFinFenetre(int heureFinFenetre) {
-        this.heureFinFenetre = heureFinFenetre;
     }
 
     public boolean estEnRetard() {

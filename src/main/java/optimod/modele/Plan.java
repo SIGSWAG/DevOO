@@ -18,16 +18,25 @@ public class Plan extends Observable {
     private ObservableList<Intersection> intersectionsObservables;
 
     /**
-     * Default constructor
+     * Constructeur par défaut de Plan
      */
     public Plan() {
         this.intersections = new ArrayList<Intersection>();
         this.intersectionsObservables = FXCollections.observableList(intersections);
     }
 
+    /**
+     * Permet de charger un plan valide au format XML
+     *
+     * @return true si le plan s'est chargé correctement, false sinon.
+     * @throws ParserConfigurationException
+     * @throws ExceptionXML
+     * @throws SAXException
+     * @throws IOException
+     */
     public boolean chargerPlan() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         boolean planCharge = DeserialiseurXML.INSTANCE.chargerPlan(this);
-        if(planCharge){
+        if (planCharge) {
             setChanged();
             notifyObservers(Evenement.PLAN_CHARGE);
         }
@@ -40,7 +49,7 @@ public class Plan extends Observable {
      */
     public Intersection trouverIntersection(int adresse) {
         Intersection intersectionTrouvee = null;
-        for(Intersection inter: intersections) {
+        for (Intersection inter : intersections) {
             if (inter.getAdresse() == adresse) {
                 intersectionTrouvee = inter;
                 break;
@@ -52,7 +61,7 @@ public class Plan extends Observable {
     /**
      * Réinitialise le plan.
      */
-    public void reinitialiser(){
+    public void reinitialiser() {
         intersections = new ArrayList<>();
         setChanged();
         notifyObservers();
@@ -60,15 +69,16 @@ public class Plan extends Observable {
 
     /**
      * contrat : trouve la 1ere intersection dans le cercle, même si il y en a plusieurs (attention au radius trop grand)
-     * @param x la coordonnée x du cercle dans lequel trouver l'intersection
-     * @param y la coordonnée y du cercle dans lequel trouver l'intersection
+     *
+     * @param x     la coordonnée x du cercle dans lequel trouver l'intersection
+     * @param y     la coordonnée y du cercle dans lequel trouver l'intersection
      * @param rayon le rayon du cercle dans lequel trouver l'intersection
      * @return la 1ere intersection dans le cercle, même si il y en a plusieurs
      */
     public Intersection trouverIntersection(int x, int y, int rayon) {
         Intersection intersectionTrouvee = null;
-        for(Intersection inter: intersections) {
-            if ( inter.estLocalisee(x, y, rayon) ) {
+        for (Intersection inter : intersections) {
+            if (inter.estLocalisee(x, y, rayon)) {
                 intersectionTrouvee = inter;
                 break;
             }
@@ -80,10 +90,12 @@ public class Plan extends Observable {
         return intersections;
     }
 
-    public ObservableList<Intersection> getIntersectionsObservables() { return this.intersectionsObservables; }
-
     public void setIntersections(List<Intersection> intersections) {
         this.intersections = intersections;
         this.intersectionsObservables = FXCollections.observableList(intersections);
+    }
+
+    public ObservableList<Intersection> getIntersectionsObservables() {
+        return this.intersectionsObservables;
     }
 }
