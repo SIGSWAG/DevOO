@@ -65,7 +65,7 @@ public class EtatDeuxLivraisonsSelectionnees extends EtatDefaut {
     }
 
     @Override
-    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
+    public void echangerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
         Livraison l1 = intersectionsSelectionnees.get(0).getLivraison();
         Livraison l2 = intersectionsSelectionnees.get(1).getLivraison();

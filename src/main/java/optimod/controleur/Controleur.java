@@ -87,7 +87,7 @@ public class Controleur {
      * Permet d'annuler la dernière commande
      */
     public void undo() {
-        etatCourant.undo(fenetreControleur, listeDeCdes);
+        etatCourant.annulerDerniereAction(fenetreControleur, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
@@ -95,7 +95,7 @@ public class Controleur {
      * Permet de rejouer la dernière commande
      */
     public void redo() {
-        etatCourant.redo(fenetreControleur, listeDeCdes);
+        etatCourant.rejouerDerniereAction(fenetreControleur, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 
@@ -127,7 +127,7 @@ public class Controleur {
      * Permet d'échanger deux livraisons
      */
     public void echangerLivraisons() {
-        etatCourant.echangeesLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
+        etatCourant.echangerLivraisonsSelectionnees(fenetreControleur, ordonnanceur, intersectionsSelectionnees, listeDeCdes);
         etatCourant.mettreAJourVue(fenetreControleur, listeDeCdes);
     }
 

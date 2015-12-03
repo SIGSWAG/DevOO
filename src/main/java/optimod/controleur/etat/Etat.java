@@ -39,14 +39,14 @@ public interface Etat {
      * @param fenetreControleur
      * @param listeDeCdes
      */
-    void undo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes);
+    void annulerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes);
 
     /**
      * Methode appelee par controleur après un clic sur le bouton "Rejouer"
      *
      * @param fenetreControleur
      */
-    void redo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes);
+    void rejouerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes);
 
     /**
      * Methode appelee par controleur après un clic sur le bouton "+"
@@ -62,15 +62,6 @@ public interface Etat {
      * @param ordonnanceur
      */
     void genererFeuilleDeRoute(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur);
-
-    /**
-     * Methode appelee par controleur après la saisie d'un caractere au clavier
-     *
-     * @param fenetreControleur
-     * @param listeDeCdes
-     * @param codeCar           le code ASCII du caractere saisi
-     */
-    void carSaisi(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCommandes listeDeCdes, int codeCar);
 
     /**
      * Methode appelee par controleur après un clic gauche sur un point de la vue graphique
@@ -122,7 +113,7 @@ public interface Etat {
      * @param intersectionsSelectionnees les deux intersections dont les livraisons sont selectionnees pour l'echange
      * @param listeDeCdes
      */
-    void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes);
+    void echangerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes);
 
     /**
      * Methode appelee par controleur après un clic sur le bouton "Annuler l'ajout d'une livraison"

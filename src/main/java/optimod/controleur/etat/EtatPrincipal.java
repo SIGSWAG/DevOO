@@ -65,13 +65,13 @@ public class EtatPrincipal extends EtatDefaut {
     }
 
     @Override
-    public void undo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
+    public void annulerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
         listeDeCdes.undo();
     }
 
     @Override
-    public void redo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
+    public void rejouerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.autoriseBoutons(false);
         listeDeCdes.redo();
     }
