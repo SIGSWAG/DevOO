@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JourneeType>
-    <Entrepot adresse="15"/>
-    <PlagesHoraires>
-        <Plage heureDebut="8:30:0" heureFin="10:0:0">
-            <Livraisons>
-                <Livraison id="1" client="823" adresse="1"/>
-                <Livraison id="2" client="532" adresse="10"/>
-                <Livraison id="3" client="328" adresse="20"/>
-                <Livraison id="1" client="188" adresse="30"/>
-                <Livraison id="2" client="560" adresse="40"/>
-                <Livraison id="3" client="145" adresse="50"/>
-                <Livraison id="4" client="596" adresse="60"/>
-                <Livraison id="5" client="948" adresse="89"/>
-                <Livraison id="1" client="28" adresse="88"/>
-                <Livraison id="2" client="929" adresse="90"/>
-                <Livraison id="3" client="641" adresse="99"/>
-                <Livraison id="4" client="325" adresse="85"/>
-                <Livraison id="5" client="948" adresse="57"/>
-                <Livraison id="1" client="28" adresse="56"/>
-                <Livraison id="2" client="929" adresse="55"/>
-                <Livraison id="3" client="641" adresse="45"/>
-                <Livraison id="2" client="929" adresse="35"/>
-                <Livraison id="2" client="929" adresse="36"/>
-                <Livraison id="2" client="929" adresse="37"/>
-            </Livraisons>
-        </Plage>
-    </PlagesHoraires>
+<Entrepot adresse="15"/>
+<PlagesHoraires>
+    <Plage heureDebut="8:30:0" heureFin="10:0:0">
+        <Livraisons>
+            <Livraison id="1" client="823" adresse="1"/>
+            <Livraison id="2" client="532" adresse="10"/>
+            <Livraison id="3" client="328" adresse="20"/>
+            <Livraison id="1" client="188" adresse="30"/>
+            <Livraison id="2" client="560" adresse="40"/>
+            <Livraison id="3" client="145" adresse="50"/>
+            <Livraison id="4" client="596" adresse="60"/>
+            <Livraison id="5" client="948" adresse="89"/>
+            <Livraison id="1" client="28" adresse="88"/>
+            <Livraison id="2" client="929" adresse="90"/>
+            <Livraison id="3" client="641" adresse="99"/>
+            <Livraison id="4" client="325" adresse="85"/>
+            <Livraison id="5" client="948" adresse="57"/>
+            <Livraison id="1" client="28" adresse="56"/>
+            <Livraison id="2" client="929" adresse="55"/>
+            <Livraison id="3" client="641" adresse="45"/>
+            <Livraison id="2" client="929" adresse="35"/>
+            <Livraison id="2" client="929" adresse="36"/>
+            <Livraison id="2" client="929" adresse="37"/>
+        </Livraisons>
+    </Plage>
+</PlagesHoraires>
 </JourneeType>
