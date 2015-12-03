@@ -101,15 +101,10 @@ public class DemandeLivraisons extends Observable {
                     arrivee.setHeureLivraison(arrivee.getHeureDebutFenetre());
                 }
             }
-
-        }
-
-        for (Chemin chemin : itineraire) {
             logger.debug("Depart {} arrivee {}", chemin.getDepart().getIntersection().getAdresse(), chemin.getArrivee().getIntersection().getAdresse());
-
         }
-        setChanged();
 
+        setChanged();
         notifyObservers(Evenement.ITINERAIRE_CALCULE);
     }
 
