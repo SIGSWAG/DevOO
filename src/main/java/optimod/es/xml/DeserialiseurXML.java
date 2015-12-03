@@ -69,6 +69,46 @@ public enum DeserialiseurXML { // Singleton
         return true;
     }
 
+    /**
+     * Ouvre un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
+     *
+     * @param demandeLivraisons DemandeLivraisons
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     */
+    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+        File xml = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions).setMode(OuvreurDeFichier.MODE_LECTURE).setTitre("Sélectionner la demande de livraison à charger").ouvre(fenetre);
+        return chargerDemandeLivraison(demandeLivraisons, xml);
+    }
+
+    /**
+     * Lis un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
+     *
+     * @param demandeLivraisons DemandeLivraisons
+     * @param xml               Fichier XML de la demande de livraison
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     */
+    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+        if(xml == null || demandeLivraisons == null) {
+            return false;
+        }
+        DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document document = docBuilder.parse(xml);
+        Element racine = document.getDocumentElement();
+
+        if (racine.getNodeName().equals("JourneeType")) {
+            construireDemandeLivraisonAPartirDeDOMXML(racine, demandeLivraisons);
+        } else {
+            throw new ExceptionXML("Document non conforme la racine du document doit être une JourneeType");
+        }
+        return true;
+    }
+
     private void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXML {
         // Parcours de tous les Noeud (Intersections)
         NodeList listeNoeuds = noeudDOMRacine.getElementsByTagName("Noeud");
@@ -184,50 +224,10 @@ public enum DeserialiseurXML { // Singleton
         return new Intersection(x, y, adresse);
     }
 
-    /**
-     * Ouvre un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
-     *
-     * @param demandeLivraisons DemandeLivraisons
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
-     * @throws ExceptionXML
-     */
-    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        File xml = OuvreurDeFichier.INSTANCE.setExtensions(this.extensions).setMode(OuvreurDeFichier.MODE_LECTURE).setTitre("Sélectionner la demande de livraison à charger").ouvre(fenetre);
-        return chargerDemandeLivraison(demandeLivraisons, xml);
-    }
-
-    /**
-     * Lis un fichier XML et cree une Demande de Livraison a partir du contenu du fichier
-     *
-     * @param demandeLivraisons DemandeLivraisons
-     * @param xml               Fichier XML de la demande de livraison
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
-     * @throws ExceptionXML
-     */
-    public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null || demandeLivraisons == null) {
-            return false;
-        }
-        DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = docBuilder.parse(xml);
-        Element racine = document.getDocumentElement();
-
-        if (racine.getNodeName().equals("JourneeType")) {
-            construireDemandeLivraisonAPartirDeDOMXML(racine, demandeLivraisons);
-        } else {
-            throw new ExceptionXML("Document non conforme la racine du document doit être une JourneeType");
-        }
-        return true;
-    }
-
     private void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
         // intersectionsUtilisees permet de vérifier que l'on ne va pas ajouter une Livraison dans une intersection utilisée par ce fichier
         List<Intersection> intersectionsUtilisees = new ArrayList<Intersection>();
-        // fenetres représentes les fenêtre de livraison de la nouvelle demande de livraison
+        // fenetres représentes les fenêtres de livraison de la nouvelle demande de livraison
         List<FenetreLivraison> fenetres = new ArrayList<FenetreLivraison>();
         // entrepot est la livraison représentant le point de départ de la demande de livraison
         Livraison entrepot;
@@ -258,112 +258,124 @@ public enum DeserialiseurXML { // Singleton
             Element elementPlage = (Element) listePlages.item(i);
 
             // Validation des attributs
-            String heureDebut = elementPlage.getAttribute("heureDebut");
-            if (heureDebut.isEmpty()) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être définie");
-            }
-            String[] horaireDebut = heureDebut.split(":");
-            if (horaireDebut.length != 3) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit s'écrire H:M:S");
-            }
-            String heureFin = elementPlage.getAttribute("heureFin");
-            if (heureFin.isEmpty()) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureFin d'une Plage doit être définie");
-            }
-            String[] horaireFin = heureFin.split(":");
-            if (horaireFin.length != 3) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureFin d'une Plage doit s'écrire H:M:S");
-            }
-            int heureDeb = parseInt(horaireDebut[0]);
-            int heureFi = parseInt(horaireFin[0]);
-            if (heureDeb < 0 || heureDeb >= 24 || heureFi < 0 || heureFi >= 24) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heure est comprise entre 0 et 23");
-            }
-            int minuteDeb = parseInt(horaireDebut[1]);
-            int minuteFi = parseInt(horaireFin[1]);
-            if (minuteDeb < 0 || minuteDeb >= 60 || minuteDeb < 0 || minuteDeb >= 60) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La minute est comprise entre 0 et 59");
-            }
-            int secondeDeb = parseInt(horaireDebut[2]);
-            int secondeFi = parseInt(horaireFin[2]);
-            if (secondeDeb < 0 || secondeDeb >= 60 || secondeFi < 0 || secondeFi >= 60) {
-                throw new ExceptionXML("Erreur lors de la lecture du fichier : La seconde est comprise entre 0 et 59");
-            }
+            int[] temps = this.verifierHeures(elementPlage);
+
             // Vérification d'antériorité et d'ordre
-            int tempsDeb = heureDeb * 3600 + minuteDeb * 60 + secondeDeb, tempsFi = heureFi * 3600 + minuteFi * 60 + secondeFi;
-            if (tempsDeb > tempsFi) {
+            if (temps[0] > temps[1]) {
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être inférieure à son HeureFin");
             }
             for (FenetreLivraison fl : fenetres) {
-                if ((tempsDeb < fl.getHeureFin() && tempsDeb > fl.getHeureDebut()) || tempsFi < fl.getHeureFin() && tempsFi > fl.getHeureDebut()) {
+                if ((temps[0] < fl.getHeureFin() && temps[0] > fl.getHeureDebut()) || temps[1] < fl.getHeureFin() && temps[1] > fl.getHeureDebut()) {
                     throw new ExceptionXML("Erreur lors de la lecture du fichier : Deux Plages doivent être distinctes");
                 }
             }
 
             // Parcours de toutes les Livraisons (Livraison)
-            NodeList listeLivraisonss = elementPlage.getElementsByTagName("Livraisons");
-            if (listeLivraisonss.getLength() != 1) {
+            NodeList listeLivraisons = elementPlage.getElementsByTagName("Livraisons");
+            if (listeLivraisons.getLength() != 1) {
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Plage doit avoir un (seul) élément Livraisons");
             }
-            Element livraisonss = (Element) listeLivraisonss.item(0);
+            Element livraisons = (Element) listeLivraisons.item(0);
 
             // liste de livraisons de la fenetre courante
-            List<Livraison> livraisons = new ArrayList<Livraison>();
+            List<Livraison> livraisonsCourantes = new ArrayList<Livraison>();
 
-            NodeList listeLivraisons = livraisonss.getElementsByTagName("Livraison");
-            if (listeLivraisons.getLength() < 1) {
+            NodeList listeLivraisonsCourantes = livraisons.getElementsByTagName("Livraison");
+            if (listeLivraisonsCourantes.getLength() < 1) {
                 throw new ExceptionXML("Erreur lors de la lecture du fichier : L'élément Livraisons doit être composé d'au moins une Livraison");
             }
-            for (int j = 0; j < listeLivraisons.getLength(); j++) {
-                Element elementlivraison = (Element) listeLivraisons.item(j);
-
-                // Validation des attributs
-                String attributAdresse = elementlivraison.getAttribute("adresse");
-                if (attributAdresse.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être définie");
-                }
-                int adresse = parseInt(attributAdresse);
-                Intersection intersectionDeLivraison = demandeLivraisons.getPlan().trouverIntersection(adresse);
-                if (intersectionDeLivraison == null) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
-                }
-                if (intersectionsUtilisees.contains(intersectionDeLivraison)) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
-                }
-                String attributIdCLient = elementlivraison.getAttribute("client");
-                if (attributIdCLient.isEmpty()) {
-                    throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Livraison doit avoir un idClient");
-                }
-                int idClient = parseInt(elementlivraison.getAttribute("client"));
+            for (int j = 0; j < listeLivraisonsCourantes.getLength(); j++) {
+                Element elementlivraison = (Element) listeLivraisonsCourantes.item(j);
 
                 // Création de la Livraison et liaisons
-                Livraison livraison = new Livraison(intersectionDeLivraison, tempsDeb, tempsFi, idClient);
-                livraisons.add(livraison);
-                intersectionsUtilisees.add(intersectionDeLivraison);
+                Livraison livraison = this.creerLivraison(elementlivraison, demandeLivraisons, intersectionsUtilisees, temps[0], temps[1]);
+                livraisonsCourantes.add(livraison);
+
+                intersectionsUtilisees.add(livraison.getIntersection());
             }
 
             // Création de la FenetreLivraison
-            fenetres.add(new FenetreLivraison(livraisons, tempsDeb, tempsFi));
+            fenetres.add(new FenetreLivraison(livraisonsCourantes, temps[0], temps[1]));
         }
 
         // On supprime toute trace des ancienne Livraisons
         demandeLivraisons.reset();
 
         // s'il n'y a eu aucunes erreur, on peut setter la nouvelle DemandeLivraisons
-        // Setter l'entrepot
         demandeLivraisons.setEntrepot(entrepot);
-        // retour de visibilité Intersection / Livraison
         entrepot.getIntersection().setLivraison(entrepot);
         // affectations des fenêtres de livraison
 
         fenetres.sort((o1, o2) -> o1.getHeureDebut() - o2.getHeureDebut());
         demandeLivraisons.setFenetres(fenetres);
-        // retour de visibilité Intersection / Livraison
         for (FenetreLivraison f : fenetres) {
             for (Livraison l : f.getLivraisons()) {
                 l.getIntersection().setLivraison(l);
             }
         }
+    }
+
+    private Livraison creerLivraison(Element elementlivraison, DemandeLivraisons demandeLivraisons, List<Intersection> intersectionsUtilisees, int tempsDebutFenetre, int tempsFinFenetre) throws ExceptionXML {
+        // Validation des attributs
+        String attributAdresse = elementlivraison.getAttribute("adresse");
+        if (attributAdresse.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être définie");
+        }
+        int adresse = parseInt(attributAdresse);
+        Intersection intersectionDeLivraison = demandeLivraisons.getPlan().trouverIntersection(adresse);
+        if (intersectionDeLivraison == null) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'adresse d'une Livraison doit être un Noeud existant");
+        }
+        if (intersectionsUtilisees.contains(intersectionDeLivraison)) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Noeud ne peut avoir plus d'une Livraison");
+        }
+        String attributIdCLient = elementlivraison.getAttribute("client");
+        if (attributIdCLient.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : Une Livraison doit avoir un idClient");
+        }
+        int idClient = parseInt(elementlivraison.getAttribute("client"));
+
+        return new Livraison(intersectionDeLivraison, tempsDebutFenetre, tempsFinFenetre, idClient);
+    }
+
+    private int[] verifierHeures(Element elementPlage) throws ExceptionXML {
+        String heureDebut = elementPlage.getAttribute("heureDebut");
+        if (heureDebut.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit être définie");
+        }
+        String[] horaireDebut = heureDebut.split(":");
+        if (horaireDebut.length != 3) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureDebut d'une Plage doit s'écrire H:M:S");
+        }
+
+        String heureFin = elementPlage.getAttribute("heureFin");
+        if (heureFin.isEmpty()) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureFin d'une Plage doit être définie");
+        }
+        String[] horaireFin = heureFin.split(":");
+        if (horaireFin.length != 3) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heureFin d'une Plage doit s'écrire H:M:S");
+        }
+
+        int heureDeb = parseInt(horaireDebut[0]);
+        int heureFi = parseInt(horaireFin[0]);
+        if (heureDeb < 0 || heureDeb >= 24 || heureFi < 0 || heureFi >= 24) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : L'heure est comprise entre 0 et 23");
+        }
+        int minuteDeb = parseInt(horaireDebut[1]);
+        int minuteFi = parseInt(horaireFin[1]);
+        if (minuteDeb < 0 || minuteDeb >= 60 || minuteFi < 0 || minuteFi >= 60) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La minute est comprise entre 0 et 59");
+        }
+        int secondeDeb = parseInt(horaireDebut[2]);
+        int secondeFi = parseInt(horaireFin[2]);
+        if (secondeDeb < 0 || secondeDeb >= 60 || secondeFi < 0 || secondeFi >= 60) {
+            throw new ExceptionXML("Erreur lors de la lecture du fichier : La seconde est comprise entre 0 et 59");
+        }
+        int tempsDeb = heureDeb * 3600 + minuteDeb * 60 + secondeDeb;
+        int tempsFi = heureFi * 3600 + minuteFi * 60 + secondeFi;
+
+        return new int[]{tempsDeb, tempsFi};
     }
 
     private Livraison creerEntrepot(Element elementEntrepot, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
