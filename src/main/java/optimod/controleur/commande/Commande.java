@@ -6,12 +6,12 @@ package optimod.controleur.commande;
 public interface Commande {
 
     /**
-     * Execute la commande this
+     * Execute la commande
      */
-    void doCde();
+    void executerCommande();
 
     /**
-     * Execute la commande inverse a this
+     * Execute la commande inverse
      */
-    void undoCde();
+    void annulerCommande();
 }

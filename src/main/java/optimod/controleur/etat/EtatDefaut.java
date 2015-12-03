@@ -27,19 +27,15 @@ public abstract class EtatDefaut implements Etat {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
-    public void undo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
+    public void annulerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
-    public void redo(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
+    public void rejouerDerniereAction(FenetreControleur fenetreControleur, ListeDeCommandes listeDeCdes) {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
     public void ajouterLivraison(FenetreControleur fenetreControleur) {
-        fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
-    }
-
-    public void carSaisi(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, ListeDeCommandes listeDeCdes, int codeCar) {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
@@ -63,7 +59,7 @@ public abstract class EtatDefaut implements Etat {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 
-    public void echangeesLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
+    public void echangerLivraisonsSelectionnees(FenetreControleur fenetreControleur, Ordonnanceur ordonnanceur, List<Intersection> intersectionsSelectionnees, ListeDeCommandes listeDeCdes) {
         fenetreControleur.afficherMessage("Désolé, vous ne pouvez pas faire cette action dans cet état.", "Erreur", AlertType.ERROR);
     }
 

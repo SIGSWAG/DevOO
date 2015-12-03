@@ -29,28 +29,28 @@ public class ListeDeCommandes {
         }
         indiceCourant++;
         liste.add(indiceCourant, c);
-        c.doCde();
+        c.executerCommande();
     }
 
     /**
-     * Annule temporairement la derniere commande ajoutee (cette commande pourra etre remise dans la liste avec redo)
+     * Annule temporairement la derniere commande ajoutee (cette commande pourra etre remise dans la liste avec rejouerDerniereAction)
      */
     public void undo() {
         if (onPeutAnnuler()) {
             Commande cde = liste.get(indiceCourant);
             indiceCourant--;
-            cde.undoCde();
+            cde.annulerCommande();
         }
     }
 
     /**
-     * Remet dans la liste la derniere commande annulee avec undo
+     * Remet dans la liste la derniere commande annulee avec annulerDerniereAction
      */
     public void redo() {
         if (onPeutRejouer()) {
             indiceCourant++;
             Commande cde = liste.get(indiceCourant);
-            cde.doCde();
+            cde.executerCommande();
         }
     }
 

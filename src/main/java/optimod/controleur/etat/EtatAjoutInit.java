@@ -25,7 +25,7 @@ public class EtatAjoutInit extends EtatDefaut {
             intersectionsSelectionnees.add(intersectionSelectionnee);
             Controleur.setEtatCourant(Controleur.getEtatAjoutLivraisonValidable());
         } else {
-            fenetreControleur.afficherMessage("Vous ne pouvez pas sélectionner cette intersection. Vous devez d'abbord selectionner une livraison existante avant laquelle ajouter la livraison.\n\n" + "Puis sélectionner une intersection vide où insérer la nouvelle livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
+            fenetreControleur.afficherMessage("Vous ne pouvez pas sélectionner cette intersection. Vous devez d'abord selectionner une livraison existante avant laquelle ajouter la livraison.\n\n" + "Puis sélectionner une intersection vide où insérer la nouvelle livraison.", "Mauvaise saisie", Alert.AlertType.ERROR);
             return false;
         }
         return true;
