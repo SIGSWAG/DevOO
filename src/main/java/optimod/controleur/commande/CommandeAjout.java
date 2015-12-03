@@ -33,14 +33,14 @@ public class CommandeAjout implements Commande {
     /**
      * Execute la commande
      */
-    public void executerCommande() {
+    public void executer() {
         ordonnanceur.ajouterLivraison(nouvelleLivraison, livraison, fenetreDeNouvelleLivraison);
     }
 
     /**
      * Annule la commande
      */
-    public void annulerCommande() {
+    public void annuler() {
         ordonnanceur.supprimerLivraison(intersection.getLivraison());
     }
 }

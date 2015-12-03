@@ -29,7 +29,7 @@ public class ListeDeCommandes {
         }
         indiceCourant++;
         liste.add(indiceCourant, c);
-        c.executerCommande();
+        c.executer();
     }
 
     /**
@@ -39,7 +39,7 @@ public class ListeDeCommandes {
         if (onPeutAnnuler()) {
             Commande cde = liste.get(indiceCourant);
             indiceCourant--;
-            cde.annulerCommande();
+            cde.annuler();
         }
     }
 
@@ -50,7 +50,7 @@ public class ListeDeCommandes {
         if (onPeutRejouer()) {
             indiceCourant++;
             Commande cde = liste.get(indiceCourant);
-            cde.executerCommande();
+            cde.executer();
         }
     }
 

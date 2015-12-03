@@ -33,7 +33,7 @@ public class CommandeSuppression implements Commande {
     /**
      * Execute la commande
      */
-    public void executerCommande() {
+    public void executer() {
         for (int i = 0; i < livraisonsASupprimer.size(); i++) {
             ordonnanceur.supprimerLivraison(livraisonsASupprimer.get(i));
         }
@@ -42,7 +42,7 @@ public class CommandeSuppression implements Commande {
     /**
      * Annule la commande
      */
-    public void annulerCommande() {
+    public void annuler() {
         for (int i = livraisonsASupprimer.size() - 1; i >= 0; i--) {
             ordonnanceur.ajouterLivraison(livraisonsASupprimer.get(i), livraisonsASupprimer.get(i).getSuivante(), fenetresLivraisons.get(livraisonsASupprimer.get(i).getIntersection().getAdresse()));
         }
