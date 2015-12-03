@@ -89,7 +89,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanPlanVide() {
-        File xml = new File("src/test/resources/fail/plan-vide.xml");
+        File xml = new File("src/test/resources/invalide/plan-vide.xml");
         Plan plan = new Plan();
         boolean charge = false;
         try {
@@ -104,7 +104,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanPlanNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xml = new File("src/test/resources/fail/plan-vide.xml");
+        File xml = new File("src/test/resources/invalide/plan-vide.xml");
         Plan plan = null;
         boolean charge = false;
         charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -138,7 +138,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xml = new File("src/test/resources/fail/plan-xml-invalide.xml");
+        File xml = new File("src/test/resources/invalide/plan-xml-invalide.xml");
         Plan plan = new Plan();
         boolean charge = false;
 
@@ -150,7 +150,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xml = new File("src/test/resources/fail/xml-vide.xml");
+        File xml = new File("src/test/resources/invalide/xml-vide.xml");
         Plan plan = new Plan();
         boolean charge = false;
 
@@ -162,7 +162,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanReseauManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-    	File xml = new File("src/test/resources/fail/plan-reseau-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-reseau-manquant.xml");
         Plan plan = new Plan();
 
         exception.expect(ExceptionXML.class);
@@ -172,7 +172,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanSansTroncon() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xml = new File("src/test/resources/fail/plan-troncon-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-troncon-manquant.xml");
         Plan plan = new Plan();
         boolean charge = false;
         exception.expect(ExceptionXML.class);
@@ -182,7 +182,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanIdNoeudDestinationInvalide() {
-    	File xml = new File("src/test/resources/fail/plan-idNoeudDestination-invalide.xml");
+    	File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-invalide.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -218,7 +218,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanIdManquant()  {
-    	File xml = new File("src/test/resources/fail/plan-id-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-id-manquant.xml");
         Plan plan = new Plan();
 
         try {
@@ -232,7 +232,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanXManquant() {
-    	File xml = new File("src/test/resources/fail/plan-x-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-x-manquant.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -245,7 +245,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanYManquant() {
-    	File xml = new File("src/test/resources/fail/plan-y-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-y-manquant.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -258,7 +258,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanNomRueManquant() {
-    	File xml = new File("src/test/resources/fail/plan-nomRue-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-nomRue-manquant.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -271,7 +271,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanVitesseManquante() {
-    	File xml = new File("src/test/resources/fail/plan-vitesse-manquante.xml");
+    	File xml = new File("src/test/resources/invalide/plan-vitesse-manquante.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -285,7 +285,7 @@ public class DeserialiseurXMLTest {
 
 
     public void testChargerPlanLongueurManquante() {
-    	File xml = new File("src/test/resources/fail/plan-longueur-manquante.xml");
+    	File xml = new File("src/test/resources/invalide/plan-longueur-manquante.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -298,7 +298,7 @@ public class DeserialiseurXMLTest {
     }
 
     public void testChargerPlanIdNoeudDestinationManquant() {
-    	File xml = new File("src/test/resources/fail/plan-idNoeudDestination-manquant.xml");
+    	File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-manquant.xml");
         Plan plan = new Plan();
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
@@ -440,7 +440,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-xml-invalide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-xml-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         boolean charge = false;
@@ -453,7 +453,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/xml-vide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/xml-vide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         boolean charge = false;
@@ -465,7 +465,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonJourneeTypeManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-journee-type-manquant.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-journee-type-manquant.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -478,7 +478,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonSansLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-livraison-manquante.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-livraison-manquante.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -491,7 +491,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonIdNoeudDestinationInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-adresse-invalide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-adresse-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -504,7 +504,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonFenetreChevauche() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-fenetre-chevauche.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-fenetre-chevauche.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -517,7 +517,7 @@ public class DeserialiseurXMLTest {
     @Test
     public void testChargerDemandeLivraisonEntrepotInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
         File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/fail/livraison-entrepot-invalide.xml");
+        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-entrepot-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
