@@ -11,7 +11,7 @@ import java.util.prefs.Preferences;
 
 /**
  * Ouvreur de fichier afin de charger un fichier ou d'écrire dans un fichier (Singleton)
- * <p>
+ * <br>
  * Voir http://stackoverflow.com/questions/70689/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java pour
  * la raison de l'implémentation en enum
  */

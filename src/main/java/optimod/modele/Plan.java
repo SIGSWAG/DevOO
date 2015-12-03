@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+/**
+ * Plan global de la ville, regroupe intersections et tronçons
+ */
 public class Plan extends Observable {
 
     private List<Intersection> intersections;

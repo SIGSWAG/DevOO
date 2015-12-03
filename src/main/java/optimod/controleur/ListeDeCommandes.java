@@ -5,7 +5,7 @@ import optimod.controleur.commande.Commande;
 import java.util.LinkedList;
 
 /**
- *
+ * Contient la liste des Commande que l'on peut undo et redo
  */
 public class ListeDeCommandes {
 

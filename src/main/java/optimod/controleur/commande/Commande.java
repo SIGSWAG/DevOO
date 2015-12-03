@@ -1,7 +1,7 @@
 package optimod.controleur.commande;
 
 /**
- *
+ * Représente une Commande
  */
 public interface Commande {
 

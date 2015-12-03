@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Définit une heure de début et une heure de fin dans laquelle une série de livraisons doivent s’effectuer.
+ */
 public class FenetreLivraison implements Comparable<FenetreLivraison> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

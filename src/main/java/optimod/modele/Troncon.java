@@ -1,5 +1,8 @@
 package optimod.modele;
 
+/**
+ * Partie de rue reliant deux intersections successives dans un sens donné.
+ */
 public class Troncon {
 
     private final double longueur;

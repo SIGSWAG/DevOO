@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+/**
+ * Ensemble de livraisons et d’un entrepôt.
+ */
 public class DemandeLivraisons extends Observable {
 
     private static final int TEMPS_ARRET = 10 * 60;

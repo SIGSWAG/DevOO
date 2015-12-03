@@ -23,7 +23,7 @@ class LivraisonTreeCell extends TreeCell {
      * Met à jour la cellule avec l'élément passé en paramètre
      *
      * @param element Un objet de type FenetreLivraison ou Livraison
-     * @param vide
+     * @param vide    booleen définissant si une cellule est vide ou non
      */
     @Override
     public void updateItem(Object element, boolean vide) {

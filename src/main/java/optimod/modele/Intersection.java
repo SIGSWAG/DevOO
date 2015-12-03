@@ -3,6 +3,9 @@ package optimod.modele;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Une des deux extrémités d’un tronçon.
+ */
 public class Intersection {
 
     private int adresse;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Ensemble ordonné de tronçons reliant deux livraisons sensé minimiser la distance parcourue.
  */
 public class Chemin {
 

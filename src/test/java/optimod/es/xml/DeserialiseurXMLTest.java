@@ -19,35 +19,34 @@ public class DeserialiseurXMLTest {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-	/**
-	* Test de chargement d'un plan avec deux noeuds et deux intersections
-	**/
-	@Test
+    /**
+     * Test de chargement d'un plan avec deux noeuds et deux intersections
+     **/
+    @Test
     public void testChargerPlanOk() {
         Plan planAComparer = new Plan();
-		List<Intersection> intersections = new ArrayList<>();
-		Intersection intersection1 = new Intersection(63, 100, 0);
-		Intersection intersection2 = new Intersection(88, 171, 1);
+        List<Intersection> intersections = new ArrayList<>();
+        Intersection intersection1 = new Intersection(63, 100, 0);
+        Intersection intersection2 = new Intersection(88, 171, 1);
 
-		Troncon troncon1 = new Troncon(intersection2, 3.9, 602.1, "v0");
-		Troncon troncon2 = new Troncon(intersection1, 4.1, 602.1, "v0");
+        Troncon troncon1 = new Troncon(intersection2, 3.9, 602.1, "v0");
+        Troncon troncon2 = new Troncon(intersection1, 4.1, 602.1, "v0");
 
-		intersection1.setSortants(Collections.singletonList(troncon1));
+        intersection1.setSortants(Collections.singletonList(troncon1));
 
-		intersection2.setSortants(Collections.singletonList(troncon2));
+        intersection2.setSortants(Collections.singletonList(troncon2));
 
-		intersections.add(intersection1);
-		intersections.add(intersection2);
+        intersections.add(intersection1);
+        intersections.add(intersection2);
 
-		planAComparer.setIntersections(intersections);
+        planAComparer.setIntersections(intersections);
 
-		File xml = new File("src/test/resources/exemples/plan2x1.xml");
+        File xml = new File("src/test/resources/exemples/plan2x1.xml");
         Plan plan = new Plan();
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             fail();
         }
 
@@ -62,25 +61,25 @@ public class DeserialiseurXMLTest {
         IntersectionTest.comparerIntersections(intersectionPlan1, intersection1);
         IntersectionTest.comparerIntersections(intersectionPlan2, intersection2);
 
-    	// Vérification des troncons
+        // Vérification des troncons
 
 
-    	List<Troncon> tronconsPlan = intersectionPlan1.getSortants();
-    	Troncon tronconPlan1 = tronconsPlan.get(0);
-    	tronconsPlan = intersectionPlan2.getSortants();
-    	Troncon tronconPlan2 = tronconsPlan.get(0);
+        List<Troncon> tronconsPlan = intersectionPlan1.getSortants();
+        Troncon tronconPlan1 = tronconsPlan.get(0);
+        tronconsPlan = intersectionPlan2.getSortants();
+        Troncon tronconPlan2 = tronconsPlan.get(0);
 
         TronconTest.comparerTroncons(tronconPlan1, troncon1);
         TronconTest.comparerTroncons(tronconPlan2, troncon2);
 
-		// Vérification de l'intersection d'arrivée
+        // Vérification de l'intersection d'arrivée
 
-		Intersection tronconPlan1Arrivee = tronconPlan1.getArrivee();
-		Intersection tronconPlan2Arrivee = tronconPlan2.getArrivee();
+        Intersection tronconPlan1Arrivee = tronconPlan1.getArrivee();
+        Intersection tronconPlan2Arrivee = tronconPlan2.getArrivee();
 
         IntersectionTest.comparerIntersections(tronconPlan1Arrivee, intersection2);
         IntersectionTest.comparerIntersections(tronconPlan2Arrivee, intersection1);
-	}
+    }
 
     @Test
     public void testChargerPlanPlanVide() {
@@ -118,7 +117,7 @@ public class DeserialiseurXMLTest {
     }
 
     @Test
-    public void testChargerPlanPlanEtXmlNull()  {
+    public void testChargerPlanPlanEtXmlNull() {
         File xml = null;
         Plan plan = null;
         boolean charge = false;
@@ -156,7 +155,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanReseauManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-    	File xml = new File("src/test/resources/invalide/plan-reseau-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-reseau-manquant.xml");
         Plan plan = new Plan();
 
         exception.expect(ExceptionXML.class);
@@ -175,102 +174,96 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerPlanIdNoeudDestinationInvalide() {
-    	File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-invalide.xml");
+        File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-invalide.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-        	assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : Un leTronconSortant possède un NoeudDestination inconnu");
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : Un leTronconSortant possède un NoeudDestination inconnu");
         }
     }
 
     @Test
     public void testChargerPlanAttributManquant() {
-    	// id
-    	testChargerPlanIdManquant();
+        // id
+        testChargerPlanIdManquant();
 
-    	// x
-		testChargerPlanXManquant();
+        // x
+        testChargerPlanXManquant();
 
-    	// y
-		testChargerPlanYManquant();
+        // y
+        testChargerPlanYManquant();
 
-    	// nomRue
-    	testChargerPlanNomRueManquant();
+        // nomRue
+        testChargerPlanNomRueManquant();
 
-    	// vitesse
-    	testChargerPlanVitesseManquante();
+        // vitesse
+        testChargerPlanVitesseManquante();
 
-    	// longueur
-    	testChargerPlanLongueurManquante();
+        // longueur
+        testChargerPlanLongueurManquante();
 
-    	// idNoeudDestination
-    	testChargerPlanIdNoeudDestinationManquant();
+        // idNoeudDestination
+        testChargerPlanIdNoeudDestinationManquant();
 
     }
 
-    public void testChargerPlanIdManquant()  {
-    	File xml = new File("src/test/resources/invalide/plan-id-manquant.xml");
+    public void testChargerPlanIdManquant() {
+        File xml = new File("src/test/resources/invalide/plan-id-manquant.xml");
         Plan plan = new Plan();
 
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être défini", e.getMessage());
             }
         }
     }
 
     public void testChargerPlanXManquant() {
-    	File xml = new File("src/test/resources/invalide/plan-x-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-x-manquant.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être définie");
             }
         }
     }
 
     public void testChargerPlanYManquant() {
-    	File xml = new File("src/test/resources/invalide/plan-y-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-y-manquant.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être définie");
             }
         }
     }
 
     public void testChargerPlanNomRueManquant() {
-    	File xml = new File("src/test/resources/invalide/plan-nomRue-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-nomRue-manquant.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné");
             }
         }
     }
 
     public void testChargerPlanVitesseManquante() {
-    	File xml = new File("src/test/resources/invalide/plan-vitesse-manquante.xml");
+        File xml = new File("src/test/resources/invalide/plan-vitesse-manquante.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être définie");
             }
         }
@@ -278,26 +271,24 @@ public class DeserialiseurXMLTest {
 
 
     public void testChargerPlanLongueurManquante() {
-    	File xml = new File("src/test/resources/invalide/plan-longueur-manquante.xml");
+        File xml = new File("src/test/resources/invalide/plan-longueur-manquante.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être définie");
             }
         }
     }
 
     public void testChargerPlanIdNoeudDestinationManquant() {
-    	File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-manquant.xml");
+        File xml = new File("src/test/resources/invalide/plan-idNoeudDestination-manquant.xml");
         Plan plan = new Plan();
         try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch(Exception e) {
-            if(e instanceof ExceptionXML) {
+            DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+            if (e instanceof ExceptionXML) {
                 assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : L'idNoeudDestination d'un leTronconSortant doit être défini");
             }
         }
@@ -317,8 +308,7 @@ public class DeserialiseurXMLTest {
         try {
             chargePlan = DeserialiseurXML.INSTANCE.chargerPlan(planAttendu, new File("src/test/resources/exemples/plan10x10.xml"));
             chargePlan &= DeserialiseurXML.INSTANCE.chargerPlan(planObtenu, new File("src/test/resources/exemples/plan10x10.xml"));
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             fail();
         }
         assertTrue(chargePlan);
@@ -330,8 +320,8 @@ public class DeserialiseurXMLTest {
 
         // fenetre 1
         List<Livraison> listeLivr1 = new ArrayList<>();
-        int tempsDebF1 = 8*3600;
-        int tempsFinF1 = 9*3600+30*60;
+        int tempsDebF1 = 8 * 3600;
+        int tempsFinF1 = 9 * 3600 + 30 * 60;
         Livraison liv1 = new Livraison(planAttendu.trouverIntersection(97), tempsDebF1, tempsFinF1, 329);
         liv1.getIntersection().setLivraison(liv1);
         listeLivr1.add(liv1);
@@ -339,8 +329,8 @@ public class DeserialiseurXMLTest {
 
         // fenetre 2
         List<Livraison> listeLivr2 = new ArrayList<>();
-        int tempsDebF2 = 9*3600+30*60;
-        int tempsFinF2 = 11*3600;
+        int tempsDebF2 = 9 * 3600 + 30 * 60;
+        int tempsFinF2 = 11 * 3600;
         Livraison liv2 = new Livraison(planAttendu.trouverIntersection(88), tempsDebF2, tempsFinF2, 838);
         liv2.getIntersection().setLivraison(liv2);
         listeLivr2.add(liv2);
@@ -356,8 +346,7 @@ public class DeserialiseurXMLTest {
         boolean chargeDemandeLivraison = false;
         try {
             chargeDemandeLivraison = DeserialiseurXML.INSTANCE.chargerDemandeLivraison(demandeLivraisonsObtenue, new File("src/test/resources/exemples/livraison10x10-test-1.xml"));
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             fail();
         }
 
@@ -366,13 +355,13 @@ public class DeserialiseurXMLTest {
         // vérification des fenetres
         assertEquals(demandeLivraisonsAttendue.getFenetres().size(), demandeLivraisonsObtenue.getFenetres().size());
         for (int i = 0; i < demandeLivraisonsAttendue.getFenetres().size(); i++) {
-            assertEquals(demandeLivraisonsAttendue.getFenetres().get(i).getHeureDebut(),demandeLivraisonsObtenue.getFenetres().get(i).getHeureDebut());
-            assertEquals(demandeLivraisonsAttendue.getFenetres().get(i).getHeureFin(),demandeLivraisonsObtenue.getFenetres().get(i).getHeureFin());
+            assertEquals(demandeLivraisonsAttendue.getFenetres().get(i).getHeureDebut(), demandeLivraisonsObtenue.getFenetres().get(i).getHeureDebut());
+            assertEquals(demandeLivraisonsAttendue.getFenetres().get(i).getHeureFin(), demandeLivraisonsObtenue.getFenetres().get(i).getHeureFin());
 
             // verification des livraison
             for (int j = 0; j < demandeLivraisonsAttendue.getFenetres().get(i).getLivraisons().size(); j++) {
-                LivraisonTest.comparerLivraisonsPrimitives(demandeLivraisonsAttendue.getFenetres().get(i).getLivraisons().get(j),demandeLivraisonsObtenue.getFenetres().get(i).getLivraisons().get(j));
-                IntersectionTest.comparerIntersections(demandeLivraisonsAttendue.getFenetres().get(i).getLivraisons().get(j).getIntersection(),demandeLivraisonsObtenue.getFenetres().get(i).getLivraisons().get(j).getIntersection());
+                LivraisonTest.comparerLivraisonsPrimitives(demandeLivraisonsAttendue.getFenetres().get(i).getLivraisons().get(j), demandeLivraisonsObtenue.getFenetres().get(i).getLivraisons().get(j));
+                IntersectionTest.comparerIntersections(demandeLivraisonsAttendue.getFenetres().get(i).getLivraisons().get(j).getIntersection(), demandeLivraisonsObtenue.getFenetres().get(i).getLivraisons().get(j).getIntersection());
             }
         }
 
@@ -383,8 +372,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonDLVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-vide.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-vide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         boolean charge = false;
@@ -398,8 +387,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonDLNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/exemples/livraison10x10-test-1.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/exemples/livraison10x10-test-1.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = null;
         boolean charge = false;
@@ -414,7 +403,7 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonXmlNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
         File xmlDemandeLivraison = null;
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
@@ -430,8 +419,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonXmlNonConforme() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-xml-invalide.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-xml-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         boolean charge;
@@ -443,8 +432,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonXmlVide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/xml-vide.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/xml-vide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -454,8 +443,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonJourneeTypeManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-journee-type-manquant.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-journee-type-manquant.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -467,8 +456,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonSansLivraison() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-livraison-manquante.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-livraison-manquante.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -480,8 +469,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonIdNoeudDestinationInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-adresse-invalide.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-adresse-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -493,8 +482,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonFenetreChevauche() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-fenetre-chevauche.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-fenetre-chevauche.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);
@@ -506,8 +495,8 @@ public class DeserialiseurXMLTest {
 
     @Test
     public void testChargerDemandeLivraisonEntrepotInvalide() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
-        File xmlPlan= new File("src/test/resources/exemples/plan10x10.xml");
-        File xmlDemandeLivraison= new File("src/test/resources/invalide/livraison-entrepot-invalide.xml");
+        File xmlPlan = new File("src/test/resources/exemples/plan10x10.xml");
+        File xmlDemandeLivraison = new File("src/test/resources/invalide/livraison-entrepot-invalide.xml");
         Plan plan = new Plan();
         DemandeLivraisons demandeLivraisons = new DemandeLivraisons(plan);
         DeserialiseurXML.INSTANCE.chargerPlan(plan, xmlPlan);

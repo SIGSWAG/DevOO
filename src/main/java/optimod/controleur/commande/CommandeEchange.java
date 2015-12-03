@@ -4,7 +4,7 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 
 /**
- *
+ * Commande d'échange de deux Livraisons
  */
 public class CommandeEchange implements Commande {
     private Ordonnanceur ordonnanceur;
@@ -14,7 +14,7 @@ public class CommandeEchange implements Commande {
     /**
      * Cree la commande qui ajoute une Intersection i avant la Livraison l à la DemandeLivraison
      *
-     * @param o Ordonnanceur du système
+     * @param o  Ordonnanceur du système
      * @param l1 Première Livraison à échanger
      * @param l2 Deuxième Livraison à échanger
      */

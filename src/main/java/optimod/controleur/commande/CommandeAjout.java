@@ -6,7 +6,7 @@ import optimod.modele.Livraison;
 import optimod.modele.Ordonnanceur;
 
 /**
- *
+ * Commande d'ajout d'une Livraison
  */
 public class CommandeAjout implements Commande {
     private Ordonnanceur ordonnanceur;

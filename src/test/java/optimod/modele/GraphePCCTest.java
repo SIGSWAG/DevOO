@@ -125,8 +125,8 @@ public class GraphePCCTest {
         solution.add(2);
 
         int i = 0;
-        for(Chemin c : parcours){
-            assertEquals((int)solution.get(i), c.getDepart().getIntersection().getAdresse());
+        for (Chemin c : parcours) {
+            assertEquals((int) solution.get(i), c.getDepart().getIntersection().getAdresse());
             i++;
         }
 

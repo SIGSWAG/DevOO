@@ -2,6 +2,9 @@ package optimod.modele;
 
 import java.util.*;
 
+/**
+ * Adresse à laquelle il faut s’arrêter pour une fenêtre.
+ */
 public class Livraison {
 
     private int heureLivraison;

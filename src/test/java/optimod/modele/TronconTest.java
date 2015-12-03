@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-
 public class TronconTest {
 
     private static final double EPSILON = 1e-15;
@@ -25,32 +24,32 @@ public class TronconTest {
 
     public static void comparerTroncons(Troncon tronconATester, Troncon tronconType) {
 
-    	comparerTronconsPrimitives(tronconATester, tronconType);
+        comparerTronconsPrimitives(tronconATester, tronconType);
 
-		Intersection intersectionArriveeATester = tronconATester.getArrivee();
-		Intersection intersectionArriveeType = tronconType.getArrivee();
+        Intersection intersectionArriveeATester = tronconATester.getArrivee();
+        Intersection intersectionArriveeType = tronconType.getArrivee();
 
-		assertNotNull(intersectionArriveeATester);
-		assertNotNull(intersectionArriveeType);
+        assertNotNull(intersectionArriveeATester);
+        assertNotNull(intersectionArriveeType);
 
 
-		IntersectionTest.comparerIntersectionsPrimitives(intersectionArriveeATester, intersectionArriveeType);
+        IntersectionTest.comparerIntersectionsPrimitives(intersectionArriveeATester, intersectionArriveeType);
     }
 
     public static void comparerTronconsPrimitives(Troncon tronconATester, Troncon tronconType) {
-    	assertNotNull(tronconATester);
-    	assertNotNull(tronconType);
+        assertNotNull(tronconATester);
+        assertNotNull(tronconType);
 
         assertEquals(tronconATester.getVitesse(), tronconType.getVitesse(), EPSILON);
         assertEquals(tronconATester.getLongueur(), tronconType.getLongueur(), EPSILON);
         assertEquals(tronconATester.getNom(), tronconType.getNom());
 
-	}
+    }
 
 
     public static boolean comparerTronconsBool(Troncon tronconATester, Troncon tronconType) {
 
-        if (!comparerTronconsPrimitivesBool(tronconATester, tronconType)){
+        if (!comparerTronconsPrimitivesBool(tronconATester, tronconType)) {
             return false;
         }
 
@@ -58,12 +57,12 @@ public class TronconTest {
         Intersection intersectionArriveeType = tronconType.getArrivee();
 
 
-        return (intersectionArriveeATester!=null && intersectionArriveeType!=null && IntersectionTest.comparerIntersectionsPrimitivesBool(intersectionArriveeATester, intersectionArriveeType));
-     }
+        return (intersectionArriveeATester != null && intersectionArriveeType != null && IntersectionTest.comparerIntersectionsPrimitivesBool(intersectionArriveeATester, intersectionArriveeType));
+    }
 
     public static boolean comparerTronconsPrimitivesBool(Troncon tronconATester, Troncon tronconType) {
 
-        return (tronconATester!=null && tronconType != null && Math.abs(tronconATester.getVitesse() - tronconType.getVitesse()) < EPSILON
+        return (tronconATester != null && tronconType != null && Math.abs(tronconATester.getVitesse() - tronconType.getVitesse()) < EPSILON
                 && Math.abs(tronconATester.getLongueur() - tronconType.getLongueur()) < EPSILON && tronconATester.getNom().equals(tronconType.getNom()));
 
     }

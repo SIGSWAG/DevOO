@@ -13,6 +13,7 @@ import static junit.framework.TestCase.assertEquals;
 public class PlanTest {
 
     private Plan plan;
+
     @Before
     public void setUp() throws Exception {
         plan = new Plan();
@@ -26,7 +27,7 @@ public class PlanTest {
 
     @Test
     public void testTrouverIntersection() throws Exception {
-        Intersection intersection = new Intersection(0,0,0);
+        Intersection intersection = new Intersection(0, 0, 0);
         List<Intersection> intersections = new ArrayList<>();
         intersections.add(intersection);
         plan.setIntersections(intersections);
@@ -36,7 +37,7 @@ public class PlanTest {
 
     @Test
     public void testReinitialiser() throws Exception {
-        Intersection intersection = new Intersection(0,0,0);
+        Intersection intersection = new Intersection(0, 0, 0);
         List<Intersection> intersections = new ArrayList<>();
         intersections.add(intersection);
         plan.setIntersections(intersections);
@@ -47,7 +48,6 @@ public class PlanTest {
 
     @Test
     public void testTrouverIntersection1() throws Exception {
-
 
 
     }

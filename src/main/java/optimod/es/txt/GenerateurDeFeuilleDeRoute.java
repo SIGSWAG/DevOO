@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Créé par Loïc Touzard le 18/11/2015.
+ * permet de générer la feuille de route au format HTML
  */
 public enum GenerateurDeFeuilleDeRoute { // Singleton
     INSTANCE;

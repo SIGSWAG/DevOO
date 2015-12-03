@@ -1,7 +1,7 @@
 package optimod.es.xml;
 
 /**
- * Créé par (PRO) Loïc Touzard le 18/11/2015.
+ * Exception lancée à la deserialisation d'un fichier XML
  */
 public class ExceptionXML extends Exception {
 

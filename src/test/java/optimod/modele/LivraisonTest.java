@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-
 public class LivraisonTest {
 
     @Test
@@ -65,7 +64,7 @@ public class LivraisonTest {
 
         assertEquals(chemin.getTroncons().size(), 2);
         assertEquals(chemin.getTroncons().get(0).getArrivee(), intersection2);
-       
+
     }
 
     public static void comparerLivraisons(Livraison livraisonATester, Livraison livraisonType) {
@@ -73,7 +72,7 @@ public class LivraisonTest {
 
         IntersectionTest.comparerIntersections(livraisonATester.getIntersection(), livraisonType.getIntersection());
 
-        comparerLivraisonsPrimitives(livraisonATester.getPrecedente(), livraisonType.getPrecedente());        
+        comparerLivraisonsPrimitives(livraisonATester.getPrecedente(), livraisonType.getPrecedente());
     }
 
     public static void comparerLivraisonsPrimitives(Livraison livraisonATester, Livraison livraisonType) {
@@ -88,7 +87,7 @@ public class LivraisonTest {
 
     public static boolean comparerLivraisonsPrimitivesBool(Livraison livraisonATester, Livraison livraisonType) {
 
-        return(livraisonATester!=null && livraisonType!=null && livraisonATester.getHeureLivraison() == livraisonType.getHeureLivraison()
+        return (livraisonATester != null && livraisonType != null && livraisonATester.getHeureLivraison() == livraisonType.getHeureLivraison()
                 && livraisonATester.getHeureDebutFenetre() == livraisonType.getHeureDebutFenetre()
                 && livraisonATester.getHeureFinFenetre() == livraisonType.getHeureFinFenetre()
                 && livraisonATester.getIdClient() == livraisonType.getIdClient());
@@ -96,14 +95,13 @@ public class LivraisonTest {
     }
 
 
-
     public static boolean comparerLivraisonsBool(Livraison livraisonATester, Livraison livraisonType) {
         return (
-            comparerLivraisonsPrimitivesBool(livraisonATester, livraisonType)
-            &&
-            IntersectionTest.comparerIntersectionsBool(livraisonATester.getIntersection(), livraisonType.getIntersection())
-            &&
-            comparerLivraisonsPrimitivesBool(livraisonATester.getPrecedente(), livraisonType.getPrecedente())
+                comparerLivraisonsPrimitivesBool(livraisonATester, livraisonType)
+                        &&
+                        IntersectionTest.comparerIntersectionsBool(livraisonATester.getIntersection(), livraisonType.getIntersection())
+                        &&
+                        comparerLivraisonsPrimitivesBool(livraisonATester.getPrecedente(), livraisonType.getPrecedente())
         );
     }
 

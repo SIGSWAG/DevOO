@@ -503,10 +503,10 @@ public class FenetreControleur implements Observer, Initializable {
     /**
      * Affiche une expcetion avec un titre, une alerte, et le message de l'exception sur l'IHM
      *
-     * @param message le message à logger
-     * @param titre le titre de la fenetre
+     * @param message   le message à logger
+     * @param titre     le titre de la fenetre
      * @param alertType Le type d'alerte de l'exception
-     * @param ex L'exception à afficher
+     * @param ex        L'exception à afficher
      */
     public void afficherException(String message, String titre, Alert.AlertType alertType, Exception ex) {
         if (!message.isEmpty()) {

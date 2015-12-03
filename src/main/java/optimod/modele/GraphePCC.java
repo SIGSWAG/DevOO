@@ -11,6 +11,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Graphe représentant les plus courts chemins
+ */
 public class GraphePCC implements Graphe {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

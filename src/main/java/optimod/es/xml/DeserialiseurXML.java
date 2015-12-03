@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Créé par Loïc Touzard le 18/11/2015.
+ * Permet de déserialiser un fichier XML pour instancier les objets du modèle correspondants
  */
 public enum DeserialiseurXML { // Singleton
     INSTANCE;
@@ -54,7 +54,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerPlan(Plan plan, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null || plan == null) {
+        if (xml == null || plan == null) {
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -94,7 +94,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerDemandeLivraison(DemandeLivraisons demandeLivraisons, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null || demandeLivraisons == null) {
+        if (xml == null || demandeLivraisons == null) {
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -187,7 +187,7 @@ public enum DeserialiseurXML { // Singleton
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Un leTronconSortant ne peut pas avoir le même Noeud entrant et sortant");
         }
 
-        return new Troncon(intersectionDestination,vitesse,longueur,nomRue);
+        return new Troncon(intersectionDestination, vitesse, longueur, nomRue);
     }
 
     private Intersection creerIntersection(Element noeud, Map<Integer, Intersection> intersections) throws ExceptionXML {
@@ -239,7 +239,7 @@ public enum DeserialiseurXML { // Singleton
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Une JourneeType doit avoir un (seul) Entrepot");
         }
 
-        Element elementEntrepot = (Element)listeEntrepots.item(0);
+        Element elementEntrepot = (Element) listeEntrepots.item(0);
         entrepot = this.creerEntrepot(elementEntrepot, demandeLivraisons);
         intersectionsUtilisees.add(entrepot.getIntersection());
 
@@ -380,7 +380,7 @@ public enum DeserialiseurXML { // Singleton
 
     private Livraison creerEntrepot(Element elementEntrepot, DemandeLivraisons demandeLivraisons) throws ExceptionXML {
         String attributAdresseEntrepot = elementEntrepot.getAttribute("adresse");
-        if(attributAdresseEntrepot.isEmpty()){
+        if (attributAdresseEntrepot.isEmpty()) {
             throw new ExceptionXML("Erreur lors de la lecture du fichier : Un Entrepot doit avoir une adresse");
         }
         int adresseEntrepot = parseInt(attributAdresseEntrepot);

@@ -10,15 +10,10 @@ public class TSP2 extends TSP1 {
 
     @Override
     protected int bound(Integer sommetCourant, Collection<Integer> nonVus) {
-
         int sumBound = getMinCoutSortant(sommetCourant, nonVus);
-
         for (Integer i : nonVus) {
-
-
             sumBound += getMinCoutSortant(i, nonVus);
         }
-
         return sumBound;
     }
 

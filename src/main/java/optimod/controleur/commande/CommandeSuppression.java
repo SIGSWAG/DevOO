@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- *
+ * Commande de suppression d'une liste de Livraison
  */
 public class CommandeSuppression implements Commande {
     private Ordonnanceur ordonnanceur;

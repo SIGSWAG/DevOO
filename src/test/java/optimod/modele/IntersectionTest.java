@@ -29,28 +29,28 @@ public class IntersectionTest {
         comparerIntersectionsPrimitives(intersectionATester, intersectionType);
 
 
-    	List<Troncon> tronconsATester = intersectionATester.getSortants();
-    	List<Troncon> tronconsType = intersectionType.getSortants();
+        List<Troncon> tronconsATester = intersectionATester.getSortants();
+        List<Troncon> tronconsType = intersectionType.getSortants();
 
 
         assertNotNull(tronconsATester);
         assertNotNull(tronconsType);
 
 
-    	assertEquals(tronconsATester.size(), tronconsType.size());
+        assertEquals(tronconsATester.size(), tronconsType.size());
 
-    	for(int i = 0; i < tronconsATester.size(); i++) {
-    		Troncon tronconATester = tronconsATester.get(i);
-    		Troncon tronconType = tronconsType.get(i);
-    		TronconTest.comparerTroncons(tronconATester, tronconType);
-    	}
+        for (int i = 0; i < tronconsATester.size(); i++) {
+            Troncon tronconATester = tronconsATester.get(i);
+            Troncon tronconType = tronconsType.get(i);
+            TronconTest.comparerTroncons(tronconATester, tronconType);
+        }
     }
 
     @Test
-    public void testGetTronconVers() throws Exception{
-        Intersection i1 = new Intersection(0,0,1);
-        Intersection i2 = new Intersection(5,5,2);
-        Intersection i3 = new Intersection(5,5,2);
+    public void testGetTronconVers() throws Exception {
+        Intersection i1 = new Intersection(0, 0, 1);
+        Intersection i2 = new Intersection(5, 5, 2);
+        Intersection i3 = new Intersection(5, 5, 2);
         Troncon i1i2 = new Troncon(i2, 5, 5, "troncon i1 vers i2");
         Troncon i1i3 = new Troncon(i3, 5, 5, "troncon i1 vers i3");
         List<Troncon> tronconsSortantsI1 = new ArrayList<>();
@@ -64,9 +64,9 @@ public class IntersectionTest {
 
     @Test
     public void testGetTronconFail() {
-        Intersection i1 = new Intersection(0,0,1);
-        Intersection i2 = new Intersection(5,5,2);
-        Intersection i3 = new Intersection(5,5,2);
+        Intersection i1 = new Intersection(0, 0, 1);
+        Intersection i2 = new Intersection(5, 5, 2);
+        Intersection i3 = new Intersection(5, 5, 2);
         Troncon i1i2 = new Troncon(i2, 5, 5, "troncon i1 vers i2");
         Troncon i1i3 = new Troncon(i3, 5, 5, "troncon i1 vers i3");
         List<Troncon> tronconsSortantsI1 = new ArrayList<>();
@@ -74,7 +74,7 @@ public class IntersectionTest {
         tronconsSortantsI1.add(i1i3);
         i1.setSortants(tronconsSortantsI1);
 
-        Intersection i4 = new Intersection(10,10,3);
+        Intersection i4 = new Intersection(10, 10, 3);
         Troncon troncon4 = new Troncon(i4, 2, 2, "troncon");
         List<Troncon> tronconsSortants4 = new ArrayList<>();
         tronconsSortants4.add(troncon4);
@@ -86,15 +86,15 @@ public class IntersectionTest {
 
 
     public static void comparerIntersectionsPrimitives(Intersection intersectionATester, Intersection intersectionType) {
-    	assertNotNull(intersectionATester);
-    	assertNotNull(intersectionType);
+        assertNotNull(intersectionATester);
+        assertNotNull(intersectionType);
         List<Troncon> tronconsATester = intersectionATester.getSortants();
         List<Troncon> tronconsType = intersectionType.getSortants();
         assertEquals(tronconsATester.size(), tronconsType.size());
     }
 
     public static boolean comparerIntersectionsBool(Intersection intersectionATester, Intersection intersectionType) {
-        if (!comparerIntersectionsPrimitivesBool(intersectionATester, intersectionType)){
+        if (!comparerIntersectionsPrimitivesBool(intersectionATester, intersectionType)) {
             return false;
         }
 
@@ -103,14 +103,14 @@ public class IntersectionTest {
         List<Troncon> tronconsType = intersectionType.getSortants();
 
 
-        if (!(tronconsATester!=null && tronconsType!=null && tronconsATester.size()==tronconsType.size())){
+        if (!(tronconsATester != null && tronconsType != null && tronconsATester.size() == tronconsType.size())) {
             return false;
         }
 
-        for(int i = 0; i < tronconsATester.size(); i++) {
+        for (int i = 0; i < tronconsATester.size(); i++) {
             Troncon tronconATester = tronconsATester.get(i);
             Troncon tronconType = tronconsType.get(i);
-            if(!TronconTest.comparerTronconsBool(tronconATester, tronconType)){
+            if (!TronconTest.comparerTronconsBool(tronconATester, tronconType)) {
                 return false;
             }
         }
@@ -122,14 +122,14 @@ public class IntersectionTest {
         List<Troncon> tronconsATester = intersectionATester.getSortants();
         List<Troncon> tronconsType = intersectionType.getSortants();
 
-        return(tronconsATester.size() == tronconsType.size() && intersectionType!=null && intersectionATester!=null);
+        return (tronconsATester.size() == tronconsType.size() && intersectionType != null && intersectionATester != null);
     }
 
     @Test
-    public void testEquals() throws Exception{
-        Intersection i1 = new Intersection(0,0,1);
-        Intersection i2 = new Intersection(2,5,1);
-        Intersection i3 = new Intersection(0,0,5);
+    public void testEquals() throws Exception {
+        Intersection i1 = new Intersection(0, 0, 1);
+        Intersection i2 = new Intersection(2, 5, 1);
+        Intersection i3 = new Intersection(0, 0, 5);
         assertTrue(i1.equals(i1));
         assertTrue(i1.equals(i2));
         assertFalse(i1.equals(i3));

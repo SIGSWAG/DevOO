@@ -73,13 +73,13 @@ public class FenetreLivraisonTest {
         // intersection6.setSortants(new ArrayList<Troncon>());
 
 
-        Livraison livraison  = new Livraison(intersection1);
+        Livraison livraison = new Livraison(intersection1);
         intersection1.setLivraison(livraison);
 
-        Livraison livraison3  = new Livraison(intersection3);
+        Livraison livraison3 = new Livraison(intersection3);
         intersection3.setLivraison(livraison3);
 
-        Livraison livraison5  = new Livraison(intersection5);
+        Livraison livraison5 = new Livraison(intersection5);
         intersection5.setLivraison(livraison5);
 
         Livraison livraison2 = new Livraison(intersection2);
@@ -99,16 +99,16 @@ public class FenetreLivraisonTest {
         f1.add(livraison3);
         f1.add(livraison5);
 
-        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
+        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1, 8, 20);
 
         List<Chemin> chemins = fenetreLivraison1.calculPCCInterne();
 
         List<Chemin> chemins2 = new ArrayList<>();
-        for(Livraison depart : f1) {
+        for (Livraison depart : f1) {
             for (Livraison arrivee : f1) {
                 if (!depart.equals(arrivee)) {
                     Chemin chemin = depart.calculPCC(arrivee);
-                    if(chemin != null) {
+                    if (chemin != null) {
                         chemins2.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
                     }
                 }
@@ -116,15 +116,15 @@ public class FenetreLivraisonTest {
         }
 
         boolean sameLists = true;
-        for (Chemin c : chemins){
+        for (Chemin c : chemins) {
             boolean exist = false;
-            for(Chemin c2 : chemins2){
-                if(CheminTest.comparerCheminsBool(c,c2)){
+            for (Chemin c2 : chemins2) {
+                if (CheminTest.comparerCheminsBool(c, c2)) {
                     exist = true;
                     break;
                 }
             }
-            if(!exist){
+            if (!exist) {
                 sameLists = false;
                 break;
             }
@@ -197,13 +197,13 @@ public class FenetreLivraisonTest {
         // intersection6.setSortants(new ArrayList<Troncon>());
 
 
-        Livraison livraison  = new Livraison(intersection1);
+        Livraison livraison = new Livraison(intersection1);
         intersection1.setLivraison(livraison);
 
-        Livraison livraison3  = new Livraison(intersection3);
+        Livraison livraison3 = new Livraison(intersection3);
         intersection3.setLivraison(livraison3);
 
-        Livraison livraison5  = new Livraison(intersection5);
+        Livraison livraison5 = new Livraison(intersection5);
         intersection5.setLivraison(livraison5);
 
         Livraison livraison2 = new Livraison(intersection2);
@@ -216,31 +216,31 @@ public class FenetreLivraisonTest {
         f2.add(livraison);
         f2.add(livraison2);
 
-        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1,8,20);
-        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2,21,35);
+        FenetreLivraison fenetreLivraison1 = new FenetreLivraison(f1, 8, 20);
+        FenetreLivraison fenetreLivraison2 = new FenetreLivraison(f2, 21, 35);
 
         List<Chemin> chemins = fenetreLivraison1.calculPCCSuivant(fenetreLivraison2);
 
         List<Chemin> chemins2 = new ArrayList<>();
-        for(Livraison depart : f1) {
+        for (Livraison depart : f1) {
             for (Livraison arrivee : f2) {
                 Chemin chemin = depart.calculPCC(arrivee);
-                if(chemin != null) {
+                if (chemin != null) {
                     chemins2.add(chemin); // on ajoute le plus court chemin entre depart et arrivee
                 }
             }
         }
 
         boolean sameLists = true;
-        for (Chemin c : chemins){
+        for (Chemin c : chemins) {
             boolean exist = false;
-            for(Chemin c2 : chemins2){
-                if(CheminTest.comparerCheminsBool(c,c2)){
+            for (Chemin c2 : chemins2) {
+                if (CheminTest.comparerCheminsBool(c, c2)) {
                     exist = true;
                     break;
                 }
             }
-            if(!exist){
+            if (!exist) {
                 sameLists = false;
                 break;
             }
