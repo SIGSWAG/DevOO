@@ -90,26 +90,25 @@ public class LivraisonTest {
         assertEquals(livraisonATester.getIdClient(), livraisonType.getIdClient());
     }
 
+    public static boolean comparerLivraisonsPrimitivesBool(Livraison livraisonATester, Livraison livraisonType) {
+
+        return(livraisonATester!=null && livraisonType!=null && livraisonATester.getHeureLivraison() == livraisonType.getHeureLivraison()
+                && livraisonATester.getHeureDebutFenetre() == livraisonType.getHeureDebutFenetre()
+                && livraisonATester.getHeureFinFenetre() == livraisonType.getHeureFinFenetre()
+                && livraisonATester.getIdClient() == livraisonType.getIdClient());
+
+    }
+
 
 
     public static boolean comparerLivraisonsBool(Livraison livraisonATester, Livraison livraisonType) {
         return (
-
             comparerLivraisonsPrimitivesBool(livraisonATester, livraisonType)
             &&
             IntersectionTest.comparerIntersectionsBool(livraisonATester.getIntersection(), livraisonType.getIntersection())
             &&
             comparerLivraisonsPrimitivesBool(livraisonATester.getPrecedente(), livraisonType.getPrecedente())
         );
-    }
-
-    public static boolean comparerLivraisonsPrimitivesBool(Livraison livraisonATester, Livraison livraisonType) {
-
-        return(livraisonATester!=null && livraisonType!=null && livraisonATester.getHeureLivraison() == livraisonType.getHeureLivraison()
-        && livraisonATester.getHeureDebutFenetre() == livraisonType.getHeureDebutFenetre()
-        && livraisonATester.getHeureFinFenetre() == livraisonType.getHeureFinFenetre()
-        && livraisonATester.getIdClient() == livraisonType.getIdClient());
-
     }
 
 

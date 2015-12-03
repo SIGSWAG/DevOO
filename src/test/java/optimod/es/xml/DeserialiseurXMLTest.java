@@ -1,44 +1,44 @@
 package optimod.es.xml;
 
-import optimod.modele.Intersection;
-import optimod.modele.Plan;
-import optimod.modele.Troncon;
+import optimod.modele.*;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by (PRO) Loïc Touzard on 25/11/2015.
  */
 public class DeserialiseurXMLTest {
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
 	/**
 	* Test de chargement d'un plan avec deux noeuds et deux intersections
 	**/
 	@Test
-    public void testChargerPlanOk() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+    public void testChargerPlanOk() {
         Plan planAComparer = new Plan();
 		List<Intersection> intersections = new ArrayList<>();
 		Intersection intersection1 = new Intersection(63, 100, 0);
 		Intersection intersection2 = new Intersection(88, 171, 1);
 
-		List<Troncon> troncons = new ArrayList<>();
 		Troncon troncon1 = new Troncon(intersection2, 3.9, 602.1, "v0");
 		Troncon troncon2 = new Troncon(intersection1, 4.1, 602.1, "v0");
 
-		troncons.add(troncon1);
-		intersection1.setSortants(troncons);
+		intersection1.setSortants(Arrays.asList(troncon1));
 
-		troncons.clear();
-		troncons.add(troncon2);
-		intersection2.setSortants(troncons);
+		intersection2.setSortants(Arrays.asList(troncon2));
 
 		intersections.add(intersection1);
 		intersections.add(intersection2);
@@ -50,14 +50,9 @@ public class DeserialiseurXMLTest {
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ExceptionXML exceptionXML) {
-            exceptionXML.printStackTrace();
+        }
+        catch(Exception e) {
+            fail();
         }
 
         assertEquals(charge, true);
@@ -68,13 +63,8 @@ public class DeserialiseurXMLTest {
         Intersection intersectionPlan1 = intersectionsPlan.get(0);
         Intersection intersectionPlan2 = intersectionsPlan.get(1);
 
-    	assertEquals(intersectionPlan1.getX(), intersection1.getX());
-    	assertEquals(intersectionPlan1.getY(), intersection1.getY());
-    	assertEquals(intersectionPlan1.getAdresse(), intersection1.getAdresse());
-
-    	assertEquals(intersectionPlan2.getX(), intersection2.getX());
-    	assertEquals(intersectionPlan2.getY(), intersection2.getY());
-    	assertEquals(intersectionPlan2.getAdresse(), intersection2.getAdresse());
+        IntersectionTest.comparerIntersections(intersectionPlan1, intersection1);
+        IntersectionTest.comparerIntersections(intersectionPlan2, intersection2);
 
     	// Vérification des troncons
 
@@ -84,44 +74,37 @@ public class DeserialiseurXMLTest {
     	tronconsPlan = intersectionPlan2.getSortants();
     	Troncon tronconPlan2 = tronconsPlan.get(0);
 
-        double delta = 0.01;
-		assertEquals(tronconPlan1.getVitesse(), troncon1.getVitesse(), delta);
-		assertEquals(tronconPlan1.getLongueur(), troncon1.getLongueur(), delta);
-		assertEquals(tronconPlan1.getNom(), troncon1.getNom());
-
-		assertEquals(tronconPlan2.getVitesse(), troncon2.getVitesse(), delta);
-		assertEquals(tronconPlan2.getLongueur(), troncon2.getLongueur(), delta);
-		assertEquals(tronconPlan2.getNom(), troncon2.getNom());
+        TronconTest.comparerTroncons(tronconPlan1, troncon1);
+        TronconTest.comparerTroncons(tronconPlan2, troncon2);
 
 		// Vérification de l'intersection d'arrivée
 
 		Intersection tronconPlan1Arrivee = tronconPlan1.getArrivee();
 		Intersection tronconPlan2Arrivee = tronconPlan2.getArrivee();
 
-		assertEquals(tronconPlan1Arrivee.getX(), intersection2.getX());
-		assertEquals(tronconPlan1Arrivee.getY(), intersection2.getY());
-		assertEquals(tronconPlan1Arrivee.getAdresse(), intersection2.getAdresse());
-
-		assertEquals(tronconPlan2Arrivee.getX(), intersection1.getX());
-		assertEquals(tronconPlan2Arrivee.getY(), intersection1.getY());
-		assertEquals(tronconPlan2Arrivee.getAdresse(), intersection1.getAdresse());
-
-
+        IntersectionTest.comparerIntersections(tronconPlan1Arrivee, intersection2);
+        IntersectionTest.comparerIntersections(tronconPlan2Arrivee, intersection1);
 	}
 
     @Test
-    public void testChargerPlanPlanVide() throws Exception {
+    public void testChargerPlanPlanVide() {
         File xml = new File("src/test/resources/fail/plan-vide.xml");
         Plan plan = new Plan();
-        boolean charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        boolean charge = false;
+        try {
+            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+        } catch (Exception e) {
+
+        }
 
         // TODO A priori le getElementsByTagName sur Noeud ne pas va fonctionner, mais on dirait pas que c'est géré
 
-        assertEquals(true, charge);
+        assertEquals(charge, true);
+        assertEquals(plan.getIntersections().size(), 0);
     }
 
     @Test
-    public void testChargerDemandeLivraison() throws Exception {
+    public void testChargerDemandeLivraison() {
 
     }
 
@@ -130,12 +113,7 @@ public class DeserialiseurXMLTest {
         File xml = new File("src/test/resources/fail/plan-vide.xml");
         Plan plan = null;
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (Exception e) {
-            assertEquals("",e.getMessage());
-        }
-
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         assertEquals(charge, false);
     }
 
@@ -144,24 +122,21 @@ public class DeserialiseurXMLTest {
         File xml = null;
         Plan plan = new Plan();
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "");
-        }
+
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
         assertEquals(charge, false);
     }
 
     @Test
-    public void testChargerPlanPlanEtXmlNull() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
+    public void testChargerPlanPlanEtXmlNull()  {
         File xml = null;
         Plan plan = null;
         boolean charge = false;
         try {
             charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "");
+            fail();
         }
 
         assertEquals(charge, false);
@@ -172,11 +147,9 @@ public class DeserialiseurXMLTest {
         File xml = new File("src/test/resources/fail/plan-xml-invalide.xml");
         Plan plan = new Plan();
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (Exception e) {
-            assertEquals("Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné",e.getMessage());
-        }
+
+        exception.expect(SAXException.class);
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
 
         assertEquals(charge, false);
     }
@@ -186,27 +159,21 @@ public class DeserialiseurXMLTest {
         File xml = new File("src/test/resources/fail/plan-xml-vide.xml");
         Plan plan = new Plan();
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (Exception e) {
-            assertEquals("Fin prématurée du fichier.",e.getMessage());
-        }
 
-        assertEquals(charge, false);
+        exception.expect(SAXException.class);
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
+
     }
 
-    // TODO JUnit peut vérifier si une exception est bien lancée, ça pourrait être intéressant, à voir
 
     @Test
-    public void testChargerPlanReseauManquant() {
+    public void testChargerPlanReseauManquant() throws ParserConfigurationException, ExceptionXML, SAXException, IOException {
     	File xml = new File("src/test/resources/fail/plan-reseau-manquant.xml");
         Plan plan = new Plan();
-        try {
-        	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        }
-        catch (Exception e) {
-            assertEquals("Le balisage du document suivant l'élément racine doit avoir un format correct.",e.getMessage());
-        }
+
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Document non conforme la racine du document doit être un Reseau");
+        DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
     }
 
     @Test
@@ -214,13 +181,9 @@ public class DeserialiseurXMLTest {
         File xml = new File("src/test/resources/fail/plan-troncon-manquant.xml");
         Plan plan = new Plan();
         boolean charge = false;
-        try {
-            charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
-        } catch (Exception e) {
-            assertEquals("Erreur lors de la lecture du fichier : Un Noeud doit avoir au moins un élément leTronconSortant",e.getMessage());
-        }
-
-        assertEquals(false, charge);
+        exception.expect(ExceptionXML.class);
+        exception.expectMessage("Erreur lors de la lecture du fichier : Un Noeud doit avoir au moins un élément leTronconSortant");
+        charge = DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
     }
 
     @Test
@@ -260,14 +223,17 @@ public class DeserialiseurXMLTest {
 
     }
 
-    public void testChargerPlanIdManquant() {
+    public void testChargerPlanIdManquant()  {
     	File xml = new File("src/test/resources/fail/plan-id-manquant.xml");
         Plan plan = new Plan();
+
         try {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être défini", e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals("Erreur lors de la lecture du fichier : l'ID d'un Noeud doit être défini", e.getMessage());
+            }
         }
     }
 
@@ -278,7 +244,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être définie", e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La coordonnée x d'un Noeud doit être définie");
+            }
         }
     }
 
@@ -289,7 +257,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être définie",e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La coordonnée y d'un Noeud doit être définie");
+            }
         }
     }
 
@@ -300,7 +270,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné", e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : Le nom d'un leTronconSortant doit être renseigné");
+            }
         }
     }
 
@@ -311,7 +283,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être définie",e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La vitesse d'un leTronconSortant doit être définie");
+            }
         }
     }
 
@@ -323,7 +297,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être définie", e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : La longueur d'un leTronconSortant doit être définie");
+            }
         }
     }
 
@@ -334,7 +310,9 @@ public class DeserialiseurXMLTest {
         	DeserialiseurXML.INSTANCE.chargerPlan(plan, xml);
         }
         catch(Exception e) {
-        	assertEquals("Erreur lors de la lecture du fichier : L'idNoeudDestination d'un leTronconSortant doit être défini", e.getMessage());
+            if(e instanceof ExceptionXML) {
+                assertEquals(e.getMessage(), "Erreur lors de la lecture du fichier : L'idNoeudDestination d'un leTronconSortant doit être défini");
+            }
         }
     }
 

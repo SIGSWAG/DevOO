@@ -56,7 +56,7 @@ public enum DeserialiseurXML { // Singleton
      * @throws ExceptionXML
      */
     public boolean chargerPlan(Plan plan, File xml) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        if(xml == null){
+        if(xml == null || plan == null){
             return false;
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
