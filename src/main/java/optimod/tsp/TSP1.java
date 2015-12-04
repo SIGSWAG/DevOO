@@ -3,6 +3,9 @@ package optimod.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * Simple implémentation de TemplateTSP avec iterateur séquentiel et bound nul.
+ */
 public class TSP1 extends TemplateTSP {
 
     @Override

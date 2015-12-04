@@ -9,7 +9,7 @@ public class IteratorMinFirst implements Iterator<Integer> {
 
     /**
      * Cree un iterateur pour iterer sur l'ensemble des sommets de nonVus qui sont successeurs de sommetCrt dans le graphe g,
-     * dans l'odre d'apparition dans <code>nonVus</code>
+     * dans l'odre des couts des arcs sortants de sommetCrt allant vers <code>nonVus</code>
      *
      * @param nonVus
      * @param sommetCrt

@@ -3,7 +3,11 @@ package optimod.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
-
+/**
+ * Classe surchargeant les méthodes du TemplateTSP,
+ * avec un bound basé sur la somme des couts minimums sortants des arcs partant sommets
+ * non vus.
+ */
 public class TSP2 extends TSP1 {
 
     @Override
