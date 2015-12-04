@@ -73,9 +73,6 @@ public class DemandeLivraisonsTest {
         assertEquals(chemins3.get(2).getDuree(), 1);
         assertEquals(chemins3.get(0).getDepart().getIdClient(), 0); // 0 = pas de client
         assertEquals(chemins3.get(2).getArrivee().getIdClient(), 0); // 0 = pas de client
-        // Ici, c'est chiant de tester tous les cas, car plusieurs solutions sont valides (on peut faire 123 ou 132)
-
-        // ------------------------------------------------------------------------------
 
         final File xmlPlan4 = new File("src/test/resources/itineraire/plan4.xml");
         final Plan plan4 = new Plan();
@@ -94,12 +91,6 @@ public class DemandeLivraisonsTest {
         assertEquals(chemins4.get(2).getDuree(), 1);
         assertEquals(chemins4.get(0).getDepart().getIdClient(), 0); // 0 = pas de client
         assertEquals(chemins4.get(2).getArrivee().getIdClient(), 0); // 0 = pas de client
-        // Ici, c'est chiant de tester tous les cas, car plusieurs solutions sont valides (on peut faire 231 ou 213)
-
-        // ------------------------------------------------------------------------------
-
-        // TODO encore d'autres cas à tester... en vrai c'est sans fin
-
     }
 
     @Test

@@ -18,7 +18,6 @@ public class TronconTest {
         assertEquals(new Troncon(null, 10, 1, "").getDuree(), 0, EPSILON);
         assertEquals(new Troncon(null, 5, 0, "").getDuree(), 0, EPSILON);
 
-        // Je voulais tester une division par 0 mais le calcul se fait avec des doubles...
         assertEquals(new Troncon(null, 0, 5, "").getDuree(), (int) Double.MAX_VALUE, EPSILON);
     }
 

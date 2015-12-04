@@ -61,13 +61,13 @@ public class TronconPane extends Group {
         if (disc < 0) {
             return Collections.emptyList();
         }
-        // if disc == 0 ... dealt with later
+
         double tmpSqrt = Math.sqrt(disc);
         double abScalingFactor1 = -pBy2 + tmpSqrt;
         double abScalingFactor2 = -pBy2 - tmpSqrt;
 
         Point2D p1 = new Point2D(x1 - baX * abScalingFactor1, y1 - baY * abScalingFactor1);
-        if (disc == 0) { // abScalingFactor1 == abScalingFactor2
+        if (disc == 0) {
             return Collections.singletonList(p1);
         }
         Point2D p2 = new Point2D(x1 - baX * abScalingFactor2, y1 - baY * abScalingFactor2);

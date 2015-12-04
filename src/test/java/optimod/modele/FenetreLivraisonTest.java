@@ -70,8 +70,6 @@ public class FenetreLivraisonTest {
         tr5.add(troncon9);
 
         intersection5.setSortants(tr5);
-        // intersection6.setSortants(new ArrayList<Troncon>());
-
 
         Livraison livraison = new Livraison(intersection1);
         intersection1.setLivraison(livraison);
@@ -194,8 +192,6 @@ public class FenetreLivraisonTest {
         tr5.add(troncon9);
 
         intersection5.setSortants(tr5);
-        // intersection6.setSortants(new ArrayList<Troncon>());
-
 
         Livraison livraison = new Livraison(intersection1);
         intersection1.setLivraison(livraison);

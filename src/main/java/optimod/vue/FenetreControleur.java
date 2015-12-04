@@ -272,7 +272,6 @@ public class FenetreControleur implements Observer, Initializable {
                 afficheurFenetresLivraison.chargerFenetresLivraison(demandeLivraisons);
                 afficheurPlan.chargerDemandeLivraisons(demandeLivraisons);
 
-                // TODO Voir si nécessaire, déjà dans chargerFenetresLivraison
                 afficheurFenetresLivraison.mettreAJour();
                 afficheurPlan.chargerItineraire(demandeLivraisons.getItineraire());
 

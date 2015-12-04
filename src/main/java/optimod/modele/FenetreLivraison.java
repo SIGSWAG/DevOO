@@ -121,7 +121,7 @@ public class FenetreLivraison implements Comparable<FenetreLivraison> {
             return 1;
         }
 
-        // Ne devrait pas arriver... Les fenêtres de livraisons ne peuvent normalement pas se chevaucher.
+        // Ne devrait pas arriver : les fenêtres de livraisons ne peuvent pas se chevaucher.
         return 0;
     }
 }
